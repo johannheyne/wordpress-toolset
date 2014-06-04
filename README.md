@@ -4,10 +4,6 @@ wordpress-toolset
 A toolset and coding guide using wordpress.
 Its about using and extending a basic toolbox for any site.
 
-Version
----------------
-~Current Version:0.0.13~
-
 Strategie
 ---------------
 - First, keep it simple and flexible.
