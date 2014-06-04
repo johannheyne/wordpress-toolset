@@ -6,7 +6,7 @@ Its about using and extending a basic toolbox for any site.
 
 Version
 ---------------
-~Current Version:0.0.8~
+~Current Version:0.0.9~
 
 Strategie
 ---------------
