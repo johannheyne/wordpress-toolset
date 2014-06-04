@@ -3,14 +3,14 @@
  * @package   Toolset
  * @author    Your Name mail@johannheyne
  * @license   GPL-2.0+
- * @link      https://github.com/johannheyne/toolset
+ * @link      https://github.com/johannheyne/wordpress-toolset
  * @copyright 2014 Johann Heyne
  *
  * @wordpress-plugin
  * Plugin Name:       Toolset
- * Plugin URI:        https://github.com/johannheyne/toolset
+ * Plugin URI:        https://github.com/johannheyne/wordpress-toolset
  * Description:       Provides functionality fore use in themes.
- * Version:           0.0.5
+ * Version:           0.0.6
  * Author:            Johann Heyne
  * Author URI:        www.johannheyne.de
  * Text Domain:       toolset
