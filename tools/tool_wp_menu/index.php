@@ -1,42 +1,57 @@
 <?php
 
-	// MENU WORDPRESS ( Version 1 ) {
+	// MENU WORDPRESS ( Version 2 ) {
 
-		// ENTFERNEN {
+		// REMOVE {
 
-			// MAIN {
-				/*
-				function tool_remove_menu_page() {
+			// PAGES {
+
+				function _tool_remove_menu_pages() {
 
 					//global $menu; print_o( $menu );
 
 					// Beiträge: edit.php
 
-					remove_menu_page('link-manager.php');
-					remove_menu_page('edit-comments.php');
+					foreach ( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_menu_pages'] as $item ) {
+
+						remove_menu_page( $item['page'] );
+					}
 				}
 
-				add_action( 'admin_menu', 'tool_remove_menu_page' );
-				*/
+				if (
+					isset( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_menu_pages'] )
+					&& count( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_menu_pages'] ) > 0
+				) {
+
+					add_action( 'admin_menu', '_tool_remove_menu_pages' );
+				}
+
 			// }
 
-			// SUB {
-				/*
-				function tool_remove_submenu_page() {
+			// SUBPAGES {
+
+				function _tool_remove_submenu_page() {
 
 					//global $submenu; print_o( $submenu );
 
-					$page = remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=post_tag' );
-					$page = remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=category' );
+					foreach ( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] as $item ) {
+
+						remove_submenu_page( $item['page'], $item['subpage'] );
+					}
 				}
 
-				add_action( 'admin_menu', 'tool_remove_submenu_page', 999 );
-				*/
+				if (
+					isset( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] )
+					&& count( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] ) > 0
+				) {
+
+					add_action( 'admin_menu', '_tool_remove_submenu_page', 999 );
+				}
 			// }
 
 		// }
 
-		// UMBENENNEN {
+		// RENAME {
 			/*
 			function change_post_menu_label() {
 				global $menu;
@@ -53,7 +68,7 @@
 			*/  
 		// }
 
-		// SORTIEREN {
+		// SORT {
 			/*
 			function change_post_object_label() {
 				global $wp_post_types;
@@ -74,7 +89,5 @@
 		// }
 
 	// }
-
-	
 
 ?>
