@@ -247,7 +247,7 @@
 
 				// refresh every 6 hours
 				if ( false !== $version )
-					set_site_transient( $this->config['slug'].'_new_version', $version, 60 );
+					set_site_transient( $this->config['slug'].'_new_version', $version, 0 );
 			}
 
 			return $version;
@@ -295,7 +295,7 @@
 					$github_data = json_decode( $github_data['body'] );
 
 					// refresh every 6 hours
-					set_site_transient( $this->config['slug'].'_github_data', $github_data, 60 );
+					set_site_transient( $this->config['slug'].'_github_data', $github_data, 0 );
 				}
 
 				// Store the data in this class instance for future calls
