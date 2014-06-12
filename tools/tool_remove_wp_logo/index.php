@@ -28,4 +28,15 @@
 
 	// }
 
+	// FOOTERTEXT AND VERSION {
+
+		function tool_remove_wp_logo_footertexte() {
+		    add_filter( 'admin_footer_text',    '__return_false', 11 );
+		    add_filter( 'update_footer',        '__return_false', 11 );
+		}
+
+		add_action( 'admin_init', 'tool_remove_wp_logo_footertexte' );
+
+	// }
+
 ?>
