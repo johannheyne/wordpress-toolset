@@ -5,7 +5,7 @@
 		function tool_tiny_mce_before_init( $init ) {
 
 			// Add block format elements you want to show in dropdown
-			$init['theme_advanced_blockformats'] = $GLOBALS['theme']['inits']['tool_tinymce']['blockformats'];
+			$init['block_formats'] = $GLOBALS['theme']['inits']['tool_tinymce']['blockformats'];
 
 			if ( isset( $GLOBALS['theme']['inits']['tool_tinymce']['styleformats'] ) && count( $GLOBALS['theme']['inits']['tool_tinymce']['styleformats'] ) > 0 ) {
 
