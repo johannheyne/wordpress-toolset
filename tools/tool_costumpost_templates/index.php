@@ -6,7 +6,7 @@
 
 		function tool_custompost_templates_init() {
 			
-			foreach ( $GLOBALS['theme']['inits']['tool_costumpost_templates'] as $key => $value ) {
+			foreach ( $GLOBALS['toolset']['inits']['tool_costumpost_templates'] as $key => $value ) {
 			    
 				$$value = new Tool_Single_CostumPost_Template( $value );
 			}

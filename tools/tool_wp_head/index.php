@@ -18,9 +18,9 @@
 				'wp_generator' => false,
 			);
 
-			if ( is_array( $GLOBALS['theme']['inits']['tool_wp_head'] ) ) {
+			if ( is_array( $GLOBALS['toolset']['inits']['tool_wp_head'] ) ) {
 
-				$p = array_replace_recursive( $defaults, $GLOBALS['theme']['inits']['wp_head'] );
+				$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['wp_head'] );
 			}
 			else {
 

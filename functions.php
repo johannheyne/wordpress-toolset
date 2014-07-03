@@ -52,10 +52,10 @@
 						$file = str_replace( '../', '', $file );
 
 						// IF NOT LOADET JET
-						if ( ! isset( $GLOBALS['theme']['autoloaded'][ $file ] ) ) {
+						if ( ! isset( $GLOBALS['toolset']['autoloaded'][ $file ] ) ) {
 
 							include( 'tools/' . $file );
-							$GLOBALS['theme']['autoloaded'][ $file ] = true;
+							$GLOBALS['toolset']['autoloaded'][ $file ] = true;
 						}
 					}
 
@@ -122,9 +122,9 @@
 
 			// LOAD INITS {
 
-				if ( isset( $GLOBALS['theme']['inits'] ) ) {
+				if ( isset( $GLOBALS['toolset']['inits'] ) ) {
 
-					foreach ( $GLOBALS['theme']['inits'] as $key => $value ) {
+					foreach ( $GLOBALS['toolset']['inits'] as $key => $value ) {
 
 						if ( $value ) {
 
@@ -143,9 +143,9 @@
 
 				function __autoload( $class_name ) {
 
-					if ( isset( $GLOBALS['theme']['autoload_php_classes'] ) ) {
+					if ( isset( $GLOBALS['toolset']['autoload_php_classes'] ) ) {
 
-						foreach ( $GLOBALS['theme']['autoload_php_classes'] as $key => $value ) {
+						foreach ( $GLOBALS['toolset']['autoload_php_classes'] as $key => $value ) {
 
 							if ( $class_name == $key ) {
 

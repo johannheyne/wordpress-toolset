@@ -4,16 +4,16 @@
 
 		function tool_multisite_switchmenu_sufix() {
 
-			if ( isset( $GLOBALS['theme']['sites'] ) && is_array( $GLOBALS['theme']['sites'] ) ) {
+			if ( isset( $GLOBALS['toolset']['sites'] ) && is_array( $GLOBALS['toolset']['sites'] ) ) {
 
 				echo '<style type="text/css"> ';
 
-					foreach ( $GLOBALS['theme']['sites'] as $key => $item ) {
+					foreach ( $GLOBALS['toolset']['sites'] as $key => $item ) {
 
 						echo '#wp-admin-bar-blog-' . $item['key'] . ' > a:after { content: " (' . $item['name'] . ')"; }';
 					}
 
-					echo '#wp-admin-bar-site-name > a:after {  content: " (' . $GLOBALS['theme']['sites'][ config_get_curr_site_key() ]['name'] . ')"; }';
+					echo '#wp-admin-bar-site-name > a:after {  content: " (' . $GLOBALS['toolset']['sites'][ config_get_curr_site_key() ]['name'] . ')"; }';
 
 				echo '</style>';
 			}

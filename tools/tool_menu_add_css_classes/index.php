@@ -50,10 +50,10 @@
 
 			*/
 
-			if ( is_array( $GLOBALS['theme']['inits']['tool_menu_add_css_classes'] ) ) {
+			if ( is_array( $GLOBALS['toolset']['inits']['tool_menu_add_css_classes'] ) ) {
 			    
 			
-				foreach ( $GLOBALS['theme']['inits']['tool_menu_add_css_classes'] as $key => $set ) {
+				foreach ( $GLOBALS['toolset']['inits']['tool_menu_add_css_classes'] as $key => $set ) {
 				    
 				    // DEFAULTS {
 

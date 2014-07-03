@@ -4,11 +4,11 @@
 
 		function tool_nav_menus_register() {
 
-			if ( isset( $GLOBALS['theme']['inits']['tool_nav_menus_register'] ) ) {
+			if ( isset( $GLOBALS['toolset']['inits']['tool_nav_menus_register'] ) ) {
 				
 				$array = false;
 				
-				foreach ( $GLOBALS['theme']['inits']['tool_nav_menus_register'] as $item ) {
+				foreach ( $GLOBALS['toolset']['inits']['tool_nav_menus_register'] as $item ) {
 
 					$array[ $item['slug'] ] = $item['name'];
 				}
@@ -20,7 +20,7 @@
 			}
 		}
 
-		if ( isset( $GLOBALS['theme']['inits']['tool_nav_menus_register'] ) ) {
+		if ( isset( $GLOBALS['toolset']['inits']['tool_nav_menus_register'] ) ) {
 
 			add_action( 'init', 'tool_nav_menus_register' );
 		}

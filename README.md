@@ -52,5 +52,5 @@ The tool() function
 
 There is a single global variable, that holds any kind of global data to drive tools.
 ````php
-$GLOBALS['theme'] = array( /* tools configurations goes here */ );
+$GLOBALS['toolset'] = array( /* tools configurations goes here */ );
 ````

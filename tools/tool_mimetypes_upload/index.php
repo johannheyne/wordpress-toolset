@@ -16,12 +16,12 @@
 
 		function tool_mimetypes_upload( $mimes ) {
 
-			if ( $GLOBALS['theme']['inits']['tool_mimetypes_upload']['reset_mimetypes'] ) {
+			if ( $GLOBALS['toolset']['inits']['tool_mimetypes_upload']['reset_mimetypes'] ) {
 
 				$mimes = array();
 			}
 			
-			$mimes = array_replace_recursive( $GLOBALS['theme']['inits']['tool_mimetypes_upload']['add_mimetypes'], $mimes );
+			$mimes = array_replace_recursive( $GLOBALS['toolset']['inits']['tool_mimetypes_upload']['add_mimetypes'], $mimes );
 			
 			return $mimes;
 		}

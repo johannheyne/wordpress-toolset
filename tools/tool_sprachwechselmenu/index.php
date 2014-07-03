@@ -31,7 +31,7 @@
 			$ret .= '<div class="' . $p['class_wrap'] . '">';
 			foreach ( $blog_list as $blog ) {
 
-					$site = $GLOBALS['theme']['sites'][ $blog->blog_id ];
+					$site = $GLOBALS['toolset']['sites'][ $blog->blog_id ];
 
 					//$link = get_permalink( $post->ID );
 					$obj = get_field( 'lang_' . $site['id'] );

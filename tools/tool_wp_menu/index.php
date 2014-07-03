@@ -12,15 +12,15 @@
 
 					// Beiträge: edit.php
 
-					foreach ( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_menu_pages'] as $item ) {
+					foreach ( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_menu_pages'] as $item ) {
 
 						remove_menu_page( $item['page'] );
 					}
 				}
 
 				if (
-					isset( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_menu_pages'] )
-					&& count( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_menu_pages'] ) > 0
+					isset( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_menu_pages'] )
+					&& count( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_menu_pages'] ) > 0
 				) {
 
 					add_action( 'admin_menu', '_tool_remove_menu_pages' );
@@ -34,15 +34,15 @@
 
 					//global $submenu; print_o( $submenu );
 
-					foreach ( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] as $item ) {
+					foreach ( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] as $item ) {
 
 						remove_submenu_page( $item['page'], $item['subpage'] );
 					}
 				}
 
 				if (
-					isset( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] )
-					&& count( $GLOBALS['theme']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] ) > 0
+					isset( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] )
+					&& count( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] ) > 0
 				) {
 
 					add_action( 'admin_menu', '_tool_remove_submenu_page', 999 );

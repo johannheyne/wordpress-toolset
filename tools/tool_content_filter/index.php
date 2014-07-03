@@ -10,7 +10,7 @@
 
 					if ( $value === 'placeholder' ) {
 
-						$string = strtr( $string, $GLOBALS['theme']['inits']['tool_content_filter']['placeholder'] );
+						$string = strtr( $string, $GLOBALS['toolset']['inits']['tool_content_filter']['placeholder'] );
 					}
 
 					if ( $value === 'textile' ) {
@@ -51,10 +51,10 @@
 
 			function the_content_placeholder_data( $content ) {
 
-				return tool_filter( $GLOBALS['theme']['inits']['tool_content_filter'], $content );
+				return tool_filter( $GLOBALS['toolset']['inits']['tool_content_filter'], $content );
 			}
 
-			if ( $GLOBALS['theme']['inits']['tool_content_filter'] ) {
+			if ( $GLOBALS['toolset']['inits']['tool_content_filter'] ) {
 
 				add_filter( 'the_content', 'the_content_placeholder_data' );
 			}

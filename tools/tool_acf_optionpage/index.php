@@ -139,7 +139,7 @@
 	
 	// ACF BUILD OPTIONPAGES ( Version 1 ) {
 	
-	    foreach ( $GLOBALS['theme']['inits']['tool_acf_optionpage'] as $item ) {
+	    foreach ( $GLOBALS['toolset']['inits']['tool_acf_optionpage'] as $item ) {
         
 			tool_acf_optionpage_build( array(
 		        'setup' => $item,

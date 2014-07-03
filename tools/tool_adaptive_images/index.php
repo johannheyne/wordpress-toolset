@@ -295,7 +295,7 @@
 		
 		function set_editor_imagesizes() {
 
-			foreach ( $GLOBALS['theme']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
+			foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
 			
 				add_image_size( $size, $item['width'], $item['height'], $item['crop'] );
 			}
@@ -349,7 +349,7 @@
 			return $html;
 		}
 		
-		if ( isset( $GLOBALS['theme']['inits']['tool_adaptive_images']['editor_imagesizes'] ) && is_array( $GLOBALS['theme']['inits']['tool_adaptive_images']['editor_imagesizes'] ) ) {
+		if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] ) && is_array( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] ) ) {
 		    
 			set_editor_imagesizes();
 			add_filter( 'image_size_names_choose','the_image_size_names', 10, 1 );

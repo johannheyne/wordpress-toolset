@@ -19,8 +19,7 @@
 				'w3tc' => false,
 				'my-account' => false,
 			);
-
-	        $p = array_replace_recursive( $defaults, $GLOBALS['theme']['inits']['tool_admin_bar']['remove'] );
+			$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['tool_admin_bar']['remove'] );
 
 	    // }
 	    
@@ -36,7 +35,7 @@
 		}
 	}
 	
-	if ( isset( $GLOBALS['theme']['inits']['tool_admin_bar']['remove'] ) ) {
+	if ( isset( $GLOBALS['toolset']['inits']['tool_admin_bar']['remove'] ) ) {
 	    
 		add_action( 'wp_before_admin_bar_render', 'tool_admin_bar_remove' );
 	}
