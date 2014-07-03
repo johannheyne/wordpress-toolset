@@ -15,11 +15,14 @@
 
 		function tool_remove_wp_footprint_loginpage() {
 			echo '<style type="text/css">
+				h1 {
+					margin-bottom: 20px !important;
+				}
 				h1 a { 
 					display: none !important;
 				}
 				h1:after {
-					content: "' . get_bloginfo( 'name' ) . '";
+					content: "' . get_bloginfo( 'name' ) . ' Login";
 				}
 			</style>';
 		}
