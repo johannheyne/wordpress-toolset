@@ -1,5 +1,31 @@
 <?php
 
+	// FALLBACK array_replace_recursive() {
+
+		if ( !function_exists( 'array_replace_recursive' ) ) {
+
+			function array_replace_recursive( $a, $b )  { 
+
+				$r = $a;
+
+				foreach ( $b as $key => $value ) {
+
+					if ( is_array( $value ) ) {
+
+						$r[ $key ] = array_replace_recursive( $r[ $key ], $value );
+					}
+					else {
+
+						$r[ $key ] = $value;
+					}
+				}
+
+				return $r;
+			}
+		}
+
+	// }
+
 	if ( file_exists( get_template_directory() . '/config/config.php' ) ) {
 
 		require_once( get_template_directory() . '/config/config.php' );
