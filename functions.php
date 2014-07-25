@@ -163,11 +163,11 @@
 
 			// }
 
-			// AUTOLOAD PHP CLASSES ( Version 2 ) {
+			// AUTOLOAD PHP CLASSES ( Version 3 ) {
 
 				/* Info: http://php.net/manual/de/language.oop5.autoload.php */
 
-				function __autoload( $class_name ) {
+				spl_autoload_register( function ( $class_name ) {
 
 					if ( isset( $GLOBALS['toolset']['autoload_php_classes'] ) ) {
 
@@ -190,7 +190,7 @@
 
 						}
 					}
-				}
+				} );
 
 			// }
 
