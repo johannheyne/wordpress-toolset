@@ -1,0 +1,182 @@
+body {
+  margin: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+@media screen and (min-width: 500px) {
+  body {
+    margin: 30px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+}
+/* YerCSSGrid is based on * box-sizing: border-box; */
+.clear {
+  clear: both;
+}
+.wrap {
+  max-width: 1100px;
+  margin: auto;
+}
+.styletitle {
+  padding: 4px 10px;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 10px;
+}
+.styletext {
+  padding: 4px 10px;
+  text-align: center;
+}
+.stylebox {
+  background: #BADCFE;
+  min-height: 20px;
+  padding: 4px 10px;
+  text-align: center;
+}
+/*
+	.grid-border {
+		border-bottom: 1px solid #999;
+		border-left: 1px solid #999;
+		border-top: none;
+		border-right: none;
+		margin-bottom: 10px;
+	}
+	.grid-border > * {
+		border-right: 1px solid #999;
+		border-top: 1px solid #999;
+		border-bottom: 1px solid #999;
+		margin-bottom: -1px;
+	}
+	.grid-border > * > * {
+		margin-bottom: 0;
+	}
+	*/
+.grid-border {
+  border-bottom: 1px solid #7eabee;
+  border-left: 1px solid #7eabee;
+  border-top: none;
+  border-right: none;
+  margin-bottom: 10px;
+}
+.grid-border > * {
+  border-right: 1px solid #7eabee;
+  border-top: 1px solid #7eabee;
+  border-bottom: 1px solid #7eabee;
+  margin-bottom: -1px;
+}
+.grid-border > * > * {
+  margin-bottom: 0;
+}
+.content-border > * > * {
+  border: 1px solid #7EABEE;
+  margin-bottom: 10px;
+}
+.grid .content-border {
+  border: none;
+}
+.grid .grid-border {
+  border-top: none;
+  border-right: none;
+}
+.topline {
+  border-top: 1px solid #999;
+  padding-top: 20px;
+  margin-top: 60px;
+}
+.code {
+  overflow: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  background: #35332D;
+  color: #C6C6C6;
+  padding: 8px 16px;
+  border: 1px solid black;
+}
+.gridtec {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 250px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.gridtec-body {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  border: 1px solid black;
+}
+.gridtec-grid {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  bottom: 15px;
+  border: 1px dashed #aaa;
+}
+.gridtec-col-1 {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 50%;
+  margin-right: -1px;
+  bottom: 30px;
+  border: 1px dashed #aaa;
+}
+.gridtec-col-2 {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  right: 0;
+  bottom: 30px;
+  border: 1px dashed #aaa;
+}
+.gridtec-cont {
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  right: 20px;
+  bottom: 15px;
+  border: 1px solid #7EABEE;
+  background: #BADCFE;
+}
+.gridtec-label {
+  position: relative;
+  top: 3px;
+  font-size: 0.9em;
+  color: black;
+  text-align: center;
+}
+.no-border {
+  border: none !important;
+}
+.issue {
+  padding: 4px 10px;
+  border: 1px solid #ffb8b8;
+  background: #ffebeb;
+}
+time {
+  font-size: 0.7em;
+  font-weight: normal;
+  padding-left: 10px;
+}
+.h1-subline {
+  margin-top: -20px;
+  text-align: center;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.center {
+    text-align: center;
+}
+#chapter {
+    overflow: hidden;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>YerCSSGrid Demo - conventions</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		
+		<link rel="stylesheet" href="../../css/yercssgrid-preset.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/yercssgrid.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/demo.css" type="text/css" />
+		
+	</head>
+	<body>
+		
+		<h1 class="styletitle">YerCSSGrid</h1>
+		
+		<a class="btn-back" href="../">back</a>
+		
+		<div id="chapter">
+			
+			<h2 class="topline">conventions</h2>
+			<p>Because of the technic to layout the gaps with padding and negative margins, we need in some cases overflow hidden on the parent element to prevent the negativ horizontal margins of the grid protruding about the body and causes horizontal scrolling. And we need border-box as box-sizing on all elements.</p>
+
+			<div class="gridtec">
+				<div class="gridtec-body"><div class="gridtec-label">&lt;body&gt;</div></div>
+				<div class="gridtec-grid"><div class="gridtec-label">.grid .gap-0-40</div></div>
+				<div class="gridtec-col-1">
+					<div class="gridtec-label">.col-0-6</div>
+					<div class="gridtec-cont"><div class="gridtec-label">content</div></div>
+				</div>
+				<div class="gridtec-col-2">
+					<div class="gridtec-label">.col-0-6</div>
+					<div class="gridtec-cont"><div class="gridtec-label">content</div></div>
+				</div>
+			</div>
+
+			<pre class="code"><code>.grid_wrap { overflow: hidden; }
+* { box-sizing: border-box; }</code></pre>
+
+		</div>
+		
+	</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Webseite</title>
+        <meta charset="utf-8"/>
+        
+        <link rel="stylesheet" href="../core/yeroverlay.css" type="text/css" />
+        <link rel="stylesheet" href="../themes/default/yeroverlay-default.css" type="text/css" />
+       
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="../core/yeroverlay.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            
+            jQuery.noConflict();
+            jQuery(document).ready(function(){
+
+                var overlay = new YerOverlay();
+                overlay.init();
+                
+                overlay.set( {
+                    'watch': '.btn_yeroverlay',
+                    'load_path' : 'load.html #part', // source.html #selector
+                    'close_button': true,
+                } );
+                
+                overlay.set( {
+                    'watch': '.link_yeroverlay',
+                    'load_href' : true,
+                    'close_button': true,
+                } );
+                
+
+            });
+            
+        </script>
+
+    </head>
+    <body>
+        
+        <button class="btn_yeroverlay" data-yeroverlay-source="#source">open</button>
+        <a class="link_yeroverlay" href="load.html#part">open</a>
+        
+        <div id="source" style="display:none;"><p>Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p></div>
+        
+    </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Webseite</title>
+        <meta charset="utf-8"/>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            jQuery.noConflict();
+            jQuery(document).ready(function(){
+
+                function when( obj, p ) {
+
+                    var i = 0;
+                    
+                    if ( typeof p.timeout == 'undefined' ) {
+                        
+                        p.timeout = 10;
+                    }
+                    
+                    var interval = window.setInterval( function() {
+
+                        i++;
+
+                        if ( obj[ p.key ] ) {
+
+                            p.callback_if();
+                            window.clearInterval( interval );
+                        }
+
+                        if ( ( i / 10 ) === p.timeout ) {
+
+                            window.clearInterval( interval );
+                            p.callback_timeout();
+                            
+                        }
+
+                    }, 100 );
+
+                }
+
+                var obj = {},
+                    message1 = function () {
+                        console.log( '1' );
+                    },
+                    message2 = function () {
+                        console.log( '2' );
+                    };
+
+                window.setTimeout( function () {
+
+                    obj.v = true;
+
+                }, 5000 );
+
+                when( obj, {
+                    'key': 'v', 
+                    'callback_if': message1,
+                    'callback_timeout': message2,
+                } );
+
+            });
+
+        </script>
+
+    </head>
+    <body>
+
+    </body>
+</html>

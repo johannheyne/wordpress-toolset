@@ -1,0 +1,264 @@
+// YerCSSGrid
+
+// GENERATOR ( Version 1.1 ) {
+
+    @mixin grid-clear() {
+
+        &:after {
+
+            content: "";
+            display: table;
+            clear: both;
+        }
+    }
+
+    @mixin grid-border-box() {
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    @mixin breakpoint( $breackpoint: 0 ) {
+
+        @media screen and ( min-width: #{$breackpoint}px ) {
+
+            // GAP {
+
+                @if $grid-use-gaps == yes {
+
+                    $i: $grid-gap-min;
+
+                    @while $i <= $grid-gap-max {
+
+                        .grid.gap-#{$breackpoint}-#{$i} {
+                            margin-left: (-$i / 2) * 1px;
+                            margin-right: (-$i / 2) * 1px;
+                        }
+                        .grid.gap-#{$breackpoint}-#{$i} {
+                            > * {
+                                padding-left: ($i / 2) * 1px;
+                                padding-right: ($i / 2) * 1px;
+                            }
+                        }
+
+                        $i:  $i + $grid-gap-step;
+                    }
+
+                }
+
+            // GAP }
+
+            // COLS {
+
+                @if $grid-use-cols == yes {
+
+                    $i: 1;
+
+                    @while $i <= $grid-cols {
+
+                        .col-#{$breackpoint}-#{$i} {
+
+                            width: 100% / $grid-cols * $i;
+                        }
+
+                        $i:  $i + 1;
+                    }
+
+                }
+
+            // }
+
+            // COLS PUSH {
+
+                @if $grid-use-cols-push == yes {
+
+                    $i: 1;
+
+                    @while $i <= $grid-cols {
+
+                        .push-#{$breackpoint}-#{$i} {
+
+                            margin-left: 100% / $grid-cols * $i;
+                        }
+
+                        $i:  $i + 1;
+                    }
+
+                }
+
+            // }
+
+            // COLS PULL {
+
+                @if $grid-use-cols-pull == yes {
+
+                    $i: 1;
+
+                    @while $i <= $grid-cols {
+
+                        .pull-#{$breackpoint}-#{$i} {
+
+                            margin-right: 100% / $grid-cols * $i;
+                        }
+
+                        $i:  $i + 1;
+                    }
+
+                }
+
+            // }
+
+            // PERC {
+
+                @if $grid-use-perc == yes {
+
+                    $i: $grid-perc-step;
+
+                    @while $i <= 100 {
+
+                        .perc-#{$breackpoint}-#{$i} {
+
+                            width: $i* 1%;
+                        }
+
+                        $i:  $i + $grid-perc-step;
+                    }
+
+                }
+
+            // }
+
+            // PERC PUSH {
+
+                @if $grid-use-perc-push == yes {
+
+                    $i: $grid-perc-step;
+
+                    @while $i <= 100 {
+
+                        .perc-#{$breackpoint}-push-#{$i} {
+
+                            margin-left: $i * 1%;
+                        }
+
+                        $i:  $i + $grid-perc-step;
+                    }
+
+                }
+
+            // }
+
+            // PERC PULL {
+
+                @if $grid-use-perc-pull == yes {
+
+                    $i: $grid-perc-step;
+
+                    @while $i <= 100 {
+
+                        .perc-#{$breackpoint}-pull-#{$i} {
+
+                            margin-right: $i * 1%;
+                        }
+
+                        $i:  $i + $grid-perc-step;
+                    }
+
+                }
+
+            // }
+
+            // TEXTALIGN INHERIT {
+
+                @if $grid-use-text-align-inherit == yes {
+
+                    .text-align-inherit-#{$breackpoint} {
+                        text-align: inherit !important;
+                    }
+                }
+
+            // }
+
+            // TOP BOTTOM {
+
+                @if $grid-use-top-bottom == yes {
+
+                    $i: $grid-top-bottom-min;
+
+                    @while $i <= $grid-top-bottom-max {
+
+                        .top-#{$breackpoint}-#{$i} {
+                            margin-top: $i * 1px;
+                        }
+                        .bottom-#{$breackpoint}-#{$i} {
+                            margin-bottom: $i * 1px;
+                        }
+
+                        $i:  $i + $grid-top-bottom-step;
+                    }
+
+                }
+
+            // }
+
+            // DISPLAY {
+
+                @if $grid-use-display == yes {
+
+                    .hide-#{$breackpoint} {
+                        display: none;
+                    }
+                    .show-#{$breackpoint} {
+                        display: inline-block;
+                    }
+
+                }
+
+            // }
+        }
+
+    }
+
+    .grid {
+        font-size: 0;
+        > * {
+            display: inline-block;
+            width: 100%;
+            vertical-align: top;
+            font-size: $col-default-font-size;
+        }
+        @include grid-clear();
+    }
+
+    .grid.colreverse {
+        direction: rtl;
+        > * {
+            direction: ltr;
+            text-align: left;
+        }
+    }
+
+    // BREAKPOINTS {
+
+        @if $grid-use-breackpoint-0 == yes {
+
+            @include breakpoint( 0 );
+        }
+
+        @if $grid-use-breackpoints == yes {
+
+            $breackpoint: $grid-breackpoint-min;
+
+            @while $breackpoint <= $grid-breackpoint-max {
+
+                @include breakpoint( $breackpoint );
+
+                $breackpoint: $breackpoint + $grid-breackpoint-step;
+            }
+
+        }
+
+    // }
+
+// GENERATOR }

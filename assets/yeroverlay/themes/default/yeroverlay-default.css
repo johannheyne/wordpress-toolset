@@ -1,0 +1,119 @@
+/* WRAP begin */
+
+	.yeroverlay-wrap {
+		z-index: 999;
+        background: rgba(0,0,0,0.5) url(media/loader.gif) no-repeat center center;
+	}
+
+/* WRAP end */
+
+/* BOX begin */
+
+	.yeroverlay-box {
+		background-color: white;
+		padding: 30px 40px;
+		margin: 0;
+		max-width: 960px - 40px - 40px;
+		
+        -moz-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+        -ms-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+        -o-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+	    box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+    }
+	
+	@media screen and ( min-width: 600px ) {
+	    
+	    .yeroverlay-box {
+    		margin: 10px;
+    	}
+	}
+	
+	.gt-mini .yeroverlay-box {
+		margin: 20px;
+	}
+	.gt-small .yeroverlay-box {
+		margin: 30px;
+	}
+	
+
+/* BOX end */
+
+/* CONTENT { */
+
+    .yeroverlay-content {
+        
+        min-width: 210px;
+    }
+
+/* CONTENT } */
+
+/* CLOSE begin */
+
+	.yeroverlay-close {
+		position: relative;
+		padding: 6px 10px;
+		background-color: rgba( 0, 0, 0, 0.1 );
+		position: absolute;
+		top: 14px;
+		right: 14px;
+		color: white;
+		cursor: pointer;
+		border-radius: 5px;
+	}
+	
+	.yeroverlay-close:before {
+		content: "close";
+		color: white;
+		font-size: 14px;
+		line-height: 1;
+	}
+	
+	/* GRAFIC CSS3 { */
+
+        .csstransforms3d .yeroverlay-close {
+            padding: 0;
+			width: 39px;
+			height: 39px;
+        }
+
+		.csstransforms3d .yeroverlay-close:before,
+		.csstransforms3d .yeroverlay-close:after {
+		    content: "";
+			display: block;
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			border: 0 solid transparent;
+			-webkit-transform: rotate(45deg);
+			-moz-transform: rotate(45deg);
+			-o-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+
+		}
+
+		.csstransforms3d .yeroverlay-close:before {
+			top: 12px;
+			left: 2px;
+			width: 14px;
+			border-top: 1px solid white;
+			border-right: 1px solid white;
+		}
+
+		.csstransforms3d .yeroverlay-close:after {
+			top: 12px;
+			left: 22px;
+			border-left: 1px solid white;
+			border-bottom: 1px solid white;
+		}
+
+	/* GRAFIC CSS3 } */
+	
+/* CLOSE end */
+
+/* SPINNER { */
+
+    
+/* SPINNER } */

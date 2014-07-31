@@ -1,0 +1,37 @@
+// YerCSSGrid
+
+// SETUP ( Version 1.1 ) {
+
+    $col-default-font-size: 16px; // in future "1rem" is the solution, read about http://caniuse.com/#search=rem
+    
+    $grid-use-breackpoint-0: yes;
+    $grid-use-breackpoints: yes;
+    $grid-breackpoint-step: 100;
+    $grid-breackpoint-min: 300;
+    $grid-breackpoint-max: 1000;
+
+    $grid-use-gaps: yes;
+    $grid-gap-min: 10;
+    $grid-gap-step: 10;
+    $grid-gap-max: 20;
+
+    $grid-use-cols: yes;
+    $grid-use-cols-push: yes;
+    $grid-use-cols-pull: yes;
+    $grid-cols: 12;
+
+    $grid-use-perc: yes;
+    $grid-use-perc-push: yes;
+    $grid-use-perc-pull: yes;
+    $grid-perc-step: 10;
+
+    $grid-use-text-align-inherit: yes;
+
+    $grid-use-top-bottom: yes;
+    $grid-top-bottom-step: 10;
+    $grid-top-bottom-min: 0;
+    $grid-top-bottom-max: 30;
+
+    $grid-use-display: yes;
+
+// SETUP }

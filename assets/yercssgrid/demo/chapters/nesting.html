@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>YerCSSGrid Demo - nesting</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		
+		<link rel="stylesheet" href="../../css/yercssgrid-preset.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/yercssgrid.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/demo.css" type="text/css" />
+		
+	</head>
+	<body>
+		
+		<h1 class="styletitle">YerCSSGrid</h1>
+		
+		<a class="btn-back" href="../">back</a>
+		
+		<div id="chapter">
+			
+			<h2 class="topline">nesting grids</h2>
+			<p>We can nest grids.</p>
+
+			<pre class="code"><code>&#060;div class="grid gap-0-20"&#062;
+&#060;div class="col-700-3"&#062;&#060;/div&#062;
+&#060;div class="col-700-9"&#062;
+
+&#060;div class="grid"&#062;
+&#060;div class="col-900-6"&#062;&#060;/div&#062;
+&#060;div class="col-900-6"&#062;&#060;/div&#062;
+&#060;/div&#062;
+
+&#060;/div&#062;
+&#060;/div&#062;</code></pre>
+
+			<div class="grid gap-0-20 content-border">
+
+				<div class="col-700-3">
+					<div class="stylebox">col-700-3</div>
+				</div>
+
+				<div class="col-700-9">
+
+					<div class="grid grid-border">
+						<div class="col-900-8">
+							<div class="stylebox">col-900-8</div>
+						</div>
+
+						<div class="col-900-4">
+							<div class="stylebox">col-900-4</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	
+</body>
+</html>
+

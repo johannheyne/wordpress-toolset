@@ -1,0 +1,508 @@
+/* yerform default theme styles */
+/* STYLING begin */
+/* FONT begin */
+/* FONT end */
+/* LAYOUT begin */
+/* LAYOUT end */
+/* FIELDSET begin */
+/* FIELDSET end */
+/* FIELDS begin */
+/* TEXTFIELD begin */
+/* TEXTFIELD end */
+/* TEXTAREA begin */
+/* TEXTAREA end */
+/* FIELDS end */
+/* LABELS begin */
+.yerform label:after {
+  content: ":";
+}
+/* LABELS end */
+/* INFOS begin */
+/* INFOS end */
+/* BUTTONS begin */
+/* BUTTONS end */
+/* RESPONSIVE begin */
+/* RESPONSIVE end */
+/* STYLING end */
+/* CORE begin */
+/* MIXINS begin */
+/* MIXINS end */
+/* DEVELOPER begin */
+/* DEVELOPER end */
+/* PRESETS & FIXES begin */
+.yerform * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.yerform input[type="submit"]::-moz-focus-inner {
+  border: 0;
+  margin-right: -3px;
+}
+/* RESET & FIXES end */
+/* MISC begin */
+.yerform {
+  max-width: 800px;
+}
+.yerform-invisible {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0;
+  overflow: hidden;
+}
+.yerform-displaynone {
+  display: none !important;
+}
+/* MISC end */
+/* MESSAGES begin */
+/* MESSAGES begin */
+.yerform-messages {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 18px;
+}
+.yerform-messages-error {
+  color: #ff0000;
+}
+/* MESSAGES end */
+/* FIELDMESSAGE begin */
+.yerform-field-message {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 18px;
+  padding-top: 3px;
+}
+.yerform-field-message-error {
+  color: #ff0000;
+}
+/* FIELDMESSAGE end */
+/* MESSAGES end */
+/* FIELDSET begin */
+.yerform-fieldset-wrap {
+  margin: 20px 0;
+}
+.yerform-fieldset {
+  border: none;
+  padding: 0;
+}
+.yerform-fieldset-legend {
+  font-family: Arial;
+  font-size: 18px;
+  color: #000000;
+  line-height: 21px;
+  padding-bottom: 16px;
+}
+/* FIELDSET end */
+/* ITEM begin */
+@media only screen and (min-width: 600px) {
+  .yerform-list-item-inline .yerform-label-table {
+    display: table;
+    width: 100%;
+  }
+  .yerform-list-item-inline .yerform-label-wrap {
+    display: table-cell;
+    vertical-align: top;
+  }
+  .yerform-list-item-inline .yerform-fields-wrap {
+    display: table-cell;
+  }
+}
+/* ITEM end */
+/* LIST begin */
+.yerform-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+  width: 100%;
+}
+.yerform-list-item {
+  margin-bottom: 16px;
+}
+@media only screen and (min-width: 600px) {
+  .yerform-list-item {
+    margin-bottom: 0;
+  }
+  .yerform-list-label-table > .yerform-list-item > * {
+    padding-bottom: 16px;
+  }
+  .yerform-list-label-table > .yerform-list-item > * {
+    padding-bottom: 16px;
+  }
+  .yerform-depht-1.yerform-list-label-table > * > .yerform-label-wrap {
+    min-width: 140px;
+    white-space: normal;
+  }
+}
+/* LIST end */
+/* GROUP begin */
+.yerform-list-item-group {
+  margin-bottom: 16px;
+}
+.yerform-group-label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+@media only screen and (min-width: 600px) {
+  .yerform-group-inline > .yerform-group-label {
+    width: 1px;
+    /*vertical-align: top;*/
+  }
+  .yerform-list > .yerform-list-item:last-child {
+    padding-bottom: 16px;
+  }
+  .yerform-list-table > .yerform-list-item:last-child,
+  .yerform-depht-2 .yerform-list-item:last-child {
+    padding-bottom: 0;
+  }
+  .yerform-list-item-group .yerform-list-item-group {
+    margin-bottom: 0;
+  }
+  .yerform-list-gap.yerform-list-inline {
+    margin-top: -16px;
+  }
+  .yerform-list-gap.yerform-list-inline > .yerform-list-item-group,
+  .yerform-list-gap.yerform-list-inline > .yerform-list-item {
+    margin-top: 16px;
+  }
+  /* GROUP INLINE begin */
+  .yerform-group-inline {
+    /*margin-bottom: 0;*/
+    vertical-align: top;
+  }
+  .yerform-group-inline > .yerform-list-item-group-inner {
+    display: table;
+    width: 100%;
+  }
+  .yerform-group-inline > .yerform-list-item-group-inner > .yerform-group-label {
+    display: table-cell;
+    font-weight: normal;
+  }
+  .yerform-group-inline > .yerform-list-item-group-inner > .yerform-fields-wrap {
+    display: table-cell;
+  }
+  .yerform-depht-1 > .yerform-list-item-inline > .yerform-list-item-group-inner > .yerform-group-label,
+  .yerform-depht-1 > .yerform-group-inline > .yerform-list-item-group-inner > .yerform-group-label {
+    min-width: 140px;
+  }
+  .yerform-group-label {
+    vertical-align: top;
+  }
+  /* GROUP INLINE end */
+  /* LISTITEMS TABLE begin */
+  .yerform-list-table {
+    display: table;
+    width: 100%;
+    /*margin-bottom: @yerform-list-gap;*/
+  }
+  .yerform-list-table > .yerform-list-item,
+  .yerform-list-table > .yerform-list-item-group {
+    display: table-cell;
+    padding-right: 30px;
+  }
+  .yerform-list-table > .yerform-list-item:last-child,
+  .yerform-list-table > .yerform-list-item-group:last-child {
+    padding-right: 0;
+  }
+  .yerform-list-table > .yerform-list-item.yerform-list-item-sized,
+  .yerform-list-table > .yerform-list-item-group.yerform-list-item-sized {
+    width: 1px;
+  }
+  .yerform-list-table > .yerform-list-item > .yerform-label-table > .yerform-label-wrap,
+  .yerform-list-table > .yerform-list-item-group > .yerform-label-table > .yerform-label-wrap {
+    width: 1px;
+  }
+  /* LISTITEMS TABLE end */
+  /* LISTITEMS INLINE begin */
+  .yerform-list-inline > .yerform-list-item,
+  .yerform-list-inline > .yerform-list-item-group {
+    display: inline-block;
+    padding-right: 30px;
+  }
+  .yerform-list-inline > .yerform-list-item:last-child,
+  .yerform-list-inline > .yerform-list-item-group:last-child {
+    padding-right: 0;
+  }
+  .yerform-list-inline > .yerform-list-item > .yerform-label-table > .yerform-label-wrap,
+  .yerform-list-inline > .yerform-list-item-group > .yerform-label-table > .yerform-label-wrap {
+    width: 0;
+  }
+  /* LISTITEMS INLINE end */
+}
+@media only screen and (min-width: 600px) {
+  .yerform-list-label-table {
+    display: table;
+  }
+  .yerform-list-label-table > * {
+    display: table-row;
+  }
+  .yerform-list-label-table > * > * {
+    display: table-cell;
+    vertical-align: top;
+  }
+}
+/* GROUP end */
+/* LABELS begin */
+.yerform label {
+  display: inline-block;
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 21px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #000000;
+}
+@media only screen and (min-width: 600px) {
+  .yerform-list-item.yerform-label-inline > * {
+    display: table;
+    width: 100%;
+  }
+  .yerform-list-item.yerform-label-inline > * > * {
+    display: table-cell;
+    vertical-align: top;
+  }
+  .yerform-list-label-table.yerform-depht-1 > * > .yerform-label-wrap,
+  .yerform-label-inline > .yerform-label-wrap {
+    padding-right: 30px;
+  }
+  .yerform-group-inline > .yerform-label-wrap,
+  .yerform-list-item-inline > .yerform-label-wrap,
+  .yerform-list-table > * > * > .yerform-label-wrap {
+    padding-right: 15px;
+    width: 1px;
+  }
+  .yerform-list-label-table > * > .yerform-label-wrap,
+  .yerform-list-item-inline > .yerform-label-wrap,
+  .yerform-group-inline > .yerform-label-wrap,
+  .yerform-list-label-table > * > .yerform-group-label,
+  .yerform-list-item-inline > .yerform-group-label,
+  .yerform-group-inline > .yerform-group-label {
+    text-align: right;
+  }
+  .yerform-depht-1 > * > .yerform-label-wrap,
+  .yerform-depht-1 > * > .yerform-group-label {
+    text-align: right;
+    padding-right: 30px;
+  }
+  .yerform-list-item-group > .yerform-group-label {
+    padding-bottom: 16px;
+  }
+}
+/* LABELS end */
+/* FIELDTABLE begin */
+.yerform-field-table {
+  display: table;
+  width: 100%;
+}
+.yerform-field-table > * {
+  display: table-cell;
+  vertical-align: top;
+}
+/* FIELDTABLE end */
+/* FIELDPRESUFIX begin */
+.yerform-field-prefix,
+.yerform-field-sufix {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 21px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #000000;
+  width: 1px;
+}
+.yerform-field-prefix {
+  padding-right: 10px;
+}
+.yerform-field-sufix {
+  padding-left: 10px;
+}
+/* FIELDPRESUFIX end */
+/* FIELDS begin */
+.yerform-field-after {
+  display: inline-block;
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 21px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}
+/* Text begin */
+.yerform input[type="text"] {
+  padding: 0 6px;
+  width: 100%;
+  height: 30px;
+  border: 1px solid #000000;
+  background: transparent;
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 30px;
+  color: #000000;
+}
+.yerform-list-item-error input[type="text"] {
+  border: 1px solid #ff0000;
+  background: #fff5f5;
+  color: #ff0000;
+}
+@media only screen and (min-width: 600px) {
+  .yerform-input-sized .yerform-field-cell {
+    /*width: 1px;*/
+  }
+  .yerform-input-sized .yerform-field-cell input[type="text"] {
+    width: auto;
+  }
+}
+/* Text end */
+/* TEXTAREA begin */
+.yerform textarea {
+  margin: 0;
+  width: 100%;
+  padding: 3px 6px;
+  border: 1px solid #000000;
+  background: transparent;
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 24px;
+  color: #000000;
+}
+.yerform-item-type-textarea .yerform-label-wrap,
+.yerform-item-type-textarea .yerform-group-label {
+  vertical-align: top;
+}
+.yerform-list-item-error textarea {
+  border: 1px solid #ff0000;
+  background: #fff5f5;
+  color: #ff0000;
+}
+/* TEXTAREA end */
+/* CHECKBOX begin */
+.yerform-item-type-checkbox .yerform-field {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 21px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.yerform-list-item-group .yerform-item-type-checkbox {
+  margin-bottom: 0;
+}
+.yerform-item-type-checkbox + .yerform-item-type-checkbox {
+  margin-top: 0;
+}
+/*
+            @media @yerform-breakpoint {
+
+                .yerform-item-type-checkbox + .yerform-item-type-checkbox {
+                    margin-top: 0;
+                }
+            }
+            /*
+            .yerform-list-block > .yerform-item-type-checkbox + .yerform-item-type-checkbox {
+                margin-top: @yerform-checkbox-vertical-gap;
+            }
+
+            .yerform-depht-1 {
+                > .yerform-item-type-checkbox + .yerform-item-type-checkbox {
+                    margin-top: @yerform-list-gap;
+                }
+            }
+            */
+/* CHECKBOX end */
+/* RADIOBOX begin */
+.yerform-item-type-radio {
+  vertical-align: top;
+}
+.yerform-item-type-radio > * > .yerform-fields-wrap {
+  vertical-align: middle;
+}
+.yerform-item-type-radio > * > .yerform-fields-wrap > * > .yerform-field {
+  vertical-align: middle;
+}
+.yerform-list-item-group .yerform-item-type-radio {
+  margin-bottom: 0;
+}
+.yerform-item-type-radio + .yerform-item-type-radio {
+  margin-top: 0;
+}
+@media only screen and (min-width: 600px) {
+  .yerform-item-type-radio + .yerform-item-type-radio {
+    margin-top: 0;
+  }
+}
+.yerform-list-block > .yerform-item-type-radio + .yerform-item-type-radio {
+  margin-top: 0;
+}
+.yerform-depht-1 > .yerform-item-type-radio + .yerform-item-type-radio {
+  margin-top: 16px;
+}
+/* RADIOBOX end */
+/* FIELDS end */
+/* INFO begin */
+.yerform-info-after {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 21px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+@media only screen and (min-width: 700px) {
+  .yerform-info-inline > * .yerform-infoafter-table,
+  .yerform-info-inline > * > * .yerform-infoafter-table {
+    display: table;
+    width: 100%;
+  }
+  .yerform-info-inline > * .yerform-infoafter-table > *,
+  .yerform-info-inline > * > * .yerform-infoafter-table > * {
+    display: table-cell;
+    vertical-align: top;
+  }
+  .yerform-info-inline > * .yerform-infoafter-table > .yerform-info-after,
+  .yerform-info-inline > * > * .yerform-infoafter-table > .yerform-info-after {
+    padding-left: 10px;
+  }
+  .yerform-info-sized > * .yerform-info-after,
+  .yerform-info-sized > * > * .yerform-info-after {
+    max-width: 200px;
+  }
+}
+/* INFO end */
+/* MESSAGES begin */
+/* MESSAGES begin */
+.yerform-messages {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 18px;
+}
+.yerform-messages-error {
+  color: #ff0000;
+}
+/* MESSAGES end */
+/* FIELDMESSAGE begin */
+.yerform-field-message {
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 18px;
+  padding-top: 3px;
+}
+.yerform-field-message-error {
+  color: #ff0000;
+}
+/* FIELDMESSAGE end */
+/* MESSAGES end */
+/* BUTTONS begin */
+.yerform-buttons {
+  display: table;
+  width: 100%;
+  margin-top: 0;
+}
+.yerform-reset,
+.yerform-submit {
+  display: table-cell;
+}
+.yerform-submit {
+  text-align: right;
+}
+/* BUTTONS end */
+/* CORE end */

@@ -6,5 +6,6 @@
 	$GLOBALS['toolset']['autoload_php_classes']['Tool_Single_CostumPost_Template'] = 'tools/tool_costumpost_templates/class.php';
 	$GLOBALS['toolset']['autoload_php_classes']['Textile'] = 'tools/tool_textile/textile-2.0.0/classTextile.php';
 	$GLOBALS['toolset']['autoload_php_classes']['Tool_Dashboard_Widget'] = 'tools/tool_dashboard_widget/class.php';
+	$GLOBALS['toolset']['autoload_php_classes']['YerForm'] = 'tools/assets/yerform/core/yerform.php';
 	
 ?>

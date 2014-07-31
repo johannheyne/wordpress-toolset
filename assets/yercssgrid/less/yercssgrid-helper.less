@@ -1,0 +1,42 @@
+// Helper ( Version 1 ) {
+
+    .grid-border( @selector, @border-size, @border-style, @border-color) {
+
+        /*
+        .grid-border {
+            border-bottom: 1px solid #999;
+            border-left: 1px solid #999;
+            border-top: none;
+            border-right: none;
+            margin-bottom: 10px;
+        }
+        .grid-border > * {
+            border-right: 1px solid #999;
+            border-top: 1px solid #999;
+            border-bottom: 1px solid #999;
+            margin-bottom: -1px;
+        }
+        .grid-border > * > * {
+            margin-bottom: 0;
+        }
+        */
+
+        .@{selector} {
+            border-bottom: @border-size @border-style @border-color;
+            border-left: @border-size @border-style @border-color;
+            border-top: none;
+            border-right: none;
+            margin-bottom: 10px;
+        }
+        .@{selector} > * {
+            border-right: @border-size @border-style @border-color;
+            border-top: @border-size @border-style @border-color;
+            border-bottom: @border-size @border-style @border-color;
+            margin-bottom: ~"-@{border-size}";
+        }
+        .@{selector} > * > * {
+            margin-bottom: 0;
+        }
+    }
+
+// Helper }

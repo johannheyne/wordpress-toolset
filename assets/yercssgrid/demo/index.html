@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>YerCSSGrid Demo</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		
+		<link rel="stylesheet" href="../css/yercssgrid-preset.css" type="text/css" />
+		<link rel="stylesheet" href="../css/yercssgrid.css" type="text/css" />
+		<link rel="stylesheet" href="../css/demo.css" type="text/css" />
+		
+	</head>
+	<body>
+		
+		<div class="wrap">
+			
+			<h1 class="styletitle">YerCSSGrid</h1>
+			<p class="h1-subline nowrap">supports SASS and LESS</p>
+			<p class="center nowrap">Version 2 <a class="center" href="#changelog">Changelog</a></p>
+			<a href="https://github.com/johannheyne/yercssgrid">YerCSSGrid on GitHub</a>
+			
+			<section>
+
+				<h2 class="topline">about</h2>
+				<p>I personel use this Grid to get things done on my clients projects. But it is still an evolution of understanding how you manage the complexity of responsive-designed websites with basic css features. There will be bether solutions in future.</p>
+				
+				<p>You can define the number of columns, different gap-widths and breakpoints. All together this parameters are combined in the following principle: .{classtype}-{breackpoint}-{value}. There are some more options you can find in the settings and at this demo page.</p>
+				
+			</section>
+			
+			<section>
+
+				<h2 class="topline">conventions</h2>
+				<p>Because of the technic to layout the gaps with padding and negative margins, we need in some cases overflow hidden on the parent element to prevent the negativ horizontal margins of the grid protruding about the body and causes horizontal scrolling. And we need border-box as box-sizing on all elements.</p>
+
+				<div class="gridtec">
+					<div class="gridtec-body"><div class="gridtec-label">&lt;body&gt;</div></div>
+					<div class="gridtec-grid"><div class="gridtec-label">.grid .gap-0-40</div></div>
+					<div class="gridtec-col-1">
+						<div class="gridtec-label">.col-0-6</div>
+						<div class="gridtec-cont"><div class="gridtec-label">content</div></div>
+					</div>
+					<div class="gridtec-col-2">
+						<div class="gridtec-label">.col-0-6</div>
+						<div class="gridtec-cont"><div class="gridtec-label">content</div></div>
+					</div>
+				</div>
+
+				<pre class="code"><code>.grid_wrap { overflow: hidden; }
+* { box-sizing: border-box; }</code></pre>
+
+			</section>
+			
+			<section>
+			
+				<h2 class="topline">simple columns</h2>
+				
+				<p>In the following example we have just two columns starting at browser-width of 500 pixel.</p>
+				
+				<pre class="code"><code>&lt;div class="grid"&gt;
+  &lt;div class="col-500-6"&gt;&lt;/div&gt;
+  &lt;div class="col-500-6"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				
+				<div class="grid grid-border">
+
+					<div class="col-500-6">
+						<div class="stylebox">col-500-6</div>
+					</div>
+
+					<div class="col-500-6">
+						<div class="stylebox">col-500-6</div>
+					</div>
+
+				</div>
+
+			</section>
+			
+			<section>
+				
+				<h2 class="topline">columns with gap</h2>
+				
+				<p>In the following example we have a gap of 20 pixel starting on browser-width of 0. The cols starting at browser-width of 500 pixel.</p>
+				
+				<pre class="code"><code>&lt;div class="grid gap-0-20"&gt;
+  &lt;div class="col-500-6"&gt;&lt;/div&gt;
+  &lt;div class="col-500-6"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				
+				<div class="grid gap-0-20 content-border">
+
+					<div class="col-500-6">
+						<div class="stylebox">col-500-6</div>
+					</div>
+
+					<div class="col-500-6">
+						<div class="stylebox">col-500-6</div>
+					</div>
+
+				</div>
+
+			</section>
+			
+			<section>
+			
+				<h2 class="topline">columns depending on breakpoints</h2>
+				
+				<p>In the following example the columns behavior changes at two breakpoints, 500 and 800 pixels.</p>
+				
+				<pre class="code"><code>&lt;div class="grid"&gt;
+  &lt;div class="col-500-6 col-800-3"&gt;&lt;/div&gt;
+  &lt;div class="col-500-6 col-800-3"&gt;&lt;/div&gt;
+  &lt;div class="col-500-6 col-800-3"&gt;&lt;/div&gt;
+  &lt;div class="col-500-6 col-800-3"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				
+				<div class="grid grid-border">
+
+					<div class="col-500-6 col-800-3">
+						<div class="stylebox">col-500-6 col-800-3</div>
+					</div>
+
+					<div class="col-500-6 col-800-3">
+						<div class="stylebox">col-500-6 col-800-3</div>
+					</div>
+
+					<div class="col-500-6 col-800-3">
+						<div class="stylebox">col-500-6 col-800-3</div>
+					</div>
+
+					<div class="col-500-6 col-800-3">
+						<div class="stylebox">col-500-6 col-800-3</div>
+					</div>
+
+				</div>
+
+			</section>
+			
+			<section>
+			
+				<h2 class="topline">show and hide depending on breakpoints</h2>
+				
+				<p>In the following example the second column change display on breakpoint 800.</p>
+				
+				<pre class="code"><code>&lt;div class="grid"&gt;
+  &lt;div class="col-0-12 col-800-6"&gt;&lt;/div&gt;
+  &lt;div class="col-800-6 hide-0 show-800"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				
+				<div class="grid grid-border">
+
+					<div class="col-0-12 col-800-6">
+						<div class="stylebox">col-0-12 col-800-6</div>
+					</div>
+
+					<div class="col-800-6 hide-0 show-800">
+						<div class="stylebox">col-800-6 hide-0 show-800</div>
+					</div>
+
+				</div>
+
+			</section>
+			
+			<section>
+
+				<h2 class="topline">pushing columns</h2>
+				
+				<p>We center a single column depending on two breakpoints ( 800, 1000 ) Each breakpoint has a different column width and push behavior.</p>
+				
+				<pre class="code"><code>&lt;div class="grid"&gt;
+  &lt;div class="col-800-10 push-800-1 col-1000-8 push-1000-2"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				
+				<div class="grid content-border">
+
+					<div class="col-800-10 push-800-1 col-1000-8 push-1000-2">
+						<div class="stylebox">col-800-10 push-800-1 col-1000-8 push-1000-2</div>
+					</div>
+
+				</div>
+
+			</section>
+			
+			<section>
+
+				<h2 class="topline">nesting grids</h2>
+				
+				<p>We can nest grids.</p>
+
+				<pre class="code"><code>&lt;div class="grid gap-0-20"&gt;
+  &lt;div class="col-700-3"&gt;&lt;/div&gt;
+  &lt;div class="col-700-9"&gt;
+  
+    &lt;div class="grid"&gt;
+      &lt;div class="col-900-6"&gt;&lt;/div&gt;
+      &lt;div class="col-900-6"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+				<div class="grid gap-0-20 content-border">
+
+					<div class="col-700-3">
+						<div class="stylebox">col-700-3</div>
+					</div>
+
+					<div class="col-700-9">
+
+						<div class="grid grid-border">
+							<div class="col-900-8">
+								<div class="stylebox">col-900-8</div>
+							</div>
+
+							<div class="col-900-4">
+								<div class="stylebox">col-900-4</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</section>
+			
+			<section>
+				
+				<h2 class="topline">reversing columns order</h2>
+				
+				<p>We can reversing the displaying order of colums.</p>
+				
+				<pre class="code"><code>&lt;div class="grid gap-0-20 colreverse"&gt;
+  &lt;div class="col-0-4"&gt;1&lt;/div&gt;
+  &lt;div class="col-0-4"&gt;2&lt;/div&gt;
+  &lt;div class="col-0-4"&gt;3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				
+				<div class="grid gap-0-20 colreverse content-border">
+					<div class="col-0-4">
+						<div class="stylebox">1</div>
+					</div>
+
+					<div class="col-0-4">
+						<div class="stylebox">2</div>
+					</div>
+
+					<div class="col-0-4">
+						<div class="stylebox">3</div>
+					</div>
+				</div>
+
+			</section>
+			
+			<section>
+				
+				<h2 class="topline">text-align inherit</h2>
+				
+				<p>On very small screens it is sometimes usefull to have centered content. With "text-align-inherit-{breakpoint}" we can get the centered text-alignment of by setting text-align to inherit on a breakpoint.</p>
+				
+				<pre class="code">&#060;div class="grid gap-0-20"&#062;
+  &#060;div style="text-align: center;" class="col-600-6 text-align-inherit-600"&#062;1&#060;/div&#062;
+  &#060;div style="text-align: center;" class="col-600-6 text-align-inherit-600"&#062;2&#060;/div&#062;
+&#060;/div&#062;</code></pre>
+				
+				<div class="grid gap-0-20 content-border">
+					<div class="col-600-6">
+						<div class="stylebox text-align-inherit-600">1</div>
+					</div>
+
+					<div class="col-600-6">
+						<div class="stylebox text-align-inherit-600">2</div>
+					</div>
+				</div>
+
+			</section>
+			
+			<section>
+				
+				<h2 class="topline">top & bottom</h2>
+				
+				<p>When columns need to change their margin-top or margin-bottom at breakpoints.</p>
+				
+				<pre class="code">&#060;div class="grid gap-0-20"&#062;
+  &#060;div class="col-600-6"&#062;1&#060;/div&#062;
+  &#060;div class="col-600-6 top-0-30 top-600-0"&#062;2&#060;/div&#062;
+&#060;/div&#062;</code></pre>
+				
+				<div class="grid gap-0-20 content-border">
+					<div class="col-600-6">
+						<div class="stylebox">1</div>
+					</div>
+
+					<div class="col-600-6 top-0-30 top-600-0">
+						<div class="stylebox">2</div>
+					</div>
+				</div>
+
+			</section>
+			
+			<section>
+				
+				<h2 class="topline">setup</h2>
+				
+				<p>In the file /sass/yercssgrid.scss we have some variables to setup the grid.</p>
+				
+				<h3>$col-default-font-size</h3>
+				<p>The columns of the grid are generated by setting the columns elements property display to inline-block. This causes unwanted spaces between the columns which can be prevented by setting the property font-size of the parent element to 0. Therefore, the font size must be adjusted again within the column elements.</p>
+				<pre class="code"><code>$col-default-font-size: 16px;</code></pre>
+				
+				<h3>$grid-use-cols $grid-use-perc</h3>
+				<p>The grid is made of columns with percentage width values. Therefore it is possible to use grid-cols and/or strait percentage values to define the width of a col. These variables define, what should be possible.</p>
+				<pre class="code"><code>$grid-use-cols: yes;
+$grid-use-perc: no;</code></pre>
+
+				<h3>$grid-cols</h3>
+				<p>Defined the number of grid columns.</p>
+				<pre class="code"><code>$grid-cols: 12;</code></pre>
+				
+				<p>All variables:</p>
+				
+				<pre class="code"><code>$grid-use-breackpoint-0: yes;
+
+$col-default-font-size: 16px;
+
+$grid-use-breackpoints: yes;
+$grid-breackpoint-step: 100;
+$grid-breackpoint-min: 300;
+$grid-breackpoint-max: 1000;
+
+$grid-use-gaps: yes;
+$grid-gap-step: 10;
+$grid-gap-max: 20;
+
+$grid-use-cols: yes;
+$grid-use-cols-push: yes;
+$grid-use-cols-pull: yes;
+$grid-cols: 12;
+
+$grid-use-perc: no;
+$grid-use-perc-push: no;
+$grid-use-perc-pull: no;
+$grid-perc-step: 10;
+
+$grid-use-text-align-inherit: yes;
+
+$grid-use-top-bottom: yes;
+$grid-top-bottom-step: 10;
+$grid-top-bottom-min: 0;
+$grid-top-bottom-max: 30;
+
+$grid-use-display: yes;
+
+				</code></pre>
+				
+			</section>
+			
+			<section>
+				
+				<h2 class="topline">browser support</h2>
+				
+				<p>In the latest Safari for Mac, its rendering engine has a little trouble with long decimal places like 33,33333333%. This means that sometimes the rightmost column is of one pixel distance to the right edge. There is still nothing easy  I can do to fix this without stupid conventions.</p>
+				
+			</section>
+			
+			<section id="changelog">
+				
+				<h2 class="topline">Changelog</h2>
+				
+				<h3>Version 2 <time>2014.02.20</time></h3>
+				<p  style="color: red">This changes may need your attention on how to include the yercssgrid files.</p>
+				
+				<ol>
+					<li>The setup file yercssgrid-setup.scss is no longer imported into the main yercssgrid.scss file. The yercssgrid.scss code is outsourced in yercssgrid-generator.scss. You now can import your own setup file before the import of the generator file.
+					</li>
+				</ol>
+					
+				<h3>Version 1.1 <time>2014.02.04</time></h3>
+				
+				<ol>
+					<li>Added breakpointbased hide and show support
+						<pre class="code"><code>$grid-use-display: yes;
+class="col-0-12 hide-0 show-500"</code></pre>
+					</li>
+					<li>Added font-size setup for columns
+						<pre class="code"><code>$col-default-font-size: 16px;</code></pre>
+					</li>
+				</ol>
+				
+				<h3>Version 1 <time>2014.02.01</time></h3>
+				
+				<ol>
+					<li>Added SASS support</li>
+				</ol>
+				
+				<h3>Version 0.2 <time>2013.11.25</time></h3>
+				
+				<ol>
+					<li>In version 0.1, the cols were layouted with float. Here, however, there were problems with the layout of cols over several rows with different cols-heights. Therefore, the cols are now layouted using inline-block.</li>
+				</ol>
+			</section>
+			
+		</div>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js?ver=latest"></script>
+		<script>
+			
+			jQuery.noConflict();
+			jQuery(document).ready(function(){
+				
+				
+
+			});
+			
+		</script>
+	</body>
+</html>

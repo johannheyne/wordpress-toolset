@@ -1,0 +1,66 @@
+/* CORE do not change begin */
+
+	/* WRAP begin */
+
+		.yeroverlay-wrap {
+			display: none;
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			text-align: center;
+			z-index: 999;
+			cursor: pointer;
+			white-space: nowrap;
+		}
+
+		.yeroverlay-wrap:before {
+			content: '';
+			display: inline-block;
+			height: 96%;
+			width: 0;
+			vertical-align: middle;
+			margin-right: 0;
+		}
+
+	/* WRAP end */
+	
+	/* BOX begin */
+
+		.yeroverlay-box {
+			display: inline-block;
+			vertical-align: middle;
+			text-align: left;
+			cursor: default;
+			white-space: normal;
+		}
+
+	/* BOX end */
+	
+	/* CONTENT begin */
+
+		.yeroverlay-content {
+			overflow-y: auto;
+		}
+
+	/* CONTENT end */
+	
+	/* CLOSE begin */
+
+		.yeroverlay-close {
+		    padding: 4px 10px;
+		    background-color: grey;
+		    position: absolute;
+		    top: 14px;
+		    right: 14px;
+		    color: white;
+			cursor: pointer;
+		}
+		.yeroverlay-close:before {
+		    content: "close";
+		}
+
+	/* CLOSE end */
+	
+/* CORE do not change end */
