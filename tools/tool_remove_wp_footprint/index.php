@@ -17,6 +17,7 @@
 			echo '<style type="text/css">
 				h1 {
 					margin-bottom: 20px !important;
+					line-height: 1.1;
 				}
 				h1 a { 
 					display: none !important;
