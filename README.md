@@ -50,9 +50,9 @@ The tool() function
 
 ### Config
 
-There is a single global variable, that holds any kind of global data to drive tools. This variable must be set in the active theme in the function.php or bether in the /config/config.php file.
+There is a single global variable, that holds any kind of global data to drive tools of the toolset. This variable must be set in the active theme in the function.php or bether in the /config/config.php file.
 ````php
-$GLOBALS['toolset'] = array( /* tools configurations goes here */ );
+$GLOBALS['toolset'] = array( /* toolset configuration options goes here */ );
 ````
 Lets walk true the basic configuration options.
 ````php
@@ -60,7 +60,8 @@ $GLOBALS['toolset'] = array(
 
 	// THEME VERSION {
 
-		// the theme version is used to force reloading all cached files of a theme via ````example_changed_file.js?v=0.1```` to make changes happen in a browser.
+		// The theme version is used to force reloading all cached files of a theme
+		// via example_changed_file.js?v=0.1 to make changes happen in a browser.
 		
 		'theme-version' => '0.1',
 
