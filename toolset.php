@@ -10,7 +10,7 @@
 	Plugin Name:       Toolset
 	Plugin URI:        https://github.com/johannheyne/wordpress-toolset
 	Description:       Provides functionality fore use in themes.
-	Version:           0.0.32
+	Version:           0.0.33
 	Author:            Johann Heyne
 	Author URI:        www.johannheyne.de
 	Text Domain:       toolset
@@ -27,28 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // UPDATER {
 
-	/*include_once( 'updater.php' );
-
-	if ( is_admin() ) { // note the use of is_admin() to double check that this is happening in the admin
-	    $config = array(
-	        'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
-	        'proper_folder_name' => 'toolset', // this is the name of the folder your plugin lives in
-	        'api_url' => 'https://api.github.com/repos/johannheyne/wordpress-toolset', // the github API url of your github repo
-	        'raw_url' => 'https://raw.githubusercontent.com/johannheyne/wordpress-toolset/master/', // the github raw url of your github repo
-	        'github_url' => 'https://github.com/johannheyne/wordpress-toolset', // the github url of your github repo
-	        'zip_url' => 'https://github.com/johannheyne/wordpress-toolset/zipball/master', // the zip url of the github repo
-	        'sslverify' => false, // wether WP should check the validity of the SSL cert when getting an update, see https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/2 and https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/4 for details
-	        'requires' => '3.5', // which version of WordPress does your plugin require?
-	        'tested' => '3.9.2', // which version of WordPress is your plugin tested up to?
-	        'readme' => 'README.md', // which file to use as the readme for the version number
-	        'access_token' => '', // Access private repositories by authorizing under Appearance > Github Updates when this example plugin is installed
-	    );
-	    new WP_GitHub_Updater( $config );
-	}*/
-
-// }
-
-// UPDATER 2 {
+	// Source: http://code.tutsplus.com/tutorials/distributing-your-plugins-in-github-with-automatic-updates--wp-34817
 
 	require_once( 'BFIGitHubPluginUploader.php' );
 
