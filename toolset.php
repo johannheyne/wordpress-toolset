@@ -1,23 +1,24 @@
 <?php
-/**
- * @package   WordPressToolset
- * @author    Your Name mail@johannheyne
- * @license   GPL-2.0+
- * @link      https://github.com/johannheyne/wordpress-toolset
- * @copyright 2014 Johann Heyne
- *
- * @wordpress-plugin
- * Plugin Name:       Toolset
- * Plugin URI:        https://github.com/johannheyne/wordpress-toolset
- * Description:       Provides functionality fore use in themes.
- * Version:           0.0.28
- * Author:            Johann Heyne
- * Author URI:        www.johannheyne.de
- * Text Domain:       toolset
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * GitHub Plugin URI: https://github.com/johannheyne/toolset
- */
+/*
+	@package   WordPressToolset
+	@author    Your Name mail@johannheyne
+	@license   GPL-2.0+
+	@link      https://github.com/johannheyne/wordpress-toolset
+	@copyright 2014 Johann Heyne
+	
+	@wordpress-plugin
+	Plugin Name:       Toolset
+	Plugin URI:        https://github.com/johannheyne/wordpress-toolset
+	Description:       Provides functionality fore use in themes.
+	Version:           0.0.29
+	Author:            Johann Heyne
+	Author URI:        www.johannheyne.de
+	Text Domain:       toolset
+	License:           GPL-2.0+
+	License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+	GitHub Plugin URI: https://github.com/johannheyne/wordpress-toolset
+	GitHub Branch:    master
+*/
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
