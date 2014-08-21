@@ -10,7 +10,7 @@
 	Plugin Name:       Toolset
 	Plugin URI:        https://github.com/johannheyne/wordpress-toolset
 	Description:       Provides functionality fore use in themes.
-	Version:           0.0.29
+	Version:           0.0.30
 	Author:            Johann Heyne
 	Author URI:        www.johannheyne.de
 	Text Domain:       toolset
@@ -26,8 +26,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // UPDATER {
-
-	include_once( 'updater.php' );
+	
+	/*include_once( 'updater.php' );
 
 	if ( is_admin() ) { // note the use of is_admin() to double check that this is happening in the admin
 	    $config = array(
@@ -44,6 +44,15 @@ if ( ! defined( 'WPINC' ) ) {
 	        'access_token' => '', // Access private repositories by authorizing under Appearance > Github Updates when this example plugin is installed
 	    );
 	    new WP_GitHub_Updater( $config );
+	}*/
+
+// }
+
+// UPDATER 2 {
+
+	require_once( 'BFIGitHubPluginUploader.php' );
+	if ( is_admin() ) {
+	    new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset" );
 	}
 
 // }
