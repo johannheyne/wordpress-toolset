@@ -10,7 +10,7 @@
  * Plugin Name:       Toolset
  * Plugin URI:        https://github.com/johannheyne/wordpress-toolset
  * Description:       Provides functionality fore use in themes.
- * Version:           0.0.27
+ * Version:           0.0.28
  * Author:            Johann Heyne
  * Author URI:        www.johannheyne.de
  * Text Domain:       toolset
@@ -37,8 +37,8 @@ if ( ! defined( 'WPINC' ) ) {
 	        'github_url' => 'https://github.com/johannheyne/wordpress-toolset', // the github url of your github repo
 	        'zip_url' => 'https://github.com/johannheyne/wordpress-toolset/zipball/master', // the zip url of the github repo
 	        'sslverify' => false, // wether WP should check the validity of the SSL cert when getting an update, see https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/2 and https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/4 for details
-	        'requires' => '3.0', // which version of WordPress does your plugin require?
-	        'tested' => '3.9.1', // which version of WordPress is your plugin tested up to?
+	        'requires' => '3.5', // which version of WordPress does your plugin require?
+	        'tested' => '3.9.2', // which version of WordPress is your plugin tested up to?
 	        'readme' => 'README.md', // which file to use as the readme for the version number
 	        'access_token' => '', // Access private repositories by authorizing under Appearance > Github Updates when this example plugin is installed
 	    );
