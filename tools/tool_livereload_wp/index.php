@@ -2,15 +2,15 @@
 
 	// LIVERELOAD WORDPRESS ( 1 ) {
 	
-	function livereload() {
-		touch( get_template_directory() . '/style.css');
+	function tool_livereload_wp() {
+		touch( get_template_directory() . '/index.php');
 	}
 	
-	add_action( 'save_post', 'livereload' );
-	add_action( 'updated_option', 'livereload' );
-	add_action( 'wp_update_nav_menu', 'livereload' );
-	add_action( 'edit_attachment', 'livereload' );
-	add_action( 'edit_category', 'livereload' );
-	add_action( 'check_admin_referer', 'livereload' );
+	add_action( 'save_post', 'tool_livereload_wp' );
+	add_action( 'updated_option', 'tool_livereload_wp' );
+	add_action( 'wp_update_nav_menu', 'tool_livereload_wp' );
+	add_action( 'edit_attachment', 'tool_livereload_wp' );
+	add_action( 'edit_category', 'tool_livereload_wp' );
+	add_action( 'check_admin_referer', 'tool_livereload_wp' );
 
 ?>
