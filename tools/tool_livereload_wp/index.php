@@ -2,15 +2,19 @@
 
 	// LIVERELOAD WORDPRESS ( 1 ) {
 	
-	function tool_livereload_wp() {
-		touch( get_template_directory() . '/index.php');
-	}
+		/* Ever wanted to refresh your Wordpress page when you hit save or update? 
+		Just use livereload http://livereload.com
+		Using the PHP touch function in the following actions makes Livereload
+		think the index.php file has changed.
+		*/
+		
+		function tool_livereload_wp() {
+			touch( get_template_directory() . '/index.php');
+		}
 	
-	add_action( 'save_post', 'tool_livereload_wp' );
-	add_action( 'updated_option', 'tool_livereload_wp' );
-	add_action( 'wp_update_nav_menu', 'tool_livereload_wp' );
-	add_action( 'edit_attachment', 'tool_livereload_wp' );
-	add_action( 'edit_category', 'tool_livereload_wp' );
-	add_action( 'check_admin_referer', 'tool_livereload_wp' );
+		add_action( 'updated_option', 'tool_livereload_wp' );
+		add_action( 'check_admin_referer', 'tool_livereload_wp' );
 
+	// }
+	
 ?>
