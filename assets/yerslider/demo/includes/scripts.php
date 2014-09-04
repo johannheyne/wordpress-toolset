@@ -2,8 +2,7 @@
 <script src="<?php echo $path; ?>../dependencies/jquery.js"></script>
 
 <?php
-	
-	if ( stristr( $_SERVER['SERVER_ADDR'], '127.0.0.1' ) ) {
+	if ( stristr( $_SERVER['SERVER_ADDR'], '127.0.0.1' ) OR stristr( $_SERVER['SERVER_ADDR'], '::1' ) ) {
 	
 		$yersliderfolderabsolutepath = '/';
 	}

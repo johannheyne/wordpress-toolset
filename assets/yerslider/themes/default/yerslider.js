@@ -41,7 +41,7 @@
 						p: p.obj,
 						d: t.obj,
 					} );
-					
+
 					t.param = t.helper.setDefaultParam( {
 						p: p.param,
 						d: t.param,
@@ -67,8 +67,8 @@
 
 							t.stat.isresizing = true;
 
-							t.obj.thumbsmask.unbind( 'mouseenter' );
-							t.obj.thumbsmask.unbind( 'mousemove' );
+							t.obj.thumbsviewport.unbind( 'mouseenter' );
+							t.obj.thumbsviewport.unbind( 'mousemove' );
 
 							t.obj.thumbsitems.css( 'left', '0px' );
 							t.process();
@@ -98,7 +98,7 @@
 
 					// ON MOUSE OVER ANIMATION {
 
-						t.obj.thumbsmask.on( 'mouseenter', function ( e ) {
+						t.obj.thumbsviewport.on( 'mouseenter', function ( e ) {
 
 								t.set_itemspos( e );
 
@@ -117,7 +117,7 @@
 
 					// THUMBS FOLLOW MOUSE {
 
-						jQuery( t.obj.thumbsmask ).mousemove( function( e ) {
+						t.obj.thumbsviewport.on( 'mousemove', function( e ) {
 
 							if ( ! t.stat.is_animating ) {
 

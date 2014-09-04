@@ -36,7 +36,6 @@
 			<div class="yerslider-viewport">
     			<div class="yerslider-mask">
 				    <ul class="yerslider-slider">
-
 <?php
 
 	$path = array( 'landscape', 'portrait' );
@@ -56,16 +55,52 @@
 	}
 
 ?>
-						<!--<li class="yerslider-slide" data-thumb-template-key="2" data-thumb-text="Text">
-    						<div class="yerslider-slide-inner demo-typo">
-    							<p>Qui<br/>Ipsum<br/>Lingua<br/>Celtae<br/>Nostra<br/>Galli<br/>Antur</p>
-    						</div>
-    					</li>-->
     				</ul>
     			</div>
 			</div>
 		</div>
-
+		
+		<code>
+<pre>var myslider = new YerSlider();
+myslider.init({
+	sliderid: '.mysliderclass',
+	slidegap: 10,
+	slidegroupresp: {
+		0: 1,
+		450: 2,
+		800: 3,
+		1000: 4,
+		1200: 5,
+	},
+	loop: 'infinite',
+	loopswipe: 'rollback',
+	animationspeed: 2000,
+	bullets: false,
+	autoplay: true,
+	autoplayinterval: 2000,
+	autoplaydelaystart: 0,
+	autoplaystoponhover: true,
+	thumbs: true,
+	thumbshideiflessthan: 2,
+	thumbstemplates: {
+		'1': {
+			'html': '&#060;img src="{{thumb-img-src}}"&#062;',
+			'class': 'thumb-template-1'
+		}
+	},
+	thumbsclickable: true,
+	thumbsready: function( p ) {
+		var yersliderthumbs = new YerSliderThumbs();
+		yersliderthumbs.init({
+			obj: p.obj,
+			param: p.param
+		});
+	},
+	swipe: true,
+	swipeanimationspeed: 300,
+});</pre>
+		</code>
+		
 		<script type="text/javascript">
 
 		  jQuery.noConflict();
@@ -77,7 +112,7 @@
 					slidegap: 10,
 					slidegroupresp: {
 						0: 1,
-						420: 2,
+						450: 2,
 						800: 3,
 						1000: 4,
 						1200: 5,
