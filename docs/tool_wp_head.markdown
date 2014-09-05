@@ -1,4 +1,4 @@
-[back to overview](../README.markdown#Documentation)
+[back to overview](../README.markdown#documentation)
 
 WordPress Head
 ===============
@@ -48,4 +48,4 @@ $GLOBALS['toolset'] = array(
 );
 `````
 
-[back to overview](../README.markdown#Documentation)
+[back to overview](../README.markdown#documentation)
