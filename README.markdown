@@ -133,7 +133,7 @@ $GLOBALS['toolset'] = array(
 Documentation
 ---------------
 
-### initial functionality
+### Initial Functionality
 
 ````php
 $GLOBALS['toolset'] = array(
