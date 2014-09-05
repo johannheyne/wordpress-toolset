@@ -1,7 +1,7 @@
 WordPress Toolset Plugin
 ===============
 
-This Plugin provides tools to configure wordpress and tools to get things done.
+This Plugin provides tools to configure WordPress and tools to get things done.
 Its about NOT separately managing all the same code on every WordPress theme.
 
 Strategie
