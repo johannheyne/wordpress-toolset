@@ -1,43 +1,80 @@
 <?php
 
-	// influencing output off wp_head() ( Version 1 ) {
+	// influencing output off wp_head() ( Version 2 ) {
 
 		function fu_init_wp_head() {
 
 			$defaults = array(
-				'feed_links_extra' => false,
-				'feed_links' => false,
-				'rsd_link' => false,
-				'wlwmanifest_link' => false,
-				'index_rel_link' => false,
-				'wp_shortlink_wp_head' => false,
-				'adjacent_posts_rel_link_wp_head' => false,
-				'parent_post_rel_link' => false,
-				'start_post_rel_link' => false,
-				'adjacent_posts_rel_link' => false,
-				'wp_generator' => false,
+				'feed_links_extra' => array(
+					'show' => false,
+					'priority' => 3,
+				),
+				'feed_links' => array(
+					'show' => false,
+					'priority' => 2,
+				),
+				'rsd_link' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'wlwmanifest_link' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'index_rel_link' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'wp_shortlink_wp_head' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'adjacent_posts_rel_link_wp_head' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'parent_post_rel_link' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'start_post_rel_link' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'adjacent_posts_rel_link' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'wp_generator' => array(
+					'show' => false,
+					'priority' => 10,
+				),
+				'rel_canonical' => array(
+					'show' => true,
+					'priority' => 10,
+				),
 			);
 
 			if ( is_array( $GLOBALS['toolset']['inits']['tool_wp_head'] ) ) {
 
-				$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['wp_head'] );
+				$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['tool_wp_head'] );
 			}
 			else {
 
 				$p = $defaults;
 			}
 
-			foreach ( $p as $key => $value ) {
+			foreach ( $p as $key => $item ) {
 
-				if ( $value === false ) {
+				if ( $item['show'] === false ) {
 
-					remove_action( 'wp_head', $key );
+					remove_action( 'wp_head', $key, $item['priority'] );
 				}
 			}
 
 		}
 
-		add_action( 'init', 'fu_init_wp_head' );
+		add_action( 'after_setup_theme', 'fu_init_wp_head' );
 
 	// }
 
