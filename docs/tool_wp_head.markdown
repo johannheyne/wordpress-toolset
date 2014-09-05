@@ -1,7 +1,7 @@
+[back to overview](../README.markdown)
+
 WordPress Head
 ===============
-
-[back to overview](../README.markdown)
 
 ```php
 $GLOBALS['toolset'] = array(
