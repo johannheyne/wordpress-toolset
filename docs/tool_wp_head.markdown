@@ -3,7 +3,7 @@
 WordPress Head
 ===============
 
-This influences the output of the WordPress wp_head() function.
+This influences the output of the WordPress ````wp_head()```` function.
 
 ```php
 $GLOBALS['toolset'] = array(
