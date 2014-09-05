@@ -129,3 +129,18 @@ $GLOBALS['toolset'] = array(
 	// }
 );
 ````
+
+Documentation
+---------------
+
+### initial functionality
+
+````php
+$GLOBALS['toolset'] = array(
+	'inits' => array(
+		// initial functionalities configurations
+	)
+);
+````
+
+* [WordPress Head](docs/tool_wp_head.markdown)
