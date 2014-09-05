@@ -1,3 +1,8 @@
+WordPress Head
+===============
+
+[back to overview](README.markdown)
+
 ```php
 $GLOBALS['toolset'] = array(
     'inits' => array(
@@ -41,3 +46,6 @@ $GLOBALS['toolset'] = array(
         ),
     ),
 );
+`````
+
+[back to overview](README.markdown)
