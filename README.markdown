@@ -33,7 +33,7 @@ Structure
 		config/
 			config.php
 	
-### Using a tool functionality
+### Using a Tool Functionality
 
 ````php
 tool( array(
@@ -43,7 +43,7 @@ tool( array(
 	),
 ) );
 ````
-The tool() function
+The tool() Function
 	- detects the real tool function name and its sourcefile by <code>plugins/toolset/tools/index.php</code> 
 	- checks wheter the function exists and autoload the sourcefile of the function from <code>plugins/toolset/tools/…</code> 
 	- runs the function and returns a result.
@@ -51,10 +51,13 @@ The tool() function
 ### Config
 
 There is a single global variable, that holds any kind of global data to drive tools of the toolset. This variable must be set in the active theme in the function.php or bether in the /config/config.php file.
+
 ````php
 $GLOBALS['toolset'] = array( /* toolset configuration options goes here */ );
 ````
+
 Lets walk true the basic configuration options.
+
 ````php
 $GLOBALS['toolset'] = array(
 
