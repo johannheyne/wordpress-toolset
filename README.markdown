@@ -1,8 +1,8 @@
-wordpress-toolset
+WordPress Toolset Plugin
 ===============
 
-A toolset and coding strategie for wordpress.
-Its about using one ultimate toolset for any site.
+This Plugin provides tools to configure wordpress and tools to get things done.
+Its about NOT separately managing all the same code on every WordPress theme.
 
 Strategie
 ---------------
