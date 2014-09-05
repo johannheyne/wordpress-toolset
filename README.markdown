@@ -22,12 +22,12 @@ Structure
 	plugins/
 		toolset/
 			assets/
-			tools
+			tools/
 				index.php
 				{toolname}/
-				index.php
-				styles.css
-				scripts.js
+					index.php
+					styles.css
+					scripts.js
 		 	toolset.php
 	themes/
 		config/
