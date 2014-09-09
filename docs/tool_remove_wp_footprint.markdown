@@ -19,7 +19,7 @@ $GLOBALS['toolset'] = array(
 		'tool_remove_wp_footprint' => array(
 			'remove_admin_bar_logo' => true,
 			'remove_loginpage_logo' => true,
-			'show_title_on_loginpage' => true, // bolean ( true = blogname ), string
+			'show_title_on_loginpage' => true, // boolean ( true = blogname ), string
 			'remove_footer_text' => true,
 		),
 	),
