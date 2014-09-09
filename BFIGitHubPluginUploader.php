@@ -89,10 +89,29 @@ class BFIGitHubPluginUpdater {
 
         return $transient;
     }
+	
+	public function infoWindowStyles() {
 
+		echo '<style type="text/css">
+			#plugin-information pre { 
+				display: block !important;
+				background: #f7f7f7 !important;
+				overflow: auto !important;
+			}
+			#plugin-information pre code { 
+				display: block !important;
+				background: none !important;
+				//min-width: 1000px !important;
+			}
+		</style>';
+	}
+	
     // Push in plugin version information to display in the details lightbox
     public function setPluginInfo( $false, $action, $response ) {
-        // Get plugin & GitHub release information
+        
+		$this->infoWindowStyles();
+		
+		// Get plugin & GitHub release information
         $this->initPluginData();
         $this->getRepoReleaseInfo();
 
@@ -126,29 +145,30 @@ class BFIGitHubPluginUpdater {
 
 		// DESCRIPTION CONTENT {
 
-			$description_content = false;
+			$description_content[ 0 ] = '# Changes Since Last Plugin Update';
 			
 			if ( is_array( $this->githubAPIResults ) and count( $this->githubAPIResults ) > 0 ) {
 			    
 				foreach ( $this->githubAPIResults as $key => $item ) {
 			    	
-					//error_log( print_r( $item->tag_name . ' > ' . $response->version, true) );
-					
 					if ( $item->tag_name > $this->pluginData['Version'] ) {
-					    
-						$description_content[ $item->tag_name ] = '# Release v' . $item->tag_name . "\n\n";
-						$description_content[ $item->tag_name ] .= $item->body;
+						$description_content[ $item->tag_name ] = '## Release v' . $item->tag_name . "\n\n";
+						//$description_content[ $item->tag_name ] .= date( "Y.m.d H.i.s", strtotime( $item->published_at ) ) . "\n\n";
+					    $description_content[ $item->tag_name ] .= $item->body;
 					}
 				}
 			}
 			
+			$description_content[ 9999999999 ] = '<a href="' . $response->homepage . '/releases" target="_blank">You can also go to the releases and their changes on GitHub.</a> ';
+			
 			if ( $description_content ) {
 				
-				$description_content = implode( $description_content, '<hr />' );
+				$description_content = implode( $description_content, "\n\n" );
 			}
 			
 		// }
         // Create tabs in the lightbox
+
         $response->sections = array(
             'description' => $this->pluginData["Description"],
             'changelog' => class_exists( "Parsedown" )
