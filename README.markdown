@@ -147,3 +147,4 @@ $GLOBALS['toolset'] = array(
 ````
 
 * [WordPress Head](docs/tool_wp_head.markdown)
+* [WordPress Remove Footprint](docs/tool_remove_wp_footprint.markdown)
