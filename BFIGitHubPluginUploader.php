@@ -8,6 +8,7 @@ class BFIGitHubPluginUpdater {
     private $repo; // GitHub repo name
     private $pluginFile; // __FILE__ of our plugin
     private $githubAPIResult; // holds data from GitHub
+    private $githubAPIResults; // holds data from GitHub
     private $accessToken; // GitHub private repo token
 
     function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $accessToken = '' ) {
@@ -45,12 +46,13 @@ class BFIGitHubPluginUpdater {
         // Get the results
         $this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url ) );
         if ( !empty( $this->githubAPIResult ) ) {
-            $this->githubAPIResult = @json_decode( $this->githubAPIResult );
+            $this->githubAPIResults = @json_decode( $this->githubAPIResult );
         }
-
+		
         // Use only the latest release
-        if ( is_array( $this->githubAPIResult ) ) {
-            $this->githubAPIResult = $this->githubAPIResult[0];
+        if ( is_array( $this->githubAPIResults ) ) {
+            $this->githubAPIResult = $this->githubAPIResults[0];
+        
         }
     }
 
@@ -122,12 +124,36 @@ class BFIGitHubPluginUpdater {
         // We're going to parse the GitHub markdown release notes, include the parser
         require_once( plugin_dir_path( __FILE__ ) . "Parsedown.php" );
 
+		// DESCRIPTION CONTENT {
+
+			$description_content = false;
+			
+			if ( is_array( $this->githubAPIResults ) and count( $this->githubAPIResults ) > 0 ) {
+			    
+				foreach ( $this->githubAPIResults as $key => $item ) {
+			    	
+					//error_log( print_r( $item->tag_name . ' > ' . $response->version, true) );
+					
+					if ( $item->tag_name > $this->pluginData['Version'] ) {
+					    
+						$description_content[ $item->tag_name ] = '# Release v' . $item->tag_name . "\n\n";
+						$description_content[ $item->tag_name ] .= $item->body;
+					}
+				}
+			}
+			
+			if ( $description_content ) {
+				
+				$description_content = implode( $description_content, '<hr />' );
+			}
+			
+		// }
         // Create tabs in the lightbox
         $response->sections = array(
             'description' => $this->pluginData["Description"],
             'changelog' => class_exists( "Parsedown" )
-                ? Parsedown::instance()->parse( $this->githubAPIResult->body )
-                : $this->githubAPIResult->body
+                ? Parsedown::instance()->parse( $description_content )
+                : $description_content
         );
 
         // Gets the required version of WP if available
