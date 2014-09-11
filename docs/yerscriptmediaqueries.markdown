@@ -1,4 +1,4 @@
-[back to overview](../README.markdown#initial-functionality)
+[back to overview](../README.markdown#assets)
 
 YerScript MediaQueries
 ===============
@@ -24,4 +24,4 @@ mediaqueries.init({
 });
 `````
 
-[back to overview](../README.markdown#initial-functionality)
+[back to overview](../README.markdown#assets)
