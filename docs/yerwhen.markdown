@@ -22,10 +22,25 @@ YerWhen({
 
 	then: function () {
 
-		// do something
+		// do something on conditions check succsess
+	},
+	
+	timeout: function () {
+
+		// do something on conditions check timeout
+	},
+	
+	param: {
+		timeout: 60000, // number in milliseconds
+		interval: 100, // number in milliseconds
 	},
 
 });
 ````
+
+`YerWhen.param:timeout` defines the time in millisecond after the conditions check ends and the `YerWhen.timeout` function is executed.
+
+`YerWhen.param:interval` defines the time in millisecond between the conditions checks.
+
 
 [back to overview](../README.markdown#assets)

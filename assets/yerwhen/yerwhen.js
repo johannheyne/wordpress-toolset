@@ -1,4 +1,4 @@
-// YerWhen Version 1
+// YerWhen Version 2
 
 	/*
 		USAGE
@@ -20,7 +20,17 @@
 
 			then: function () {
 
-				// do something
+				// do something on conditions check succsess
+			},
+
+			timeout: function () {
+
+				// do something on conditions check timeout
+			},
+
+			param: {
+				timeout: 60000, // number in milliseconds
+				interval: 100, // number in milliseconds
 			},
 
 		});
@@ -30,11 +40,12 @@
 	function YerWhen( param ) {
 
 		var p = {
-			when: false,
-			then: false,
-			timeout: false,
+			when: false, // function
+			then: false, // function
+			ontimeout: false, // function
 			param: {
-				timeout: 10
+				timeout: 60000, // number in milliseconds
+				interval: 100, // number in milliseconds
 			}
 		};
 
@@ -63,7 +74,7 @@
 
 			}
 
-			if ( ( i / 10 ) === p.param.timeout ) {
+			if ( ( i * p.param.interval ) === p.param.timeout ) {
 
 				window.clearInterval( interval );
 
@@ -73,6 +84,6 @@
 				}
 			}
 
-		}, 100 );
+		}, p.param.interval );
 
 	};
