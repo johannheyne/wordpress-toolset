@@ -1,12 +1,12 @@
 /*
   parallax - a basic jQuery plugin for parallax effects
 	by Johann Heyne (@johannheyne)
-	
+
 	Dual licensed under MIT and GPL.
 */
 
 jQuery.fn.parallax = function( options ) {
-    
+
     var defaults = {
         startFromBottom: 0,
         yDist: 0,
@@ -18,45 +18,55 @@ jQuery.fn.parallax = function( options ) {
 
     var settings = jQuery.extend( {}, defaults, options );
 
-    return this.each(function() {
+	function setCSS( p ) {
 
-        var tick = 0,
-        valStart = settings.valStart,
-        valEnd = settings.valEnd, 
-        valRange = valEnd - valStart,
-        valCurr = 0,
-        objParent = jQuery(this).parent(),
-        objObject = jQuery(this),
-        startFromBottom = settings.startFromBottom,
-        yDist = settings.yDist,
-        property = settings.property,
-        propertySufix = settings.propertySufix,
-        windowInnerHeight = jQuery(window).innerHeight();
-        
-        jQuery(window).bind('scroll', function() {
-            
-            var objOffset = objParent.offset(),
-            valRange = valEnd - valStart,
-            yStart = objOffset.top + startFromBottom,
-            yCurr = window.pageYOffset + windowInnerHeight;
+	    var objOffset = p.objParent.offset(),
+        valRange = p.valEnd - p.valStart,
+        yStart = objOffset.top + p.startFromBottom,
+        yCurr = window.pageYOffset + p.windowInnerHeight;
 
-            if ( yCurr >= yStart && yCurr <= yStart + yDist ) {
-                
-                tick = yCurr - yStart;
-                valCurr = valStart + (valRange / yDist) * tick;
-            }
+        if ( p.yDist !== 0 && yCurr >= yStart && yCurr <= yStart + p.yDist ) {
 
-            else if ( yCurr > yStart ) {
+            p.tick = yCurr - yStart;
+			p.valCurr = Number( p.valStart ) + ( ( valRange / Number( p.yDist ) ) * p.tick );
+        }
 
-                valCurr = valEnd;
-            }
+        else if ( yCurr > yStart ) {
 
-            else if ( yCurr < yStart ) {
+            p.valCurr = p.valEnd;
+        }
 
-                valCurr = valStart;
-            }
-            
-            objObject.css( property, valCurr + propertySufix );
+        else if ( yCurr < yStart ) {
+
+            p.valCurr = p.valStart;
+        }
+
+        p.objObject.css( p.property, p.valCurr + p.propertySufix );
+	};
+
+    return this.each( function() {
+
+        var that = {
+			tick: 0,
+	        valStart: settings.valStart,
+	        valEnd: settings.valEnd, 
+	        valRange: settings.valEnd - settings.valStart,
+	        valCurr: 0,
+	        objParent: jQuery(this).parent(),
+	        objObject: jQuery(this),
+	        startFromBottom: settings.startFromBottom,
+	        yDist: settings.yDist,
+	        property: settings.property,
+	        propertySufix: settings.propertySufix,
+	        windowInnerHeight: jQuery(window).innerHeight(),
+
+		};
+
+		setCSS( that );
+
+        jQuery(window).bind( 'scroll', function() {
+
+            setCSS( that );
         });
     });
 };
