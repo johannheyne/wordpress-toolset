@@ -153,5 +153,6 @@ $GLOBALS['toolset'] = array(
 
 * [YerScriptMediaQueries](docs/yerscriptmediaqueries.markdown)
 * [YerParallax](docs/yerparallax.markdown)
+* [YerWhen](docs/yerwhen.markdown)
 
 
