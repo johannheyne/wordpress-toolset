@@ -14,9 +14,12 @@ jQuery('.element').parallax({
   propertySufix: 'px',
   valStart: -400,
   valEnd: 0,
+  beforeClass: false, // string
+  whileClass: false, // string
+  afterClass: false, // string
 });
 ````
 
-This plugin cant bring parallax effects to mobile touch devices.
+This plugin cant bring parallax effects to iOS touch devices while scrolling.
 
 [back to overview](../README.markdown#assets)
