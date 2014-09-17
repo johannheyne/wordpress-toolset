@@ -3,7 +3,7 @@
 YerRespFontSize
 ===========
 
-Set a fontsize by data attribut that behaves linear to the changes of the elmentes width. The fontsize of `data-rfz="60"` is relative to fontsize of `60` pixels on `960` pixel element width.
+Scales fontsize depending on element width. Set a reference fontsize by data attribut that behaves linear to the changes of the elmentes width. The fontsize of `data-rfz="60"` is relative to fontsize of `60` pixels on `960` pixel element width.
 
 ````html
 <h1 data-rfz="60">Headline</h1>
