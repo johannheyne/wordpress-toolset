@@ -10,12 +10,12 @@ Scales fontsize depending on element width. Set a reference fontsize by data att
 ````
 
 ````javascript
-var repfontsize = new YerRespFontSize();
-repfontsize.init({
+var respfontsize = new YerRespFontSize();
+respfontsize.init({
 	'data_key': 'rfs',
 	'blockwidth': 960, // reference element width for the fontsize
 	'fontsize_min': 16,
-	'resize_timeout': 250,
+	'resize_timeout': 250
 });
 ````
 
