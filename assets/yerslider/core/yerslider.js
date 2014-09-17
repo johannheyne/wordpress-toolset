@@ -242,6 +242,7 @@ function YerSlider() {
 						jQuery.getScript( 'https://www.youtube.com/iframe_api', function() {
 
 							t.stat.dependencies_loaded++;
+							yerslider.youtubeloaded = true;
 						} );
 					}
 					else {
@@ -308,8 +309,6 @@ function YerSlider() {
 
 	t.init_workflow = function () {
 
-		t.init_loadyoutubeiframeapi();
-
 		t.init_animation();
 
 		t.init_isios();
@@ -372,17 +371,6 @@ function YerSlider() {
 				});
 		}
 
-	};
-
-	t.init_loadyoutubeiframeapi = function () {
-
-		if ( t.param.autoloadyoutubeiframeapi && !yerslider.youtubeloaded ) {
-
-			jQuery.getScript("http://www.youtube.com/iframe_api", function( /* data, textStatus, jqxhr*/ ) {
-
-				yerslider.youtubeloaded = true;
-			});
-		}
 	};
 
 	t.init_getdefaultparam = function ( p ) {

@@ -26,7 +26,7 @@
 				YerSlider is designed <strong>for developpers</strong>, <strong>high responsive</strong> and potentially <strong>can slide anything</strong>.</p>
 			<p class="alert">This page is casually under construction.</p>
             
-            <a class="download_btn" href="https://github.com/johannheyne/yerslider/archive/master.zip" target="_self"  title="">Download <span class="version">Version 1.6.0</span></a>
+            <a class="download_btn" href="https://github.com/johannheyne/yerslider/releases/latest/" target="_self"  title="">Download <span class="version">Latest Version</span></a>
             
             
 		</div>
@@ -532,93 +532,7 @@ myslider.init({
 			<h2 id="changelog">Changelog</h2>
 		</div>
 
-		<ul class="changelog">
-			<li>Version 1.6.0 <span class="date">2014-07-24</span>
-				<ul>
-					<li>New images loaded setup, improved images loaded.</li>
-				</ul>
-			</li>
-			<li>Version 1.5.5 <span class="date">2014-07-24</span>
-				<ul>
-					<li>Add IPv6 equivalent "::1" of the IPv4 "127.0.0.1".<br />
-					If your are using the YerSliderGlobals variable to adapt YerSlider options for different enviroments, you may upgrade the local enviroment detection as decribed in the chapter "Adapting Options For Different Enviroments" of the readme.markdown.</li>
-				</ul>
-			</li>
-			<li>Version 1.5.4 <span class="date">2014-07-24</span>
-                <ul>
-                	<li>FIX missing slides on autoplaycontinuously on touch devices.</li>
-                </ul>
-            </li>
-			<li>Version 1.5.3 <span class="date">2014-07-24</span>
-                <ul>
-                	<li>FIX parameter autoplaycontinuouslyspeed calculation.</li>
-                </ul>
-            </li>
-			<li>Version 1.5.2 <span class="date">2014-07-23</span>
-                <ul>
-                	<li>FIX Removed using indexOf because it is not supported by older IE´s.</li>
-                </ul>
-            </li>
-			<li>Version 1.5.1 <span class="date">2014-07-23</span>
-                <ul>
-                	<li>FIX Changed object key name 'class' to 'cssclass' in the thumbstemplates setup object because class is a reserved keyword in older IE´s.</li>
-                </ul>
-            </li>
-			<li>Version 1.5.0 <span class="date">2014-06-23</span>
-                <ul>
-                	<li>NEW Detachings, take some slide content and put it elsewhere.</li>
-                </ul>
-            </li>
-			<li>Version 1.4.4 <span class="date">2014-05-27</span>
-                <ul>
-                	<li>The YerSliderGlobals object can adapt options for different enviroments.</li>
-                </ul>
-            </li>
-			<li>Version 1.4.3 <span class="date">2014-05-26</span>
-                <ul>
-                	<li>FIX autoload</li>
-                </ul>
-            </li>
-			<li>Version 1.4.2 <span class="date">2014-05-26</span>
-                <ul>
-                	<li>New option slidingstep</li>
-                </ul>
-            </li>
-			<li>Version 1.4.1 <span class="date">2014-05-23</span>
-                <ul>
-                	<li>Autoload of dependencies</li>
-                </ul>
-            </li>
-			<li>Version 1.4.0 <span class="date">2014-05-21</span>
-                <ul>
-                	<li>Basic support for Images (are images loaded).</li>
-                	<li>Image Demo</li>
-                </ul>
-            </li>
-		    <li>Version 1.3.1 <span class="date">2014-05-16</span>
-                <ul>
-                    <li>Viewport<br/>There is a new html element, that wraps the slidermask element. The navigation elements were previously located physicaly below the slider. Now it is possible to position navigation elements inside and outside the slider viewport.</li>
-                </ul>
-            </li>
-            <li>Version 1.2.0 <span class="date">2014-05-15</span>
-                <ul>
-                    <li>Thumbs</li>
-                </ul>
-            </li>
-		    <li>Version 1.1.3 <span class="date">2014-04-30</span>
-                <ul>
-                    <li>Autoplay now stops at end when loop is none.</li>
-                    <li>New parameter "autoplaydelaystart".</li>
-                    <li>Autoplay now inits after slider finished fading in.</li>
-                    <li>Autoplay stops now when mouse enter the sliders wrap element.</li>
-                </ul>
-            </li>
-            <li>Version 1.1.0 <span class="date">2014-04-27</span>
-                <ul>
-                    <li>Support for rollback looping added.</li>
-                </ul>
-            </li>
-		</ul>
+		<a href="https://github.com/johannheyne/yerslider/releases/">All Releases on GitHub…</a>
 		
 	</body>
 </html>
