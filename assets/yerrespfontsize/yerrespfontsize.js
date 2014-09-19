@@ -30,10 +30,24 @@ function YerRespFontSize() {
 				blockwidth = t.set.blockwidth,
 				fontsize_min = t.set.fontsize_min;
 			
-			if ( typeof data.w === 'undefined' ) {
-			    
-				data.w = 'inner'; // inner, padding, border, margin
-			}
+			// DEFAULTS {
+			
+				if ( typeof data.w === 'undefined' ) {
+
+					data.w = 'inner'; // inner, padding, border, margin
+				}
+
+				if ( typeof data.fsmin === 'undefined' ) {
+
+					data.fdm = 0;
+				}
+
+				if ( typeof data.fsmax === 'undefined' ) {
+
+					data.fdm = 99999999;
+				}
+			
+			// }
 			
 			if ( data.w === 'inner' ) {
 			
@@ -43,6 +57,7 @@ function YerRespFontSize() {
 			if ( data.w === 'padding' ) {
 			
 			    var obj_width = obj.innerWidth();
+			
 			}
 			
 			if ( data.w === 'border' ) {
@@ -59,10 +74,24 @@ function YerRespFontSize() {
 
 			var fontsize_px = Math.round( fontsize * factor );
 
-			if ( fontsize_px < fontsize_min ) {
+			// FONTSIZE MIN MAX {
 
-			  fontsize_px = fontsize_min;
-			}
+				if ( fontsize_px < fontsize_min ) {
+
+				  fontsize_px = fontsize_min;
+				}
+
+				if ( fontsize_px < data.fsmin ) {
+
+				  fontsize_px = data.fsmin;
+				}
+
+				if ( fontsize_px > data.fsmax ) {
+
+				  fontsize_px = data.fsmax;
+				}
+
+			// }
 
 			obj.css({
 			  'font-size': fontsize_px + 'px'
