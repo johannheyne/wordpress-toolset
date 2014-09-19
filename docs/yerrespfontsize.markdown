@@ -3,10 +3,10 @@
 YerRespFontSize
 ===========
 
-Scales fontsize depending on element width. Set a reference fontsize by data attribut that behaves linear to the changes of the elments width. The fontsize of `data-rfz="60"` is relative to fontsize of `60` pixels on `960` pixel element width.
+Scales fontsize depending on element width. Set a reference fontsize by data attribut that behaves linear to the changes of the elments measured width. The fontsize `"fs":"60"` is relative to fontsize of `60` pixels on `960` pixel element width. The `"w":"margin"` defines the messurement of the elements with which can be `"inner"` width of the element or expand over `"padding"` or `"border"` or `"margin"`.
 
 ````html
-<h1 data-rfz="60">Headline</h1>
+<h1 data-rfz='{"fs":"60","w":"margin"}'>Headline</h1>
 ````
 
 ````javascript

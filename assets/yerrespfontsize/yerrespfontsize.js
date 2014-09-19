@@ -24,11 +24,36 @@ function YerRespFontSize() {
 
 			var factor = 1,
 				obj = jQuery( this ),
-				obj_width = obj.width(),
+				obj_width = 0,
 				data = obj.data( t.set.data_key ),
-				fontsize = data,
+				fontsize = data.fs,
 				blockwidth = t.set.blockwidth,
 				fontsize_min = t.set.fontsize_min;
+			
+			if ( typeof data.w === 'undefined' ) {
+			    
+				data.w = 'inner'; // inner, padding, border, margin
+			}
+			
+			if ( data.w === 'inner' ) {
+			
+			    var obj_width = obj.width();
+			}
+			
+			if ( data.w === 'padding' ) {
+			
+			    var obj_width = obj.innerWidth();
+			}
+			
+			if ( data.w === 'border' ) {
+			
+			    var obj_width = obj.outherWidth();
+			}
+			
+			if ( data.w === 'margin' ) {
+			
+			    var obj_width = obj.outherWidth( true );
+			}
 
 			factor = obj_width / blockwidth;
 
