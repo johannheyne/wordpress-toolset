@@ -3199,32 +3199,8 @@ function YerSlider() {
 
 		setDefaultParam: function ( p ) {
 
-			if ( typeof p === 'undefined' ) {
-				p = {};
-			}
-
-			if ( typeof p.p === 'undefined' ) {
-				p.p = {};
-			}
-
-			if ( typeof p.d === 'undefined' ) {
-				p.d = {};
-			}
-
-			var r = p.p;
-
-			for( var i in p.d ) {
-
-				if ( typeof p.d[ i ] !== 'undefined' && typeof r[ i ] !== typeof p.d[ i ] ) {
-					r[ i ] = p.d[ i ];
-				}
-				else {
-
-					if ( typeof p.d[ i ] !== 'undefined' && t.helper.getLength( r[ i ] ) !== t.helper.getLength( p.d[ i ] ) ) {
-						r[ i ] = t.helper.setDefaultParam({ p: r[ i ], d: p.d[ i ] });
-					}
-				}
-			}
+			var r = jQuery.extend( p.d, p.p );
+			
 
 			return r;
 		},
