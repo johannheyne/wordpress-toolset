@@ -5,6 +5,12 @@
 		// DEFAULTS {
 
 			$defaults = array(
+				'rules' => array(
+					'{sitetitle}' => true,
+					'{pagetitle}' => true,
+				),
+				'delimiter' => ' ',
+				'pagetitle_on_hompage' => false
 			);
 
 			$p = array_replace_recursive( $defaults, $p );
@@ -16,17 +22,46 @@
 			'title_custom_page' => false,
 		);
 
-		$v['title'] = get_bloginfo( 'name' ) . ' ' . get_the_title();
+		// RULES {
 
-		if ( function_exists( 'get_field' ) ) {
+			foreach ( $p['rules'] as $key => $value ) {
 
-			$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+				if ( $key === '{sitetitle}' && $value ) {
 
-			if ( $v['title_custom_page'] ) {
+					$v['title'] .= get_bloginfo( 'name' );
+					$v['title'] .= $p['delimiter'];
+				}
 
-				$v['title'] = $v['title_custom_page'];
+				if ( $key === '{pagetitle}' && $value ) {
+
+					if ( ! $p['pagetitle_on_hompage'] && get_the_ID() == get_option('page_on_front' ) ) {
+
+					}
+					else {
+
+						$v['title'] .= get_the_title();
+						$v['title'] .= $p['delimiter'];
+					}
+				}
 			}
-		}
+
+			$v['title'] = trim( $v['title'], $p['delimiter'] );
+
+		// }
+
+		// CUSTOM {
+
+			if ( function_exists( 'get_field' ) ) {
+
+				$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+
+				if ( $v['title_custom_page'] ) {
+
+					$v['title'] = $v['title_custom_page'];
+				}
+			}
+
+		// }
 
 		echo '<title>' . $v['title'] . '</title>' . "\n";
 
