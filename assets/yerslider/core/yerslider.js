@@ -2721,12 +2721,13 @@ function YerSlider() {
 					if ( t.stat.currentslideindex >= t.stat.slidecount - t.stat.slidegroup ) {
 
 						t.stat.currentslideindex = t.stat.slidecount - t.stat.slidegroup;
+
+						if ( t.param.autoplay ) {
+
+							t.autoplayclear();
+						}
 					}
 
-					if ( t.param.autoplay ) {
-
-						t.autoplayclear();
-					}
 				}
 
 				if ( t.stat.loop === 'rollback' ) {
@@ -3199,7 +3200,7 @@ function YerSlider() {
 
 		setDefaultParam: function ( p ) {
 
-			var r = jQuery.extend( p.d, p.p );
+			var r = jQuery.extend( true, p.d, p.p );
 			
 
 			return r;
