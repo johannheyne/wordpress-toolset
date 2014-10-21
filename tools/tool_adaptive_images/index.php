@@ -1,6 +1,6 @@
 <?php
 
-	// IMAGE SIZE ( Version 3 ) {
+	// IMAGE SIZE ( Version 4 ) {
 
 		function remove_image_sizes( $sizes) {
 			// unset( $sizes['thumbnail']);
@@ -296,7 +296,7 @@
 		function set_editor_imagesizes() {
 
 			foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
-			
+
 				add_image_size( $size, $item['width'], $item['height'], $item['crop'] );
 			}
 		}
@@ -305,10 +305,10 @@
 		function the_image_size_names( $sizes ) {
 
 			// removing media-sizes from select-input for inserting into the editor
-			unset( $sizes['thumbnail'] );
-			unset( $sizes['medium'] );
-			unset( $sizes['large'] );
-			unset( $sizes['full'] );
+			//unset( $sizes['thumbnail'] );
+			//unset( $sizes['medium'] );
+			//unset( $sizes['large'] );
+			//unset( $sizes['full'] );
 
 			// adding relevant media-sizes to the select-input for inserting into the editor
 
@@ -316,7 +316,7 @@
 
 				$posttype = get_post_type( $_REQUEST['post'] );
 
-				foreach ( get_editor_imagesizes() as $size => $item ) {
+				foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
 
 					$check = true;
 
@@ -327,16 +327,16 @@
 					if ( $check ) $sizes[$size] = $item['label'];
 				}
 			}
-
+			
 			return $sizes;
 		}
 		
 		// add Adaptive-Image parameter size to image-url and zoom to href-url
-		function my_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $size, $alt ) {
+		function my_image_send_to_editor( $html, $id, $caption = false, $title = false, $align = false, $url = false, $size = false, $alt = false ) {
 
 			$src = wp_get_attachment_image_src( $id, 'adaptive-image-base', false );
 
-			foreach ( get_editor_imagesizes() as $size => $item ) {
+			foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
 
 				if ( strpos( $html, 'size-' . $size ) !== false ) {
 
