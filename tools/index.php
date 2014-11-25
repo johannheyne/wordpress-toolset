@@ -265,7 +265,15 @@
 					),
 
 				// }
-			
+
+				// tool_javascript_recomended {
+
+				    'tool_javascript_recomended' => array(
+						'dir' => 'tool_javascript_recomended',
+						'funame' => 'tool_javascript_recomended',
+					),
+
+				// }
 			)
 		);
 

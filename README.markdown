@@ -150,6 +150,10 @@ $GLOBALS['toolset'] = array(
 * [WordPress Meta Title](docs/tool_meta_title.markdown)
 * [WordPress Remove Footprint](docs/tool_remove_wp_footprint.markdown)
 
+### Tools
+
+* [tool_javascript_recomended](tools/tool_javascript_recomended/readme.markdown)
+
 ### Assets
 
 * [YerScriptMediaQueries](docs/yerscriptmediaqueries.markdown)
