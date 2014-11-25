@@ -145,17 +145,19 @@ class BFIGitHubPluginUpdater {
 
 		// DESCRIPTION CONTENT {
 
-			$description_content[ 0 ] = '#Changes Since Last Plugin Update' . "\n\n";
+			$description_content[ 0 ] = '#Changes Since Last Plugin Update';
+			$description_content[ 1 ] = 'This is the only chance to see what happend since the last plugin update. So please read the changes carefully and adapt your theme-code, before you update the plugin.';
 
 			if ( is_array( $this->githubAPIResults ) and count( $this->githubAPIResults ) > 0 ) {
 
 				foreach ( $this->githubAPIResults as $key => $item ) {
 
 					if ( $item->tag_name > $this->pluginData['Version'] ) {
-						$description_content[ $item->tag_name ] = '## Release v' . $item->tag_name . "\n\n";
+						$description_content[ $item->tag_name ] = '......................................................................................................................' . "\n\n";
+						$description_content[ $item->tag_name ] .= '[Release v' . $item->tag_name . '](https://github.com/johannheyne/wordpress-toolset/releases/tag/' . $item->tag_name . ')' . "\n\n";
 						//$description_content[ $item->tag_name ] .= date( "Y.m.d H.i.s", strtotime( $item->published_at ) ) . "\n\n";
-						$description_content[ $item->tag_name ] .= $item->body;
-
+						$description_content[ $item->tag_name ] .= str_replace( '####', '##', $item->body );
+						
 						$description_content[ $item->tag_name ] = preg_replace( "/requires WordPress:\s([\d\.]+)/i", '', $description_content[ $item->tag_name ] );
 						$description_content[ $item->tag_name ] = preg_replace( "/tested WordPress:\s([\d\.]+)/i", '', $description_content[ $item->tag_name ] );
 						$description_content[ $item->tag_name ] = preg_replace( "/requires PHP:\s([\d\.]+)/i", '', $description_content[ $item->tag_name ] );
@@ -163,6 +165,7 @@ class BFIGitHubPluginUpdater {
 				}
 			}
 
+			$description_content[ 9999999998 ] = '......................................................................................................................' . "\n\n";
 			$description_content[ 9999999999 ] = '<a href="' . $response->homepage . '/releases" target="_blank">You can also go to the releases and their changes on GitHub.</a> ';
 
 			if ( $description_content ) {
