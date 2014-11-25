@@ -56,7 +56,7 @@
 
 		// FOOTERTEXT AND VERSION {
 
-			if ( $p['remove_admin_bar_logo'] ) {
+			if ( $p['remove_footer_text'] ) {
 
 				add_action( 'admin_init', 'tool_remove_wp_footprint_footertexte' );
 			}
