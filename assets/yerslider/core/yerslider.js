@@ -46,6 +46,7 @@ function YerSlider() {
 
 		// swipe		
 		swipe: false,
+		swipemouse: false,
 		swipeandprevnextbtn: false,
 		swipeanimationspeed: 300,
 
@@ -90,6 +91,10 @@ function YerSlider() {
 		nextclassadd: '',
 		prevclassadd: '',
 
+		// keys
+		nextkey: 13,
+		prevkey: 14,
+		
 		// bullets
 		bullets: false,
 		bulletslocation: 'outside', // inside, outside,
@@ -131,6 +136,8 @@ function YerSlider() {
 
 		// detachning
 		detach: undefined,
+		
+		sliderfadeinspeed: 'slow'
 	};
 
 	t.stat = {
@@ -271,7 +278,7 @@ function YerSlider() {
 				// TouchSwipe {
 
 					if ( typeof jQuery.fn.swipe == 'undefined' 
-					&& jQuery.inArray( 'touch', t.stat.browser_features ) !== -1
+					&& ( jQuery.inArray( 'touch', t.stat.browser_features ) !== -1 || t.param.swipemouse === true )
 					&& t.param.swipe === true ) {
 
 						t.init_dependencies_path( {
@@ -333,7 +340,9 @@ function YerSlider() {
 		t.clon_slides();
 
 		t.set_prevnext();
-
+		
+		t.keynav();
+		
 		t.thumbs();
 
 		t.bullets();
@@ -344,7 +353,7 @@ function YerSlider() {
 
 		t.init_iosresizeclickbug();
 
-		// t.init_showslides();
+		t.init_showslides();
 
 		t.init_video();
 
@@ -424,13 +433,13 @@ function YerSlider() {
 
 		/* touch */
 
-		if ( jQuery('html').hasClass('touch') ) {
+		if ( jQuery('html').hasClass('touch') || t.param.swipemouse === true ) {
 
 			t.stat.touch = true;
 			t.stat.clicktype = 'touchend';
 		}
 
-		if ( t.stat.touch && t.param.swipe && !t.param.swipeandprevnextbtn ) {
+		if ( t.stat.touch && t.param.swipe && ! t.param.swipeandprevnextbtn ) {
 
 			t.param.nextbtn = false;
 			t.param.prevbtn = false;
@@ -903,7 +912,7 @@ function YerSlider() {
 			'opacity': '1',
 			'position': 'relative',
 			'left': '0',
-		} ).fadeIn( 'slow', function() {
+		} ).fadeIn( t.param.sliderfadeinspeed , function() {
 
 			t.init_slider_ready();
 
@@ -1748,6 +1757,24 @@ function YerSlider() {
 		t.obj.slide.removeClass('current');
 		jQuery( t.obj.slide[ t.stat.currentslideindex ] ).addClass('current');
 
+	};
+	
+	t.keynav = function () {
+
+	    jQuery( document ).on( 'keyup', function ( event ) {
+
+			if ( event.keyCode === 39 ) {
+				
+				t.stat.lasteventtype = 'click-next';
+				t.next_job();
+			}
+			
+			if ( event.keyCode === 37 ) {
+				
+				t.stat.lasteventtype = 'click-prev';
+				t.prev_job();
+			}
+		});
 	};
 
 	/*
@@ -2937,68 +2964,78 @@ function YerSlider() {
 		*/
 		function swipeStatus( event, phase, direction, distance/*, fingers*/ ) {
 
-			t.stat.isswiping = true;
+			if ( t.stat.isswiping === false && t.stat.isanimating === false ) {
+				
+				t.stat.isswiping = true;
+				
+				if ( phase === 'start' ) {
 
-			//If we are moving before swipe, and we are going L or R, then manually drag the images
-
-			if ( phase === 'move' && ( direction === 'left' || direction === 'right' ) ) {
-
-				if ( direction === 'left' ) {
-
-					t.scroll_slider( distance, direction );
+					event.preventDefault();
 				}
-				else if ( direction === 'right' ) {
+				
+				//If we are moving before swipe, and we are going L or R, then manually drag the images
 
-					t.scroll_slider( distance, direction );
+				else if ( phase === 'move' && ( direction === 'left' || direction === 'right' ) ) {
+
+					if ( direction === 'left' ) {
+
+						t.scroll_slider( distance, direction );
+					}
+					else if ( direction === 'right' ) {
+
+						t.scroll_slider( distance, direction );
+					}
+
+					if ( t.param.autoplay && t.stat.autoplayison ) {
+
+						t.autoplayclear();
+					}
 				}
 
-				if ( t.param.autoplay && t.stat.autoplayison ) {
+				//Else, cancel means snap back to the begining
 
-					t.autoplayclear();
+				else if ( phase === 'cancel' ) {
+
+					t.animate_slider_to_current_position( t.get_animationspeed() );
+
+					if ( t.param.autoplay && !t.stat.autoplayison ) {
+
+						t.autoplayset();
+					}
 				}
+
+				//Else end means the swipe was completed, so move to the next image
+
+				else if ( phase === 'end' ) {
+
+					if ( direction === 'right' ) {
+
+						t.stat.lasteventtype = 'swipe-right';
+						t.prev_job();
+					}
+					else if ( direction === 'left' ) {
+
+						t.stat.lasteventtype = 'swipe-left';
+						t.next_job();
+					}
+
+					if ( t.param.autoplay && !t.stat.autoplayison ) {
+
+						t.autoplayset();
+					}
+					
+				}
+
+				t.stat.isswiping = false;
 			}
-
-			//Else, cancel means snap back to the begining
-
-			else if ( phase === 'cancel' ) {
-
-				t.animate_slider_to_current_position( t.get_animationspeed() );
-
-				if ( t.param.autoplay && !t.stat.autoplayison ) {
-
-					t.autoplayset();
-				}
-			}
-
-			//Else end means the swipe was completed, so move to the next image
-
-			else if ( phase === 'end' ) {
-
-				if ( direction === 'right' ) {
-
-					t.stat.lasteventtype = 'swipe-right';
-					t.prev_job();
-				}
-				else if ( direction === 'left' ) {
-
-					t.stat.lasteventtype = 'swipe-left';
-					t.next_job();
-				}
-
-				if ( t.param.autoplay && !t.stat.autoplayison ) {
-
-					t.autoplayset();
-				}
-			}
-
-			t.stat.isswiping = false;
+			
 		}
 
 		// init touch swipe
-		t.obj.slide.swipe( {
+		t.obj.slider.swipe( {
 			triggerOnTouchEnd: true,
 			swipeStatus: swipeStatus,
-			allowPageScroll: 'vertical',
+			//allowPageScroll: 'vertical',
 			tap:function(event, target) {
 				/* this was a tab event */
 

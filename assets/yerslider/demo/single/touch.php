@@ -91,8 +91,7 @@
 					loop: 'infinite',
 					animationspeed: 1000,
 					bullets: true,
-					swipe: true,
-					
+					swipe: true
 				});
 			});
 

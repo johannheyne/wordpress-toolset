@@ -500,6 +500,7 @@ myslider.init({
 		900: 3
 	},
 	<div class="code-focus">swipe: true,
+	swipemouse: true,
 	swipeanimationspeed: 300</div>
 });</pre>
 		</code>
@@ -520,6 +521,7 @@ myslider.init({
 					},
 					bullets: true,
 					swipe: true,
+					swipemouse: true,
 					swipeanimationspeed: 300
 				});
 			});
