@@ -22,9 +22,9 @@
 			$message = $p['messages']['en'];
 
 			// message in current language
-			if ( isset( $GLOBALS['toolset']['tool_javascript_recomended']['messages'][ config_get_curr_site_id() ] ) ) {
+			if ( isset( $p['messages'][ config_get_curr_site_id() ] ) ) {
 
-				$message = $GLOBALS['toolset']['tool_javascript_recomended']['messages'][ config_get_curr_site_id() ];
+				$message = $p['messages'][ config_get_curr_site_id() ];
 			}
 
 			echo '<noscript>';
