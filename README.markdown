@@ -2,7 +2,7 @@ WordPress Toolset Plugin
 ===============
 
 This WordPress plugin provides tools to configure WordPress and tools to get things done.
-Its about NOT separately managing all the same code on every WordPress theme.
+Its about NOT separately managing all the same functionality code on every WordPress theme. 
 
 Strategie
 ---------------
@@ -28,10 +28,12 @@ Structure
 					index.php
 					styles.css
 					scripts.js
+					readme.markdown
 		 	toolset.php
 	themes/
-		config/
-			config.php
+		theme/
+			config/
+				config.php
 	
 ### Using a Tool Functionality
 
@@ -123,7 +125,7 @@ $GLOBALS['toolset'] = array(
 
 	// }
 
-	// AUTOLOAD PHP CLASSES {
+	// REGISTER PHP CLASSES FOR AUTOLOAD {
 
 		'autoload_php_classes' => array(
 			// 'ClassName' => 'path/to/class.php',
