@@ -149,6 +149,7 @@ $GLOBALS['toolset'] = array(
 * [WordPress Head](docs/tool_wp_head.markdown)
 * [WordPress Meta Title](docs/tool_meta_title.markdown)
 * [WordPress Remove Footprint](docs/tool_remove_wp_footprint.markdown)
+* [WordPress Postboxes](tools/tool_postboxes/readme.markdown)
 
 ### Tools
 
