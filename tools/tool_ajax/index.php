@@ -10,27 +10,67 @@
 			die('"' . $return . '"');  
 		}
 
-		// FUNCTION TEMPLATE {
-/*
+		
+		// REGISTER AJAX VARS IN SCRIPT {
 
-			add_action( 'wp_ajax_myajaxtest', 'myajaxtest' );
-			add_action( 'wp_ajax_nopriv_myajaxtest', 'myajaxtest' );
+			/*
+				add_action( 'wp_enqueue_scripts', 'myajaxtest_script' );
+				function myajaxtest_script() {
 
-			function myajaxtest() {
+					wp_register_script( 'myajaxtest_script', get_stylesheet_directory_uri() . '/js/myajaxtest.js', '1.0.0', true );
+					wp_localize_script( 'myajaxtest_script', 'wpAjax', array( 
+						'ajaxurl' => admin_url( 'admin-ajax.php' ) 
+						'ajax_nonce' => wp_create_nonce( 'unique-nonce-name' ),
+					) );
+					wp_enqueue_script( 'myajaxtest_script' );
+				}
+			*/
 
-				// there is a hidden input field with a global nonce
-				if ( !wp_verify_nonce( $_REQUEST['nonce'], 'nonce') ) {
+		// }
+		
+		// TEMPLATE {
+		
+			/*
+				add_action( 'wp_ajax_myajaxtest', 'myajaxtest' );
+				add_action( 'wp_ajax_nopriv_myajaxtest', 'myajaxtest' );
 
-					exit ( 'No naughty business please' );
-				}   
+				function myajaxtest() {
 
-				$return = 'Hello World!';
+					// there is a hidden input field with a global nonce
+					if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'unique-nonce-name') ) {
 
-				// new lines \n must be replaced before output by tool_ajax_return( $return, 'newline replacecement' )
-				// using ACF WYSIWYG-Field, the \n should replaced by ''
-				tool_ajax_return( $return, '' );
-			}
-*/
+						exit ( 'No naughty business please' );
+					}   
+
+					$return = 'Hello World!';
+
+					// new lines \n must be replaced before output by tool_ajax_return( $return, 'newline replacecement' )
+					// using ACF WYSIWYG-Field, the \n should replaced by ''
+					tool_ajax_return( $return, '' );
+				}
+			*/
+			
+		// }
+		
+		// JQUERY SCRIPT {
+
+			/*
+			$.ajax({
+				url: wpAjax.ajaxurl,
+				data: {
+					nonce: wpAjax.ajax_nonce,
+					action: 'myajaxtest',
+				},
+				success:function( data ) {
+
+					console.log( data );
+				},
+				error: function( errorThrown ) {
+
+				}
+			});
+			*/
+
 		// }
 
 	// }
