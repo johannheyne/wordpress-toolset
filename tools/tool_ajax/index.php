@@ -3,14 +3,16 @@
 	// WP-AJAX ( Version 2 ) {
 
 		function tool_ajax_return( $return = 'Hello World!', $newline = '<br/>' ) {
-
-			$return = str_replace( "\n", $newline, $return );
-			$return = str_replace( '"', '\"', $return );
+			
+			if ( ! is_array( $return ) ) {
+				
+				$return = str_replace( "\n", $newline, $return );
+				$return = str_replace( '"', '\"', $return );
+			}
 
 			die('"' . $return . '"');  
 		}
 
-		
 		// REGISTER AJAX VARS IN SCRIPT {
 
 			/*
