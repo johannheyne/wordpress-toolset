@@ -7,14 +7,14 @@
 			if ( ! is_array( $return ) ) {
 				
 				$return = str_replace( "\n", $newline, $return );
-				$return = str_replace( '"', '\"', $return );
+				$return = '"' . str_replace( '"', '\"', $return ) . '"';
 			}
 			else {
-
+				
 				$return = json_encode( $return );
 			}
 
-			die('"' . $return . '"');  
+			die( $return );
 		}
 
 		// REGISTER AJAX VARS IN SCRIPT {
