@@ -1,6 +1,6 @@
 <?php
 
-	// WP-AJAX ( Version 2 ) {
+	// WP-AJAX ( Version 3 ) {
 
 		function tool_ajax_return( $return = 'Hello World!', $newline = '<br/>' ) {
 			
@@ -8,6 +8,10 @@
 				
 				$return = str_replace( "\n", $newline, $return );
 				$return = str_replace( '"', '\"', $return );
+			}
+			else {
+
+				$return = json_encode( $return );
 			}
 
 			die('"' . $return . '"');  
