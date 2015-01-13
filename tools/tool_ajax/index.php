@@ -69,6 +69,9 @@
 				},
 				success:function( data ) {
 
+					// if result is json
+					// data = $.parseJSON( data );
+
 					console.log( data );
 				},
 				error: function( errorThrown ) {
