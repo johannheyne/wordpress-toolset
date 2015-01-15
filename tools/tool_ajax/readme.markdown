@@ -10,6 +10,8 @@ All ajax calls should made by calling the admin-ajax.php file in WordPress. This
 First you have to register a variable in your script with some informations needed for making ajax calls:
 
 ````php
+// header.php
+
 add_action( 'wp_enqueue_scripts', 'register_my_script' );
 function register_my_script() {
 
@@ -28,6 +30,8 @@ function register_my_script() {
 Then you need a PHP function to handle the ajax request and returning data:
 
 ````php
+// functions.php
+
 add_action( 'wp_ajax_myajaxfunction', 'myajaxfunction' );
 add_action( 'wp_ajax_nopriv_myajaxfunction', 'myajaxfunction' );
 
