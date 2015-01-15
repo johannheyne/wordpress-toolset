@@ -44,13 +44,13 @@ function myajaxfunction() {
 	}   
 
 	$return = 'Hello World!';
-	
+
 	/* README
 		You also can return an array that will be send as JSON.
 		New lines in the $return (\n) must be replaced by tool_ajax_return( $return, 'newline replacecement' ).
 		But using ACF WYSIWYG-Field, the (\n) should replaced by ''.
 	*/
-	
+
 	// The tool_ajax_return() handles the formating of the $return.
 	tool_ajax_return( $return, '' );
 }
@@ -59,22 +59,27 @@ function myajaxfunction() {
 Now you can define a Ajax call in JavaScript:
 
 ````javascript
-$.ajax({
-	url: wpAjax.ajaxurl,
-	data: {
-		nonce: wpAjax.ajax_nonce,
-		action: 'myajaxfunction',
-	},
-	success:function( data ) {
+jQuery.noConflict();
+jQuery(document).ready( function( $ ){
 
-		// if result is json
-		// data = $.parseJSON( data );
+	$.ajax({
+		url: wpAjax.ajaxurl,
+		data: {
+			nonce: wpAjax.ajax_nonce,
+			action: 'myajaxfunction',
+		},
+		success:function( data ) {
 
-		console.log( data );
-	},
-	error: function( errorThrown ) {
+			// if result is json
+			// data = $.parseJSON( data );
 
-	}
+			console.log( data );
+		},
+		error: function( errorThrown ) {
+
+		}
+	});
+
 });
 ````
 
