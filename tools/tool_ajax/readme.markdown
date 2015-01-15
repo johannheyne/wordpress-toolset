@@ -7,7 +7,7 @@ If you want to make ajax calls in the WordPress enviroment, you should use the b
 
 All ajax calls should made by calling the admin-ajax.php file in WordPress. This file executes a defined function that may returns a result to your ajax call. Also you should use the WordPress nonce for security reason.
 
-First you have to register a variable with some informations for making ajax calls:
+First you have to register a variable in your script with some informations needed for making ajax calls:
 
 ````php
 add_action( 'wp_enqueue_scripts', 'register_my_script' );
@@ -15,7 +15,7 @@ function register_my_script() {
 
 	wp_register_script( 'my_script', get_stylesheet_directory_uri() . '/js/my_script.js', '1.0.0', true );
 
-	// this registers the variable wpAjax in my_script.js
+	// this registers the object wpAjax in my_script.js
 	wp_localize_script( 'my_script', 'wpAjax', array( 
 		'ajaxurl' => admin_url( 'admin-ajax.php' ) 
 		'ajax_nonce' => wp_create_nonce( 'my-unique-nonce-name' ),
