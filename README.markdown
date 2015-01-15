@@ -125,8 +125,10 @@ $GLOBALS['toolset'] = array(
 
 	// }
 
-	// REGISTER PHP CLASSES FOR AUTOLOAD {
+	// REGISTER PHP CLASSES FOR AUTOLOAD FROM YOUR THEME {
 
+		// You do not need to define classes from the toolset plugin
+		
 		'autoload_php_classes' => array(
 			// 'ClassName' => 'path/to/class.php',
 		),

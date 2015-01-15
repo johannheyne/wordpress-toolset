@@ -169,27 +169,30 @@
 
 				spl_autoload_register( function ( $class_name ) {
 
-					if ( isset( $GLOBALS['toolset']['autoload_php_classes'] ) ) {
+					if ( isset( $GLOBALS['toolset']['autoload_php_classes_plugin'] ) ) {
 
-						foreach ( $GLOBALS['toolset']['autoload_php_classes'] as $key => $value ) {
+						foreach ( $GLOBALS['toolset']['autoload_php_classes_plugin'] as $key => $value ) {
 
 							if ( $class_name == $key ) {
-
-								if ( strpos( $value, 'tools/' ) ) {
-
-									$path = $value;
-								}
-
-								else {
-
-									$path = get_template_directory() . $value;
-								}
 
 								require_once( $value );
 							}
 
 						}
 					}
+
+					if ( isset( $GLOBALS['toolset']['autoload_php_classes'] ) ) {
+
+						foreach ( $GLOBALS['toolset']['autoload_php_classes'] as $key => $value ) {
+
+							if ( $class_name == $key ) {
+
+								require_once( get_template_directory() . $value );
+							}
+
+						}
+					}
+
 				} );
 
 			// }
