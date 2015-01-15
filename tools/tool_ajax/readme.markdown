@@ -60,7 +60,7 @@ Now you can define a Ajax call in JavaScript:
 
 ````javascript
 jQuery.noConflict();
-jQuery(document).ready( function( $ ){
+jQuery(document).ready( function( $ ) {
 
 	$.ajax({
 		url: wpAjax.ajaxurl,
