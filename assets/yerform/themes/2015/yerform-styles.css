@@ -1,0 +1,116 @@
+/* NORMALIZE */
+* {
+	box-sizing: border-box;
+}
+.yerform textarea {
+	width: 100% !important;
+}
+
+
+
+/* LAYOUT */
+.yerform {
+
+}
+
+	.yerform-fieldset-wrap {
+
+	}
+
+		.yerform-fieldset {
+
+		}
+
+			.yerform-list {
+
+			}
+
+				.yerform-list-item {
+					padding-top: 1em;
+					padding-bottom: 1em;
+				}
+				.yerform-item-type-field_xxxxx {
+
+				}
+
+					.yerform-label-wrap label {
+						background-color: rgba( 0, 0, 255, 0.2 );
+					}
+
+					.yerform-message-table {
+
+					}
+
+						.yerform-info-before {
+							background-color: rgba( 255, 165, 0, 0.2 );
+						}
+						
+						.yerform-infoafter-table {
+
+						}
+
+							.yerform-field-cell {
+
+							}
+
+								.yerform-field-table {
+
+								}
+									
+									.yerform-field-prefix {
+										background-color: rgba( 0, 128, 0, 0.2 );
+									}
+									
+									.yerform-field {
+										background-color: rgba( 0, 0, 0, 0.2 );
+									}
+										
+										.yerform-field-text-xxxxx {
+
+										}
+									
+									.yerform-field-sufix {
+										background-color: rgba( 0, 128, 0, 0.2 );
+									}
+
+							.yerform-info-after {
+								background-color: rgba( 255, 255, 0, 0.2 );
+							}
+
+						.yerform-info-before {
+						
+						}
+
+						.yerform-field-message {
+							background-color: rgba( 255, 0, 0, 0.2 );
+						}
+
+							.yerform-field-message-error {
+							
+							}
+
+
+/* BEHAVIOR */
+
+@media ( min-width: 768px ) {
+	.yerform-list {
+		display: table;
+		width: 100%;
+	}
+	.yerform-list-item {
+		display: table-row;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	.yerform-list-item > * {
+		display: table-row;
+		padding-top: 1em;
+		padding-bottom: 1em;
+	}
+	.yerform-label-wrap,
+	.yerform-message-table {
+		display: table-cell;
+	}
+}
+
+/* TYPO */
