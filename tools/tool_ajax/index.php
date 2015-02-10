@@ -25,7 +25,7 @@
 
 					wp_register_script( 'myajaxtest_script', get_stylesheet_directory_uri() . '/js/myajaxtest.js', '1.0.0', true );
 					wp_localize_script( 'myajaxtest_script', 'wpAjax', array( 
-						'ajaxurl' => admin_url( 'admin-ajax.php' ) 
+						'ajaxurl' => admin_url( 'admin-ajax.php' ),
 						'ajax_nonce' => wp_create_nonce( 'unique-nonce-name' ),
 					) );
 					wp_enqueue_script( 'myajaxtest_script' );
