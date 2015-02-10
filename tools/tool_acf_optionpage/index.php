@@ -1,6 +1,6 @@
 <?php
 
-	// ACF BUILD OPTIONPAGE ( Version 1 ) {
+	// ACF BUILD OPTIONPAGE ( Version 2 ) {
 
 		function tool_acf_optionpage_build( $p = array() ) {
 
@@ -25,7 +25,7 @@
 									'label' => 'Felder',
 									'fields' => array(
 										array(
-											'type' => 'text',
+											'type' => 'text', // text, wysiwyg
 											'key' => 'surename',
 											'label' => 'Vorname',
 											'default_value' => 'Surename',
@@ -72,12 +72,15 @@
 
 								// LANGUAGE TAB
 
-								$fields[] = array (
-									'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_tab_' . $item['language_code'],
-									'label' => $item['translated_name'],
-									'name' => '',
-									'type' => 'tab',
-								);
+								if ( count( $lang_array ) > 1 ) {
+
+									$fields[] = array (
+										'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_tab_' . $item['language_code'],
+										'label' => $item['translated_name'],
+										'name' => '',
+										'type' => 'tab',
+									);
+								}
 
 								// FIELDS {
 
@@ -93,6 +96,20 @@
 											'required' => 1,
 											'default_value' => $item2['default_value'],
 											'formatting' => 'none',
+										);
+									}
+
+									if ( $item2['type'] == 'wysiwyg' ) {
+
+										$fields[] = array (
+											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+											'label' => $item2['label'],
+											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+											'default_value' => $item2['default_value'],
+											'type' => 'wysiwyg',
+											'column_width' => '',
+											'toolbar' => 'full',
+											'media_upload' => 'no',
 										);
 									}
 								}
