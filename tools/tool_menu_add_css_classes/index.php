@@ -1,10 +1,11 @@
 <?php
 
-	// ADD MENU-ITEM CLASSES IN SPECIAL CASE {
+	// ADD MENU-ITEM CLASSES IN SPECIAL CASE ( Version 2 ) {
 
 		add_filter( 'nav_menu_css_class' , 'tool_menu_add_css_classes_filter' , 10 , 2 );
-		
+
 		function tool_menu_add_css_classes_filter( $classes, $item ) {
+
 			/* 
 				$item-> 
 
@@ -51,10 +52,9 @@
 			*/
 
 			if ( is_array( $GLOBALS['toolset']['inits']['tool_menu_add_css_classes'] ) ) {
-			    
-			
+
 				foreach ( $GLOBALS['toolset']['inits']['tool_menu_add_css_classes'] as $key => $set ) {
-				    
+
 				    // DEFAULTS {
 
 				        $defaults = array(
@@ -67,13 +67,13 @@
 				        $set = array_replace_recursive( $defaults, $set );
 
 				    // }
-				    
+
 					$check = true;
-					
+
 					// menu_item_id {
-						
+
 						if ( $set['menu_item_id'] ) {
-						
+
 					    	if ( $item->ID != $set['menu_item_id'] ) {
 
 								$check = false;
@@ -81,68 +81,69 @@
 						}
 
 					// }
-					
+
 					// is_posttype {
-					    
+
 						if ( $check && $set['is_posttype'] ) {
-							
+
 							if ( get_post_type( get_the_ID() ) != $set['is_posttype'] ) {
 
 								$check = false;
 							}
 						}
-					    
 
 					// }
-					
+
 					// rules {
 
 					    if ( $check && $set['rules'] ) {
-							
+
 							foreach ( $set['rules'] as $key => $rulegroup ) {
-							    
+
 								$rulecheck = 'y';
-								
+
 								foreach ( $rulegroup as $key => $rule ) {
 
 									$not = stristr( $rule, 'not_' );
-									
+
+									$rule = str_replace( 'not_', 'is_', $rule );
+
 									if ( $not ) {
-									    
-										$not = '';
-										$rule = str_replace( 'not_', 'is_', $rule );
+
+										if ( $rule()  ) {
+
+											$rulecheck = 'n';
+										}
 									}
 									else {
-										
-										$not = '! ';
-									}
-									if ( $not.$rule() ) {
-									    
-										$rulecheck = 'n';
+
+										if ( ! $rule()  ) {
+
+											$rulecheck = 'n';
+										}
 									}
 								}
-								
-								
+
 								if ( $rulecheck == 'n' ) {
-								   
+
 									$check = false;
 								}
 							}
 						}
 
 					// }
-					
+
 					// ADD CLASS {
-					
+
 						if ( $check ) {
 
 							$classes[] = $set['class'];
 						}
-						
+
 					// }
 				}
 			}
-			
+
 			return $classes;
 		}
 

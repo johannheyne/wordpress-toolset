@@ -156,6 +156,7 @@ $GLOBALS['toolset'] = array(
 * [WordPress Postboxes](tools/tool_postboxes/readme.markdown)
 * [WordPress Unregister Default Widgets](tools/tool_widgets_unregister_defaults/readme.markdown)
 * [WordPress Remove Metaboxes](tools/tool_metabox_remove/readme.markdown)
+* [WordPress Add CSS Classes to Menu Items](tools/tool_menu_add_css_classes/readme.markdown)
 
 ### Tools
 
