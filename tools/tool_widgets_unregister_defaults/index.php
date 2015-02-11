@@ -4,7 +4,12 @@
 
 		function unregister_default_wp_widgets() {
 
-			$p = $GLOBALS['toolset']['inits']['tool_widgets_unregister_defaults'];
+			$p = array();
+			
+			if ( is_array( $GLOBALS['toolset']['inits']['tool_widgets_unregister_defaults'] ) ) {
+				
+				$p = $GLOBALS['toolset']['inits']['tool_widgets_unregister_defaults'];
+			}
 
 			// DEFAULTS {
 
