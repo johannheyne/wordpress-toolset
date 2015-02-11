@@ -1,6 +1,60 @@
 <?php
 
-	// ACF BUILD OPTIONPAGE ( Version 2 ) {
+	// ACF BUILD OPTIONPAGE ( Version 3 ) {
+		
+		// requires: tool_localization_constants
+		
+		/* USAGE
+
+			$setup = array(
+				'optionpage_name' => 'Optionpage',
+				'optionpage_key' => 'optionpage',
+				'fieldgroups' => array(
+
+					// FIELDGROUPS {
+
+						array(
+							'key' => 'fields',
+							'label' => 'Fields',
+							'fields' => array(
+
+								// FIELDS {
+
+									// TEXT
+									array(
+										'type' => 'text',
+										'key' => 'name',
+										'label' => 'Name',
+										'default_value' => '',
+										'required' => false,
+									),
+
+									// WYSIWYG
+									array(
+										'type' => 'wysiwyg',
+										'key' => 'name',
+										'label' => 'Name',
+										'default_value' => '',
+										'column_width' => '',
+										'toolbar' => 'full',
+										'media_upload' => 'no',
+									),
+
+								// }
+							),
+						),
+
+					// }
+				),
+			);
+
+			tool_acf_optionpage_build( array(
+				'setup' => $setup,
+			) );
+
+			Example for get_field( 'opt_{optionpage_key}_{fieldgroup_key}_{field_key}_{lang}', 'options' );
+
+		*/
 
 		function tool_acf_optionpage_build( $p = array() ) {
 
@@ -9,39 +63,6 @@
 				$defaults = array(
 					'setup' => false,
 				);
-
-				/* 
-					Example for get_field( 'opt_contactform_fields_surename_de', 'options' );
-
-					$setup = array(
-						'optionpage_name' => 'Kontaktform',
-						'optionpage_key' => 'contactform',
-						'fieldgroups' => array(
-
-							// FIELDS {
-
-								array(
-									'key' => 'fields',
-									'label' => 'Felder',
-									'fields' => array(
-										array(
-											'type' => 'text', // text, wysiwyg
-											'key' => 'surename',
-											'label' => 'Vorname',
-											'default_value' => 'Surename',
-										),
-									),
-								),
-
-							// }
-						),
-					);
-
-					tool_acf_optionpage_build( array(
-						'setup' => $setup,
-					) );
-
-				*/
 
 				$p = array_replace_recursive( $defaults, $p );
 
@@ -86,30 +107,40 @@
 
 								foreach ( $fg['fields'] as $key => $item2 ) {
 
+									$defaults = array(
+										'required' => true,
+										'formatting' => 'none',
+										'column_width' => '',
+										'toolbar' => 'full',
+										'media_upload' => 'no',
+									);
+
+									$item2 = array_replace_recursive( $defaults, $item2 );
+
 									if ( $item2['type'] == 'text' ) {
 
 										$fields[] = array (
-											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'label' => $item2['label'],
-											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
 											'type' => 'text',
-											'required' => 1,
+											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+											'label' => $item2['label'],
+											'required' => $item2['required'],
 											'default_value' => $item2['default_value'],
-											'formatting' => 'none',
+											'formatting' => $item2['formatting'],
 										);
 									}
 
 									if ( $item2['type'] == 'wysiwyg' ) {
 
 										$fields[] = array (
-											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'label' => $item2['label'],
-											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'default_value' => $item2['default_value'],
 											'type' => 'wysiwyg',
-											'column_width' => '',
-											'toolbar' => 'full',
-											'media_upload' => 'no',
+											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+											'label' => $item2['label'],
+											'default_value' => $item2['default_value'],
+											'column_width' => $item2['column_width'],
+											'toolbar' => $item2['toolbar'],
+											'media_upload' => $item2['media_upload'],
 										);
 									}
 								}
