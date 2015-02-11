@@ -52,7 +52,7 @@ The tool() Function
 
 ### Config
 
-There is a single global variable, that holds any kind of global data to drive tools of the toolset. This variable must be set in the active theme in the function.php or bether in the /config/config.php file.
+There is a single global variable, that holds any kind of global data to drive tools of the toolset. This variable must be set in the active theme in the function.php or better in the /config/config.php file.
 
 ````php
 $GLOBALS['toolset'] = array( /* toolset configuration options goes here */ );
