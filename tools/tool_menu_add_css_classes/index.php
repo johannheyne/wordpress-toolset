@@ -1,10 +1,12 @@
 <?php
 
-	// ADD MENU-ITEM CLASSES IN SPECIAL CASE ( Version 2 ) {
+	// ADD MENU-ITEM CLASSES IN SPECIAL CASE ( Version 3 ) {
 
 		add_filter( 'nav_menu_css_class' , 'tool_menu_add_css_classes_filter' , 10 , 2 );
 
 		function tool_menu_add_css_classes_filter( $classes, $item ) {
+
+			global $post;
 
 			/* 
 				$item-> 
@@ -104,24 +106,61 @@
 
 								foreach ( $rulegroup as $key => $rule ) {
 
-									$not = stristr( $rule, 'not_' );
+									if ( stristr( $rule, 'not_' ) OR stristr( $rule, 'is_' ) ) {
 
-									$rule = str_replace( 'not_', 'is_', $rule );
+										$not = stristr( $rule, 'not_' );
+										$rule = str_replace( 'not_', 'is_', $rule );
 
-									if ( $not ) {
+										if ( $not ) {
 
-										if ( $rule()  ) {
+											if ( $rule()  ) {
 
-											$rulecheck = 'n';
+												$rulecheck = 'n';
+											}
 										}
+										else {
+
+											if ( ! $rule()  ) {
+
+												$rulecheck = 'n';
+											}
+										}
+									}
+
+									elseif ( stristr( $rule, '$post->' ) ) {
+
+										$rule = str_replace( '$post->', '', $rule );
+										$arr = explode( ' ', $rule );
+										$check = true;
+
+										if ( ! preg_match( '/^[a-z_]*$/i', $arr[0] ) ) {
+
+										  	$check = false;
+										}
+
+									  	if ( ! preg_match( '/^[' . preg_quote( '=!<>' ) . ']*$/', $arr[1] ) ) {
+
+										  	$check = false;
+										}
+
+										if ( ! preg_match( '/^[a-z_0-9 \'\"\-]*$/i', $arr[2] ) ) {
+
+										  	$check = false;
+										}
+
+										if ( $check ) {
+
+											$rule = implode( ' ', $arr );
+											$string = 'if ( $post->' . $rule . ' ) { } else { $rulecheck = "n"; }';
+											eval( $string );
+										}
+
 									}
 									else {
 
-										if ( ! $rule()  ) {
-
-											$rulecheck = 'n';
-										}
+										$rulecheck = 'n';
 									}
+
 								}
 
 								if ( $rulecheck == 'n' ) {
