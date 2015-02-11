@@ -69,10 +69,6 @@
 						
 						foreach ( $items['context'] as $context ) {
 						
-							error_log( print_r( $key, true) );
-							error_log( print_r( $page, true) );
-							error_log( print_r( $context, true) );
-							
 							// http://codex.wordpress.org/Function_Reference/remove_meta_box
 							remove_meta_box( $key, $page, $context );
 						}
