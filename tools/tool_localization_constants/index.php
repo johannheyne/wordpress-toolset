@@ -1,6 +1,6 @@
 <?php
 
-	// THEME LOCALIZATION CONSTANTS ( Version 1 ) {
+	// THEME LOCALIZATION CONSTANTS ( Version 2 ) {
 
 		// WPML {
 
@@ -8,16 +8,16 @@
 
 				define( 'THEME_LANG_SUFIX', '_' . ICL_LANGUAGE_CODE );
 
-				/* die Konstante THEME_LANG_ARRAY sollte ein Array nach folgendem Muster sein:
+				/* the variable THEME_LANG_ARRAY should be an array with the following pattern:
 					array( 
-						'de' => array(
+						'en' => array(
 							'id' => 1,
 							'active' => 1,
 							'encode_url' => 0,
-							'tag' => 'de-DE',
-							'native_name' => 'Deutsch',
-							'language_code' => 'de',
-							'translated_name' => 'Deutsch',
+							'tag' => 'en-US',
+							'native_name' => 'English',
+							'language_code' => 'en',
+							'translated_name' => 'Englisch',
 							'url' => '',
 							'country_flag_url' => '',
 						),
@@ -32,23 +32,31 @@
 
 		// DEFAULT {
 
+			// requires: $GLOBALS['toolset']['langcode'], $GLOBALS['toolset']['countrycode']
+
+			$languages = $GLOBALS['toolset']['langcode'];
+			$languages = array_values( $languages );
+			$langcode = $languages[0];
+
+			$countrycode = $GLOBALS['toolset']['countrycode'][ $langcode ];
+
 			if ( !defined( 'THEME_LANG_SUFIX' ) ) {
 
-				define( 'THEME_LANG_SUFIX', '_de' );
+				define( 'THEME_LANG_SUFIX', '_' . $langkey );
 			}
 
 			if ( !defined( 'THEME_LANG_ARRAY' ) ) {
 
 				define( 'THEME_LANG_ARRAY', serialize( 
 					array( 
-						'de' => array(
+						$langcode => array(
 							'id' => 1,
 							'active' => 1,
 							'encode_url' => 0,
-							'tag' => 'de-DE',
-							'native_name' => 'Deutsch',
-							'language_code' => 'de',
-							'translated_name' => 'Deutsch',
+							'tag' => $countrycode,
+							'native_name' => '',
+							'language_code' => $langcode,
+							'translated_name' => '',
 							'url' => '',
 							'country_flag_url' => '',
 						),
