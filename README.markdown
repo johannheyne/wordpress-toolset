@@ -155,6 +155,7 @@ $GLOBALS['toolset'] = array(
 * [WordPress Remove Footprint](docs/tool_remove_wp_footprint.markdown)
 * [WordPress Postboxes](tools/tool_postboxes/readme.markdown)
 * [WordPress Unregister Default Widgets](tools/tool_widgets_unregister_defaults/readme.markdown)
+* [WordPress Remove Metaboxes](tools/tool_metabox_remove/readme.markdown)
 
 ### Tools
 
