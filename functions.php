@@ -134,7 +134,14 @@
 							) );
 						}
 
-						$r = $v['funame']( $p['param'] );
+						if ( function_exists( $v['funame'] ) ) {
+
+							$r = $v['funame']( $p['param'] );
+						}
+						else {
+
+							error_log( print_r( 'WordPress Plugin ToolSet: ' . "\n" . 'Function name "' . $p['name']  . '" does not exists in toolset/tools/index.php!', true ) );
+						}
 					}
 
 					return $r;
