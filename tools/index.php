@@ -221,15 +221,6 @@
 
 				// }
 				
-				// wp_head {
-
-				    'wp_head' => array(
-						'dir' => 'wp_head',
-						'funame' => 'wp_head',
-					),
-
-				// }
-				
 				// tool_wp_nonce {
 
 				    'tool_wp_nonce' => array(
