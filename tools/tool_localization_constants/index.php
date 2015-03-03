@@ -1,6 +1,6 @@
 <?php
 
-	// THEME LOCALIZATION CONSTANTS ( Version 2 ) {
+	// THEME LOCALIZATION CONSTANTS ( Version 3 ) {
 
 		// WPML {
 
@@ -40,9 +40,9 @@
 
 			$countrycode = $GLOBALS['toolset']['countrycode'][ $langcode ];
 
-			if ( !defined( 'THEME_LANG_SUFIX' ) ) {
+			if ( ! defined( 'THEME_LANG_SUFIX' ) ) {
 
-				define( 'THEME_LANG_SUFIX', '_' . $langkey );
+				define( 'THEME_LANG_SUFIX', '_' . $langcode );
 			}
 
 			if ( !defined( 'THEME_LANG_ARRAY' ) ) {
