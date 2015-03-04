@@ -1,5 +1,5 @@
 // YerScriptMediaQueries
-// Version 1
+// Version 2
 
 // USAGE {
 
@@ -33,9 +33,11 @@ function YerScriptMediaQueries() {
 	t.defaults = {
 		'resize_treshold': 500,
 		'mediaqueries': undefined,
-	}
+	};
 
-	t.set = undefined;
+	t.set = {
+		'resize_timeout': undefined
+	};
 
 	t.init =  function( p ) {
 
@@ -44,15 +46,16 @@ function YerScriptMediaQueries() {
 		if ( typeof t.set.mediaqueries === 'object' ) {
 
 			t.loop_breakpoints();
+			
+			var win = jQuery(window);
+			win.resize( function() {
 
-			jQuery(window).resize( function() {
+				if ( t.set.resize_timeout ) {
 
-				if ( this.resize_timeout ) {
-
-					clearTimeout( this.resize_timeout );
+					clearTimeout( t.set.resize_timeout );
 				}
 
-				this.resize_timeout = setTimeout( function() {
+				t.set.resize_timeout = setTimeout( function() {
 
 					t.loop_breakpoints();
 
@@ -81,6 +84,7 @@ function YerScriptMediaQueries() {
 				else {
 
 					if ( typeof t.set.mediaqueries[ i ].after === 'function' ) {
+
 
 						t.set.mediaqueries[ i ].after();
 					}
