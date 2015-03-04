@@ -1,6 +1,6 @@
 <?php
 
-	// IMAGE SIZE ( Version 4 ) {
+	// IMAGE SIZE ( Version 5 ) {
 
 		function remove_image_sizes( $sizes) {
 			// unset( $sizes['thumbnail']);
@@ -305,10 +305,17 @@
 		function the_image_size_names( $sizes ) {
 
 			// removing media-sizes from select-input for inserting into the editor
-			//unset( $sizes['thumbnail'] );
-			//unset( $sizes['medium'] );
-			//unset( $sizes['large'] );
-			//unset( $sizes['full'] );
+			
+			if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes_remove'] ) ) {
+
+				foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes_remove'] as $key => $value ) {
+
+					if ( $value ) {
+
+						unset( $sizes[ $key ] );
+					}
+				}
+			}
 
 			// adding relevant media-sizes to the select-input for inserting into the editor
 
