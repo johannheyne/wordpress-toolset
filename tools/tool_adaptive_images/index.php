@@ -1,6 +1,6 @@
 <?php
 
-	// IMAGE SIZE ( Version 5 ) {
+	// IMAGE SIZE ( Version 6 ) {
 
 		function remove_image_sizes( $sizes) {
 			// unset( $sizes['thumbnail']);
@@ -292,30 +292,17 @@
 	// }
 
 	// IMAGE SIZES FOR EDITOR ( Version 5 ) {
-		
-		function set_editor_imagesizes() {
+
+		function set_ai_editor_imagesizes() {
 
 			foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
 
 				add_image_size( $size, $item['width'], $item['height'], $item['crop'] );
 			}
 		}
-		
+
 		// define image-sizes at the media-popup 
-		function the_image_size_names( $sizes ) {
-
-			// removing media-sizes from select-input for inserting into the editor
-			
-			if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes_remove'] ) ) {
-
-				foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes_remove'] as $key => $value ) {
-
-					if ( $value ) {
-
-						unset( $sizes[ $key ] );
-					}
-				}
-			}
+		function add_ai_image_size_names( $sizes ) {
 
 			// adding relevant media-sizes to the select-input for inserting into the editor
 
@@ -334,12 +321,12 @@
 					if ( $check ) $sizes[$size] = $item['label'];
 				}
 			}
-			
+
 			return $sizes;
 		}
-		
+
 		// add Adaptive-Image parameter size to image-url and zoom to href-url
-		function my_image_send_to_editor( $html, $id, $caption = false, $title = false, $align = false, $url = false, $size = false, $alt = false ) {
+		function ai_image_send_to_editor( $html, $id, $caption = false, $title = false, $align = false, $url = false, $size = false, $alt = false ) {
 
 			$src = wp_get_attachment_image_src( $id, 'adaptive-image-base', false );
 
@@ -355,12 +342,12 @@
 
 			return $html;
 		}
-		
+
 		if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] ) && is_array( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] ) ) {
-		    
-			set_editor_imagesizes();
-			add_filter( 'image_size_names_choose','the_image_size_names', 10, 1 );
-			add_filter( 'image_send_to_editor', 'my_image_send_to_editor', 10, 8 );
+
+			set_ai_editor_imagesizes();
+			add_filter( 'image_size_names_choose','add_ai_image_size_names', 10, 1 );
+			add_filter( 'image_send_to_editor', 'ai_image_send_to_editor', 10, 8 );
 		}
 
 	// }
