@@ -159,6 +159,7 @@ $GLOBALS['toolset'] = array(
 * [WordPress Add CSS Classes to Menu Items](tools/tool_menu_add_css_classes/readme.markdown)
 * [Adaptive Images](tools/tool_adaptive_images/readme.markdown)
 * [Images Sizes](tools/tool_image_sizes/readme.markdown)
+* [API SiteData](tools/tool_api_sitedata/readme.markdown)
 
 ### Tools
 
