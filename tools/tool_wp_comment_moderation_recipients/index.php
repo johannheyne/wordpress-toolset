@@ -1,6 +1,6 @@
 <?php
 
-	// COMMENT MODERATION RECIPIENTS ( Version 1 ) {
+	// COMMENT MODERATION RECIPIENTS ( Version 2 ) {
 
 		add_filter( 'comment_moderation_recipients', function( $emails, $comment_id ) {
 
@@ -13,6 +13,11 @@
 			) {
 
 				foreach ( $GLOBALS['toolset']['inits']['tool_wp_comment_moderation_recipients']['emails_remove'] as $item ) {
+
+					if ( $item === 'admin_email' ) {
+
+						$item = get_option( 'admin_email' );
+					}
 
 					unset( $emails[ $item ] );
 				}
