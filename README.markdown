@@ -160,6 +160,7 @@ $GLOBALS['toolset'] = array(
 * [Adaptive Images](tools/tool_adaptive_images/readme.markdown)
 * [Images Sizes](tools/tool_image_sizes/readme.markdown)
 * [API SiteData](tools/tool_api_sitedata/readme.markdown)
+* [ACF Save Post After](tools/tool_acf_save_post_after/readme.markdown)
 
 ### Tools
 
