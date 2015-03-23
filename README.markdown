@@ -157,10 +157,11 @@ $GLOBALS['toolset'] = array(
 * [WordPress Unregister Default Widgets](tools/tool_widgets_unregister_defaults/readme.markdown)
 * [WordPress Remove Metaboxes](tools/tool_metabox_remove/readme.markdown)
 * [WordPress Add CSS Classes to Menu Items](tools/tool_menu_add_css_classes/readme.markdown)
+* [WordPress Notify Post Author if Comments](tools/tool_wp_comment_notification_notify_author/readme.markdown)
+* [WordPRess Images Sizes](tools/tool_image_sizes/readme.markdown)
 * [Adaptive Images](tools/tool_adaptive_images/readme.markdown)
-* [Images Sizes](tools/tool_image_sizes/readme.markdown)
-* [API SiteData](tools/tool_api_sitedata/readme.markdown)
 * [ACF Save Post After](tools/tool_acf_save_post_after/readme.markdown)
+* [API SiteData](tools/tool_api_sitedata/readme.markdown)
 
 ### Tools
 
