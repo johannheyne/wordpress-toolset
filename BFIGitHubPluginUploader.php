@@ -165,7 +165,7 @@ class BFIGitHubPluginUpdater {
 
 				foreach ( $this->githubAPIResults as $key => $item ) {
 
-					if ( $item->tag_name > $this->pluginData['Version'] ) {
+					if ( version_compare( $this->pluginData['Version'], $item->tag_name, '<' ) ) {
 
 						$description_content[ $item->tag_name ] = '......................................................................................................................' . "\n\n";
 						$description_content[ $item->tag_name ] .= '[Release v' . $item->tag_name . '](https://github.com/johannheyne/wordpress-toolset/releases/tag/' . $item->tag_name . ')' . "\n\n";
