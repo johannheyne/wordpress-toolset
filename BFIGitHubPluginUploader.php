@@ -12,6 +12,7 @@ class BFIGitHubPluginUpdater {
 	private $accessToken; // GitHub private repo token
 
 	function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $accessToken = '' ) {
+
 		add_filter( "pre_set_site_transient_update_plugins", array( $this, "setTransitent" ) );
 		add_filter( "plugins_api", array( $this, "setPluginInfo" ), 10, 3 );
 		add_filter( "upgrader_post_install", array( $this, "postInstall" ), 10, 3 );
@@ -24,14 +25,17 @@ class BFIGitHubPluginUpdater {
 
 	// Get information regarding our plugin from WordPress
 	private function initPluginData() {
+
 		$this->slug = plugin_basename( $this->pluginFile );
 		$this->pluginData = get_plugin_data( $this->pluginFile );
 	}
 
 	// Get information regarding our plugin from GitHub
 	private function getRepoReleaseInfo() {
+
 		// Only do this once
 		if ( !empty( $this->githubAPIResult ) ) {
+
 			return;
 		}
 
@@ -40,26 +44,31 @@ class BFIGitHubPluginUpdater {
 
 		// We need the access token for private repos
 		if ( !empty( $this->accessToken ) ) {
+
 			$url = add_query_arg( array( "access_token" => $this->accessToken ), $url );
 		}
 
 		// Get the results
 		$this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url ) );
+
 		if ( !empty( $this->githubAPIResult ) ) {
+
 			$this->githubAPIResults = @json_decode( $this->githubAPIResult );
 		}
 
 		// Use only the latest release
 		if ( is_array( $this->githubAPIResults ) ) {
-			$this->githubAPIResult = $this->githubAPIResults[0];
 
+			$this->githubAPIResult = $this->githubAPIResults[0];
 		}
 	}
 
 	// Push in plugin version information to get the update notification
 	public function setTransitent( $transient ) {
+
 		// If we have checked the plugin data before, don't re-check
 		if ( empty( $transient->checked ) ) {
+
 			return $transient;
 		}
 
@@ -72,10 +81,12 @@ class BFIGitHubPluginUpdater {
 
 		// Update the transient to include our updated plugin data
 		if ( $doUpdate == 1 ) {
+
 			$package = $this->githubAPIResult->zipball_url;
 
 			// Include the access token for private GitHub repos
 			if ( !empty( $this->accessToken ) ) {
+
 				$package = add_query_arg( array( "access_token" => $this->accessToken ), $package );
 			}
 
@@ -117,6 +128,7 @@ class BFIGitHubPluginUpdater {
 
 		// If nothing is found, do nothing
 		if ( empty( $response->slug ) || $response->slug != $this->slug ) {
+
 			return false;
 		}
 
@@ -133,6 +145,7 @@ class BFIGitHubPluginUpdater {
 
 		// Include the access token for private GitHub repos
 		if ( !empty( $this->accessToken ) ) {
+
 			$downloadLink = add_query_arg(
 				array( "access_token" => $this->accessToken ),
 				$downloadLink
@@ -153,11 +166,12 @@ class BFIGitHubPluginUpdater {
 				foreach ( $this->githubAPIResults as $key => $item ) {
 
 					if ( $item->tag_name > $this->pluginData['Version'] ) {
+
 						$description_content[ $item->tag_name ] = '......................................................................................................................' . "\n\n";
 						$description_content[ $item->tag_name ] .= '[Release v' . $item->tag_name . '](https://github.com/johannheyne/wordpress-toolset/releases/tag/' . $item->tag_name . ')' . "\n\n";
 						//$description_content[ $item->tag_name ] .= date( "Y.m.d H.i.s", strtotime( $item->published_at ) ) . "\n\n";
 						$description_content[ $item->tag_name ] .= str_replace( '####', '##', $item->body );
-						
+
 						$description_content[ $item->tag_name ] = preg_replace( "/requires WordPress:\s([\d\.]+)/i", '', $description_content[ $item->tag_name ] );
 						$description_content[ $item->tag_name ] = preg_replace( "/tested WordPress:\s([\d\.]+)/i", '', $description_content[ $item->tag_name ] );
 						$description_content[ $item->tag_name ] = preg_replace( "/requires PHP:\s([\d\.]+)/i", '', $description_content[ $item->tag_name ] );
@@ -193,9 +207,13 @@ class BFIGitHubPluginUpdater {
 				foreach ( $this->githubAPIResults as $key => $item ) {
 
 					preg_match( "/requires WordPress:\s([\d\.]+)/i", $item->body, $matches );
+
 					if ( !empty( $matches ) ) {
+
 						if ( is_array( $matches ) ) {
+
 							if ( count( $matches ) > 1 ) {
+
 								$all_matches[ $matches[1] ] = $matches[1];
 							}
 						}
@@ -203,9 +221,12 @@ class BFIGitHubPluginUpdater {
 				}
 			}
 
-			krsort( $all_matches );
+			if ( $all_matches ) {
 
-			$response->requires = reset( $all_matches );
+				krsort( $all_matches );
+
+				$response->requires = reset( $all_matches );
+			}
 
 		// }
 
@@ -218,10 +239,14 @@ class BFIGitHubPluginUpdater {
 
 				foreach ( $this->githubAPIResults as $key => $item ) {
 
-				preg_match( "/tested WordPress:\s([\d\.]+)/i", $item->body, $matches );
+					preg_match( "/tested WordPress:\s([\d\.]+)/i", $item->body, $matches );
+
 					if ( !empty( $matches ) ) {
+
 						if ( is_array( $matches ) ) {
+
 							if ( count( $matches ) > 1 ) {
+
 								$all_matches[ $matches[1] ] = $matches[1];
 							}
 						}
@@ -229,9 +254,12 @@ class BFIGitHubPluginUpdater {
 				}
 			}
 
-			krsort( $all_matches );
+			if ( $all_matches ) {
 
-			$response->tested = reset( $all_matches );
+				krsort( $all_matches );
+
+				$response->tested = reset( $all_matches );
+			}
 
 		// }
 
@@ -240,11 +268,9 @@ class BFIGitHubPluginUpdater {
 
 	// Perform additional actions to successfully install our plugin
 	public function postInstall( $true, $hook_extra, $result ) {
+
 		// Get plugin information
 		$this->initPluginData();
-
-		// Remember if our plugin was previously activated
-		$wasActivated = is_plugin_active( $this->slug );
 
 		// Since we are hosted in GitHub, our plugin folder would have a dirname of
 		// reponame-tagname change it to our original one:
@@ -253,10 +279,13 @@ class BFIGitHubPluginUpdater {
 		$wp_filesystem->move( $result['destination'], $pluginFolder );
 		$result['destination'] = $pluginFolder;
 
+		// Remember if our plugin was previously activated
+		// $wasActivated = is_plugin_active( $this->slug );
+
 		// Re-activate plugin if needed
-		if ( $wasActivated ) {
+		//if ( $wasActivated ) {
 			$activate = activate_plugin( $this->slug );
-		}
+		//}
 
 		return $result;
 	}
