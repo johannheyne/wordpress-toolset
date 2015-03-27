@@ -7,7 +7,7 @@
 	@copyright 2014 Johann Heyne
 
 	@wordpress-plugin
-	Plugin Name:       Toolset
+	Plugin Name:       WordPress ToolSet
 	Plugin URI:        https://github.com/johannheyne/wordpress-toolset
 	Description:       Provides functionality fore use in themes.
 	Version:           0.0.110

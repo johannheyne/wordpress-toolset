@@ -1,4 +1,4 @@
-WordPress Toolset Plugin
+WordPress ToolSet Plugin
 ===============
 
 This WordPress plugin provides tools to configure WordPress and tools to get things done.
