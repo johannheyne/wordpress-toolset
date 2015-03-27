@@ -1,7 +1,7 @@
 <?php
 /*
-	@package   WordPressToolset
-	@author    Your Name mail@johannheyne
+	@package   wordpress-toolset
+	@author    Johann Heyne mail@johannheyne
 	@license   GPL-2.0+
 	@link      https://github.com/johannheyne/wordpress-toolset
 	@copyright 2014 Johann Heyne
