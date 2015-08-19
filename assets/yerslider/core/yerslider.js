@@ -2963,7 +2963,17 @@ function YerSlider() {
 		*/
 		function swipeStatus( event, phase, direction, distance/*, fingers*/ ) {
 
-			if ( t.stat.isswiping === false && t.stat.isanimating === false ) {
+			if ( 
+				(
+					direction === 'left'
+					|| direction === 'right'
+				)
+				&&
+				(
+				  t.stat.isswiping === false 
+				  && t.stat.isanimating === false
+				)
+			) {
 				
 				t.stat.isswiping = true;
 				
@@ -2974,7 +2984,7 @@ function YerSlider() {
 				
 				//If we are moving before swipe, and we are going L or R, then manually drag the images
 
-				else if ( phase === 'move' && ( direction === 'left' || direction === 'right' ) ) {
+				else if ( phase === 'move' ) {
 
 					if ( direction === 'left' ) {
 
