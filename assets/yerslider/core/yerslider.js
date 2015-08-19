@@ -49,6 +49,7 @@ function YerSlider() {
 		swipemouse: false,
 		swipeandprevnextbtn: false,
 		swipeanimationspeed: 300,
+		allowpagescroll: 'auto', // auto, horizontal, vertical, none
 
 		// animation
 		animationtype: 'ease', /* ease, ease-in-out, ease-in, ease-out, linear */
@@ -3033,7 +3034,7 @@ function YerSlider() {
 		t.obj.slider.swipe( {
 			triggerOnTouchEnd: true,
 			swipeStatus: swipeStatus,
-			//allowPageScroll: 'vertical',
+			allowPageScroll: t.param.allowpagescroll,
 			tap:function(event, target) {
 				/* this was a tab event */
 
