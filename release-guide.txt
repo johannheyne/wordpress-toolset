@@ -1,0 +1,4 @@
+Terminal: grunt bump
+then push changes to github
+write release notes in file release-notes.txt
+Terminal: grunt release
