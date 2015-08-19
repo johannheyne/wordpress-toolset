@@ -2652,10 +2652,8 @@ function YerSlider() {
 		if ( ! t.stat.touch || ( t.stat.touch && t.stat.loop === 'infinite' ) || ( t.stat.touch && t.param.autoplaycontinuously === true ) ) {
 
 			var index = 0,
-				i = 0
+				i = 0,
 				clones = t.stat.slidegroupmax;
-
-				t.param.slidingstep
 
 			if ( t.stat.slidegroup > 0 ) {
 
@@ -2763,7 +2761,7 @@ function YerSlider() {
 
 						if ( t.stat.lasteventtype === 'click-next'
 						|| t.stat.lasteventtype === 'autoplay'
-						|| t.stat.lasteventtype === 'swipe-right' ) {
+						|| t.stat.lasteventtype === 'swipe-left' ) {
 
 							if ( t.stat.currentslideindex === t.stat.slidecount
 							|| t.stat.currentslideindex === t.stat.slidecount - t.stat.slidegroup + t.param.slidingstep ) {
@@ -2790,7 +2788,7 @@ function YerSlider() {
 
 						if ( t.stat.lasteventtype === 'click-next'
 						|| t.stat.lasteventtype === 'autoplay' 
-						|| t.stat.lasteventtype === 'swipe-right' ) {
+						|| t.stat.lasteventtype === 'swipe-left' ) {
 
 							if ( t.stat.currentslideindex == t.stat.slidecount ) {
 
