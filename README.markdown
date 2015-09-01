@@ -169,6 +169,7 @@ $GLOBALS['toolset'] = array(
 * [tool_javascript_recomended](tools/tool_javascript_recomended/readme.markdown)
 * [tool_ajax](tools/tool_ajax/readme.markdown)
 * [tool_meta_title](tools/tool_meta_title/readme.markdown)
+* [tool_wp_user](tools/tool_wp_user/readme.markdown)
 
 ### Assets
 

@@ -265,6 +265,20 @@
 					),
 
 				// }
+				
+				// tool_wp_user {
+
+					'tool_wp_user_login_form' => array(
+						'dir' => 'tool_wp_user',
+						'funame' => 'tool_wp_user_login_form',
+					),
+
+					'tool_wp_user_logout_link' => array(
+						'dir' => 'tool_wp_user',
+						'funame' => 'tool_wp_user_logout_link',
+					),
+					
+				// }
 			)
 		);
 
