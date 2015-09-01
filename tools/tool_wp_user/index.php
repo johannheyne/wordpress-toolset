@@ -58,7 +58,9 @@
 
 				add_action( 'wp_login', function( $user_login, $user ) {
 
-					if ( isset( $_POST['login_submit'] ) AND $user ) {
+					$p = $GLOBALS['toolset']['cache']['tool_wp_user']['login'];
+
+					if ( isset( $_POST[ $p['submit_id'] ] ) AND $user ) {
 
 						wp_redirect( esc_url( $_POST[ $p['redirect_id'] ] ) );
 					}
