@@ -279,6 +279,15 @@
 					),
 					
 				// }
+
+				// tool_instagram {
+
+					'tool_instagram_embed' => array(
+						'dir' => 'tool_instagram',
+						'funame' => 'tool_instagram_embed',
+					),
+
+				// }
 			)
 		);
 
