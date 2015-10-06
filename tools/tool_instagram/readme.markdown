@@ -3,7 +3,7 @@
 Tool Instagram
 ===============================
 
-## tool_instagram_embed
+### tool_instagram_embed
 
 ````php
 
