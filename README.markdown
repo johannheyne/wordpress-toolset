@@ -170,6 +170,7 @@ $GLOBALS['toolset'] = array(
 * [tool_ajax](tools/tool_ajax/readme.markdown)
 * [tool_meta_title](tools/tool_meta_title/readme.markdown)
 * [tool_wp_user](tools/tool_wp_user/readme.markdown)
+* [tool_instagram](tools/tool_instagram/readme.markdown)
 
 ### Assets
 

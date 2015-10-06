@@ -3,7 +3,7 @@
 Tool Instagram
 ===============================
 
-# tool_instagram_embed
+## tool_instagram_embed
 
 ````php
 
@@ -12,7 +12,7 @@ Tool Instagram
 	$result = tool( array(
 		'name' => 'tool_instagram_embed',
 		'param' => array(
-			'code' => '8I2ry5JQLI', // instagram image code
+			'code' => '', // instagram image code
 			'layout' => array(
 				'type' => 'basic', // basic
 				'classes-prefix' => '',
@@ -103,7 +103,7 @@ Tool Instagram
 
 ````html
 	
-	<!-- the basic layout html -->
+	<!-- the returning basic layout html -->
 	
 	<figure class="instagram-wrap">
 		<a class="instagram-img-link" href="" target="_blank">
