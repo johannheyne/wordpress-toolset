@@ -5,6 +5,10 @@ Tool Instagram
 
 ### tool_instagram_embed
 
+This tool provides image-data and embeding html without a nee of an access_token and client_id. All it needs is the instagram image code.
+
+Source: https://instagram.com/developer/embedding/?ref=driverlayer.com
+
 ````php
 
 	// parameter
