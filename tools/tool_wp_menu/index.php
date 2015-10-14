@@ -14,7 +14,31 @@
 
 					foreach ( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_menu_pages'] as $item ) {
 
-						remove_menu_page( $item['page'] );
+						$check = true;
+
+						if ( isset( $item['exclude_sites_by_id'] ) ) {
+
+							global $current_blog;
+
+							if ( isset( $current_blog ) ) {
+
+								 $blog_id =  $current_blog->blog_id;
+							 }
+							 else {
+
+								 $blog_id = 1;
+							 }
+
+							if ( in_array( $blog_id, $item['exclude_sites_by_id'] ) ) {
+
+								$check = false;
+							}
+						}
+
+						if ( $check ) {
+
+							remove_menu_page( $item['page'] );
+						}
 					}
 				}
 
@@ -36,7 +60,31 @@
 
 					foreach ( $GLOBALS['toolset']['inits']['tool_wp_menu']['tool_remove_submenu_pages'] as $item ) {
 
-						remove_submenu_page( $item['page'], $item['subpage'] );
+						$check = true;
+
+						if ( isset( $item['exclude_sites_by_id'] ) ) {
+
+							global $current_blog;
+
+							if ( isset( $current_blog ) ) {
+
+								 $blog_id =  $current_blog->blog_id;
+							 }
+							 else {
+
+								 $blog_id = 1;
+							 }
+
+							if ( in_array( $blog_id, $item['exclude_sites_by_id'] ) ) {
+
+								$check = false;
+							}
+						}
+
+						if ( $check ) {
+
+							remove_submenu_page( $item['page'], $item['subpage'] );
+						}
 					}
 				}
 
