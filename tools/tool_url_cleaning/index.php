@@ -1,8 +1,8 @@
 <?php
 
-	// URL CLEANING ( Version 1 ) {
+	// URL CLEANING ( Version 2 ) {
 
-		function tool_sanitize_urlstring( $string = '' ) {
+		function tool_url_cleaning( $string = '' ) {
 
 			  $string = str_replace( 'Ä', 'Ae', $string );
 			  $string = str_replace( 'ä', 'ae', $string );
@@ -25,33 +25,33 @@
 
 		// SLUG {
 
-			add_filter( 'sanitize_title', 'filter_slug', 5, 3 );
-			function filter_slug( $title, $raw_title = NULL, $context = 'query' ) {
+			add_filter( 'sanitize_title', function( $title, $raw_title = NULL, $context = 'query' ) {
 
 				if ( $raw_title != NULL ) {
 					$title = $raw_title;
 				}
 
-				$title = tool_sanitize_urlstring( $title );
+				$title = tool_url_cleaning( $title );
 
 				if ( $context == 'save' ) {
 					$title = remove_accents( $title );
 				}
 
 				return $title;
-			}
+			}, 5, 3 );
+			
 
 		// }
 
 		// FILENAME {
 
-			add_filter( 'wp_handle_upload_prefilter', 'custom_upload_name' );   
-			function custom_upload_name( $file ) {
+			add_filter( 'wp_handle_upload_prefilter', function( $file ) {
 
-				$file['name'] = tool_sanitize_urlstring( $file['name'] );
+				$file['name'] = tool_url_cleaning( $file['name'] );
 
 				return $file;
-			}
+			} );   
+			
 
 		// }
 
