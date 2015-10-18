@@ -376,15 +376,6 @@
 				t.obj.cols_root_inner_2 = t.obj.root.find( t.sel.cols_root_inner_2 );
 				t.obj.cols_wrap = t.obj.root.find( t.sel.cols_wrap );
 				t.obj.cols_inner = t.obj.root.find( t.sel.cols_inner );
-				//t.obj.body.append('<div class="gridoverlay_grid"><div class="gridoverlay_grid_wrap"><div class="gridoverlay_grid_inner">' + t.param.colshtml + '</div></div></div>');
-
-				//var objGridoverlayGrid = jQuery('.gridoverlay_grid'),
-				//	objGridoverlayWrap = objGridoverlayGrid.find('.gridoverlay_grid_wrap'),
-				//	objGridoverlay = objGridoverlayWrap.find('.gridoverlay_grid_inner'),
-				//	objGridoverlayCol = objGridoverlay.find('.gridoverlay_col'),
-				//	objGridoverlayColInner = objGridoverlayCol.find('.gridoverlay_col_innner'),
-				//	objGridoverlayImageWrap = jQuery('.gridoverlay_image_wrap');
-				//	objGridoverlayImage = objGridoverlayImageWrap.find('.gridoverlay_image');
 
 				var margin = 'auto',
 					textalign = 'center';
