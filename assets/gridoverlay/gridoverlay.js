@@ -3,23 +3,26 @@
 	/* EXAMPLE USAGE
 
 		jQuery.noConflict();
-		jQuery(document).ready(function ($) {
+		jQuery( document ).ready( function ( $ ) {
 
 			var gridoverlay = new GridOverlay();
 			gridoverlay.init({
 				use: true,
-				show_cols_on_start: false,
-				show_grid_on_start: false,
+				show_cols: false,
+				show_grid: false,
+				show_images: false,
 				grid_opacity: 0.3,
 				width: 1200,
 				fluid: true,
 				cols: 12,
 				gap: 20,
 				orientation: 'center', // center, left
-				zindex: -1,
-				colshtml: '',
-				image: false, // '/backend/wp-content/themes/themname/js/gridoverlay/{bild}',
+				zindex_back: -1,
+				zindex_top: 999999,
+				images: false, // array [{ 'file': '{file-name}'},]
 				image_opacity: 0.5,
+				plugin_path: '/wp-content/plugins/',
+				image_path: '/wp-content/themes/{theme-name}/assets/gridoverlay/',
 			});
 
 		});
@@ -40,9 +43,10 @@
 			cols: 12,
 			gap: 20,
 			orientation: 'center', // center, left
-			zindex: -1,
+			zindex_back: -1,
+			zindex_top: 999999,
 			colshtml: '',
-			image: false, // '/backend/wp-content/themes/themname/js/gridoverlay/{bild}',
+			images: false, // array [{ 'file': '{file-name}'},]
 			image_opacity: 0.5,
 			plugin_path: '/wp-content/plugins/',
 			image_path: '/gridoverlay-images/',
@@ -65,6 +69,7 @@
 			'menu_button_cols': '.gridoverlay_menu_button_cols',
 			'menu_button_images': '.gridoverlay_menu_button_images',
 			'menu_button_image': '.gridoverlay_menu_button_image',
+			'menu_button_zindex': '.gridoverlay_menu_button_zindex',
 		}
 
 		t.obj = {
@@ -88,6 +93,7 @@
 		t.stat = {
 			'grid_visibility': 'false',
 			'cols_visibility': 'false',
+			'zindex': 'back', // back, top
 		};
 
 		t.init = function ( p ) {
@@ -114,8 +120,59 @@
 					t.init_grid();
 				}
 
+				t.init_zindex_button();
 				t.init_styles();
 			}
+
+		};
+
+		t.init_zindex_button = function() {
+
+			// BUTTON {
+
+				t.obj.menu_buttons.append( '<div class="' + t.sel.menu_button.replace( '.', '' ) + ' ' + t.sel.menu_button_zindex.replace( '.', '' ) + '">Z</div>' );
+
+				t.obj.menu_button_zindex = t.obj.root.find( t.sel.menu_button_zindex );
+
+			// }
+
+			t.obj.body.on( 'click', t.sel.menu_button_zindex, function() {
+
+				if ( t.stat.zindex === 'back' ) {
+
+					t.stat.zindex = 'top';
+
+					t.obj.grid_root.css( 'z-index', t.param.zindex_top );
+					t.obj.cols_root.css( 'z-index', t.param.zindex_top );
+					t.obj.image_root.css( 'z-index', t.param.zindex_top );
+				}
+				else {
+
+					t.stat.zindex = 'back';
+
+					t.obj.grid_root.css( 'z-index', t.param.zindex_back );
+					t.obj.cols_root.css( 'z-index', t.param.zindex_back );
+					t.obj.image_root.css( 'z-index', t.param.zindex_back);
+				}
+
+				t.set_cookie( 'gridoverlay-zindex', t.stat.zindex, 10 );
+
+			} );
+
+			// SET ZINDEX FROM COOCKIE {
+
+				var zindex = t.get_cookie( 'gridoverlay-zindex' );
+
+				if ( zindex === 'top' ) {
+
+					t.stat.zindex = 'top';
+
+					t.obj.grid_root.css( 'z-index', t.param.zindex_top );
+					t.obj.cols_root.css( 'z-index', t.param.zindex_top );
+					t.obj.image_root.css( 'z-index', t.param.zindex_top );
+				}
+
+			// }
 
 		};
 
@@ -136,7 +193,7 @@
 
 				t.obj.menu.css( {
 					'position': 'fixed',
-					'z-index': '99999',
+					'z-index': t.param.zindex_top + 1,
 					'top': '0',
 					'right': '0',
 					'width': '20px',
@@ -206,7 +263,8 @@
 					'background-size': 'auto',
 					'background-repeat': 'repeat',
 					'background-position': position,
-					'opacity': t.param.grid_opacity
+					'opacity': t.param.grid_opacity,
+					'z-index': t.param.zindex_back,
 				} );
 
 			// }
@@ -284,6 +342,7 @@
 					'background-repeat': 'no-repeat',
 					'background-position': position,
 					'opacity': t.param.image_opacity,
+					'z-index': t.param.zindex_back,
 				} );
 
 			// }
@@ -387,7 +446,7 @@
 				}
 
 				t.obj.cols_root.css({
-					'z-index': '-1',
+					'z-index': t.param.zindex_back,
 					'opacity': '1',
 					'position': 'fixed',
 				});
@@ -417,7 +476,7 @@
 				if ( t.param.fluid ) {
 
 					t.obj.cols_root.css({
-						'z-index': t.param.zindex,
+						'z-index': t.param.zindex_back,
 						'top': '0',
 						'left': '0',
 						'right': '0',
@@ -438,7 +497,7 @@
 				else {
 
 					t.obj.cols_root.css({
-						'z-index': t.param.zindex,
+						'z-index': t.param.zindex_back,
 						'top': '0',
 						'bottom': '0',
 						'right': '0',
