@@ -1,10 +1,24 @@
 <?php
 
-	// WPML HACKS Version ( 1 ) {
+	// WPML HACKS Version ( 2 ) {
 
-		if ( !function_exists( 'icl_is_translated_duplicate' ) ) {
+		// GET THE CURRENT LANGUAGE {
 
-			function icl_is_translated_duplicate( $post_id ) {
+			/* ABOUT
+
+				returns:
+
+					outside a template:
+					- the toolset setup lang ($GLOBALS['toolset']['sites'][{blog_id}]['lang']
+					- false
+
+					inside a template:
+					- the default WPML-language if post is a duplicate
+					- the WPML-language (ICL_LANGUAGE_CODE)
+
+			*/
+
+			function tool_wpml_post_is_duplicate( $post_id ) {
 
 				global $wpdb;
 				/* if the post is a duplicate, then return the post_id of the base post */
@@ -14,29 +28,88 @@
 				$return = $result === false ? false : $result;
 
 				return $return;
-			}
-		}
+			};
 
-		if ( !function_exists( 'icl_get_language_code' ) ) {
+			function tool_wpml_get_current_lang() {
 
-			function icl_get_language_code() {
+				$r = false;
 
-				// get the real language code on duplicated posts
-				// they contain content with the default language
-				global $post;
+				// POST {
 
-				$dlang = ICL_LANGUAGE_CODE;
+					global $post;
 
-				if ( isset( $post ) && icl_is_translated_duplicate( $post->ID ) ) {
+					if ( isset( $post ) ) {
 
-					global $sitepress;
+						// RETURN FROM POST CACHE {
 
-					$dlang = $sitepress->get_default_language();
-				}
+							if ( isset( $GLOBALS['toolset']['cache']['tool_wpml']['lang'][ $post->ID ] ) ) {
 
-				return $dlang;
-			}
-		}
+								$r = $GLOBALS['toolset']['cache']['tool_wpml']['lang'][ $post->ID ];
+							}
+
+						// }
+
+						// GENERATE POST CACHE {
+
+							else {
+
+								// FROM DUPLICATES DEFAULT POST {
+
+									if ( tool_wpml_post_is_duplicate( $post->ID ) ) {
+										global $sitepress;
+
+										$lang = $sitepress->get_default_language();
+
+										$GLOBALS['toolset']['cache']['tool_wpml']['post_lang'][ $post->ID ] = $lang;
+
+										$r = $lang;
+									}
+
+								// }
+
+								// FROM POST {
+
+									elseif ( defined( 'ICL_LANGUAGE_CODE' ) ) {
+
+										$GLOBALS['toolset']['cache']['tool_wpml']['post_lang'][ $post->ID ] = ICL_LANGUAGE_CODE;
+
+										$r = ICL_LANGUAGE_CODE;
+									}
+
+								// }
+							}
+
+						// }
+					}
+
+				// }
+
+				// NO POST {
+
+					else {
+
+						if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
+
+							$r = ICL_LANGUAGE_CODE;
+						}
+						else {
+
+							$blog_id = get_current_blog_id();
+
+							if ( isset( $GLOBALS['toolset']['sites'][ $blog_id ]['lang'] ) ) {
+
+								$r = $GLOBALS['toolset']['sites'][ $blog_id ]['lang'];
+							}
+						}
+
+					}
+
+				// }
+
+				return $r;
+			};
+
+		// }
 
 	// }
 
