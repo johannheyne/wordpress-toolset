@@ -1,13 +1,12 @@
 <?php
 
-	// BACKEND STYLES ( Version 2 ) {
+	// BACKEND STYLES ( Version 3 ) {
 
-		function customStyles() {
+		add_action( 'admin_head', function() {
 
-			echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('template_directory') . '/css/backend-styles.css" />';
-		}
+			echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo( 'template_directory' ) . '/css/backend-styles.css" />';
 
-		add_action( 'admin_head', 'customStyles' );
+		} );
 
 	// }
 
