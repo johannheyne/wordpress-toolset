@@ -1,0 +1,5 @@
+<?php
+
+	// $GLOBALS['toolset']['inits']
+
+?>
