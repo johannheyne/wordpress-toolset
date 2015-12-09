@@ -4,15 +4,6 @@
 
 		function tool_switch_to_blog( $p = array() ) {
 
-			// FALLBACK {
-
-				if ( ! is_array( $p ) ) {
-
-					$p['id'] = $p;
-				}
-
-			// }
-
 			// DEFAULTS {
 
 				$defaults = array(
