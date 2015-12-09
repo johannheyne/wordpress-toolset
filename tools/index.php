@@ -64,6 +64,11 @@
 						'funame' => 'get_adaptive_image_src',
 					),
 
+					'get_adaptive_image_resp' => array(
+						'dir' => 'tool_adaptive_images',
+						'funame' => 'tool_get_adaptive_image_resp',
+					),
+
 				// }
 
 				// tool_content_filter {

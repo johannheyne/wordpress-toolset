@@ -1,14 +1,23 @@
 <?php
 
-	// IMAGE SIZE ( Version 6 ) {
+	// DISABLE WP SRCSET ( Version 1 ) {
 
-		function remove_image_sizes( $sizes) {
+		add_filter( 'wp_calculate_image_srcset', function() {
+
+			return null;
+		}, 1000, 2 );
+
+	// }
+	
+	// IMAGE SIZE ( Version 7 ) {
+
+		add_filter('intermediate_image_sizes_advanced', function( $sizes) {
 			// unset( $sizes['thumbnail']);
 			// unset( $sizes['medium']);
 			unset( $sizes['large']);
+			unset( $sizes['medium-large']);
 			return $sizes;
-		}
-		add_filter('intermediate_image_sizes_advanced', 'remove_image_sizes');
+		});
 
 		/* sizes for icons and previews in wordpress */
 		add_image_size( 'thumbnail', '160', '160', /* crop */ false );
@@ -20,31 +29,37 @@
 
 		add_image_size( 'adaptive-image-base', '2000', '2000', /* crop */ false );
 
-		// get image function {
+		// GET ADAPTIVE IMAGE {
 
 			function get_adaptive_image( $p = array() ) {
 
-				$p += array(
-					'name' => 'full', 
-					'id' => false, 
-					'file' => false, 
-					'alt' => false, 
-					'img_class' => '',
-					'img_class_resp' => 'resp',
-					'img_data' => false,
-					'link_image' => false, /* true or size */
-					'link_page' => false, /* true or id of page */
-					'link_url' => false,
-					'link_class' => false,
-					'link_target' => false,
-					'root_class' => false,
-					'link_rel' => false,
-					'link_title' => false,
-					'link_data' => false,
-					'wrap' => false,
-					'wrap_class' => false,
-					'style' => false
-				);
+				// DEFAULTS {
+
+					$defaults = array(
+						'name' => 'full', 
+						'id' => false, 
+						'file' => false, 
+						'alt' => false, 
+						'img_class' => '',
+						'img_class_resp' => 'resp',
+						'img_data' => false,
+						'link_image' => false, /* true or size */
+						'link_page' => false, /* true or id of page */
+						'link_url' => false,
+						'link_class' => false,
+						'link_target' => false,
+						'root_class' => false,
+						'link_rel' => false,
+						'link_title' => false,
+						'link_data' => false,
+						'wrap' => false,
+						'wrap_class' => false,
+						'style' => false
+					);
+
+					$p = array_replace_recursive( $defaults, $p );
+
+				// }
 
 				/* Version 04.07.2012 */
 
@@ -199,7 +214,7 @@
 
 		// }
 
-		// get src {
+		// GET SRC {
 
 			function get_adaptive_image_src( $p = array(
 				'name' => 'full', 
@@ -217,14 +232,17 @@
 
 		// }
 
-		// multisite {
+		// MULTISITE {
 
 			function multisite_urls_2_real_urls( $buffer ) {
 
 				global $current_blog;
+
 				if ( config_get_curr_blog_id() > 1 ) {
+
 					$buffer = str_replace( $current_blog->path  . 'files', '/backend/wp-content/blogs.dir/' . config_get_curr_blog_id() . '/files', $buffer );
 				}
+
 				return $buffer;
 			}
 
@@ -232,6 +250,7 @@
 			function buffer_end() { ob_end_flush(); }
 
 			if ( config_get_curr_blog_id() > 1 ) {
+
 				add_action('wp_head', 'buffer_start');
 				add_action('wp_footer', 'buffer_end');
 				add_action('admin_head', 'buffer_start');
@@ -240,9 +259,9 @@
 
 		// }
 
-		// styles {
+		// STYLES {
 
-			function adaptive_images_styles() {
+			add_action( 'wp_head', function() {
 
 				include( get_template_directory() . '/config/adaptive-images-config.php' );
 
@@ -284,8 +303,7 @@
 					echo '</style>';
 				}
 
-			}
-			add_action('wp_head', 'adaptive_images_styles');
+			} );
 
 		// }
 
@@ -349,6 +367,111 @@
 			add_filter( 'image_size_names_choose','add_ai_image_size_names', 10, 1 );
 			add_filter( 'image_send_to_editor', 'ai_image_send_to_editor', 10, 8 );
 		}
+
+	// }
+
+	// ADAPTIVE IMAGES RESPONSIVE BACKGROUND IMAGE {
+
+		function tool_get_adaptive_image_resp( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'images' => false, // array(''=>''): id, name, mediaquery
+					'class' => false,
+					'template' => '<a href="{href}" class="{class_wrap}">{text}</a>',
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+				$r = '';
+
+			// }
+
+			// VARS {
+
+				$var['styles'] = '';
+				$var['html'] = '';
+
+			// }
+
+			// STYLES {
+
+				$var['styles'] .= '<style>/* responsive image styles for .' . $p['class'] . ' */';
+
+					// GENERAL STYLES {
+
+						$var['styles'] .= '.' . $p['class'] . '{';
+							$var['styles'] .= 'width: 100%;';
+							$var['styles'] .= 'background-size:cover;';
+						$var['styles'] .= '}';
+
+						$var['styles'] .= '.' . $p['class'] . ':after{';
+							$var['styles'] .= 'content:"";';
+							$var['styles'] .= 'display:inline-block;';
+						$var['styles'] .= '}';
+
+					// }
+
+					if ( $p['images'] AND is_array( $p['images'] ) ) {
+
+						foreach ( $p['images'] as $key => $item ) {
+
+							$src = get_adaptive_image_src( array(
+								'id' => $item['img_id'], 
+								'name' => $item['ai_name'], 
+							) );
+
+							$size = getimagesize( $src );
+
+							// MEDIAQUERY STYLES {
+
+								if ( $item['mediaquery'] ) {
+
+									$var['styles'] .= '@media' . $item['mediaquery'] . '{';
+								}
+
+									$var['styles'] .= '.' . $p['class'] . ':after{';
+										$var['styles'] .= 'padding-top:' . ( 100 / $size[0] ) * $size[1] . '%;';
+									$var['styles'] .= '}';
+									$var['styles'] .= '.' . $p['class'] . '{';
+										$var['styles'] .= 'background-image:url(' . $src . ');';
+									$var['styles'] .= '}';
+
+								if ( $item['mediaquery'] ) {
+
+									$var['styles'] .= '}';
+								}
+
+							// }
+
+						}
+					}
+
+				$var['styles'] .= '</style>';
+
+			// }
+
+			// HTML {
+
+				$var['html'] = $p['template'];
+
+				$replace = array (
+					'{class}' => $p['class'], 
+				);
+
+				$var['html'] = strtr( $var['html'], $replace );
+
+			// }
+
+			// RETURN {
+
+				$r = $var['styles'] . $var['html'];
+
+			// }
+
+			return $r;
+		};
 
 	// }
 
