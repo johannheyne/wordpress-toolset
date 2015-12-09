@@ -303,6 +303,15 @@
 
 				// }
 
+				// tool_transient {
+
+					'tool_transient' => array(
+						'dir' => 'tool_transient',
+						'funame' => 'tool_transient',
+					),
+
+				// }
+
 			)
 		);
 
