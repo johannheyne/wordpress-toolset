@@ -27,8 +27,11 @@ function YerSlider() {
 		// path
 		yersliderfolderabsolutepath: '/',
 
-		// sliderid
+		// slider id
 		sliderid: '.yerslider',
+
+		// slider object
+		sliderobj: undefined,
 
 		// images loaded
 		imagesloaded: [ 'slide', 'thumbs' ], /* [ 'slider', 'slide', 'thumbs' ] */
@@ -95,7 +98,7 @@ function YerSlider() {
 		// keys
 		nextkey: 13,
 		prevkey: 14,
-		
+
 		// bullets
 		bullets: false,
 		bulletslocation: 'outside', // inside, outside,
@@ -137,7 +140,7 @@ function YerSlider() {
 
 		// detachning
 		detach: undefined,
-		
+
 		sliderfadeinspeed: 'slow'
 	};
 
@@ -341,9 +344,9 @@ function YerSlider() {
 		t.clon_slides();
 
 		t.set_prevnext();
-		
+
 		t.keynav();
-		
+
 		t.thumbs();
 
 		t.bullets();
@@ -484,12 +487,25 @@ function YerSlider() {
 
 		/* define slider objects */
 
-		t.obj.sliderid = jQuery( t.param.sliderid );
-		t.obj.sliderwrap = jQuery( t.param.sliderid );
-		t.obj.sliderviewport = jQuery( t.param.sliderid + ' ' + t.param.sliderviewportclass );
-		t.obj.slidermask = jQuery( t.param.sliderid + ' ' + t.param.slidermaskclass );
-		t.obj.slider = jQuery( t.param.sliderid + ' ' + t.param.sliderclass );
-		t.obj.slide = jQuery( t.param.sliderid + ' ' + t.param.slideclass );
+		if ( typeof t.param.sliderobj === 'undefined' ) {
+
+			t.obj.sliderid = jQuery( t.param.sliderid );
+			t.obj.sliderwrap = jQuery( t.param.sliderid );
+			t.obj.sliderviewport = jQuery( t.param.sliderid + ' ' + t.param.sliderviewportclass );
+			t.obj.slidermask = jQuery( t.param.sliderid + ' ' + t.param.slidermaskclass );
+			t.obj.slider = jQuery( t.param.sliderid + ' ' + t.param.sliderclass );
+			t.obj.slide = jQuery( t.param.sliderid + ' ' + t.param.slideclass );
+		}
+		else {
+
+			t.obj.sliderid = t.param.sliderobj;
+			t.obj.sliderwrap = t.param.sliderobj;
+			t.obj.sliderviewport = t.param.sliderobj.find( t.param.sliderviewportclass );
+			t.obj.slidermask = t.param.sliderobj.find( t.param.slidermaskclass );
+			t.obj.slider = t.param.sliderobj.find( t.param.sliderclass );
+			t.obj.slide = t.param.sliderobj.find( t.param.slideclass );
+		}
+
 	};
 
 	t.init_css = function () {
@@ -1541,28 +1557,6 @@ function YerSlider() {
 			var nextclassadd = '',
 				prevclassadd = '';
 
-			if ( typeof t.obj.nextbtn !== 'object' && t.param.nextbtn ) {
-
-				if ( t.param.nextclassadd !== '' ) {
-
-					nextclassadd = ' ' + t.param.nextclassadd.replace( '.', '' );
-				}
-
-				var html = '<div class="js-yerslider-next ' + t.param.prevnextclass.replace( '.', '' ) + ' ' + t.param.nextclass.replace( '.', '' ) + nextclassadd + '">';
-
-				if ( t.param.prevnextlocation === 'inside' ) {
-
-					t.obj.sliderviewport.append( html );
-				}
-
-				if ( t.param.prevnextlocation === 'outside' ) {
-
-					t.obj.sliderwrap.append( html );
-				}
-
-				t.obj.nextbtn = jQuery( t.param.sliderid + ' ' + t.param.nextclass );
-			}
-
 			if ( typeof t.obj.prevbtn !== 'object' && t.param.prevbtn ) {
 
 				if ( t.param.prevclassadd !== '' ) {
@@ -1585,6 +1579,28 @@ function YerSlider() {
 				t.obj.prevbtn = jQuery( t.param.sliderid + ' ' + t.param.prevclass );
 			}
 
+			if ( typeof t.obj.nextbtn !== 'object' && t.param.nextbtn ) {
+
+				if ( t.param.nextclassadd !== '' ) {
+
+					nextclassadd = ' ' + t.param.nextclassadd.replace( '.', '' );
+				}
+
+				var html = '<div class="js-yerslider-next ' + t.param.prevnextclass.replace( '.', '' ) + ' ' + t.param.nextclass.replace( '.', '' ) + nextclassadd + '">';
+
+				if ( t.param.prevnextlocation === 'inside' ) {
+
+					t.obj.sliderviewport.append( html );
+				}
+
+				if ( t.param.prevnextlocation === 'outside' ) {
+
+					t.obj.sliderwrap.append( html );
+				}
+
+				t.obj.nextbtn = jQuery( t.param.sliderid + ' ' + t.param.nextclass );
+			}
+
 			t.refresh_prevnext();
 		}
 
@@ -1601,6 +1617,8 @@ function YerSlider() {
 				t.obj.prevbtn = undefined;
 				t.stat.prevbtnclickable = false;
 			}
+
+			t.set_slide_current_class();
 		}
 
 	};
@@ -1751,27 +1769,49 @@ function YerSlider() {
 				t.prevbtn_click_unbind();
 			}
 		}
+
+		t.set_slide_current_class();
+
 	};
 
 	t.set_slide_current_class = function () {
 
 		t.obj.slide.removeClass('current');
+		t.obj.slide.removeClass('slidegroup-current');
+		t.obj.slide.removeClass('slidegroup-first');
+		t.obj.slide.removeClass('slidegroup-last');
+
+		for ( var i in t.stat.slidesinviewportindexes ) {
+
+			jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'slidegroup-current' );
+
+			if ( i == 0 ) {
+
+				jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'slidegroup-first' );
+			}
+
+			if ( i == t.stat.slidegroup - 1 ) {
+
+				jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'slidegroup-last' );
+			}
+		}
+
 		jQuery( t.obj.slide[ t.stat.currentslideindex ] ).addClass('current');
 
 	};
-	
+
 	t.keynav = function () {
 
 	    jQuery( document ).on( 'keyup', function ( event ) {
 
 			if ( event.keyCode === 39 ) {
-				
+
 				t.stat.lasteventtype = 'click-next';
 				t.next_job();
 			}
-			
+
 			if ( event.keyCode === 37 ) {
-				
+
 				t.stat.lasteventtype = 'click-prev';
 				t.prev_job();
 			}
@@ -2951,6 +2991,7 @@ function YerSlider() {
 
 	t.resize_end = function () {
 
+		t.set_slide_current_class();
 	};
 
 	t.touchswipe = function () {
@@ -2974,14 +3015,14 @@ function YerSlider() {
 				  && t.stat.isanimating === false
 				)
 			) {
-				
+
 				t.stat.isswiping = true;
-				
+
 				if ( phase === 'start' ) {
 
 					event.preventDefault();
 				}
-				
+
 				//If we are moving before swipe, and we are going L or R, then manually drag the images
 
 				else if ( phase === 'move' ) {
@@ -3032,12 +3073,12 @@ function YerSlider() {
 
 						t.autoplayset();
 					}
-					
+
 				}
 
 				t.stat.isswiping = false;
 			}
-			
+
 		}
 
 		// init touch swipe
@@ -3247,7 +3288,6 @@ function YerSlider() {
 		setDefaultParam: function ( p ) {
 
 			var r = jQuery.extend( true, p.d, p.p );
-			
 
 			return r;
 		},
