@@ -5,16 +5,39 @@
 		/* Die Klassen "current-menu-item", "current-menu-parent", "current-menu-ancestor"
 		   werden für SubmenuWalker() benötigt */
 
-		function cssklassen_menu_classes( $classes, $item ) {
+		add_filter( 'nav_menu_css_class', function( $classes, $item ) {
 
-			$classes = array_filter( 
-				$classes, 
-				create_function( '$class', 'return in_array( $class, array( "current-menu-item", "current-menu-parent", "current-menu-ancestor" ) );' )
-			);
-			return array_merge( $classes, (array)get_post_meta( $item->ID, '_menu_item_classes', true ) );
-		}
+			// DEFAULTS {
 
-		add_filter( 'nav_menu_css_class', 'cssklassen_menu_classes', 10, 2 );
+				$defaults = array(
+					'allow_classes' => array(
+						'current-menu-item',
+						'current-menu-parent',
+						'current-menu-ancestor',
+						//'menu-item',
+						//'dropdown',
+						//'menu-item-has-children',
+					),
+				);
+
+				$p = array();
+
+				if ( isset( $GLOBALS['toolset']['inits']['tool_wpnavmenu_cleaning_classes'] ) ) {
+
+					$p = $GLOBALS['toolset']['inits']['tool_wpnavmenu_cleaning_classes'];
+				}
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$filter = $p['allow_classes'];
+
+			$r = array_intersect( $classes , $filter );
+
+			return $r;
+
+		}, 10, 2 );
 
 	// }
 
