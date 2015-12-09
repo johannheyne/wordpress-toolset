@@ -1,14 +1,20 @@
 <?php
 
 	// ACF BUILD OPTIONPAGE ( Version 3 ) {
-		
+
 		// requires: tool_localization_constants
-		
+		// Source: http://www.advancedcustomfields.com/resources/acf_add_options_sub_page/
+
 		/* USAGE
 
 			$setup = array(
 				'optionpage_name' => 'Optionpage',
 				'optionpage_key' => 'optionpage',
+				'parent' => false,
+				'slug' => false,
+				'menu' => false,
+				'capability' => 'manage_options',
+				'sites' => false, // array( '1' )
 				'fieldgroups' => array(
 
 					// FIELDGROUPS {
@@ -61,7 +67,15 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'setup' => false,
+					'setup' => array(
+						'optionpage_name' => false,
+						'optionpage_key' => false,
+						'parent' => false,
+						'slug' => false,
+						'menu' => false,
+						'capability' => 'manage_options',
+						'sites' => false, // array( '1' )
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -72,9 +86,33 @@
 
 				// REGISTER OPTIONSPAGE {
 
+					// Source: http://www.advancedcustomfields.com/resources/acf_add_options_sub_page/
+
 					if ( function_exists( 'register_options_page' ) ) {
 
-						acf_add_options_sub_page( $p['setup']['optionpage_name'] );
+						$check = true;
+
+						if ( $p['setup']['sites'] ) {
+
+							global $current_blog;
+
+							if ( isset( $current_blog ) AND ! in_array( $current_blog->blog_id, $p['setup']['sites'] ) ) {
+
+								$check = false;
+							}
+						}
+
+						if ( $check ) {
+
+							acf_add_options_sub_page( array(
+								'title' => $p['setup']['optionpage_name'],
+								'parent' => $p['setup']['parent'],
+								'capability' => $p['setup']['capability'],
+								'slug' => $p['setup']['slug'],
+								'menu' => $p['setup']['menu'],
+							) );
+						}
+
 					}
 
 				// }
