@@ -351,7 +351,7 @@
 
 				var img_index = t.get_cookie( 'gridoverlay-image-index' );
 
-				if ( img_index != 'none' ) {
+				if ( img_index && img_index != 'none' ) {
 
 					t.obj.image_root.show();
 					t.obj.image_root.css( 'background-image', 'url(' + t.param.image_path + t.param.images[ img_index ]['file'] + ')' );
