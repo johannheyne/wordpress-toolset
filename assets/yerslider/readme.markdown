@@ -175,58 +175,24 @@ Options
 sliderid: '.mysliderclass',
 ```
 
-### Images Loaded #########################
+### Loop #################################
 
 ```javascript
-imagesloaded: [ 'slide', 'thumbs' ], // [ 'slider', 'slide', 'thumbs' ]
-loadingmessagedelay: 30,
+loop: 'none', // infinite, rollback
 ```
 
-With ```imagesloaded``` slider areas are defined, which are to be checked for loaded images before they are displayed. 
-```'slider'``` will display the sliderviewport when all images of all slides are loaded.
-```'slide'``` will display the sliderviewport when all images of the first slides in the viewport are loaded.
-This also pauses sliding and creates an new element inside the viewport with the class ```.slider-loading``` until the images of the next current slides are loaded.
-
-```'thumbs'``` will display the thumps when all images used in the thumbs are loaded.
-
-The ```loadingmessagedelay``` defines the time in milliseconds to wait, until the element with the class ```.slider-loading``` should be created while checking for loaded images.
-
-### CSS Classes #########################
-
-YerSlider uses some css classes you may could change.
+### Transition Style #################################
 
 ```javascript
-// basic slider
-sliderclass: '.yerslider',
-sliderwrapclass: '.yerslider-wrap',
-sliderwrapclasshasbullets: '.yerslider-has-bullets',
-sliderviewportclass: '.yerslider-viewport',
-slidermaskclass: '.yerslider-mask',
-sliderclass: '.yerslider-slider',
-slideclass: '.yerslider-slide',
+transitionstyle: 'slide', // slide, fade
+animationspeed_adjustheight: 300,
+```
 
-// previous and next buttons
-prevnextclass: '.yerslider-prevnext',
-nextclass: '.yerslider-next',
-prevclass: '.yerslider-prev',
-nextinactiveclass: '.yerslider-next-inactive',
-previnactiveclass: '.yerslider-prev-inactive',
+### Animation ############################
 
-// bullets
-sliderwrapclasshasbullets: '.yerslider-has-bullets',
-bulletswrapclass: '.yerslider-bullets-wrap',
-bulletclass: '.yerslider-bullet',
-bulletcurrentclass: '.yerslider-bullet-current',
-
-// thumbs
-sliderwrapclasshasthumbs: '.yerslider-has-thumbs',
-thumbswrapclass: '.yerslider-thumbs-wrap',
-thumbsmaskclass: '.yerslider-thumbs-mask',
-thumbsitemsclass: '.yerslider-thumbs-items',
-thumbsitemclass: '.yerslider-thumbs-item',
-
-// slide is loading message element
-loadingclass: '.yerslider-loading',
+```javascript
+animationtype: 'ease', // ease, ease-in-out, ease-in, ease-out, linear
+animationspeed: 1000,
 ```
 
 ### Group Slides #########################
@@ -332,19 +298,6 @@ thumbsready: function( p ) {
 }
 ```
 
-### Animation ############################
-
-```javascript
-animationtype: 'ease', // ease, ease-in-out, ease-in, ease-out, linear
-animationspeed: 1000,
-```
-
-### Loop #################################
-
-```javascript
-loop: 'none', // infinite, rollback
-```
-
 ### Autoplay ##############################
 
 ```javascript
@@ -416,4 +369,58 @@ detach: {
         }
     }
 }
+```
+
+### Images Loaded #########################
+
+```javascript
+imagesloaded: [ 'slide', 'thumbs' ], // [ 'slider', 'slide', 'thumbs' ]
+loadingmessagedelay: 30,
+```
+
+With ```imagesloaded``` slider areas are defined, which are to be checked for loaded images before they are displayed. 
+```'slider'``` will display the sliderviewport when all images of all slides are loaded.
+```'slide'``` will display the sliderviewport when all images of the first slides in the viewport are loaded.
+This also pauses sliding and creates an new element inside the viewport with the class ```.slider-loading``` until the images of the next current slides are loaded.
+
+```'thumbs'``` will display the thumps when all images used in the thumbs are loaded.
+
+The ```loadingmessagedelay``` defines the time in milliseconds to wait, until the element with the class ```.slider-loading``` should be created while checking for loaded images.
+
+### CSS Classes #########################
+
+YerSlider uses some css classes you may could change.
+
+```javascript
+// basic slider
+sliderclass: '.yerslider',
+sliderwrapclass: '.yerslider-wrap',
+sliderwrapclasshasbullets: '.yerslider-has-bullets',
+sliderviewportclass: '.yerslider-viewport',
+slidermaskclass: '.yerslider-mask',
+sliderclass: '.yerslider-slider',
+slideclass: '.yerslider-slide',
+
+// previous and next buttons
+prevnextclass: '.yerslider-prevnext',
+nextclass: '.yerslider-next',
+prevclass: '.yerslider-prev',
+nextinactiveclass: '.yerslider-next-inactive',
+previnactiveclass: '.yerslider-prev-inactive',
+
+// bullets
+sliderwrapclasshasbullets: '.yerslider-has-bullets',
+bulletswrapclass: '.yerslider-bullets-wrap',
+bulletclass: '.yerslider-bullet',
+bulletcurrentclass: '.yerslider-bullet-current',
+
+// thumbs
+sliderwrapclasshasthumbs: '.yerslider-has-thumbs',
+thumbswrapclass: '.yerslider-thumbs-wrap',
+thumbsmaskclass: '.yerslider-thumbs-mask',
+thumbsitemsclass: '.yerslider-thumbs-items',
+thumbsitemclass: '.yerslider-thumbs-item',
+
+// slide is loading message element
+loadingclass: '.yerslider-loading',
 ```
