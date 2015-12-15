@@ -2879,31 +2879,36 @@ function YerSlider() {
 
 	t.adjust_slider_height = function() {
 
-		var that = jQuery( t.obj.slide[ t.stat.currentslideindex ] );
+		var that = jQuery( t.obj.slide[ t.stat.currentslideindex ] )
+		
+		that.imagesLoaded()
+			.always( function( instance ) {
+				
+				that.height('');
 
-		that.height('');
+				var height = that.height();
 
-		var height = that.height();
+				if ( ! t.stat.adjustsliderheightinit ) {
 
-		if ( ! t.stat.adjustsliderheightinit ) {
+					t.obj.slidermask.height( height );
+					t.stat.adjustsliderheightinit = true;
+				}
+				else {
 
-			t.obj.slidermask.height( height );
-			t.stat.adjustsliderheightinit = true;
-		}
-		else {
+					if ( t.stat.cssanimation ) {
 
-			if ( t.stat.cssanimation ) {
+						t.obj.slidermask.height( height );
+					}
+					else {
 
-				t.obj.slidermask.height( height );
-			}
-			else {
-
-				t.obj.slidermask.animate({
-				 	'height': height + 'px',
-				}, t.param.animationspeed );
-			}
-		}
-
+						t.obj.slidermask.animate({
+						 	'height': height + 'px',
+						}, t.param.animationspeed );
+					}
+				}
+				
+			});
+		
 	};
 
 	// }
