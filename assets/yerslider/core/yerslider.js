@@ -2879,8 +2879,11 @@ function YerSlider() {
 
 	t.adjust_slider_height = function() {
 
-		var that = jQuery( t.obj.slide[ t.stat.currentslideindex ] ),
-			height = that.height();
+		var that = jQuery( t.obj.slide[ t.stat.currentslideindex ] );
+
+		that.height('');
+
+		var height = that.height();
 
 		if ( ! t.stat.adjustsliderheightinit ) {
 
