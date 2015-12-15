@@ -1940,7 +1940,7 @@ function YerSlider() {
 
 	t.autoplayinit = function () {
 
-		if ( t.param.autoplay ) {
+		if ( t.stat.slidecount > 1 && t.param.autoplay ) {
 
 			t.autoplayset();
 
