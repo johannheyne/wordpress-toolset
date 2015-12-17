@@ -9,7 +9,7 @@
 
 				$defaults = array(
 					'id' => 'tool_stransient',
-					'time' => '1', // 'tomorrow', 'next_hour'
+					'time' => '10', // 'tomorrow', 'next_hour'
 					'call' => false,
 				);
 
