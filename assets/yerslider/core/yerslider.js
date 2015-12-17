@@ -3175,32 +3175,41 @@ function YerSlider() {
 
 		t.stat.resizing = true;
 
-			if ( t.stat.isios ) {
+		if ( t.stat.isios ) {
 
-				t.stat.isresizing = true;
-				//t.obj.slider.fadeOut();
-			}
+			t.stat.isresizing = true;
+			//t.obj.slider.fadeOut();
+		}
 
-			t.set_slidermaskwidth();
-			t.set_slidegroup();
-			t.set_slidesinviewport();
-			t.set_slidewidth();
-			t.set_slideheight();
-			t.proof_slider_current_index();
+		t.set_slidermaskwidth();
+		t.set_slidegroup();
+		t.set_slidesinviewport();
+		t.set_slidewidth();
+		t.set_slideheight();
+		t.proof_slider_current_index();
+
+		if ( t.param.transitionstyle == 'slide' ) {
+
 			t.animate_slider_to_current_position( 0 );
+		}
 
-			t.set_prevnext();
+		if ( t.param.transitionstyle == 'fade' ) {
 
-			if ( t.param.bullets ) {
+			t.adjust_slider_height();
+		}
 
-				t.bullets();
-			}
+		t.set_prevnext();
 
-			t.player_fix_ratio();
+		if ( t.param.bullets ) {
 
-			t.slides_equal_height();
+			t.bullets();
+		}
 
-			t.set_thumbs_current_class();
+		t.player_fix_ratio();
+
+		t.slides_equal_height();
+
+		t.set_thumbs_current_class();
 
 		t.stat.resizing = false;
 
