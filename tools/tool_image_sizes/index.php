@@ -18,11 +18,11 @@
     
 				$posttype = get_post_type( $_REQUEST['post'] );
     
-				foreach ( $GLOBALS['toolset']['inits']['tool_image_sizes']['editor_images_remove'] as $size => $item ) {
+				foreach ( $GLOBALS['toolset']['inits']['tool_image_sizes']['editor_images_remove'] as $size => $posttypes ) {
     
 					$check = true;
     
-					if ( is_admin() && $item['posttypes'] && ! in_array( $posttype, $item['posttypes'] ) ) {
+					if ( is_admin() && ! in_array( $posttype, $posttypes ) ) {
     
 						$check = false;
 					}
