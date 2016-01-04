@@ -2917,7 +2917,12 @@ function YerSlider() {
 
 	t.clon_slides = function () {
 
-		if ( ! t.stat.touch || ( t.stat.touch && t.stat.loop === 'infinite' ) || ( t.stat.touch && t.param.autoplaycontinuously === true ) ) {
+		if (
+			t.stat.slidecount > t.stat.slidegroup 
+			&& ! t.stat.touch 
+			|| ( t.stat.touch && t.stat.loop === 'infinite' ) 
+			|| ( t.stat.touch && t.param.autoplaycontinuously === true ) 
+		) {
 
 			var index = 0,
 				i = 0,
