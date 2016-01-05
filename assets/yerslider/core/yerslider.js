@@ -46,6 +46,7 @@ function YerSlider() {
 		// slidegroups
 		slidegroup: 1,
 		slidegroupresp: {},
+		autoslidegroup: true,
 
 		// swipe		
 		swipe: false,
@@ -1480,8 +1481,8 @@ function YerSlider() {
 			}
 		}
 
-		if ( temp >= t.stat.slidecount ) {
-
+		if ( t.param.autoslidegroup && temp >= t.stat.slidecount ) {
+        
 			temp = t.stat.slidecount;
 			t.stat.lastslideindex = t.stat.currentslideindex;
 			t.stat.currentslideindex = 0;

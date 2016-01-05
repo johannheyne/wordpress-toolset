@@ -204,7 +204,10 @@ slidegroupresp: {
 	400: 2,
 	800: 3
 },
+autoslidegroup: true,
 ```
+
+`slidegroup` is the static and `slidegroupresp` the responsive setup for slidegroups. `autoslidegroup` by default limits the `slidegroup` or `slidegroupresp` value to the available slides. 
 
 ### Slidegap #############################
 
