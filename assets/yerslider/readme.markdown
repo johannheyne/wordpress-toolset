@@ -403,6 +403,12 @@ sliderviewportclass: '.yerslider-viewport',
 slidermaskclass: '.yerslider-mask',
 sliderclass: '.yerslider-slider',
 slideclass: '.yerslider-slide',
+slidecurrentclass: '.current',
+slidegroupcurrentclass: '.slidegroup-current',
+slidegroupfirstclass: '.slidegroup-first',
+slidegrouplastclass: '.slidegroup-last',
+slidecloneclass: '.slide-clone',
+loadingclass: '.yerslider-loading',
 
 // previous and next buttons
 prevnextclass: '.yerslider-prevnext',
@@ -423,7 +429,20 @@ thumbswrapclass: '.yerslider-thumbs-wrap',
 thumbsmaskclass: '.yerslider-thumbs-mask',
 thumbsitemsclass: '.yerslider-thumbs-items',
 thumbsitemclass: '.yerslider-thumbs-item',
+thumbsitemcurrentclass: '.thumb-current',
+thumbsitemgroupcurrentclass: '.thumb-slidegroup-current',
 
 // slide is loading message element
 loadingclass: '.yerslider-loading',
 ```
+
+For styling slides or thumbs there are serveral classes for different states.
+`.current` is the current slide. Is the first slide in a slide-group.
+`.slidegroup-current` is a slide of the current slide-group.
+`.slidegroup-first` is the first slide of the current slide-group.
+`.slidegroup-last` is the last slide of the current slide-group.
+`.slide-clone` is a cloned slide created and used by YerSlider to do infinity sliding. This class is useful to hide these slides in print styles.
+
+`.thumb-current` is the current thumb. Is the first thumb in the current thumb-slidegroup.
+`.thumb-slidegroup-current` is a thumb of the current thumb-slidegroupp.
+

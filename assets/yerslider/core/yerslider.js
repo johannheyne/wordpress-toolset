@@ -86,6 +86,11 @@ function YerSlider() {
 		slidermaskclass: '.yerslider-mask',
 		sliderclass: '.yerslider-slider',
 		slideclass: '.yerslider-slide',
+		slidecurrentclass: '.current',
+		slidegroupcurrentclass: '.slidegroup-current',
+		slidegroupfirstclass: '.slidegroup-first',
+		slidegrouplastclass: '.slidegroup-last',
+		slidecloneclass: '.slide-clone',
 		loadingclass: '.yerslider-loading',
 
 		// buttons
@@ -125,6 +130,8 @@ function YerSlider() {
 		thumbsmaskclass: '.yerslider-thumbs-mask',
 		thumbsitemsclass: '.yerslider-thumbs-items',
 		thumbsitemclass: '.yerslider-thumbs-item',
+		thumbsitemcurrentclass: '.thumb-current',
+		thumbsitemgroupcurrentclass: '.thumb-slidegroup-current',
 		thumbsready: undefined, // a function that will call after thumbs are ready
 
 		// video
@@ -1851,27 +1858,27 @@ function YerSlider() {
 
 	t.set_slide_current_class = function () {
 
-		t.obj.slide.removeClass('current');
-		t.obj.slide.removeClass('slidegroup-current');
-		t.obj.slide.removeClass('slidegroup-first');
-		t.obj.slide.removeClass('slidegroup-last');
+		t.obj.slide.removeClass( t.param.slidecurrentclass.replace( '.', '' ) );
+		t.obj.slide.removeClass( t.param.slidegroupcurrentclass.replace( '.', '' ) );
+		t.obj.slide.removeClass( t.param.slidegroupfirstclass.replace( '.', '' ) );
+		t.obj.slide.removeClass( t.param.slidegrouplastclass.replace( '.', '' ) );
 
 		for ( var i in t.stat.slidesinviewportindexes ) {
 
-			jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'slidegroup-current' );
+			jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( t.param.slidegroupcurrentclass.replace( '.', '' ) );
 
 			if ( i == 0 ) {
 
-				jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'slidegroup-first' );
+				jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( t.param.slidegroupfirstclass.replace( '.', '' ) );
 			}
 
 			if ( i == t.stat.slidegroup - 1 ) {
 
-				jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'slidegroup-last' );
+				jQuery( t.obj.slide[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( t.param.slidegrouplastclass.replace( '.', '' ) );
 			}
 		}
 
-		jQuery( t.obj.slide[ t.stat.currentslideindex ] ).addClass('current');
+		jQuery( t.obj.slide[ t.stat.currentslideindex ] ).addClass( t.param.slidecurrentclass.replace( '.', '' ) );
 
 	};
 
@@ -2410,15 +2417,15 @@ function YerSlider() {
 
 		if ( t.param.thumbs && typeof t.obj.thumbsitem == 'object' ) {
 
-			t.obj.thumbsitem.removeClass( 'thumb-slidegroup-current' );
-			t.obj.thumbsitem.removeClass( 'thumb-current' );
+			t.obj.thumbsitem.removeClass( t.param.thumbsitemgroupcurrentclass.replace( '.', '' ) );
+			t.obj.thumbsitem.removeClass( t.param.thumbsitemcurrentclass.replace( '.', '' ) );
 
 			for ( var i in t.stat.slidesinviewportindexes ) {
 
-				jQuery( t.obj.thumbsitem[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( 'thumb-slidegroup-current' );
+				jQuery( t.obj.thumbsitem[ ( t.stat.slidesinviewportindexes[ i ] - 1 ) ] ).addClass( t.param.thumbsitemgroupcurrentclass.replace( '.', '' ) );
 			}
 
-			jQuery( t.obj.thumbsitem[ t.stat.currentslideindex ] ).addClass( 'thumb-current' );
+			jQuery( t.obj.thumbsitem[ t.stat.currentslideindex ] ).addClass( t.param.thumbsitemcurrentclass.replace( '.', '' ) );
 		}
 	};
 
@@ -2947,7 +2954,7 @@ function YerSlider() {
 					index = 0;
 				}
 
-				t.obj.slider.append( jQuery( t.obj.slide[ index ] ).clone() );
+				t.obj.slider.append( jQuery( t.obj.slide[ index ] ).clone().addClass( t.param.slidecloneclass.replace( '.', '' ) ) );
 
 				index++;
 			}
