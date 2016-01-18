@@ -6,7 +6,7 @@
 		function wp_control_dev_auto_updates( $value ) {
 
 			// true zum Aktivieren, false zum Deaktivieren
-		   return $GLOBALS['toolset']['inits']['wp_auto_updates'][ config_get_site_type() ]['allow_dev_auto_core_updates'];
+		   return $GLOBALS['toolset']['inits']['tool_wp_auto_updates'][ config_get_site_type() ]['allow_dev_auto_core_updates'];
 		}
 
 	// }
@@ -17,7 +17,7 @@
 		function wp_control_minor_auto_updates( $value ) {
 
 		    // true zum Aktivieren, false zum Deaktivieren
-		    return $GLOBALS['toolset']['inits']['wp_auto_updates'][ config_get_site_type() ]['allow_minor_auto_core_updates'];
+		    return $GLOBALS['toolset']['inits']['tool_wp_auto_updates'][ config_get_site_type() ]['allow_minor_auto_core_updates'];
 		}
 
 	// }
@@ -28,7 +28,7 @@
 		function wp_control_major_auto_updates( $value ) {
 
 			// true zum Aktivieren, false zum Deaktivieren
-		    return $GLOBALS['toolset']['inits']['wp_auto_updates'][ config_get_site_type() ]['allow_major_auto_core_updates'];
+		    return $GLOBALS['toolset']['inits']['tool_wp_auto_updates'][ config_get_site_type() ]['allow_major_auto_core_updates'];
 		}
 
 	// }
@@ -39,7 +39,7 @@
 		function wp_control_theme_auto_updates( $value ) {
 
 			// true zum Aktivieren, false zum Deaktivieren
-			return $GLOBALS['toolset']['inits']['wp_auto_updates'][ config_get_site_type() ]['auto_update_theme'];
+			return $GLOBALS['toolset']['inits']['tool_wp_auto_updates'][ config_get_site_type() ]['auto_update_theme'];
 		}
 
 	// }
@@ -50,7 +50,7 @@
 		function wp_control_plugin_auto_updates( $value ) {
 
 			// true zum Aktivieren, false zum Deaktivieren
-		    return $GLOBALS['toolset']['inits']['wp_auto_updates'][ config_get_site_type() ]['auto_update_plugin'];
+		    return $GLOBALS['toolset']['inits']['tool_wp_auto_updates'][ config_get_site_type() ]['auto_update_plugin'];
 		}
 
 	// }
@@ -61,7 +61,7 @@
 		function wp_control_translation_auto_updates( $value ) {
 
 			// true zum Aktivieren, false zum Deaktivieren
-		    return $GLOBALS['toolset']['inits']['wp_auto_updates'][ config_get_site_type() ]['auto_update_translation'];
+		    return $GLOBALS['toolset']['inits']['tool_wp_auto_updates'][ config_get_site_type() ]['auto_update_translation'];
 		}
 
 	// }
