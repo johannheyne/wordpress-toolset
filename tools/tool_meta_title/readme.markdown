@@ -8,10 +8,10 @@ This tool generates a `<title></title>` by rules.
 ````php
 	tool( array(
 		'rules' => array(
-			'{sitetitle}' => true,
 			'{pagetitle}' => true,
+			'{sitetitle}' => true,
 		),
-		'delimiter' => ' ',
+		'delimiter' => ' - ',
 		'pagetitle_on_hompage' => false,
 		'prepend_sitetitle_on_custom_pagetitle' => false
 	) );

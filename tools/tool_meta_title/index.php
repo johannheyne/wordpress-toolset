@@ -7,17 +7,22 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'rules' => array(
-						'{sitetitle}' => true,
-						'{pagetitle}' => true,
-					),
-					'delimiter' => ' ',
+					'delimiter' => ' - ',
+					'rules' => false,
 					'pagetitle_on_hompage' => false,
 					'prepend_sitetitle_on_custom_pagetitle' => false
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
+				if ( ! $p['rules'] ) {
+					
+					$p['rules'] = array(
+						'{pagetitle}' => true,
+						'{sitetitle}' => true,
+					);
+				}
+				
 			// }
 
 			$v = array(
