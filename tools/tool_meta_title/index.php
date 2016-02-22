@@ -9,52 +9,87 @@
 				$defaults = array(
 					'delimiter' => ' - ',
 					'rules' => false,
-					'pagetitle_on_hompage' => false,
-					'prepend_sitetitle_on_custom_pagetitle' => false,
-					'append_sitetitle_on_custom_pagetitle' => true,
+					'page_title_on_hompage' => false,
+					'prepend_posttype_name_on_archives' => false,
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
 				if ( ! $p['rules'] ) {
-					
+
 					$p['rules'] = array(
-						'{pagetitle}' => true,
-						'{sitetitle}' => true,
+						'{page_title}' => true,
+						'{site_title}' => true,
 					);
 				}
-				
+
 			// }
 
 			$v = array(
+				'{site_title}' => false,
+				'{page_title}' => false,
 				'title' => '',
-				'title_custom_page' => false,
+				'post_type' => '',
+				'post_type_name' => '',
 			);
 
-			// RULES {
+			// GET TITLE PARTS {
 
 				foreach ( $p['rules'] as $key => $value ) {
 
-					if ( $key === '{sitetitle}' && $value ) {
+					if ( $key === '{site_title}' && $value ) {
 
-						$v['title'] .= get_bloginfo( 'name' );
-						$v['title'] .= $p['delimiter'];
+						$v['{site_title}'] = get_bloginfo( 'name' );
 					}
 
-					if ( $key === '{pagetitle}' && $value ) {
+					if ( $key === '{page_title}' && $value ) {
 
-						if ( ! $p['pagetitle_on_hompage'] && get_the_ID() == get_option('page_on_front' ) ) {
+						if ( ! $p['page_title_on_hompage'] && get_the_ID() == get_option( 'page_on_front' ) ) {
 
+							// no page title on homepage
 						}
 						else {
 
-							$v['title'] .= get_the_title();
-							$v['title'] .= $p['delimiter'];
+							$v['{page_title}'] = get_the_title();
 						}
 					}
 				}
 
-				$v['title'] = trim( $v['title'], $p['delimiter'] );
+			// }
+
+			// ARCHIVE {
+
+				if ( is_home() ) {
+
+					$v['{page_title}'] = 'Blog';
+				}
+
+				if ( is_archive() ) {
+
+					if ( $p['prepend_posttype_name_on_archives'] ) {
+						
+						$v['post_type'] = get_post_type();
+						$v['post_type_obj'] = get_post_type_object( $v['post_type'] );
+						$v['post_type_name'] = $v['post_type_obj']->labels->name . ' ';
+					}
+
+					$v['{page_title}'] = post_type_archive_title( '', false );
+				}
+
+				if ( is_category() ) {
+
+					$v['{page_title}'] = $v['post_type_name'] . single_cat_title( ' ', false );
+				}
+
+				if ( is_date() ) {
+
+					$v['{page_title}'] = $v['post_type_name'] . single_month_title( ' ', false );
+				}
+
+				if ( is_tag() ) {
+
+					$v['{page_title}'] = $v['post_type_name'] . single_tag_title( ' ', false );
+				}
 
 			// }
 
@@ -66,28 +101,27 @@
 
 					if ( $v['title_custom_page'] ) {
 
-						$v['title'] = '';
-
-						if ( $p['prepend_sitetitle_on_custom_pagetitle'] ) {
-
-							$v['title'] .= get_bloginfo( 'name' );
-							$v['title'] .= $p['delimiter'];
-						}
-
-						$v['title'] .= $v['title_custom_page'];
-
-						if ( $p['append_sitetitle_on_custom_pagetitle'] ) {
-
-							$v['title'] .= $p['delimiter'];
-							$v['title'] .= get_bloginfo( 'name' );
-						}
+						$v['{page_title}'] = $v['title_custom_page'];
 					}
 				}
 
 			// }
 
-			echo '<title>' . $v['title'] . '</title>' . "\n";
+			// BUILD SITE TITLE {
 
+				foreach ( $p['rules'] as $key => $value ) {
+
+					if ( $v[ $key ] ) {
+
+						$v['title'][] = $v[ $key ];
+					}
+				}
+
+				$v['return'] = implode( $p['delimiter'], $v['title'] );
+
+			// }
+
+			echo '<title>' . $v['return'] . '</title>' . "\n";
 		}
 
 	// }

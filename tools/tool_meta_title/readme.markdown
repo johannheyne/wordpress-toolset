@@ -8,14 +8,14 @@ This tool generates a `<title></title>` by rules.
 ````php
 	tool( array(
 		'rules' => array(
-			'{pagetitle}' => true,
-			'{sitetitle}' => true,
+			'{page_title}' => true,
+			'{site_title}' => true,
 		),
 		'delimiter' => ' - ',
-		'pagetitle_on_hompage' => false,
-		'prepend_sitetitle_on_custom_pagetitle' => false,
-		'append_sitetitle_on_custom_pagetitle' => true
+		'page_title_on_homepage' => false,
+		'prepend_posttype_name_on_archives' => false,
 	) );
 ````
+`prepend_posttype_name_on_archives` prepends the posttype name on custom posttype archives. Supports is_category() with single_cat_title(), is_date() with single_month_title(), is_tag() with single_tag_title();
 
 [back to overview](../../README.markdown#tools)
