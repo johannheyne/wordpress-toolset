@@ -10,7 +10,8 @@
 					'delimiter' => ' - ',
 					'rules' => false,
 					'pagetitle_on_hompage' => false,
-					'prepend_sitetitle_on_custom_pagetitle' => false
+					'prepend_sitetitle_on_custom_pagetitle' => false,
+					'append_sitetitle_on_custom_pagetitle' => true,
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -74,6 +75,12 @@
 						}
 
 						$v['title'] .= $v['title_custom_page'];
+
+						if ( $p['append_sitetitle_on_custom_pagetitle'] ) {
+
+							$v['title'] .= $p['delimiter'];
+							$v['title'] .= get_bloginfo( 'name' );
+						}
 					}
 				}
 

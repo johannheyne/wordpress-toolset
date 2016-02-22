@@ -13,7 +13,8 @@ This tool generates a `<title></title>` by rules.
 		),
 		'delimiter' => ' - ',
 		'pagetitle_on_hompage' => false,
-		'prepend_sitetitle_on_custom_pagetitle' => false
+		'prepend_sitetitle_on_custom_pagetitle' => false,
+		'append_sitetitle_on_custom_pagetitle' => true
 	) );
 ````
 
