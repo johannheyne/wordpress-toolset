@@ -1,4 +1,8 @@
-Terminal: grunt bump
+1. Commit Changes!
+
+2. Terminal: grunt bump
 …changes are pushed to github
-write release notes in file release-notes.txt
-Terminal: grunt release
+
+3. Write release notes in file release-notes.txt
+
+4. Terminal: grunt release
