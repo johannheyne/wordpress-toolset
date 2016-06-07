@@ -149,6 +149,7 @@ $GLOBALS['toolset'] = array(
 	)
 );
 ````
+#### Setups
 
 * [WordPress Head](docs/tool_wp_head.markdown)
 * [WordPress Meta Title](tools/tool_meta_title/readme.markdown)
@@ -164,7 +165,7 @@ $GLOBALS['toolset'] = array(
 * [ACF Save Post After](tools/tool_acf_save_post_after/readme.markdown)
 * [API SiteData](tools/tool_api_sitedata/readme.markdown)
 
-### Tools
+#### Tools
 
 * [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
 * [Ajax Call](tools/tool_ajax/readme.markdown)
@@ -173,7 +174,7 @@ $GLOBALS['toolset'] = array(
 * [Instagram](tools/tool_instagram/readme.markdown)
 * [Transient](tools/tool_transient/readme.markdown)
 
-### Assets
+#### Assets
 
 * [YerScriptMediaQueries](docs/yerscriptmediaqueries.markdown)
 * [YerParallax](docs/yerparallax.markdown)
