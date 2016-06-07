@@ -166,12 +166,12 @@ $GLOBALS['toolset'] = array(
 
 ### Tools
 
-* [tool_javascript_recomended](tools/tool_javascript_recomended/readme.markdown)
-* [tool_ajax](tools/tool_ajax/readme.markdown)
-* [tool_meta_title](tools/tool_meta_title/readme.markdown)
-* [tool_wp_user](tools/tool_wp_user/readme.markdown)
-* [tool_instagram](tools/tool_instagram/readme.markdown)
-* [tool_transient](tools/tool_transient/readme.markdown)
+* [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
+* [Ajax Call](tools/tool_ajax/readme.markdown)
+* [Meta Title](tools/tool_meta_title/readme.markdown)
+* [User Login/Logout](tools/tool_wp_user/readme.markdown)
+* [Instagram](tools/tool_instagram/readme.markdown)
+* [Transient](tools/tool_transient/readme.markdown)
 
 ### Assets
 
