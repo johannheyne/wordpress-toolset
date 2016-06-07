@@ -1,7 +1,7 @@
 WordPress ToolSet Plugin
 ===============
 
-This WordPress plugin provides a foundation to configurate WordPress, provides php tools and javascript assets for frequent tasks.
+This WordPress plugin provides a foundation to configurate WordPress, provides PHP tools and Javascript assets for frequent tasks.
 It is about NOT separately managing all the same repeating code on every WordPress project. 
 
 Strategie
