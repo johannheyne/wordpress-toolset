@@ -1,20 +1,20 @@
 WordPress ToolSet Plugin
 ===============
 
-This WordPress plugin provides tools to configure WordPress and tools to get things done.
-Its about NOT separately managing all the same functionality code on every WordPress theme. 
+This WordPress plugin provides a foundation to configurate WordPress, provides php tools and javascript assets for frequent tasks.
+It is about NOT separately managing all the same repeating code on every WordPress project. 
 
 Strategie
 ---------------
-- First, keep it simple and flexible.
-- Use abstract interface to connect functionality and presentation.
-- Functionality should be able to be updated and extended at any time without a need to change the presentation code immediately.
+- First, keep using configuration and tools simple and flexible.
+- Use abstract interface to connect tools and presentation.
+- Documenting changes and instructions since last update in the update changelog.
 
 Taktik
 ---------------
-- Provide the tools as a WordPress plugin.
-- Use a single config variable in theme.
-- Provide a abstrakt-function to use tool-functionality.
+- Provide the functionality, tools and assets as a single WordPress plugin.
+- Use a single global config variable in the theme.
+- Provide a abstract function to use all tools.
 
 Structure
 ---------------
@@ -52,7 +52,7 @@ The tool() Function
 
 ### Config
 
-There is a single global variable, that holds any kind of global data to drive tools of the toolset. This variable must be set in the active theme in the function.php or better in the /config/config.php file.
+There is a single global variable, that holds any kind of global data to drive tools of the toolset. This variable must be set in the active theme in the function.php or better in an /config/config.php file.
 
 ````php
 $GLOBALS['toolset'] = array( /* toolset configuration options goes here */ );
