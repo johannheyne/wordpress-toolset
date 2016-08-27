@@ -12,8 +12,11 @@
 			touch( get_template_directory() . '/index.php');
 		}
 	
-		add_action( 'updated_option', 'tool_livereload_wp' );
-		add_action( 'check_admin_referer', 'tool_livereload_wp' );
+		if ( config_get_site_type() === 'local' ) {
+
+			add_action( 'updated_option', 'tool_livereload_wp' );
+			add_action( 'check_admin_referer', 'tool_livereload_wp' );
+		}
 
 	// }
 	
