@@ -104,7 +104,18 @@
 
 								$rulecheck = 'y';
 
-								foreach ( $rulegroup as $key => $rule ) {
+								foreach ( $rulegroup as $key => $value ) {
+
+									if ( ! is_string( $key ) ) {
+										
+										$rule = $value;
+										$rule_param = '';
+									}
+									else {
+										
+										$rule = $key;
+										$rule_param = $value;
+									}
 
 									if ( stristr( $rule, 'not_' ) OR stristr( $rule, 'is_' ) ) {
 
@@ -113,14 +124,14 @@
 
 										if ( $not ) {
 
-											if ( $rule()  ) {
+											if ( $rule( $rule_param )  ) {
 
 												$rulecheck = 'n';
 											}
 										}
 										else {
 
-											if ( ! $rule()  ) {
+											if ( ! $rule( $rule_param )  ) {
 
 												$rulecheck = 'n';
 											}
