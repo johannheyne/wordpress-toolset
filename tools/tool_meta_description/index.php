@@ -5,6 +5,7 @@
 		// DEFAULTS {
 
 			$defaults = array(
+				'acf_field_name_page_decription' => 'meta_page_description'
 			);
 
 			$p = array_replace_recursive( $defaults, $p );
@@ -30,7 +31,7 @@
 
 			// BY PAGE {
 
-				$v['description_custom_page'] = get_field( 'meta_seitenbeschreibung' );
+				$v['description_custom_page'] = get_field( $p['acf_field_name_page_decription'] );
 
 				if ( $v['description_custom_page'] ) {
 
