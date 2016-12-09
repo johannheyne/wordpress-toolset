@@ -67,6 +67,11 @@
 			foreach ( $p as $key => $item ) {
 
 				if ( $item['show'] === false ) {
+					
+					if ( empty( $item['priority'] ) ) {
+
+						$item['priority'] = 10;
+					}
 
 					remove_action( 'wp_head', $key, $item['priority'] );
 				}
