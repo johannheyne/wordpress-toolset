@@ -37,6 +37,7 @@
 
 					$defaults = array(
 						'name' => 'full', 
+						'ratio' => false, 
 						'id' => false, 
 						'file' => false, 
 						'alt' => false, 
@@ -61,9 +62,16 @@
 
 				// }
 
-				/* Version 04.07.2012 */
+				/* Version 19.12.2016 */
 
 				$sufix = '?size=' . $p['name'];
+
+				/* image ratio */
+				if ( $p['ratio'] ) {
+
+					$sufix = $sufix . '&ratio=' . str_replace( ':', '-', $p['ratio'] );
+				}
+
 				$img_attr = array();
 				$img_src = false;
 
