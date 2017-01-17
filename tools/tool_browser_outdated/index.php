@@ -28,7 +28,7 @@
 			}
 			else {
 
-				$browseroutdated = $p['message'][ config_get_curr_site_id() ];
+				$browseroutdated = $p['message'][ config_get_curr_site_lang() ];
 			}
 
 			echo '<!--[if lt IE ' . ( $p['version'] + 1 ) . ']>';
