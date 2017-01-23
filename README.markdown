@@ -123,6 +123,8 @@ $GLOBALS['toolset'] = array(
 			'de' => 'de-DE',
 		),
 
+		'admin_locale' => get_locale(),
+
 	// }
 
 	// REGISTER PHP CLASSES FOR AUTOLOAD FROM YOUR THEME {
@@ -161,6 +163,7 @@ $GLOBALS['toolset'] = array(
 * [WordPress Images Sizes](tools/tool_image_sizes/readme.markdown)
 * [Adaptive Images](tools/tool_adaptive_images/readme.markdown)
 * [ACF Save Post After](tools/tool_acf_save_post_after/readme.markdown)
+* [ACF Translate](tools/tool_acf_translate/readme.markdown)
 * [API SiteData](tools/tool_api_sitedata/readme.markdown)
 
 ### Tools

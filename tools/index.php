@@ -29,6 +29,11 @@
 							'funame' => 'tool_acf_get_fields',
 						),
 
+						'tool_acf_translate' => array(
+							'dir' => 'tool_acf_translate',
+							'funame' => 'tool_acf_translate',
+						),
+
 					// }
 
 					// ( Version 1 ) {

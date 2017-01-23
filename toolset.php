@@ -4,12 +4,12 @@
 	@author    Johann Heyne mail@johannheyne
 	@license   GPL-2.0+
 	@link      https://github.com/johannheyne/wordpress-toolset
-	@copyright 2014 Johann Heyne
+	@copyright 2014-2017 Johann Heyne
 
 	@wordpress-plugin
 	Plugin Name:       WordPress ToolSet
 	Plugin URI:        https://github.com/johannheyne/wordpress-toolset
-	Description:       Provides functionality fore use in themes.
+	Description:       On place for reusable functionalities and assets.
 	Version:           0.0.150
 	Author:            Johann Heyne
 	Author URI:        www.johannheyne.de
