@@ -80,7 +80,15 @@
 						$action = $item['action'];
 					}
 
-					remove_action( $action, $key, $item['priority'] );
+					if ( empty( $item['filter'] ) ) {
+
+						remove_action( $action, $key, $item['priority'] );
+					}
+					else {
+
+						add_filter( $key, $item['filter'] );
+					}
+
 				}
 			}
 
