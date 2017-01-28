@@ -64,16 +64,23 @@
 				$p = $defaults;
 			}
 
+			$action = 'wp_head';
+
 			foreach ( $p as $key => $item ) {
 
 				if ( $item['show'] === false ) {
-					
+
 					if ( empty( $item['priority'] ) ) {
 
 						$item['priority'] = 10;
 					}
 
-					remove_action( 'wp_head', $key, $item['priority'] );
+					if ( ! empty( $item['action'] ) ) {
+
+						$action = $item['action'];
+					}
+
+					remove_action( $action, $key, $item['priority'] );
 				}
 			}
 
