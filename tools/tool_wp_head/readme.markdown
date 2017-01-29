@@ -14,7 +14,7 @@ $GLOBALS['toolset'] = array(
             '{action_name}' => array(
 				'action' => 'wp_head', // default
 				'priority' => 10, // default
-				'show' => false,
+				'show' => false, // false/true required
 			),
 
 			// add_filter()
