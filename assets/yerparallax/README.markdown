@@ -1,4 +1,4 @@
-[back to overview](../README.markdown#assets)
+[back to overview](../../README.markdown#assets)
 
 YerParallax
 ===========
@@ -22,4 +22,4 @@ jQuery('.element').parallax({
 
 This plugin cant bring parallax effects to iOS touch devices while scrolling.
 
-[back to overview](../README.markdown#assets)
+[back to overview](../../README.markdown#assets)
