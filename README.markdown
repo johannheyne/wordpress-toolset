@@ -151,9 +151,9 @@ $GLOBALS['toolset'] = array(
 	)
 );
 ````
-* [WordPress Head](docs/tool_wp_head.markdown)
+* [WordPress Head](tools/tool_wp_head/readme.markdown)
 * [WordPress Meta Title](tools/tool_meta_title/readme.markdown)
-* [WordPress Remove Footprint](docs/tool_remove_wp_footprint.markdown)
+* [WordPress Remove Footprint](tools/tool_remove_wp_footprint/readme.markdown)
 * [WordPress Postboxes](tools/tool_postboxes/readme.markdown)
 * [WordPress Unregister Default Widgets](tools/tool_widgets_unregister_defaults/readme.markdown)
 * [WordPress Remove Metaboxes](tools/tool_metabox_remove/readme.markdown)
@@ -178,9 +178,9 @@ $GLOBALS['toolset'] = array(
 
 ### Assets
 
-* [YerScriptMediaQueries](docs/yerscriptmediaqueries.markdown)
-* [YerParallax](docs/yerparallax.markdown)
-* [YerWhen](docs/yerwhen.markdown)
-* [YerRespFontSize](docs/yerrespfontsize.markdown)
+* [YerScriptMediaQueries](assets/yerscriptmediaqueries/readme.markdown)
+* [YerParallax](assets/yerparallax/readme.markdown)
+* [YerWhen](assets/yerwhen/readme.markdown)
+* [YerRespFontSize](assets/yerrespfontsize/readme.markdown)
 
 
