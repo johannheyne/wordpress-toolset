@@ -53,6 +53,17 @@
 					'show' => true,
 					'priority' => 10,
 				),
+
+				// DNS-PREFECH
+				// Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Controlling_DNS_prefetching
+				'wp_resource_hints' => array(
+					'show' => false,
+					'priority' => 2,
+				),
+				'emoji_svg_url' => array(
+					'show' => false,
+					'filter' => '__return_false',
+				),
 			);
 
 			if ( is_array( $GLOBALS['toolset']['inits']['tool_wp_head'] ) ) {
@@ -65,14 +76,16 @@
 			}
 
 			$action = 'wp_head';
+			$accepted_args = 1;
+			$priority = 10;
 
 			foreach ( $p as $key => $item ) {
 
 				if ( $item['show'] === false ) {
 
-					if ( empty( $item['priority'] ) ) {
+					if ( ! empty( $item['priority'] ) ) {
 
-						$item['priority'] = 10;
+						$priority = $item['priority'];
 					}
 
 					if ( ! empty( $item['action'] ) ) {
@@ -80,13 +93,18 @@
 						$action = $item['action'];
 					}
 
+					if ( ! empty( $item['accepted_args'] ) ) {
+
+						$accepted_args = $item['accepted_args'];
+					}
+
 					if ( empty( $item['filter'] ) ) {
 
-						remove_action( $action, $key, $item['priority'] );
+						remove_action( $action, $key, $priority );
 					}
 					else {
 
-						add_filter( $key, $item['filter'] );
+						add_filter( $key, $item['filter'], $priority, $accepted_args );
 					}
 
 				}
