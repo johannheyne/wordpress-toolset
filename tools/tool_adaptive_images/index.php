@@ -8,7 +8,7 @@
 		}, 1000, 2 );
 
 	// }
-	
+
 	// IMAGE SIZE ( Version 7 ) {
 
 		add_filter('intermediate_image_sizes_advanced', function( $sizes) {
@@ -36,11 +36,11 @@
 				// DEFAULTS {
 
 					$defaults = array(
-						'name' => 'full', 
-						'ratio' => false, 
-						'id' => false, 
-						'file' => false, 
-						'alt' => false, 
+						'name' => 'full',
+						'ratio' => false,
+						'id' => false,
+						'file' => false,
+						'alt' => false,
 						'img_class' => '',
 						'img_class_resp' => 'resp',
 						'img_data' => false,
@@ -225,7 +225,7 @@
 		// GET SRC {
 
 			function get_adaptive_image_src( $p = array(
-				'name' => 'full', 
+				'name' => 'full',
 				'id' => false,
 			) ) {
 
@@ -305,7 +305,7 @@
 
 						foreach ( $styles as $key => $item ) {
 
-						   echo '@media screen and (min-width: ' . $key . 'px) {' . $item . '}'; 
+						   echo '@media screen and (min-width: ' . $key . 'px) {' . $item . '}';
 						}
 
 					echo '</style>';
@@ -327,12 +327,12 @@
 			}
 		}
 
-		// define image-sizes at the media-popup 
+		// define image-sizes at the media-popup
 		function add_ai_image_size_names( $sizes ) {
 
 			// adding relevant media-sizes to the select-input for inserting into the editor
 
-			if ( isset( $_REQUEST['post'] ) ) {
+			//if ( isset( $_REQUEST['post'] ) ) {
 
 				$posttype = get_post_type( $_REQUEST['post'] );
 
@@ -346,7 +346,7 @@
 
 					if ( $check ) $sizes[$size] = $item['label'];
 				}
-			}
+			//}
 
 			return $sizes;
 		}
@@ -426,8 +426,8 @@
 						foreach ( $p['images'] as $key => $item ) {
 
 							$src = get_adaptive_image_src( array(
-								'id' => $item['img_id'], 
-								'name' => $item['ai_name'], 
+								'id' => $item['img_id'],
+								'name' => $item['ai_name'],
 							) );
 
 							$size = getimagesize( $src );
@@ -465,7 +465,7 @@
 				$var['html'] = $p['template'];
 
 				$replace = array (
-					'{class}' => $p['class'], 
+					'{class}' => $p['class'],
 				);
 
 				$var['html'] = strtr( $var['html'], $replace );
