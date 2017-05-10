@@ -1,6 +1,6 @@
 <?php
 
-	// IMAGE MARGIN FIX ( Version 1 ) {
+	// IMAGE MARGIN FIX ( Version 2 ) {
 
 		class fixImageMargins{
 
@@ -20,6 +20,12 @@
 						'caption' => ''
 					), $attr ) );
 
+				// GET AI SIZE {
+
+					$aisize = explode( '"', explode( '?size=', $content )[1] )[0];
+
+				// }
+
 				if ( 1 > (int) $width || empty( $caption ) ) {
 
 					return $content;
@@ -30,7 +36,7 @@
 					$id = 'id="' . $id . '" ';
 				}
 
-				return '<div ' . $id . 'class="wp-caption ' . $align . '" style="width: ' . ( (int) $width + $this->xs ) . 'px">' . $content . '<p class="wp-caption-text">' . $caption . '</p></div>';
+				return '<div ' . $id . 'class="wp-caption ' . $align . ' capsize-' . $aisize . '" >' . $content . '<p class="wp-caption-text">' . $caption . '</p></div>';
 			}
 		}
 
