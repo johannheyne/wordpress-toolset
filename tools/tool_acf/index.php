@@ -6,19 +6,19 @@
 
 			function tool_register_acf_field( $p = array() ) {
 
-			    // DEFAULTS {
+				// DEFAULTS {
 
-			        $defaults = array(
-			            'fields' => false,
-			        );
+					$defaults = array(
+						'fields' => false,
+					);
 
-			        $p = array_replace_recursive( $defaults, $p );
+					$p = array_replace_recursive( $defaults, $p );
 
-			    // }
+				// }
 
 				if ( ! isset( $GLOBALS['temp_tool_register_acf_field_action'] ) ) {
 
-				    $GLOBALS['temp_tool_register_acf_field_action'] = array();
+					$GLOBALS['temp_tool_register_acf_field_action'] = array();
 				}
 
 				$GLOBALS['temp_tool_register_acf_field_action'] = array_replace_recursive( $p, $GLOBALS['temp_tool_register_acf_field_action'] );
@@ -42,9 +42,21 @@
 
 		// }
 
-		// LOAD FIELDS ( Version 1 ) {
+		// LOAD FIELDS ( Version 2 ) {
 
-			include( get_template_directory() . '/config/acf-fields.php' );
+			$template_directory = get_template_directory();
+
+			$path_1 = $template_directory  . '/config/acf-fields.php';
+			$path_2 = $template_directory  . '/config/acf/acf-init.php';
+
+			if ( file_exists( $path_1 ) ) {
+
+				include( $path_1 );
+			}
+			elseif ( file_exists( $path_2 ) ) {
+
+				include( $path_2 );
+			}
 
 		// }
 
@@ -71,14 +83,14 @@
 
 			function tool_acf_get_post_custom_keys( $p = array() ) {
 
-				 $p += array(
+				$p += array(
 					'post_id' => false,
 					'filter' => '_'
-				 );
+				);
 
-				 $ret = false;
+				$ret = false;
 
-				 if ( $p['post_id'] ) {
+				if ( $p['post_id'] ) {
 
 					$ret = get_post_custom_keys( $p['post_id'] );
 
@@ -86,7 +98,7 @@
 
 						foreach ( $ret as $key => $item ) {
 
-							if ( $p['filter'] == '_' && $item[0] === '_' ) unset( $ret[$key] );
+							if ( $p['filter'] == '_' && $item[0] === '_' ) unset( $ret[ $key ] );
 						}
 					}
 				}
@@ -96,14 +108,14 @@
 
 			function tool_acf_print_post_custom_keys( $p = array() ) {
 
-				 $p += array(
+				$p += array(
 					 'post_id' => false,
 					 'filter' => '_'
-				  );
+				);
 
-				 $ret = tool_acf_get_post_custom_keys( $p );
+				$ret = tool_acf_get_post_custom_keys( $p );
 
-				 if ( $ret === false ) $ret = 'Keine Keys gefunden!';
+				if ( $ret === false ) $ret = 'Keine Keys gefunden!';
 
 				 print_o( $ret );
 			}
@@ -158,9 +170,9 @@
 
 						foreach ( $keys as $key => $value ) {
 
-						   $temp .= $value . "\n"; 
+							$temp .= $value . "\n";
 						}
-						print_o( trim($temp) );
+						print_o( trim( $temp ) );
 					}
 
 					if ( $p['print'] ) {
@@ -175,5 +187,3 @@
 		// }
 
 	// }
-
-?>
