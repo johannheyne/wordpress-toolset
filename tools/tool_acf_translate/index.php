@@ -4,57 +4,50 @@
 
 	function tool_acf_translate( $p = array() ) {
 
+		if ( empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'] ) ) {
+
+			$GLOBALS['toolset']['inits']['tool_acf_translate']['strings'] = array();
+		}
+
 		// DEFAULTS {
 
 			$defaults = array(
-				'strings' => false,
-				'locale' => false,
+				'strings' => array(),
 			);
 
-			// DEFINE LOCALE {
-
-				if ( empty( $GLOBALS['toolset']['admin_locale'] ) ) {
-
-					$defaults['locale'] = get_locale();
-				}
-				else {
-
-					$defaults['locale'] = $GLOBALS['toolset']['admin_locale'];
-				}
-
-			// }
-
-			$p = array_replace_recursive( $defaults, $p );
+			$GLOBALS['toolset']['inits']['tool_acf_translate']['strings'] = array_replace_recursive( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'], $p['strings'] );
 
 		// }
 
-		new ToolACFTranslate( $p );
+		if ( empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['class'] ) ) {
+
+			$GLOBALS['toolset']['inits']['tool_acf_translate']['class'] = new ToolACFTranslate();
+		}
 	}
 
 	if ( ! class_exists( 'ToolACFTranslate' ) ) {
 
 		class ToolACFTranslate {
 
-			public $strings;
+			public $locale;
 			public $current_screen;
 
-		    function __construct( $p ) {
+			function __construct() {
 
-				$defaults = array(
-					'strings' => false,
-					'locale' => false,
-				);
+				if ( empty( $GLOBALS['toolset']['admin_locale'] ) ) {
 
-		        $p = array_replace_recursive( $defaults, $p );
+					$this->locale = get_locale();
+				}
+				else {
 
-				if ( $p['strings'] AND $p['locale'] ) {
+					$this->locale = $GLOBALS['toolset']['admin_locale'];
+				}
 
-					$this->strings = $p['strings'];
-					$this->locale = $p['locale'];
+				if ( $this->locale ) {
 
 					add_action( 'current_screen', array( $this, 'current_screen' ) );
 				}
-		    }
+			}
 
 			function current_screen() {
 
@@ -71,15 +64,15 @@
 
 				array_walk_recursive( $array, function( &$item, $key ) {
 
-					if ( ! empty( $this->strings[ $item ][ $this->locale ] ) ) {
+					if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
 
-						$item = $this->strings[ $item ][ $this->locale ];
+						$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
 					}
 
 				} );
 
 				return $array;
-		    }
+			}
 
 		}
 
