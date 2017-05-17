@@ -64,10 +64,23 @@
 
 				array_walk_recursive( $array, function( &$item, $key ) {
 
-					if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
+					// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
 
-						$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
-					}
+						if ( $key === 'title' ) {
+
+							$item = preg_replace( "/\((.*)\)(.*)/", '$2', $item );
+						}
+
+					// }
+
+					// REPLACE STRINGS {
+
+						if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
+
+							$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+						}
+
+					// }
 
 				} );
 
