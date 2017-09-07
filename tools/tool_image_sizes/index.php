@@ -15,7 +15,7 @@
 			// removing media-sizes from select-input for inserting into the editor
 			//if ( isset( $_REQUEST['post'] ) ) {
 
-				$posttype = get_post_type( $_REQUEST['post'] );
+				$posttype = get_post_type( @$_REQUEST['post'] );
 
 				foreach ( $GLOBALS['toolset']['inits']['tool_image_sizes']['editor_images_remove'] as $size => $posttypes ) {
 

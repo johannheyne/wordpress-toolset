@@ -334,7 +334,7 @@
 
 			//if ( isset( $_REQUEST['post'] ) ) {
 
-				$posttype = get_post_type( $_REQUEST['post'] );
+				$posttype = get_post_type( @$_REQUEST['post'] );
 
 				foreach ( $GLOBALS['toolset']['inits']['tool_adaptive_images']['editor_imagesizes'] as $size => $item ) {
 
