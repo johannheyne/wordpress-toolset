@@ -25,7 +25,7 @@
 
 	// }
 
-	// ADAPTIVE IMAGES ( Version 23 (AIFWP 1.1) ) {
+	// ADAPTIVE IMAGES ( Version 24 (AIFWP 1.1) ) {
 
 		add_image_size( 'adaptive-image-base', '2000', '2000', /* crop */ false );
 
@@ -55,169 +55,354 @@
 						'link_data' => false,
 						'wrap' => false,
 						'wrap_class' => false,
-						'style' => false
+						'style' => false,
+						'figcaption_cont' => false,
+						'figure_class' => 'figure',
+						'figcaption_class' => 'figcaption'
 					);
 
 					$p = array_replace_recursive( $defaults, $p );
 
 				// }
 
-				/* Version 19.12.2016 */
+				// Version 07.09.2017
 
-				$sufix = '?size=' . $p['name'];
+				// DEFINE VARS {
 
-				/* image ratio */
-				if ( $p['ratio'] ) {
+					$sufix = '';
+					$img_attr = array();
+					$img_src = false;
+					$link_url = false;
+					$link_rel = false;
+					$link_title = false;
+					$link_data = false;
+					$link_class = '';
+					$link_target = '';
+					$title = false;
+					$link_title = false;
+					$return = '';
 
-					$sufix = $sufix . '&ratio=' . str_replace( ':', '-', $p['ratio'] );
-				}
+				// }
 
-				$img_attr = array();
-				$img_src = false;
+				// SET VAR IMAGE SUFIX {
 
-				/* image src */
-				if ( $p['id'] ) {
-					$img_param = wp_get_attachment_image_src( $p['id'], $p['name'] );
-					$img_src = $img_param[0];
-				}
-				if ( $p['file'] ) {
-					$img_src = get_bloginfo('template_url') . '/' . $p['file'];
-				}
+					$sufix = '?size=' . $p['name'];
 
-				$link_url = false;
-				$link_rel = false;
-				$link_title = false;
-				$link_data = false;
+					// ADDS RATIO {
 
-				/* root class */
-				if ( $p['root_class'] ) {
+						if ( $p['ratio'] ) {
 
-					if ( $p['link_image'] OR $p['link_page'] OR $p['link_url'] ) {
+							$sufix = $sufix . '&ratio=' . str_replace( ':', '-', $p['ratio'] );
+						}
 
-						 $p['link_class'] = trim( $p['link_class'] . ' ' . $p['root_class'] );
-					}
+					// }
 
-					elseif ( $p['wrap'] ) {
+				// }
 
-						 $p['wrap_class'] = trim( $p['wrap_class'] . ' ' . $p['root_class'] );
-					}
-
-					else {
-
-						 $p['img_class'] = trim( $p['img_class'] . ' ' . $p['root_class'] );
-					}
-				}
-
-				/* image data */
-				if ( $p['img_data'] ) {
-					foreach ( $p['img_data'] as $key => $value ) {
-						$img_attr['data-' . $key] = $value;
-					}
-				}
-
-				/* link data */
-				if ( $p['link_data'] ) {
-					foreach ( $p['link_data'] as $key => $value ) {
-						$link_data .= ' data-' .$key . '="' . $value . '"';
-					}
-				}
-
-				/* link image */
-				if ( $p['link_image'] AND $p['link_image'] != 'true' AND $p['link_image'] != 'false' ) {
-					$link_url = get_adaptive_image_src( array( 'name' => $p['link_image'], 'id' => $p['id'] ) );
-				}
-				if ( $p['link_image'] == 'true') $link_url = $img_src;
-
-				/* link page */
-				if ( $p['link_page'] ) $link_url = get_permalink();
-				if ( $p['link_page'] AND is_int($p['link_page']) ) $link_url = get_permalink( $p['link_page'] );
-
-				/* link url */
-				if ( $p['link_url'] ) $link_url = $p['link_url'];
-
-				/* link class */
-				$link_class = '';
-				if ( $p['link_class'] ) $link_class = ' class="' . $p['link_class'] . '"';
-
-				/* link target */
-				$link_target = '';
-				if ( $p['link_target'] ) $link_target = ' target="' . $p['link_target'] . '"';
-
-				/* link rel */
-				if ( $p['link_rel'] ) $link_rel = ' rel="' . $p['link_rel'] . '"';
-
-				/* link title */
-				if ( $p['link_title'] ) {
-
-					$title = $p['link_title'];
-
-					if ( $p['link_title'] === 'titel' ) {
-						$data = get_post( $p['id'] );
-						$title = $data->post_titel;
-					}
-					if ( $p['link_title'] === 'beschriftung' ) {
-						$data = get_post( $p['id'] );
-						$title = $data->post_excerpt;
-					}
-					if ( $p['link_title'] === 'alt' ) {
-						$data = get_post_meta( $p['id'], '_wp_attachment_image_alt' );
-						$title = $data[0];
-					}
-
-					$link_title = ' title="' . $title . '"';
-				}
-
-				/* return { */
-				$return = '';
-
-				/* basic requirement check */
-				if ( $img_src ) {
-
-					/* wrap open */
-
-					if ( $p['wrap'] ) {
-
-						if ( $p['wrap_class'] ) $wrap_class = ' class="' .$p['wrap_class'] . '"';
-						$return .= '<' . $p['wrap'] . $wrap_class . '>';
-					}
-
-					/* return link open */
-					if ( $link_url OR $link_class OR $link_rel OR $link_title OR $link_target ) {
-						if ( $link_url ) $link_url =  ' href="' . $link_url . '"';
-						$return .= '<a' . $link_url . $link_class . $link_rel . $link_title . $link_data . $link_target . '>';
-					}
-
-					/* return image */
-					$img_attr['src'] = $img_src . $sufix;
-					$img_attr['class'] = trim( $p['img_class_resp'] . ' ' . $p['img_class'] . ' size-' . $p['name'] );
+				// SET IMAGE SRC {
 
 					if ( $p['id'] ) {
-						if ( $p['alt'] ) $img_attr['alt'] = $p['alt'];
-						if ( $p['style'] ) $img_attr['style'] = $p['style'];
-						$return .= wp_get_attachment_image( $p['id'], 'adaptive-image-base', false, $img_attr );
-					}
 
+						$img_param = wp_get_attachment_image_src( $p['id'], $p['name'] );
+						$img_src = $img_param[0];
+					}
 					if ( $p['file'] ) {
-						$img_alt = '';
-						if ( $p['alt'] ) $img_alt .= ' alt="' . $p['alt'] . '"';
-						if ( $p['style'] ) $img_style .= ' style="' . $p['style'] . '"';
-						$return .= '<img src="' . $img_attr['src'] . '" class="' . $img_attr['class'] . '"' . $img_alt . $img_style . '/>';
+
+						$img_src = get_bloginfo('template_url') . '/' . $p['file'];
 					}
 
-					/* return link close */
-					if (  $link_url OR $link_class OR $link_rel OR $link_title OR $link_target ) $return .= '</a>';
+				// }
 
-					/* wrap close */
-					if ( $p['wrap'] ) {
-						$return .= '</' . $p['wrap'] . '>';
+				// SET ROOT CLASS {
+
+					if ( $p['root_class'] ) {
+
+						if ( $p['link_image'] OR $p['link_page'] OR $p['link_url'] ) {
+
+							 $p['link_class'] = trim( $p['link_class'] . ' ' . $p['root_class'] );
+						}
+
+						elseif ( $p['wrap'] ) {
+
+							 $p['wrap_class'] = trim( $p['wrap_class'] . ' ' . $p['root_class'] );
+						}
+
+						else {
+
+							 $p['img_class'] = trim( $p['img_class'] . ' ' . $p['root_class'] );
+						}
 					}
 
-					/* remove image dimensions attributes */
-					$return = remove_image_dimensions_attributes( $return );
-				}
+				// }
 
-				/* return */
-				return  $return;
+				// SET IMAGE ATTRIBUTE "DATA" {
+
+					if ( $p['img_data'] ) {
+
+						foreach ( $p['img_data'] as $key => $value ) {
+
+							$img_attr['data-' . $key] = $value;
+						}
+					}
+
+				// }
+
+				// SET LINK ATTRIBUTE "DATA" {
+
+					if ( $p['link_data'] ) {
+
+						foreach ( $p['link_data'] as $key => $value ) {
+
+							$link_data .= ' data-' .$key . '="' . $value . '"';
+						}
+					}
+
+				// }
+
+				// SET LINK URL {
+
+					if ( $p['link_image'] AND $p['link_image'] != 'true' AND $p['link_image'] != 'false' ) {
+
+						$link_url = get_adaptive_image_src( array( 'name' => $p['link_image'], 'id' => $p['id'] ) );
+					}
+
+					// BY SRC {
+
+						if ( $p['link_image'] == 'true') {
+
+							$link_url = $img_src;
+						}
+
+					// }
+
+					// BY LINK PAGE {
+
+						if ( $p['link_page'] ) {
+
+							$link_url = get_permalink();
+						}
+
+						if ( $p['link_page'] AND is_int( $p['link_page'] ) ) {
+
+							$link_url = get_permalink( $p['link_page'] );
+						}
+
+					// }
+
+					// BY LINK URL {
+
+						if ( $p['link_url'] ) {
+
+							$link_url = $p['link_url'];
+						}
+
+					// }
+
+				// }
+
+				// SET LINK CLASS {
+
+					if ( $p['link_class'] ) {
+
+						$link_class = ' class="' . $p['link_class'] . '"';
+					}
+
+				// }
+
+				// SET LINK TARGET {
+
+					if ( $p['link_target'] ) {
+
+						$link_target = ' target="' . $p['link_target'] . '"';
+					}
+
+				// }
+
+				// SET LINK REL {
+
+					if ( $p['link_rel'] ) {
+
+						$link_rel = ' rel="' . $p['link_rel'] . '"';
+					}
+
+				// }
+
+				// SET LINK TITLE {
+
+					if ( $p['link_title'] ) {
+
+						$title = $p['link_title'];
+
+						if ( $p['link_title'] === 'titel' ) {
+
+							$data = get_post( $p['id'] );
+							$title = $data->post_titel;
+						}
+
+						if ( $p['link_title'] === 'beschriftung' ) {
+
+							$data = get_post( $p['id'] );
+							$title = $data->post_excerpt;
+						}
+
+						if ( $p['link_title'] === 'alt' ) {
+
+							$data = get_post_meta( $p['id'], '_wp_attachment_image_alt' );
+							$title = $data[0];
+						}
+
+						$link_title = ' title="' . $title . '"';
+					}
+
+				// }
+
+				// PREPARE RETURN {
+
+					if ( $img_src ) {
+
+						// WRAP OPEN {
+
+							if ( $p['wrap'] ) {
+
+								if ( $p['wrap_class'] ) {
+
+									$wrap_class = ' class="' .$p['wrap_class'] . '"';
+								}
+
+								$return .= '<' . $p['wrap'] . $wrap_class . '>';
+							}
+
+						// }
+
+						// LINK OPEN {
+
+							if ( $link_url OR $link_class OR $link_rel OR $link_title OR $link_target ) {
+
+								if ( $link_url ) {
+
+									$link_url =  ' href="' . $link_url . '"';
+								}
+
+								$return .= '<a' . $link_url . $link_class . $link_rel . $link_title . $link_data . $link_target . '>';
+							}
+
+						// }
+
+						// IMAGE SRC {
+
+							$img_attr['src'] = $img_src . $sufix;
+
+						// }
+
+						// IMAGE / CAPTION CLASSES {
+
+							if ( ! $p['figcaption_cont'] ) {
+
+								$img_attr['class'] = trim( $p['img_class_resp'] . ' ' . $p['img_class'] . ' size-' . $p['name'] );
+							}
+							else {
+
+								$img_attr['class'] = $p['img_class_resp'];
+								$caption_attr['class'] = trim( $p['img_class'] . ' size-' . $p['name'] . ' ' . $p['figure_class'] );
+							}
+
+						// }
+
+						// FIGCAPTION BEGIN {
+
+							if ( $p['figcaption_cont'] ) {
+
+								$return .= '<figure class="' . $caption_attr['class'] . '">';
+							}
+
+						// }
+
+						// IMAGE BY ID {
+
+							if ( $p['id'] ) {
+
+								if ( $p['alt'] ) {
+
+									$img_attr['alt'] = $p['alt'];
+								}
+								if ( $p['style'] ) {
+
+									$img_attr['style'] = $p['style'];
+								}
+
+								$return .= wp_get_attachment_image( $p['id'], 'adaptive-image-base', false, $img_attr );
+							}
+
+						// }
+
+						// IMAGE BY FILE {
+
+							if ( $p['file'] ) {
+
+								$img_alt = '';
+
+								if ( $p['alt'] ) {
+
+									$img_alt .= ' alt="' . $p['alt'] . '"';
+								}
+
+								if ( $p['style'] ) {
+
+									$img_style .= ' style="' . $p['style'] . '"';
+								}
+								$return .= '<img src="' . $img_attr['src'] . '" class="' . $img_attr['class'] . '"' . $img_alt . $img_style . '/>';
+							}
+
+						// }
+
+						// LINK CLOSE {
+
+							if (  $link_url OR $link_class OR $link_rel OR $link_title OR $link_target ) {
+
+								$return .= '</a>';
+							}
+
+						// }
+
+						// FIGCAPTION END {
+
+							if ( $p['figcaption_cont'] ) {
+
+								$return .= '<figcaption class="' . $p['figcaption_class'] . '">';
+									$return .= $p['figcaption_cont'];
+								$return .= '</figcaption>';
+
+								$return .= '</figure>';
+							}
+
+						// }
+
+						// WRAP CLOSE {
+
+							if ( $p['wrap'] ) {
+
+								$return .= '</' . $p['wrap'] . '>';
+							}
+
+						// }
+
+						// FILTERS {
+
+							// remove image dimensions attributes
+							$return = remove_image_dimensions_attributes( $return );
+
+						// }
+
+					}
+
+				// }
+
+				// RETURN {
+
+					return  $return;
+
+				// }
+
 			}
 
 		// }
