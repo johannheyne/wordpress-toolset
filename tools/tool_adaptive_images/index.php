@@ -11,7 +11,7 @@
 
 	// IMAGE SIZE ( Version 7 ) {
 
-		add_filter('intermediate_image_sizes_advanced', function( $sizes) {
+		add_filter('intermediate_image_sizes_advanced', function( $sizes ) {
 			// unset( $sizes['thumbnail']);
 			// unset( $sizes['medium']);
 			unset( $sizes['large']);
