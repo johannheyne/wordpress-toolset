@@ -2,14 +2,14 @@
 
 	// THEME LOCALIZATION CONSTANTS ( Version 3 ) {
 
-		// WPML {
+		// DEFINES THEME_LANG_SUFIX AND THEME_LANG_ARRAY BY WPML {
 
 			if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
 
 				define( 'THEME_LANG_SUFIX', '_' . ICL_LANGUAGE_CODE );
 
 				/* the variable THEME_LANG_ARRAY should be an array with the following pattern:
-					array( 
+					array(
 						'en' => array(
 							'id' => 1,
 							'active' => 1,
@@ -32,40 +32,54 @@
 
 		// DEFAULT {
 
-			// requires: $GLOBALS['toolset']['langcode'], $GLOBALS['toolset']['countrycode']
+			// requires:
+			// $GLOBALS['toolset']['langcode']
+			// $GLOBALS['toolset']['countrycode']
 
-			$languages = $GLOBALS['toolset']['langcode'];
-			$languages = array_values( $languages );
-			$langcode = $languages[0];
+			// DEFINES THEME_LANG_SUFIX BY THE FIRST DEFINED LANGCODE {
 
-			$countrycode = $GLOBALS['toolset']['countrycode'][ $langcode ];
+				$langcode = reset( $GLOBALS['toolset']['langcode'] );
 
-			if ( ! defined( 'THEME_LANG_SUFIX' ) ) {
+				if ( ! defined( 'THEME_LANG_SUFIX' ) ) {
 
-				define( 'THEME_LANG_SUFIX', '_' . $langcode );
-			}
+					define( 'THEME_LANG_SUFIX', '_' . $langcode );
+				}
 
-			if ( !defined( 'THEME_LANG_ARRAY' ) ) {
+			// }
 
-				define( 'THEME_LANG_ARRAY', serialize( 
-					array( 
-						$langcode => array(
-							'id' => 1,
-							'active' => 1,
-							'encode_url' => 0,
-							'tag' => $countrycode,
-							'native_name' => '',
-							'language_code' => $langcode,
-							'translated_name' => '',
-							'url' => '',
-							'country_flag_url' => '',
-						),
-					)
-				) );
-			}
+			// DEFINES THEME_LANG_ARRAY {
+
+				if ( ! defined( 'THEME_LANG_ARRAY' ) ) {
+
+					$lang_array = array();
+
+					if ( !empty( $GLOBALS['toolset']['langarray'] ) ) {
+
+						$lang_array = $GLOBALS['toolset']['langarray'];
+					}
+					else {
+
+						foreach( $GLOBALS['toolset']['langcode'] as $langcode ) {
+
+							$lang_array[ $langcode ] = array(
+								'id' => 1,
+								'active' => 1,
+								'encode_url' => 0,
+								'tag' => $GLOBALS['toolset']['countrycode'][ $langcode ],
+								'native_name' => '',
+								'language_code' => $langcode,
+								'translated_name' => $langcode,
+								'url' => '',
+								'country_flag_url' => '',
+							);
+						}
+					}
+
+					define( 'THEME_LANG_ARRAY', serialize( $lang_array ) );
+				}
+
+			// }
 
 		// }
 
 	// }
-
-?>
