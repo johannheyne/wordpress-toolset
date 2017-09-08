@@ -69,6 +69,7 @@
 						if ( $key === 'title' ) {
 
 							$item = preg_replace( "/\((.*)\)(.*)/", '$2', $item );
+							$item = trim( $item );
 						}
 
 					// }
