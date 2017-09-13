@@ -2,7 +2,7 @@ WordPress ToolSet Plugin
 ===============
 
 This WordPress plugin provides a foundation to configurate WordPress, provides PHP tools and Javascript assets for frequent tasks.
-It is about NOT separately managing all the same repeating code on every WordPress project. 
+It is about NOT separately managing all the same repeating code on every WordPress project.
 
 Strategie
 ---------------
@@ -34,7 +34,7 @@ Structure
 		theme/
 			config/
 				config.php
-	
+
 ### Using a Tool Functionality
 
 ````php
@@ -46,8 +46,8 @@ tool( array(
 ) );
 ````
 The tool() Function
-	- detects the real tool function name and its sourcefile by <code>plugins/toolset/tools/index.php</code> 
-	- checks wheter the function exists and autoload the sourcefile of the function from <code>plugins/toolset/tools/…</code> 
+	- detects the real tool function name and its sourcefile by <code>plugins/toolset/tools/index.php</code>
+	- checks wheter the function exists and autoload the sourcefile of the function from <code>plugins/toolset/tools/…</code>
 	- runs the function and returns a result.
 
 ### Config
@@ -67,7 +67,7 @@ $GLOBALS['toolset'] = array(
 
 		// The theme version is used to force reloading all cached files of a theme
 		// via example_changed_file.js?v=0.1 to make changes happen in a browser.
-		
+
 		'theme-version' => '0.1',
 
 	// }
@@ -81,7 +81,7 @@ $GLOBALS['toolset'] = array(
 			'kickstart.domain.de' => 'test',
 			'kickstart.dev' => 'local',
 		),
-		
+
 		// Notice if you are using MAMP on a Mac!
 		// Avoide using '.local' domains. This makes your local Site realy slow because
 		// '.local' conflict with Bonjour, which treats anything with a '.local' TLD as a Bonjour server.
@@ -130,7 +130,7 @@ $GLOBALS['toolset'] = array(
 	// REGISTER PHP CLASSES FOR AUTOLOAD FROM YOUR THEME {
 
 		// You do not need to define classes from the toolset plugin
-		
+
 		'autoload_php_classes' => array(
 			// 'ClassName' => 'path/to/class.php',
 		),
@@ -183,4 +183,5 @@ $GLOBALS['toolset'] = array(
 * [YerWhen](assets/yerwhen/readme.markdown)
 * [YerRespFontSize](assets/yerrespfontsize/readme.markdown)
 
-
+### Filters
+* [toolset/tool_html_buffer/buffer](tools/tool_html_buffer/readme.markdown)
