@@ -34,13 +34,13 @@
 
 			function __construct() {
 
-				if ( empty( $GLOBALS['toolset']['admin_locale'] ) ) {
+				if ( empty( $GLOBALS['toolset']['user_locale'] ) ) {
 
-					$this->locale = get_locale();
+					$this->locale = get_user_locale();
 				}
 				else {
 
-					$this->locale = $GLOBALS['toolset']['admin_locale'];
+					$this->locale = $GLOBALS['toolset']['user_locale'];
 				}
 
 				if ( $this->locale ) {
@@ -55,35 +55,58 @@
 
 				if ( $this->current_screen->id != 'acf-field-group' ) {
 
-					add_filter( 'acf/get_valid_field', array( $this, 'translate' ) );
-					add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) );
+					add_filter( 'acf/get_valid_field', array( $this, 'translate' ) ); // Fields
+					add_filter( 'acf/get_field_groups', array( $this, 'translate' ) ); // Grouptitles in Optionpages
+					add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // Grouptitles in FlexContent
+
+					//add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
+					//add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
 				}
 			}
 
 			function translate( $array ) {
 
-				array_walk_recursive( $array, function( &$item, $key ) {
+				if ( ! is_array( $array ) ) {
 
-					// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
+					if (
+						! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ][ $this->locale ] )
+					) {
 
-						if ( $key === 'title' ) {
+						$array = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ][ $this->locale ];
+					}
 
-							$item = preg_replace( "/\((.*)\)(.*)/", '$2', $item );
-							$item = trim( $item );
-						}
+				}
+				else {
 
-					// }
+					array_walk_recursive( $array, function( &$item, $key ) {
 
-					// REPLACE STRINGS {
+						// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
 
-						if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
+							if ( $key === 'title' ) {
 
-							$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
-						}
+								$item = preg_replace( "/\((.*)\)(.*)/", '$2', $item );
+								$item = trim( $item );
+							}
 
-					// }
+						// }
 
-				} );
+						// REPLACE STRINGS {
+
+							if (
+								is_string( $key ) AND
+								$key !== 'value' AND // prevents translation of conditional logig values
+								! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
+							) {
+
+								$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+							}
+
+						// }
+
+					} );
+				}
+
+
 
 				return $array;
 			}
