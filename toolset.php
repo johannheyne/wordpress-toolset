@@ -38,4 +38,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 // }
 
-require_once( plugin_dir_path( __FILE__ ) . 'functions.php' );
+add_action( 'plugins_loaded', function() {
+
+	// action 'plugins_loaded' enables access to $current_user data
+	require_once( plugin_dir_path( __FILE__ ) . 'functions.php' );
+
+} );
