@@ -26,12 +26,21 @@
 
 	// }
 
-	if ( file_exists( get_template_directory() . '/config/config.php' ) ) {
+	// GET THE THEME CONFIG FILE {
 
-		require_once( get_template_directory() . '/config/config.php' );
-	}
+		if ( file_exists( get_template_directory() . '/config/config.php' ) ) {
 
-	require_once( 'classes.php' );
+			require_once( get_template_directory() . '/config/config.php' );
+		}
+
+	// }
+
+	// GET THE CLASSES SETUP {
+
+		require_once( 'classes.php' );
+
+	// }
+
 
 	// CORE {
 
