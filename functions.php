@@ -2,9 +2,9 @@
 
 	// FALLBACK array_replace_recursive() {
 
-		if ( !function_exists( 'array_replace_recursive' ) ) {
+		if ( ! function_exists( 'array_replace_recursive' ) ) {
 
-			function array_replace_recursive( $a, $b )  { 
+			function array_replace_recursive( $a, $b )  {
 
 				$r = $a;
 
@@ -35,7 +35,7 @@
 
 	// CORE {
 
-	    // GLOBALS['toolglobal'] ( Version 1 ) {
+		// GLOBALS['toolglobal'] ( Version 1 ) {
 
 			/** ABOUT
 
@@ -56,7 +56,7 @@
 
 		// }
 
-		// FUNCTIONS { 
+		// FUNCTIONS {
 
 			// AUTOLOAD ( Version 1 ) {
 
@@ -64,7 +64,7 @@
 
 					// SETUP {
 
-					    $d = array(
+						$d = array(
 							'files' => false, // array( '','' )
 						);
 
@@ -97,14 +97,14 @@
 
 					// SETUP {
 
-					    // DEFAULTS
+						// DEFAULTS
 						$d = array(
 							'name' => false,
 							'param' => array(),
 						);
 
 						// EXTEND PARAMETER
-					    $p = array_replace_recursive( $d, $p );
+						$p = array_replace_recursive( $d, $p );
 
 						// VARIABLES
 						$v = array(
