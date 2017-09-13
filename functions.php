@@ -130,7 +130,7 @@
 
 						if ( ! isset( $GLOBALS['tool']['functions'] ) ) {
 
-							include( 'tools/index.php' );
+							include( 'tools/index_functions.php' );
 						}
 
 						$v['funame'] = $GLOBALS['tool']['functions'][ $p['name'] ]['funame'];

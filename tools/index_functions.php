@@ -54,6 +54,7 @@
 							'dir' => 'tool_acf',
 							'funame' => 'tool_acf_get_fields',
 						),
+
 					// }
 
 				// }
@@ -318,6 +319,15 @@
 					'tool_transient' => array(
 						'dir' => 'tool_transient',
 						'funame' => 'tool_transient',
+					),
+
+				// }
+
+				// tool_html_buffer {
+
+					'tool_html_buffer' => array(
+						'dir' => 'tool_html_buffer',
+						'funame' => 'tool_html_buffer',
 					),
 
 				// }
