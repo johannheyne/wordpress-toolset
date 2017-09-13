@@ -98,6 +98,73 @@
 
 			// }
 
+			// ADD FILTERS {
+
+				function tool_add_filter( $p = array() ) {
+
+					// DEFAULTS {
+
+						// for arguments see: https://developer.wordpress.org/reference/classes/wp_hook/add_filter/
+						$defaults = array(
+							'tag' => false, // toolset/tool_name/filter_name
+							'callback' => function( $value ) { return $value; },
+							'priority' => 10,
+							'accepted_args' => 1,
+						);
+
+						$p = array_replace_recursive( $defaults, $p );
+
+					// }
+
+					// VALIDATION {
+
+						if ( ! is_string( $p['tag'] ) ) {
+
+							return false;
+						}
+
+					// }
+
+					// GET THE TOOLNAME AND FILTER NAME {
+
+						$arr = explode( '/', $p['tag'] );
+
+						array_shift( $arr );
+
+						$v['tool_name'] = array_shift( $arr );
+						$v['filter_tag'] = implode( '/', $arr );
+
+					// }
+
+					// ADD FILTER {
+
+						add_filter( $p['tag'], $p['callback'], $p['priority'], $p['accepted_args'] );
+
+					// }
+
+					// AUTOLOAD TOOL {
+
+						if ( ! isset( $GLOBALS['tool']['functions'] ) ) {
+
+							include( 'tools/index_functions.php' );
+						}
+
+						$v['funame'] = $GLOBALS['tool']['functions'][ $v['tool_name'] ]['funame'];
+						$v['file'] = $GLOBALS['tool']['functions'][ $v['tool_name'] ]['dir'];
+
+						if ( ! function_exists( $v['funame'] ) ) {
+
+							toolset_autoload( array(
+								'files' => array( $v['file'] . '/index.php' ),
+							) );
+						}
+
+					// }
+
+				}
+
+			// }
+
 			// CALL THEMEFUNC  ( Version 1 ) {
 
 				// use this functione for calling a function, it will autoload from folder "functions"
