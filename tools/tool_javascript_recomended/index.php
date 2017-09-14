@@ -2,7 +2,7 @@
 
 	// JAVASCRIPT RECOMENDED {
 
-		function tool_javascript_recomended() {
+		function tool_javascript_recomended( $p = array() ) {
 
 			// DEFAULTS {
 
@@ -15,7 +15,7 @@
 					),
 				);
 
-				$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['tool_javascript_recomended'] );
+				$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['tool_javascript_recomended'], $p );
 
 				$vars['lang'] = false;
 
