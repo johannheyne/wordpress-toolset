@@ -185,3 +185,4 @@ $GLOBALS['toolset'] = array(
 
 ### Filters
 * [toolset/tool_html_buffer/buffer](tools/tool_html_buffer/readme.markdown)
+* [toolset/tool_fields_value/value](tools/tool_fields_value/readme.markdown)

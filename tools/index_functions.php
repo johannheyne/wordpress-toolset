@@ -332,6 +332,15 @@
 
 				// }
 
+				// tool_html_buffer {
+
+					'tool_fields_value' => array(
+						'dir' => 'tool_fields_value',
+						'funame' => 'tool_fields_value',
+					),
+
+				// }
+
 			)
 		);
 
