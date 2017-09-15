@@ -6,7 +6,10 @@
 
 			if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
 
-				define( 'THEME_LANG_SUFIX', '_' . ICL_LANGUAGE_CODE );
+				if ( ! isset( $GLOBALS['toolset']['inits']['tool_localization_constants']['THEME_LANG_SUFIX'] ) ) {
+
+					define( 'THEME_LANG_SUFIX', '_' . ICL_LANGUAGE_CODE );
+				}
 
 				/* the variable THEME_LANG_ARRAY should be an array with the following pattern:
 					array(
@@ -24,8 +27,11 @@
 					)
 				*/
 
-				$data = icl_get_languages();
-				define( 'THEME_LANG_ARRAY', serialize( $data ) );
+				if ( ! isset( $GLOBALS['toolset']['inits']['tool_localization_constants']['THEME_LANG_ARRAY'] ) ) {
+
+					$data = icl_get_languages();
+					define( 'THEME_LANG_ARRAY', serialize( $data ) );
+				}
 			}
 
 		// }
@@ -40,7 +46,10 @@
 
 				$langcode = reset( $GLOBALS['toolset']['langcode'] );
 
-				if ( ! defined( 'THEME_LANG_SUFIX' ) ) {
+				if (
+					! defined( 'THEME_LANG_SUFIX' ) AND
+					! isset( $GLOBALS['toolset']['inits']['tool_localization_constants']['THEME_LANG_SUFIX'] )
+				) {
 
 					define( 'THEME_LANG_SUFIX', '_' . $langcode );
 				}
@@ -49,7 +58,10 @@
 
 			// DEFINES THEME_LANG_ARRAY {
 
-				if ( ! defined( 'THEME_LANG_ARRAY' ) ) {
+				if (
+					! defined( 'THEME_LANG_ARRAY' ) AND
+					! isset( $GLOBALS['toolset']['inits']['tool_localization_constants']['THEME_LANG_ARRAY'] )
+				) {
 
 					$lang_array = array();
 
