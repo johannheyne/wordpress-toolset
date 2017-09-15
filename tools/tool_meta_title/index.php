@@ -2,6 +2,24 @@
 
 	// TOOL META TITLE ( Version 2 ) {
 
+		// BACKEND SET STATES {
+
+			if (
+				is_admin() AND
+				! empty( $_REQUEST['post'] )
+			) {
+
+				if (
+					$GLOBALS['toolset']['inits']['tool_meta_title']['page_title_on_hompage'] === false &&
+					in_array( $_REQUEST['post'], $GLOBALS['toolset']['inits']['tool_meta_title']['homepages'] )
+				) {
+
+					$GLOBALS['toolset']['inits']['tool_meta_title']['state']['no_page_title'] = true;
+				}
+			}
+
+		// }
+
 		function tool_meta_title( $p = array() ) {
 
 			// DEFAULTS {
@@ -13,7 +31,19 @@
 					'prepend_posttype_name_on_archives' => false,
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				if ( empty( $GLOBALS['toolset']['inits']['tool_meta_title']['page_title_on_hompage'] ) ) {
+
+					$GLOBALS['toolset']['inits']['tool_meta_title']['page_title_on_hompage'] = false;
+				}
+
+				if ( empty( $GLOBALS['toolset']['inits']['tool_meta_title']['homepages'] ) ) {
+
+					$GLOBALS['toolset']['inits']['tool_meta_title']['homepages'] = array(
+						get_option( 'page_on_front' ),
+					);
+				}
+
+				$p = array_replace_recursive( $defaults, $GLOBALS['toolset']['inits']['tool_meta_title'], $p );
 
 				if ( ! $p['rules'] ) {
 
@@ -44,7 +74,10 @@
 
 					if ( $key === '{page_title}' && $value ) {
 
-						if ( ! $p['page_title_on_hompage'] && get_the_ID() == get_option( 'page_on_front' ) ) {
+						if (
+							$p['page_title_on_hompage'] === false &&
+							in_array( get_the_ID(), $p['homepages'] )
+						) {
 
 							// no page title on homepage
 						}
@@ -67,7 +100,7 @@
 				if ( is_archive() ) {
 
 					if ( $p['prepend_posttype_name_on_archives'] ) {
-						
+
 						$v['post_type'] = get_post_type();
 						$v['post_type_obj'] = get_post_type_object( $v['post_type'] );
 						$v['post_type_name'] = $v['post_type_obj']->labels->name . ' ';
@@ -97,7 +130,17 @@
 
 				if ( function_exists( 'get_field' ) ) {
 
-					$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+					$v['title_custom_page'] = get_field( 'meta_page_title' );
+
+					// OLD VERSION {
+
+						if ( ! $v['title_custom_page'] ) {
+
+							$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+
+						}
+
+					// }
 
 					if ( $v['title_custom_page'] ) {
 
@@ -125,5 +168,3 @@
 		}
 
 	// }
-
-?>
