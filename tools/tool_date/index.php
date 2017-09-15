@@ -1,31 +1,31 @@
 <?php
 
 	// DATE ( Version 5 ) {
-		
+
 		function tool_date( $p = array() ) {
-			
+
 			// DEFAULTS {
 
-		        $defaults = array(
+				$defaults = array(
 					'date' => false,
 					'format' => 'd.m.Y',
 					'local' => 'de_DE'
-		        );
+				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
 			// }
-		
+
 			/* aktelles Datum als default */
 			if ( ! $p['date'] ) {
-				
+
 				$p['date'] = time();
 			}
 			if ( strpos( $p['date'], ':' ) !== false || strpos( $p['date'], '-' ) !== false ) {
-			    
+
 				$p['date'] = mysql2date( 'U', $p['date'] );
 			}
-			error_log( print_r( $p, true) );
+			//error_log( print_r( $p, true) );
 
 			setlocale( LC_ALL, $p['local'] );
 
@@ -92,5 +92,3 @@
 		}
 
 	// }
-
-?>
