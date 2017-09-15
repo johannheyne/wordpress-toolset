@@ -175,6 +175,8 @@ $GLOBALS['toolset'] = array(
 * [User Login/Logout](tools/tool_wp_user/readme.markdown)
 * [Instagram](tools/tool_instagram/readme.markdown)
 * [Transient](tools/tool_transient/readme.markdown)
+* [Get Locale by URL](tools/tool_get_locale_by_url/readme.markdown)
+
 
 ### Assets
 

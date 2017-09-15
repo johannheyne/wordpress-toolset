@@ -341,6 +341,15 @@
 
 				// }
 
+				// tool_get_locale_by_url {
+
+					'tool_get_locale_by_url' => array(
+						'dir' => 'tool_get_locale_by_url',
+						'funame' => 'tool_get_locale_by_url',
+					),
+
+				// }
+
 			)
 		);
 
