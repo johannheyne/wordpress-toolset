@@ -7,7 +7,7 @@
 			$defaults = array(
 				'default_locale' => 'en',
 				'locales' => array( 'en' ),
-				'url' => $_REQUEST['REQUEST_URI'],
+				'url' => $_SERVER['REQUEST_URI'],
 			);
 
 			$p = array_replace_recursive( $defaults, $p );
