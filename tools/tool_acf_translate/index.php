@@ -43,9 +43,18 @@
 					$this->locale = $GLOBALS['toolset']['user_locale'];
 				}
 
+				// make sure there is a locale like "en_US" for translation
 				if ( $this->locale ) {
 
+					// enables calling get_current_screen()
+					// this is needed for detecting the field-group settings page
+					// this is needed for preventing translating in fieldgroup settings
 					add_action( 'current_screen', array( $this, 'current_screen' ) );
+				}
+
+				if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+
+					$this->add_translation_filters();
 				}
 			}
 
@@ -53,15 +62,21 @@
 
 				$this->current_screen = get_current_screen();
 
+				// prevents translating in fieldgroup setting pages
 				if ( $this->current_screen->id != 'acf-field-group' ) {
 
-					add_filter( 'acf/get_valid_field', array( $this, 'translate' ) ); // Fields
-					add_filter( 'acf/get_field_groups', array( $this, 'translate' ) ); // Grouptitles in Optionpages
-					add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // Grouptitles in FlexContent
-
-					//add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
-					//add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
+					$this->add_translation_filters();
 				}
+			}
+
+			function add_translation_filters() {
+
+				add_filter( 'acf/get_valid_field', array( $this, 'translate' ) ); // Fields
+				add_filter( 'acf/get_field_groups', array( $this, 'translate' ) ); // Grouptitles in Optionpages
+				add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // Grouptitles in FlexContent
+
+				//add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
+				//add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
 			}
 
 			function translate( $array ) {
