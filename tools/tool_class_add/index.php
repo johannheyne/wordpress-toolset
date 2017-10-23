@@ -4,10 +4,10 @@
 
 		function tool_add_class( $p = array() ) {
 
-			 $p += array(
+			$p += array(
 				'class' => false,
 				'html' => false
-			 );
+			);
 
 			if ( $p['html'] && $p['class'] ) {
 
@@ -18,5 +18,3 @@
 		}
 
 	// }
-
-?>

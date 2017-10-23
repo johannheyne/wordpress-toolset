@@ -136,16 +136,16 @@
 				if ( count( $p['notifications'] ) > 0 ) {
 
 					foreach ( $p['notifications'] as $key => $notification ) {
-						
+
 						$defaults = array(
 							'post_status_from' => false,
 							'post_status_to' => false,
 						);
 
 						$notification = array_replace_recursive( $defaults, $notification );
-						
+
 						if ( $notification['post_status_from'] && $notification['post_status_to'] ) {
-							
+
 							if ( $notification['post_type'] == $post_type && in_array( $post->post_status, $notification['post_status_from'] ) ) {
 
 								wp_update_post( array(
@@ -154,7 +154,7 @@
 								) );
 							}
 						}
-						
+
 					}
 				}
 
@@ -165,5 +165,3 @@
 		// }
 
 	// }
-
-?>

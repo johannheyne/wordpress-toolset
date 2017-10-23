@@ -8,12 +8,12 @@
 				isset( $GLOBALS['toolset']['inits']['tool_metabox_remove'] )
 				&& is_array( $GLOBALS['toolset']['inits']['tool_metabox_remove'] )
 			) {
-				
+
 				$defaults_metabox = array(
 					'pages' => array( 'post', 'page', 'attachment', 'link', 'dashboard' ),
 					'context' => array( 'normal', 'advanced', 'side' ),
 				);
-				
+
 				$wp_metaboxes = array(
 					'author' => 'authordiv',
 					'category' => 'categorydiv',
@@ -30,7 +30,7 @@
 					'tags' => 'tagsdiv-post_tag',
 					'trackbacks' => 'trackbacksdiv',
 				);
-				
+
 				/*
 					'author'
 					'category'
@@ -47,16 +47,16 @@
 					'tags'
 					'trackbacks'
 				*/
-				
+
 				foreach ( $GLOBALS['toolset']['inits']['tool_metabox_remove'] as $key => $items ) {
-					
+
 					if ( ! isset( $items['pages'] ) or count( $items['pages'] ) < 1 ) {
-						
+
 						$items['pages'] = $defaults_metabox['pages'];
 					}
-					
+
 					if ( ! isset( $items['context'] ) or count( $items['context'] ) < 1 ) {
-						
+
 						$items['context'] = $defaults_metabox['context'];
 					}
 
@@ -66,13 +66,13 @@
 					}
 
 					foreach ( $items['pages'] as $page ) {
-						
+
 						foreach ( $items['context'] as $context ) {
-						
+
 							// http://codex.wordpress.org/Function_Reference/remove_meta_box
 							remove_meta_box( $key, $page, $context );
 						}
-						
+
 					}
 				}
 			}
@@ -80,4 +80,3 @@
 		} );
 
 	// }
-?>

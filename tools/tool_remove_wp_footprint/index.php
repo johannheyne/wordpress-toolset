@@ -35,7 +35,7 @@
 
 			if ( $p['remove_admin_bar_logo'] ) {
 
-			    add_action( 'admin_bar_menu', 'tool_remove_wp_footprint_adminbar', 999 );
+				add_action( 'admin_bar_menu', 'tool_remove_wp_footprint_adminbar', 999 );
 			}
 
 		// }
@@ -81,7 +81,7 @@
 		function tool_remove_wp_loginpage_logo() {
 
 			echo '<style type="text/css">
-				h1 a { 
+				h1 a {
 					display: none !important;
 				}
 			</style>';
@@ -103,12 +103,12 @@
 			// DEFAULTS {
 
 				$defaults = array(
-		            'text' => get_bloginfo( 'name' ),
-		        );
+					'text' => get_bloginfo( 'name' ),
+				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
-		    // }
+			// }
 
 			echo '<style type="text/css">
 				h1 {
@@ -127,10 +127,8 @@
 
 		function tool_remove_wp_footprint_footertexte() {
 
-		    add_filter( 'admin_footer_text', '__return_false', 11 );
-		    add_filter( 'update_footer', '__return_false', 11 );
+			add_filter( 'admin_footer_text', '__return_false', 11 );
+			add_filter( 'update_footer', '__return_false', 11 );
 		}
 
 	// }
-
-?>

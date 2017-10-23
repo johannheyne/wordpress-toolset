@@ -32,7 +32,7 @@
 
 				foreach ( $p['capabilities'] as $key => $value ) {
 
-					if ( 
+					if (
 						$key == 'read' ||
 						$key == 'read_private' ||
 						$key == 'publish' ||
@@ -45,7 +45,7 @@
 						$key == 'delete_others' ||
 						$key == 'delete_private'
 					) {
-						if ( 
+						if (
 							$key == 'read' ||
 							$key == 'publish' ||
 							$key == 'edit' ||
@@ -68,5 +68,3 @@
 		}
 
 	// }
-
-?>

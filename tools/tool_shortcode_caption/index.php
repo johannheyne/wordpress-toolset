@@ -91,5 +91,3 @@
 		add_shortcode( 'caption', 'shortcode_caption' );
 
 	// }
-
-?>

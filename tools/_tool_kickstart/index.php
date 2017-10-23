@@ -1,5 +1,3 @@
 <?php
 
 	// $GLOBALS['toolset']['inits']
-
-?>

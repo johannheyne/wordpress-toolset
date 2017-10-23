@@ -15,7 +15,7 @@
 					if ( isset( $args['toolset']['sites'] ) ) {
 
 						if (
-							isset( $current_blog ) 
+							isset( $current_blog )
 							AND ! in_array( $current_blog->blog_id, $args['toolset']['sites'] )
 						) {
 
@@ -34,5 +34,3 @@
 	}
 
 	add_action( 'init', 'tool_posttypes_register' );
-
-?>

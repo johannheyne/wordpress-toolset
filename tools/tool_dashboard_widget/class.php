@@ -10,7 +10,7 @@
 				'id' => false,
 				'title' => false,
 				'content' => false,
-	        );
+			);
 
 			$this->p = array_replace_recursive( $defaults, $p );
 
@@ -26,9 +26,7 @@
 
 			if ( $this->p['id'] && $this->p['title'] && $this->p['content'] ) {
 
-				wp_add_dashboard_widget( $this->p['id'], $this->p['title'], $this->p['content'] );	
+				wp_add_dashboard_widget( $this->p['id'], $this->p['title'], $this->p['content'] );
 			}
 		}
-	} 
-
-?>
+	}

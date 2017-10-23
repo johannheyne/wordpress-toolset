@@ -23,7 +23,7 @@
 				echo $r;
 			}
 		}
-		
+
 		// Link HTTP(S):// Filter {
 
 			function tool_link_http( $string ) {
@@ -43,7 +43,5 @@
 			}
 
 		// }
-	
-	// }
 
-?>
+	// }

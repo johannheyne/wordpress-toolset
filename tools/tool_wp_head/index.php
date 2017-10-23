@@ -115,5 +115,3 @@
 		add_action( 'after_setup_theme', 'fu_init_wp_head' );
 
 	// }
-
-?>

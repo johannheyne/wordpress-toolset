@@ -33,7 +33,7 @@
 
 			// Source: http://www.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/
 			// Alternative: https://github.com/farinspace/wpalchemy
-			
+
 			foreach ( $GLOBALS['toolset']['inits']['tool_postboxes']['add'] as $id => $item ) {
 
 				if ( $post->post_type == $item['post_type'] ) {
@@ -82,11 +82,10 @@
 		}
 
 		if ( isset( $GLOBALS['toolset']['inits']['tool_postboxes']['add'] ) ) {
-			
+
 			add_action( 'load-post.php', 'tool_postboxes_add' );
 			add_action( 'load-post-new.php', 'tool_postboxes_add' );
 			add_action( 'save_post', 'tool_postboxes_safe', 10, 2 );
 		}
-	// }
 
-?>
+	// }

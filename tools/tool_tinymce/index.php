@@ -10,7 +10,7 @@
 			if ( isset( $GLOBALS['toolset']['inits']['tool_tinymce']['styleformats'] ) && count( $GLOBALS['toolset']['inits']['tool_tinymce']['styleformats'] ) > 0 ) {
 
 				$init['style_formats'] = json_encode( $GLOBALS['toolset']['inits']['tool_tinymce']['styleformats'] );
-			    $init['style_formats_merge'] = false;
+				$init['style_formats_merge'] = false;
 			}
 
 			return $init;
@@ -35,5 +35,3 @@
 		add_filter( 'mce_buttons_2', 'tool_mce_buttons_2', 0 );
 
 	// }
-
-?>

@@ -43,5 +43,3 @@
 		$fixImageMargins = new fixImageMargins();
 
 	// }
-
-?>

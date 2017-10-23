@@ -9,10 +9,10 @@
 			http://blog.ftwr.co.uk/wordpress/mime-config/ */
 
 		/* Alle Dateitypen zulassen
-			Alle Dateitypen kann man mit der Konstante 
-			define (‘ALLOW_UNFILTERED_UPLOADS’, true); 
+			Alle Dateitypen kann man mit der Konstante
+			define (‘ALLOW_UNFILTERED_UPLOADS’, true);
 			in der wp-config.php erlauben. */
-			
+
 
 		function tool_mimetypes_upload( $mimes ) {
 
@@ -20,14 +20,12 @@
 
 				$mimes = array();
 			}
-			
+
 			$mimes = array_replace_recursive( $GLOBALS['toolset']['inits']['tool_mimetypes_upload']['add_mimetypes'], $mimes );
-			
+
 			return $mimes;
 		}
 
 		add_filter( 'upload_mimes', 'tool_mimetypes_upload' );
 
 	// }
-
-?>

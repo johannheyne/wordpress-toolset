@@ -13,7 +13,7 @@
 		}
 
 	// }
-	
+
 	// FORMAT FILESIZE ( Version 1 ) {
 
 		function tool_format_filesize( $size ) {
@@ -31,5 +31,3 @@
 		}
 
 	// }
-
-?>

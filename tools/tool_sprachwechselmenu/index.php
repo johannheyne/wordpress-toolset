@@ -6,7 +6,7 @@
 
 			<?php
 
-				echo tool_sprachwechselmenu( array( 
+				echo tool_sprachwechselmenu( array(
 					'class_link' => 'diblock menu-lang-item sprite sprite-flagge-{id} font'
 				) );
 
@@ -37,8 +37,8 @@
 					$obj = get_field( 'lang_' . $site['id'] );
 
 					if (
-						isset($obj->ID) || 
-						( $p['show_current_lang'] === true && $current_blog_id == $blog->blog_id ) 
+						isset($obj->ID) ||
+						( $p['show_current_lang'] === true && $current_blog_id == $blog->blog_id )
 					)  {
 
 						tool_switch_to_blog( (int)$blog->blog_id );
@@ -61,7 +61,3 @@
 		}
 
 	// }
-
-	
-
-?>

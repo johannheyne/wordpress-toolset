@@ -24,7 +24,7 @@
 					if ( $value === 'remove-p' ) {
 
 						$string = strtr( $string, array (
-							'<p>' => '', 
+							'<p>' => '',
 							'</p>' => ''
 						) );
 					}
@@ -62,5 +62,3 @@
 		// }
 
 	// }
-
-?>

@@ -10,5 +10,3 @@
 		add_action('admin_head', 'customBackendScript');
 
 	// }
-
-?>

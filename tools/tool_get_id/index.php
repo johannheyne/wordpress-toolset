@@ -10,7 +10,7 @@
 
 			if ( $post ) {
 
-				$return = get_the_ID(); 
+				$return = get_the_ID();
 			}
 
 			return $return;
@@ -42,7 +42,7 @@
 
 			if ( !$return && $p['include_current'] && $post ) {
 
-				$return = get_the_ID(); 
+				$return = get_the_ID();
 			}
 
 			if ( !$return ) {
@@ -67,14 +67,10 @@
 
 			if ( $p['page_on_front_fallback'] && !$return ) {
 
-			   $return = get_option('page_on_front'); 
+			   $return = get_option('page_on_front');
 			}
 
 			return $return;
 		}
 
 	// }
-
-	
-
-?>

@@ -18,5 +18,3 @@
 		add_action('admin_menu', 'disable_default_dashboard_widgets');
 
 	// }
-
-?>

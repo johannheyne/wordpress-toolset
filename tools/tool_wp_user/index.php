@@ -193,7 +193,7 @@
 		}
 
 	// }
-	
+
 	// LOGOUT {
 
 		function tool_wp_user_logout_link( $p = array() ) {
@@ -236,7 +236,7 @@
 		}
 
 	// }
-	
+
 	// REGISTER {
 
 		function tool_wp_user_register_form( $p = array() ) {
@@ -255,5 +255,3 @@
 		}
 
 	// }
-
-?>

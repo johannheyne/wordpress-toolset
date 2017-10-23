@@ -8,8 +8,8 @@
 
 			global $post;
 
-			/* 
-				$item-> 
+			/*
+				$item->
 
 				ID => 46
 				post_author => 1
@@ -107,12 +107,12 @@
 								foreach ( $rulegroup as $key => $value ) {
 
 									if ( ! is_string( $key ) ) {
-										
+
 										$rule = $value;
 										$rule_param = '';
 									}
 									else {
-										
+
 										$rule = $key;
 										$rule_param = $value;
 									}
@@ -198,5 +198,3 @@
 		}
 
 	// }
-
-?>

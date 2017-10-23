@@ -1,10 +1,10 @@
 <?php
-	
+
 	// BUILD RECURSIVE ARRAY ( Version 1 ) {
 
 		function tool_build_recursive_array( $p = array() ) {
 
-			/* 
+			/*
 				Takes a list 'array' with id´s 'id_name' and parent_id´s 'parent_name'
 				and returns an recursive array. The key´s of the returning array
 				can be integers or a value from the item 'index_key'. The parent start-id
@@ -99,5 +99,3 @@
 		}
 
 	// }
-	
-?>

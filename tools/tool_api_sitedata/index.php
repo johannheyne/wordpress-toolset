@@ -29,17 +29,17 @@
 								require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 							}
 
-							$data = array( 
+							$data = array(
 								'wp-version'	=> $GLOBALS['wp_version'],
 								'plugins' => get_plugins()
 							);
 
 							wp_send_json_success( $data );
 						}
-						else {	
+						else {
 
 							wp_send_json_error();
-						}	
+						}
 					}
 
 				} );
@@ -53,5 +53,3 @@
 		}
 
 	// }
-
-?>

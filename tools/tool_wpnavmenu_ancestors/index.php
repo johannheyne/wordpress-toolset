@@ -94,11 +94,11 @@
 				}
 			}
 
-			return $return;  
+			return $return;
 		}
 
 	// }
-	
+
 	// HAS MENU ANCESTORS ( Version 1 ) {
 
 		function tool_has_menu_ancestors( $p = array() ) {
@@ -138,9 +138,7 @@
 				$return = $count - 1;
 			}
 
-			return $return;  
+			return $return;
 		}
 
 	// }
-	
-?>

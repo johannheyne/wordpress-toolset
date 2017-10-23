@@ -113,7 +113,7 @@
 			}
 
 			add_action( 'admin_menu', 'change_post_menu_label' );
-			*/  
+			*/
 		// }
 
 		// SORT {
@@ -137,5 +137,3 @@
 		// }
 
 	// }
-
-?>

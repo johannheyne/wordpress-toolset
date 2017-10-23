@@ -143,52 +143,51 @@
 
 								// FIELDS {
 
-								foreach ( $fg['fields'] as $key => $item2 ) {
+									foreach ( $fg['fields'] as $key => $item2 ) {
 
-									$defaults = array(
-										'required' => true,
-										'formatting' => 'none',
-										'column_width' => '',
-										'toolbar' => 'full',
-										'media_upload' => 'no',
-									);
-
-									$item2 = array_replace_recursive( $defaults, $item2 );
-
-									if ( $item2['type'] == 'text' ) {
-
-										$fields[] = array (
-											'type' => 'text',
-											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'label' => $item2['label'],
-											'required' => $item2['required'],
-											'default_value' => $item2['default_value'],
-											'formatting' => $item2['formatting'],
+										$defaults = array(
+											'required' => true,
+											'formatting' => 'none',
+											'column_width' => '',
+											'toolbar' => 'full',
+											'media_upload' => 'no',
 										);
-									}
 
-									if ( $item2['type'] == 'wysiwyg' ) {
+										$item2 = array_replace_recursive( $defaults, $item2 );
 
-										$fields[] = array (
-											'type' => 'wysiwyg',
-											'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
-											'label' => $item2['label'],
-											'default_value' => $item2['default_value'],
-											'column_width' => $item2['column_width'],
-											'toolbar' => $item2['toolbar'],
-											'media_upload' => $item2['media_upload'],
-										);
+										if ( $item2['type'] == 'text' ) {
+
+											$fields[] = array (
+												'type' => 'text',
+												'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+												'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+												'label' => $item2['label'],
+												'required' => $item2['required'],
+												'default_value' => $item2['default_value'],
+												'formatting' => $item2['formatting'],
+											);
+										}
+
+										if ( $item2['type'] == 'wysiwyg' ) {
+
+											$fields[] = array (
+												'type' => 'wysiwyg',
+												'key' => 'field_opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+												'name' => 'opt_' . $p['setup']['optionpage_key'] . '_' . $fg['key'] . '_' . $item2['key'] . '_' . $item['language_code'],
+												'label' => $item2['label'],
+												'default_value' => $item2['default_value'],
+												'column_width' => $item2['column_width'],
+												'toolbar' => $item2['toolbar'],
+												'media_upload' => $item2['media_upload'],
+											);
+										}
 									}
-								}
 
 								// FIELDS }
 
 							}
 
 							// }
-							//print_o( $fields );
 
 							// INIT FIELDS {
 
@@ -229,13 +228,11 @@
 
 	// ACF BUILD OPTIONPAGES ( Version 1 ) {
 
-	    foreach ( $GLOBALS['toolset']['inits']['tool_acf_optionpage'] as $item ) {
+		foreach ( $GLOBALS['toolset']['inits']['tool_acf_optionpage'] as $item ) {
 
 			tool_acf_optionpage_build( array(
-		        'setup' => $item,
+				'setup' => $item,
 			) );
-	    }
+		}
 
 	// }
-
-?>

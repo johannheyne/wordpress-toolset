@@ -1,7 +1,7 @@
 <?php
-	
+
 	// DO NOT USE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
+
 	// MENU GET CURRENT ID ( Version 2 ) {
 
 		function tool_get_menu_item_current_id( $p = array() ) {
@@ -15,11 +15,11 @@
 				$p = array_replace_recursive( $defaults, $p );
 
 			// }
-			
+
 
 			if ( $p['menu_id'] ) {
 
-				
+
 				return false;
 			}
 			else {
@@ -29,6 +29,3 @@
 		}
 
 	// }
-	
-	
-?>

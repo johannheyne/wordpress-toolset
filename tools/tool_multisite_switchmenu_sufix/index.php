@@ -23,5 +23,3 @@
 		add_action( 'admin_head', 'tool_multisite_switchmenu_sufix' );
 
 	// }
-
-?>

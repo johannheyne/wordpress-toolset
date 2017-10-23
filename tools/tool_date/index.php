@@ -16,16 +16,16 @@
 
 			// }
 
-			/* aktelles Datum als default */
+			// default date
 			if ( ! $p['date'] ) {
 
 				$p['date'] = time();
 			}
+
 			if ( strpos( $p['date'], ':' ) !== false || strpos( $p['date'], '-' ) !== false ) {
 
 				$p['date'] = mysql2date( 'U', $p['date'] );
 			}
-			//error_log( print_r( $p, true) );
 
 			setlocale( LC_ALL, $p['local'] );
 

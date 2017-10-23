@@ -16,7 +16,7 @@
 			public $sorttaxname;
 
 			function __construct( $param )  {
-				
+
 				if( isset( $param['postname'])) $this->postname = $param['postname'];
 				if( isset( $param['position'])) $this->position = $param['position'];
 				if( isset( $param['posttype'])) $this->posttype = $param['posttype'];
@@ -34,13 +34,13 @@
 				// bei hirarchichen Listen 'manage_pages_custom_column'
 
 				if ( $this->sortmetakey != '' ) {
-					
+
 					add_filter( 'manage_edit-' . $this->postname . '_sortable_columns', array( $this, 'column_register_sortable' ) );
 					add_filter( 'request', array($this, 'column_orderby') );
 				}
 
 				if ( $this->sorttaxname != '' ) {
-					
+
 					add_filter( 'posts_clauses', array($this, 'taxonomie_sort' ), 10, 2 );
 				}
 
@@ -58,7 +58,7 @@
 			}
 
 			function column_content( $column_name, $post_id ) {
-				
+
 				eval( $this->rowlabelfunction );
 			}
 
@@ -72,7 +72,7 @@
 			function column_orderby( $vars ) {
 
 				if ( isset( $vars['orderby'] ) && $this->colid == $vars['orderby'] ) {
-					
+
 					$vars = array_merge( $vars, array(
 						'meta_key' => $this->sortmetakey,
 						'orderby' => $this->sortmetaorderby
@@ -82,7 +82,7 @@
 			}
 
 			function taxonomie_sort( $clauses, $wp_query ) {
-			
+
 				global $wpdb;
 
 				if ( isset( $wp_query->query['orderby'] ) && $this->sorttaxname == $wp_query->query['orderby'] ) {
@@ -101,5 +101,3 @@
 		}
 
 	// }
-
-?>
