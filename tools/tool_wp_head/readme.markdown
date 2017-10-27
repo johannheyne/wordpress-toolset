@@ -7,13 +7,23 @@ This influences the output of the WordPress `wp_head()` function.
 
 ```php
 $GLOBALS['toolset'] = array(
-    'inits' => array(
-        'tool_wp_head' => array(
+	'inits' => array(
+		'tool_wp_head' => array(
 
 			// remove_action()
-            '{action_name}' => array(
+			'{action_name}' => array(
 				'action' => 'wp_head', // default
 				'priority' => 10, // default
+				'show' => false, // false/true required
+			),
+			// or
+			'{action_name}' => array(
+				'action' => array(
+					array(
+						'name' => 'wp_head',
+						'priority' => 10, // default
+					)
+				),
 				'show' => false, // false/true required
 			),
 
@@ -23,47 +33,46 @@ $GLOBALS['toolset'] = array(
 				'priority' => 10, // default
 				'accepted_args' => 1, // default
 			),
-
-        ),
-    ),
+		),
+	),
 );
 
 /* DEFAULTS
 'feed_links_extra' => array(
-    'show' => false,
+	'show' => false,
 ),
 'feed_links' => array(
-    'show' => false,
+	'show' => false,
 ),
 'rsd_link' => array(
-    'show' => false,
+	'show' => false,
 ),
 'wlwmanifest_link' => array(
-    'show' => false,
+	'show' => false,
 ),
 'index_rel_link' => array(
-    'show' => true,
+	'show' => true,
 ),
 'wp_shortlink_wp_head' => array(
-    'show' => false,
+	'show' => false,
 ),
 'adjacent_posts_rel_link_wp_head' => array(
-    'show' => false,
+	'show' => false,
 ),
 'parent_post_rel_link' => array(
-    'show' => false,
+	'show' => false,
 ),
 'start_post_rel_link' => array(
-    'show' => false,
+	'show' => false,
 ),
 'adjacent_posts_rel_link' => array(
-    'show' => false,
+	'show' => false,
 ),
 'wp_generator' => array(
-    'show' => false,
+	'show' => false,
 ),
 'rel_canonical' => array(
-    'show' => true,
+	'show' => true,
 ),
 
 // DNS-PREFECH

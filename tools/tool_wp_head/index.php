@@ -100,16 +100,29 @@
 
 					if ( empty( $item['filter'] ) ) {
 
-						remove_action( $action, $key, $priority );
+						if ( is_array( $action ) ) {
+
+							foreach ( $action as $item2 ) {
+
+								if ( empty( $item2['priority'] ) ) {
+
+									$item2['priority'] = $priority;
+								}
+
+								remove_action( $item2['name'], $key, $item2['priority'] );
+							}
+						}
+						else {
+
+							remove_action( $action, $key, $priority );
+						}
 					}
 					else {
 
 						add_filter( $key, $item['filter'], $priority, $accepted_args );
 					}
-
 				}
 			}
-
 		}
 
 		add_action( 'after_setup_theme', 'fu_init_wp_head' );
