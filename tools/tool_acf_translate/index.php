@@ -52,10 +52,10 @@
 					add_action( 'current_screen', array( $this, 'current_screen' ) );
 				}
 
-				if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				//if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 
 					$this->add_translation_filters();
-				}
+				//}
 			}
 
 			function current_screen() {
@@ -74,6 +74,7 @@
 				add_filter( 'acf/get_valid_field', array( $this, 'translate' ) ); // Fields
 				add_filter( 'acf/get_field_groups', array( $this, 'translate' ) ); // Grouptitles in Optionpages
 				add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // Grouptitles in FlexContent
+				add_filter( 'acf/validate_options_page', array( $this, 'translate' ) ); // Option Page
 
 				//add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
 				//add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
@@ -120,8 +121,6 @@
 
 					} );
 				}
-
-
 
 				return $array;
 			}
