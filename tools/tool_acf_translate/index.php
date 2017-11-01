@@ -67,7 +67,7 @@
 				$this->current_screen = get_current_screen();
 
 				// prevents translating in fieldgroup setting pages
-				if ( $this->current_screen->id != 'acf-field-group' ) {
+				if ( $this->current_screen->id !== 'acf-field-group' ) {
 
 					$this->add_translation_filters();
 				}
@@ -118,6 +118,7 @@
 							if (
 								is_string( $key ) AND
 								$key !== 'value' AND // prevents translation of conditional logig values
+								$key !== 'position' AND // prevents translation of fieldgroup box positioning
 								! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
 							) {
 
