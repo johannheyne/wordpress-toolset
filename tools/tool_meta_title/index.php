@@ -31,6 +31,16 @@
 					'prepend_posttype_name_on_archives' => false,
 				);
 
+				if ( empty( $GLOBALS['toolset']['inits']['tool_meta_title'] ) ) {
+
+					$GLOBALS['toolset']['inits']['tool_meta_title'] = array();
+				}
+
+				if ( ! is_array( $GLOBALS['toolset']['inits']['tool_meta_title'] ) ) {
+
+					$GLOBALS['toolset']['inits']['tool_meta_title'] = array();
+				}
+
 				if ( empty( $GLOBALS['toolset']['inits']['tool_meta_title']['page_title_on_hompage'] ) ) {
 
 					$GLOBALS['toolset']['inits']['tool_meta_title']['page_title_on_hompage'] = false;
@@ -58,7 +68,7 @@
 			$v = array(
 				'{site_title}' => false,
 				'{page_title}' => false,
-				'title' => '',
+				'title' => array(),
 				'post_type' => '',
 				'post_type_name' => '',
 			);
