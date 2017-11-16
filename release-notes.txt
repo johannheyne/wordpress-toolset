@@ -1,9 +1,1 @@
-## Title
-
-Description
-
-````php
-code
-````
-
-[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/__toolslug__/readme.markdown)
+## Fixes Error on Update Checker Info Window
