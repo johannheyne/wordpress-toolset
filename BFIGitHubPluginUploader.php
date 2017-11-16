@@ -54,11 +54,11 @@ class BFIGitHubPluginUpdater {
 
 		if ( !empty( $_GET['force-check'] ) ) {
 
-			$release_data = get_transient( 'plugin_wordpress_toolset_latest_release_data' );
+			$old_release_data = get_transient( 'plugin_wordpress_toolset_latest_release_data' );
 			delete_transient( 'plugin_wordpress_toolset_latest_release_data' );
 		}
 
-		if ( false === ( $this->githubAPIResult = get_transient( 'plugin_wordpress_toolset_latest_release_data' ) ) ) {
+		if ( false === ( $this->githubAPIResults = get_transient( 'plugin_wordpress_toolset_latest_release_data' ) ) ) {
 
 			// Query the GitHub API
 			$url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
@@ -71,7 +71,6 @@ class BFIGitHubPluginUpdater {
 
 			// Get the results
 			$response = wp_remote_get( $url );
-			$this->githubAPIResult = wp_remote_retrieve_body( $response );
 
 			// CHECK GITHUB API CALL LIMIT {
 
@@ -85,33 +84,50 @@ class BFIGitHubPluginUpdater {
 
 						add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
-						if ( !empty( $release_data ) ) {
+						if ( !empty( $old_release_data ) ) {
 
 							// recover transient
-							set_transient( 'plugin_wordpress_toolset_latest_release_data', $release_data, HOUR_IN_SECONDS );
+							set_transient( 'plugin_wordpress_toolset_latest_release_data', $old_release_data, HOUR_IN_SECONDS );
 
 							// recover release data
-							$this->githubAPIResult = $release_data;
+							$this->githubAPIResults = $old_release_data;
 						}
+					}
+
+				// }
+
+				// LIMIT NOT REACHED {
+
+					else {
+
+						$response_body = wp_remote_retrieve_body( $response );
+						$this->githubAPIResults = @json_decode( $response_body );
 					}
 
 				// }
 
 			// }
 
-			if ( !empty( $this->githubAPIResult ) ) {
+			// Set the transient and var by remote release data
+			if (
+				!empty( $this->githubAPIResults ) AND
+				is_array( $this->githubAPIResults )
+			) {
 
-				$this->githubAPIResults = @json_decode( $this->githubAPIResult );
+				set_transient( 'plugin_wordpress_toolset_latest_release_data', $this->githubAPIResults, HOUR_IN_SECONDS );
 			}
 
-			// Use only the latest release
-			if ( is_array( $this->githubAPIResults ) ) {
-
-				$this->githubAPIResult = $this->githubAPIResults[0];
-
-				set_transient( 'plugin_wordpress_toolset_latest_release_data', $this->githubAPIResult, HOUR_IN_SECONDS );
-			}
 		}
+
+		// Set the transient and var by remote release data
+		if (
+			!empty( $this->githubAPIResults ) AND
+			is_array( $this->githubAPIResults )
+		) {
+
+			$this->githubAPIResult = $this->githubAPIResults[0]; // Use only the latest release
+		}
+
 	}
 
 	// Push in plugin version information to get the update notification
@@ -250,10 +266,10 @@ class BFIGitHubPluginUpdater {
 
 		// Gets the required version of WP if available {
 
-			if ( is_array( $this->githubAPIResults ) and count( $this->githubAPIResults ) > 0 ) {
+			$matches = null;
+			$all_matches = array();
 
-				$matches = null;
-				$all_matches = null;
+			if ( is_array( $this->githubAPIResults ) and count( $this->githubAPIResults ) > 0 ) {
 
 				foreach ( $this->githubAPIResults as $key => $item ) {
 
@@ -272,7 +288,7 @@ class BFIGitHubPluginUpdater {
 				}
 			}
 
-			if ( $all_matches ) {
+			if ( count( $all_matches ) != 0 ) {
 
 				krsort( $all_matches );
 
