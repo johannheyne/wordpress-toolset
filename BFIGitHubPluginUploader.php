@@ -35,8 +35,8 @@ class BFIGitHubPluginUpdater {
 	public function admin_notice() {
 
 		echo '<div class="notice notice-error is-dismissible">';
-			echo '<p><strong>Die Verfügbarkeit von Udates für das Plugin "WordPressToolset" konnte nicht geprüft werden.</strong><br>';
-			echo 'Das Limit von ' . $this->headers['x-ratelimit-limit'] . ' Verbindungen zum <a href="https://github.com/johannheyne/wordpress-toolset" target="_blank">GitHub Repository des Plugins</a> war erreicht. Das Limit wird am ' . date( 'd.m.Y', $this->headers['x-ratelimit-reset'] ) . ' um ' . date( 'H:i', $this->headers['x-ratelimit-reset'] ) . ' Uhr wieder zurückgesetzt. Bitte prüfe dann noch einmal auf Aktualisierungen.</p>';
+			echo '<p><strong>Die Verfügbarkeit von Updates für das Plugin "WordPressToolset" kann im Moment nicht geprüft werden.</strong><br>';
+			echo 'Das Limit von ' . $this->headers['x-ratelimit-limit'] . ' API-Verbindungen zum <a href="https://github.com/johannheyne/wordpress-toolset" target="_blank">GitHub Repository des Plugins</a> war erreicht. Das Limit wird am ' . date( 'd.m.Y', $this->headers['x-ratelimit-reset'] ) . ' um ' . date( 'H:i', $this->headers['x-ratelimit-reset'] ) . ' Uhr wieder zurückgesetzt. Bitte prüfe dann noch einmal auf Updates.</p>';
 		echo '</div>';
 	}
 
@@ -44,9 +44,18 @@ class BFIGitHubPluginUpdater {
 	private function getRepoReleaseInfo() {
 
 		// Only do this once
-		if ( !empty( $this->githubAPIResult ) ) {
+		if (
+			empty( $_GET['force-check'] ) AND
+			!empty( $this->githubAPIResult )
+		) {
 
 			return;
+		}
+
+		if ( !empty( $_GET['force-check'] ) ) {
+
+			$release_data = get_transient( 'plugin_wordpress_toolset_latest_release_data' );
+			delete_transient( 'plugin_wordpress_toolset_latest_release_data' );
 		}
 
 		if ( false === ( $this->githubAPIResult = get_transient( 'plugin_wordpress_toolset_latest_release_data' ) ) ) {
@@ -70,10 +79,23 @@ class BFIGitHubPluginUpdater {
 				$this->headers = (array) $this->headers;
 				$this->headers = $this->headers[ chr(0) . '*' . chr(0) . 'data']; //trick to get protected array key
 
-				if ( $this->headers['x-ratelimit-remaining'] == '0' ) {
+				// LIMIT REACHED {
 
-					add_action( 'admin_notices', array( $this, 'admin_notice' ) );
-				}
+					if ( $this->headers['x-ratelimit-remaining'] == '0' ) {
+
+						add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+
+						if ( !empty( $release_data ) ) {
+
+							// recover transient
+							set_transient( 'plugin_wordpress_toolset_latest_release_data', $release_data, HOUR_IN_SECONDS );
+
+							// recover release data
+							$this->githubAPIResult = $release_data;
+						}
+					}
+
+				// }
 
 			// }
 
