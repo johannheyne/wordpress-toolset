@@ -10,6 +10,7 @@ class BFIGitHubPluginUpdater {
 	private $githubAPIResult; // holds data from GitHub
 	private $githubAPIResults; // holds data from GitHub
 	private $accessToken; // GitHub private repo token
+	public $headers; // GitHub private repo token
 
 	function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $accessToken = '' ) {
 
@@ -21,6 +22,7 @@ class BFIGitHubPluginUpdater {
 		$this->username = $gitHubUsername;
 		$this->repo = $gitHubProjectName;
 		$this->accessToken = $accessToken;
+		$this->headers = '';
 	}
 
 	// Get information regarding our plugin from WordPress
@@ -28,6 +30,14 @@ class BFIGitHubPluginUpdater {
 
 		$this->slug = plugin_basename( $this->pluginFile );
 		$this->pluginData = get_plugin_data( $this->pluginFile );
+	}
+
+	public function admin_notice() {
+
+		echo '<div class="notice notice-error is-dismissible">';
+			echo '<p><strong>Die Verfügbarkeit von Udates für das Plugin "WordPressToolset" konnte nicht geprüft werden.</strong><br>';
+			echo 'Das Limit von ' . $this->headers['x-ratelimit-limit'] . ' Verbindungen zum <a href="https://github.com/johannheyne/wordpress-toolset" target="_blank">GitHub Repository des Plugins</a> war erreicht. Das Limit wird am ' . date( 'd.m.Y', $this->headers['x-ratelimit-reset'] ) . ' um ' . date( 'H:i', $this->headers['x-ratelimit-reset'] ) . ' Uhr wieder zurückgesetzt. Bitte prüfe dann noch einmal auf Aktualisierungen.</p>';
+		echo '</div>';
 	}
 
 	// Get information regarding our plugin from GitHub
@@ -39,27 +49,46 @@ class BFIGitHubPluginUpdater {
 			return;
 		}
 
-		// Query the GitHub API
-		$url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
+		if ( false === ( $this->githubAPIResult = get_transient( 'plugin_wordpress_toolset_latest_release_data' ) ) ) {
 
-		// We need the access token for private repos
-		if ( !empty( $this->accessToken ) ) {
+			// Query the GitHub API
+			$url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
 
-			$url = add_query_arg( array( "access_token" => $this->accessToken ), $url );
-		}
+			// We need the access token for private repos
+			if ( !empty( $this->accessToken ) ) {
 
-		// Get the results
-		$this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url ) );
+				$url = add_query_arg( array( "access_token" => $this->accessToken ), $url );
+			}
 
-		if ( !empty( $this->githubAPIResult ) ) {
+			// Get the results
+			$response = wp_remote_get( $url );
+			$this->githubAPIResult = wp_remote_retrieve_body( $response );
 
-			$this->githubAPIResults = @json_decode( $this->githubAPIResult );
-		}
+			// CHECK GITHUB API CALL LIMIT {
 
-		// Use only the latest release
-		if ( is_array( $this->githubAPIResults ) ) {
+				$this->headers = wp_remote_retrieve_headers( $response );
+				$this->headers = (array) $this->headers;
+				$this->headers = $this->headers[ chr(0) . '*' . chr(0) . 'data']; //trick to get protected array key
 
-			$this->githubAPIResult = $this->githubAPIResults[0];
+				if ( $this->headers['x-ratelimit-remaining'] == '0' ) {
+
+					add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+				}
+
+			// }
+
+			if ( !empty( $this->githubAPIResult ) ) {
+
+				$this->githubAPIResults = @json_decode( $this->githubAPIResult );
+			}
+
+			// Use only the latest release
+			if ( is_array( $this->githubAPIResults ) ) {
+
+				$this->githubAPIResult = $this->githubAPIResults[0];
+
+				set_transient( 'plugin_wordpress_toolset_latest_release_data', $this->githubAPIResult, HOUR_IN_SECONDS );
+			}
 		}
 	}
 
@@ -104,12 +133,12 @@ class BFIGitHubPluginUpdater {
 	public function infoWindowStyles() {
 
 		echo '<style type="text/css">
-			#plugin-information pre { 
+			#plugin-information pre {
 				display: block !important;
 				background: #f7f7f7 !important;
 				overflow: auto !important;
 			}
-			#plugin-information pre code { 
+			#plugin-information pre code {
 				display: block !important;
 				background: none !important;
 				//min-width: 1000px !important;
