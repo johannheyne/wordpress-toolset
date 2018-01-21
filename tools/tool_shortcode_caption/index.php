@@ -28,6 +28,13 @@
 
 			// }
 
+			// GET AI SIZE {
+
+				$ai_size_class = 'capsize-' . explode( '"', explode( 'size-', $vars['cont_arr'][0] )[1] )[0];
+				array_push( $vars['figure_class'], $ai_size_class );
+
+			// }
+
 			// ATTRIBUTE {
 
 				if ( $p['id'] ) {
@@ -40,10 +47,11 @@
 					array_push( $vars['figure_class'], $p['align'] );
 				}
 
-				if ( $p['width'] ) {
+				/*if ( $p['width'] ) {
 
 					array_push( $vars['figure_style'], 'width:' . $p['width'] . 'px;' );
-				}
+				}*/
+
 
 				// ATTRIBUTE HTML {
 
@@ -63,6 +71,7 @@
 					}
 
 				// }
+
 
 			// }
 
