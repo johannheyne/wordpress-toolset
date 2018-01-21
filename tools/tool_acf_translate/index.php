@@ -101,7 +101,94 @@
 				}
 				else {
 
-					array_walk_recursive( $array, function( &$item, $key ) {
+					array_walk( $array, function( &$item, $key ) {
+
+						// STRINGS {
+
+							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'description', 'instructions' );
+
+							if (
+								is_string( $item ) AND
+								in_array( $key, $keys ) AND
+								! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
+							) {
+
+								$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+							}
+
+						// }
+
+						// ARRAYS {
+
+							if ( is_array( $item ) ) {
+
+								array_walk_recursive( $item, function( &$item, $key ) {
+
+									// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
+
+										if ( $key === 'title' ) {
+
+											$item = preg_replace( "/\((.*)\)(.*)/", '$2', $item );
+											$item = trim( $item );
+										}
+
+									// }
+
+									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'description', 'instructions' );
+
+									if (
+										is_string( $item ) AND
+										in_array( $key, $keys ) AND
+										! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
+									) {
+
+										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+
+									}
+
+								} );
+							}
+
+						// }
+
+						// CHOICES {
+
+							if ( $key === 'choices' ) {
+
+								foreach ( $item as $key => $value ) {
+
+									if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ] ) ) {
+
+										$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ];
+									}
+								}
+							}
+
+						// }
+
+						// LAYOUTS {
+
+							if ( $key === 'layouts' ) {
+
+								array_walk_recursive ( $item , function( &$item, $key ) {
+
+									$keys = array( 'title', 'label', 'description', 'instructions' );
+
+									if (
+										in_array( $keys, $keys ) AND
+										! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
+									) {
+
+										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+									}
+								} );
+							}
+
+						// }
+
+					} );
+
+					/*array_walk_recursive( $array, function( &$item, $key ) {
 
 						// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
 
@@ -127,7 +214,7 @@
 
 						// }
 
-					} );
+					} );*/
 				}
 
 				return $array;
