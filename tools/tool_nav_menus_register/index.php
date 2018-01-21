@@ -25,6 +25,31 @@
 			}
 		}
 
+		function tool_nav_menu_register( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'location' => false,
+					'name' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+
+			if (
+				$p['location'] AND
+				$p['name']
+			) {
+				$array[ $p['location'] ] = $p['name'];
+				register_nav_menus( $array );
+
+			}
+
+		}
+
 		if ( isset( $GLOBALS['toolset']['inits']['tool_nav_menus_register'] ) ) {
 
 			add_action( 'init', 'tool_nav_menus_register' );
