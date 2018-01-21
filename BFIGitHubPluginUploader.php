@@ -187,7 +187,6 @@ class BFIGitHubPluginUpdater {
 	// Push in plugin version information to display in the details lightbox
 	public function setPluginInfo( $false, $action, $response ) {
 
-		$this->infoWindowStyles();
 
 		// Get plugin & GitHub release information
 		$this->initPluginData();
@@ -198,6 +197,8 @@ class BFIGitHubPluginUpdater {
 
 			return false;
 		}
+
+		$this->infoWindowStyles();
 
 		// Add our plugin information
 		$response->last_updated = $this->githubAPIResult->published_at;
