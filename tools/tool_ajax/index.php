@@ -22,7 +22,7 @@
 			/*
 				add_action( 'wp_enqueue_scripts', function() {
 
-					wp_register_script( 'myajaxtest_script', get_stylesheet_directory_uri() . '/js/myajaxtest.js', '1.0.0', true );
+					wp_register_script( 'myajaxtest_script', get_stylesheet_directory_uri() . '/js/myajaxtest.js', array( 'jquery' ), '1.0.0', true );
 					wp_localize_script( 'myajaxtest_script', 'wpAjax_myajaxtest', array(
 						'ajaxurl' => admin_url( 'admin-ajax.php' ),
 						'ajax_nonce' => wp_create_nonce( 'unique-nonce-name' ),
