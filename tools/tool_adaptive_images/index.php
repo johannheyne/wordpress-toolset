@@ -4,7 +4,9 @@
 
 		add_filter( 'wp_calculate_image_srcset', function() {
 
-			return null;
+			$sources = array();
+
+			return $sources;
 		}, 1000, 2 );
 
 	// }
@@ -14,8 +16,8 @@
 		add_filter('intermediate_image_sizes_advanced', function( $sizes ) {
 			// unset( $sizes['thumbnail']);
 			// unset( $sizes['medium']);
-			unset( $sizes['large']);
-			unset( $sizes['medium-large']);
+			unset( $sizes['medium_large']);
+			// unset( $sizes['large']); // needed for WordPress image detail view
 			return $sizes;
 		});
 
@@ -484,7 +486,7 @@
 					}
 				}
 
-				if ( count( $styles > 0 ) ) {
+				if ( count( $styles ) > 0 ) {
 
 					echo '<style rel="stylesheet" type="text/css">';
 
