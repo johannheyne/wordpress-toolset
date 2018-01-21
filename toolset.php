@@ -29,11 +29,11 @@ if ( ! defined( 'WPINC' ) ) {
 
 	// Source: http://code.tutsplus.com/tutorials/distributing-your-plugins-in-github-with-automatic-updates--wp-34817
 
-	require_once( 'BFIGitHubPluginUploader.php' );
-
 	if ( is_admin() ) {
 
-	    new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset" );
+		require_once( 'BFIGitHubPluginUploader.php' );
+
+		new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset" );
 	}
 
 // }
