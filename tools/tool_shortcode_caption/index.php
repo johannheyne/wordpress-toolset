@@ -64,10 +64,17 @@
 
 						$vars['figure_class'] = ' class="' . implode( ' ', $vars['figure_class'] ) . '"';
 					}
+					else {
+						$vars['figure_class'] = '';
+					}
 
 					if ( $vars['figure_style'] ) {
 
 						$vars['figure_style'] = ' style="' . implode( ' ', $vars['figure_style'] ) . '"';
+					}
+					else {
+
+						$vars['figure_style'] = '';
 					}
 
 				// }
