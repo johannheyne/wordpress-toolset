@@ -105,7 +105,7 @@
 
 						// STRINGS {
 
-							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'description', 'instructions' );
+							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions' );
 
 							if (
 								is_string( $item ) AND
@@ -134,7 +134,7 @@
 
 									// }
 
-									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'description', 'instructions' );
+									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions' );
 
 									if (
 										is_string( $item ) AND
