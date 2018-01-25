@@ -2,6 +2,16 @@
 
 	// $GLOBALS['toolset']['inits']
 
+	function tool_acf_translate_string( $string ) {
+
+		if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $string ][ $GLOBALS['toolset']['user_locale'] ] ) ) {
+
+			$string = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $string ][ $GLOBALS['toolset']['user_locale'] ];
+		}
+
+		return $string;
+	}
+
 	function tool_acf_translate( $p = array() ) {
 
 		if ( empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'] ) ) {
