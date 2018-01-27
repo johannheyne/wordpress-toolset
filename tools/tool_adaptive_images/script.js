@@ -9,23 +9,27 @@ jQuery(document).ready(function(){
 
 		wp.media.events.on( 'editor:image-update', function( data ) {
 
-			var $img = data.editor.$( data.image ),
-				src = $img.attr( 'src' ),
-				classes = $img.attr( 'class' ),
-				size = classes.split('size-')[1];
+			var src = data.metadata.url,
+				size = data.metadata.size;
 
+			// remove last image size slug {
+
+				var arr = src.split( '-' );
+				var	arr2 = arr[ arr.length - 1 ].split( '.' );
+				arr.splice(-1,1);
+				var new_src = arr.join( '-' ) + '.' + arr2[1];
+
+			// }
 
 			if ( src.indexOf( '?size=' + size ) == -1 ) {
 
-				// UPDATE VISUELL {
+				// UPDATE VISUELL, YOU CANT CHECK THIS CODE BACK {
 
-					data.editor.$( data.image ).attr( {
-						'src':  src + '?size=' + size,
-					} );
+					data.editor.$( data.image ).attr( 'src', new_src + '?size=' + size );
 
 				// }
 
-				// UPDATE TEXT {
+				// UPDATE SOURCE TEXT {
 
 					// does not work with same source images in one editor
 
@@ -33,7 +37,7 @@ jQuery(document).ready(function(){
 
 					//src = html.replace( '?size=' + size, '' );
 
-					html = html.replace( src, src + '?size=' + size );
+					html = html.replace( src, new_src + '?size=' + size );
 
 					tinyMCE.activeEditor.setContent( html );
 
