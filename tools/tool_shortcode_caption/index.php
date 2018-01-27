@@ -47,10 +47,13 @@
 					array_push( $vars['figure_class'], $p['align'] );
 				}
 
-				/*if ( $p['width'] ) {
+				if (
+					$ai_size_class === 'capsize-' AND
+					$p['width']
+				) {
 
 					array_push( $vars['figure_style'], 'width:' . $p['width'] . 'px;' );
-				}*/
+				}
 
 
 				// ATTRIBUTE HTML {
