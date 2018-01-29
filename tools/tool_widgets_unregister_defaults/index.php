@@ -35,6 +35,11 @@
 				'rss' => 'WP_Widget_RSS',
 				'tag_cloud' => 'WP_Widget_Tag_Cloud',
 				'nav_menu' => 'WP_Nav_Menu_Widget',
+				'audio' => 'WP_Widget_Media_Audio',
+				'image' => 'WP_Widget_Media_Image',
+				'video' => 'WP_Widget_Media_Video',
+				'gallery' => 'WP_Widget_Media_Gallery',
+				'html' => 'WP_Widget_Custom_HTML',
 			);
 
 			foreach ( $widgets as $key => $value ) {
