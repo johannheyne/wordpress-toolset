@@ -42,11 +42,11 @@
 
 				function myajaxtest() {
 
-					// there is a hidden input field with a global nonce
-					if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'unique-nonce-name') ) {
+					// SECURE {
 
-						exit ( 'No naughty business please' );
-					}
+						check_ajax_referer( ''unique-nonce-name', 'nonce' );
+
+					// }
 
 					$return = 'Hello World!';
 
@@ -62,6 +62,7 @@
 
 			/*
 			$.ajax({
+				type: 'post',
 				url: wpAjax_myajaxtest.ajaxurl,
 				data: {
 					nonce: wpAjax_myajaxtest.ajax_nonce,
