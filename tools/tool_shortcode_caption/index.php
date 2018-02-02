@@ -30,8 +30,14 @@
 
 			// GET AI SIZE {
 
-				$ai_size_class = 'capsize-' . explode( '"', explode( 'size-', $vars['cont_arr'][0] )[1] )[0];
-				array_push( $vars['figure_class'], $ai_size_class );
+				$arr = explode( 'size-', $vars['cont_arr'][0] );
+
+				// may image was deleted from library, size is not set then
+				if ( isset( $arr[1] ) ) {
+
+					$ai_size_class = 'capsize-' . explode( '"', $arr[1] )[0];
+					array_push( $vars['figure_class'], $ai_size_class );
+				}
 
 			// }
 
@@ -48,6 +54,7 @@
 				}
 
 				if (
+					! empty( $ai_size_class ) AND
 					$ai_size_class === 'capsize-' AND
 					$p['width']
 				) {
