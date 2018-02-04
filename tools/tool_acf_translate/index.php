@@ -117,7 +117,7 @@
 
 						// STRINGS {
 
-							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions' );
+							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message' );
 
 							if (
 								is_string( $item ) AND
@@ -230,6 +230,7 @@
 					} );*/
 				}
 
+				//error_log( print_r( $array, true) );
 				return $array;
 			}
 
