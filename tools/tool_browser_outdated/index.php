@@ -10,7 +10,7 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'version' => 7,
+					'version' => 11,
 					'message' => array(
 						'en' => 'You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>.',
 						'de' => 'Dieser Browser ist <strong>veraltet!</strong> <a href="http://browsehappy.com/">Bitte aktualisiere Deinen Browser oder wähle einen anderen Browser.</a>.',
