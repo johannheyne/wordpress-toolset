@@ -28,7 +28,14 @@
 			else {
 
 				// if Multisite is used for different Languages
-				$vars['lang'] = config_get_curr_site_id();
+				if ( function_exists( 'config_get_curr_site_lang' ) ) {
+
+					$vars['lang'] = config_get_curr_site_lang();
+				}
+				else {
+					// old toolset versions
+					$vars['lang'] = config_get_curr_site_id();
+				}
 			}
 
 			// message in current language
