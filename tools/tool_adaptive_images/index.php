@@ -41,6 +41,7 @@
 						'name' => 'full',
 						'ratio' => false,
 						'id' => false,
+						'id_default' => false,
 						'file' => false,
 						'alt' => false,
 						'img_class' => '',
@@ -108,6 +109,22 @@
 						$img_param = wp_get_attachment_image_src( $p['id'], $p['name'] );
 						$img_src = $img_param[0];
 					}
+
+					// IF IMG FILE WAS DELETED TRY DEFAULT IMAGE {
+
+						if (
+							empty( $img_src ) AND
+							! empty( $p['id_default'] )
+						) {
+
+							$p['id'] = $p['id_default'];
+
+							$img_param = wp_get_attachment_image_src( $p['id'], $p['name'] );
+							$img_src = $img_param[0];
+						}
+
+					// }
+
 					if ( $p['file'] ) {
 
 						$img_src = get_bloginfo('template_url') . '/' . $p['file'];
