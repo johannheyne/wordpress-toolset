@@ -117,7 +117,7 @@
 
 						// STRINGS {
 
-							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'value', 'default_value' );
+							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'value', 'default_value', 'append', 'prepend', 'placeholder' );
 
 							if (
 								is_string( $item ) AND
@@ -146,7 +146,7 @@
 
 									// }
 
-									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'value', 'default_value' );
+									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'value', 'default_value', 'append', 'prepend', 'placeholder' );
 
 									if (
 										is_string( $item ) AND
@@ -155,7 +155,6 @@
 									) {
 
 										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
-
 									}
 
 								} );
