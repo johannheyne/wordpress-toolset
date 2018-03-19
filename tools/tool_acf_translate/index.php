@@ -168,7 +168,10 @@
 
 								foreach ( $item as $key => $value ) {
 
-									if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ] ) ) {
+									if (
+										! is_array( $value ) AND
+										! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ] )
+									 ) {
 
 										$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ];
 									}
