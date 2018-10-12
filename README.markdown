@@ -161,6 +161,7 @@ $GLOBALS['toolset'] = array(
 * [WordPress Notify Post Author if Comments](tools/tool_wp_comment_notification_notify_author/readme.markdown)
 * [WordPress Comment Moderation Email Recipients](tools/tool_wp_comment_moderation_recipients/readme.markdown)
 * [WordPress Images Sizes](tools/tool_image_sizes/readme.markdown)
+* [WordPress REST-API](tools/tool_rest_api/readme.markdown)
 * [Adaptive Images](tools/tool_adaptive_images/readme.markdown)
 * [ACF Save Post After](tools/tool_acf_save_post_after/readme.markdown)
 * [ACF Translate](tools/tool_acf_translate/readme.markdown)
