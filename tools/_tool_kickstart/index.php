@@ -1,3 +1,6 @@
 <?php
 
-	// $GLOBALS['toolset']['inits']
+	if ( ! empty( $GLOBALS['toolset']['inits']['{tool_slug}']['{param_name}'] ) ) {
+
+
+	}
