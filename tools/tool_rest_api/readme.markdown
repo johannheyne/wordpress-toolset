@@ -1,9 +1,9 @@
 [back to overview](../../README.markdown#initial-functionality)
 
-Tool Rest-Api
+Tool REST-API
 ===============================
 
-### Disable the WordPress Rest-API for frontend. Logged in users have access to the API.
+### Disable the WordPress REST-API for frontend. Logged in users have access to the API.
 
 ````php
 	$GLOBALS['toolset']['inits']['tool_rest_api'] = array(
