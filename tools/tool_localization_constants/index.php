@@ -44,7 +44,10 @@
 
 			// DEFINES THEME_LANG_SUFIX BY THE FIRST DEFINED LANGCODE {
 
-				$GLOBALS['toolset']['frontend_locale'] = reset( $GLOBALS['toolset']['langcode'] );
+				if ( empty( $GLOBALS['toolset']['frontend_locale'] ) ) {
+
+					$GLOBALS['toolset']['frontend_locale'] = reset( $GLOBALS['toolset']['langcode'] );
+				}
 
 				if (
 					! defined( 'THEME_LANG_SUFIX' ) AND
@@ -53,7 +56,6 @@
 
 					define( 'THEME_LANG_SUFIX', '_' . $GLOBALS['toolset']['frontend_locale'] );
 				}
-
 
 			// }
 
