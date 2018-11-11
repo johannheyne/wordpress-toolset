@@ -140,21 +140,33 @@
 
 				if ( function_exists( 'get_field' ) ) {
 
-					$v['title_custom_page'] = get_field( 'meta_page_title' );
+					if ( empty( $GLOBALS['toolset']['multilanguage'] ) ) {
 
-					// OLD VERSION {
+						$v['title_custom_page'] = get_field( 'meta_page_title' );
 
-						if ( ! $v['title_custom_page'] ) {
+						// OLD VERSION {
 
-							$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+							if ( ! $v['title_custom_page'] ) {
 
+								$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+
+							}
+
+						// }
+
+						if ( $v['title_custom_page'] ) {
+
+							$v['{page_title}'] = $v['title_custom_page'];
 						}
+					}
+					else {
 
-					// }
+						$v['title_custom_page'] = get_lang_field( 'page_meta_searchengines' );
 
-					if ( $v['title_custom_page'] ) {
+						if ( ! empty( $v['title_custom_page']['title'] ) ) {
 
-						$v['{page_title}'] = $v['title_custom_page'];
+							$v['{page_title}'] = $v['title_custom_page']['title'];
+						}
 					}
 				}
 
