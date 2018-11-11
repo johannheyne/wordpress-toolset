@@ -4,6 +4,11 @@
 
 	function tool_acf_translate_string( $string ) {
 
+		if ( empty( $GLOBALS['toolset']['user_locale'] ) ) {
+
+			$GLOBALS['toolset']['user_locale'] = $GLOBALS['toolset']['frontend_locale'];
+		}
+
 		if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $string ][ $GLOBALS['toolset']['user_locale'] ] ) ) {
 
 			$string = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $string ][ $GLOBALS['toolset']['user_locale'] ];
