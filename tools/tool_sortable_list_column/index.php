@@ -7,7 +7,7 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'posttype' => 'pages', // pages / posts
+					'posttype' => 'pages', // type of list: 'pages', 'posts', 'taxonomies'
 					'postname' => 'page',
 					'colid' => 'meta_{colid}',
 					'collabel' => 'Label',

@@ -25,8 +25,14 @@
 
 				// }
 
+				if ( $this->param['posttype'] == 'taxonomies' ) {
+
+					$this->param['posttype'] = $this->param['postname'];
+				}
+
 				add_filter( 'manage_edit-' . $this->param['postname'] . '_columns', array( $this, 'add_column' ) );
-				add_action( 'manage_' . $this->param['posttype'] . '_custom_column', array( $this, 'column_content' ), 10, 2 );
+				add_action( 'manage_' . $this->param['posttype'] . '_custom_column', array( $this, 'column_content' ), 10, 3 );
+				//add_filter( 'manage_' . $this->param['posttype'] . '_custom_column', array( $this, 'column_content_taxonomy' ), 10, 3 );
 
 				// bei hirarchichen Listen 'manage_pages_custom_column'
 
@@ -55,7 +61,7 @@
 				return $result;
 			}
 
-			function column_content( $column_name, $post_id ) {
+			function column_content( $arg1, $arg2, $arg3 = false ) {
 
 				if ( is_string( $this->param['rowlabelfunction'] ) ) {
 
@@ -64,9 +70,30 @@
 
 				if ( is_callable( $this->param['rowlabelfunction'] ) ) {
 
-					echo $this->param['rowlabelfunction']( $column_name, $post_id );
+					if ( empty( $arg1 ) ) {
+
+						echo $this->param['rowlabelfunction']( $arg2, $arg3 );
+					}
+
+					if ( empty( $arg3 ) ) {
+
+						echo $this->param['rowlabelfunction']( $arg1, $arg2 );
+					}
 				}
 			}
+
+			/*function column_content_taxonomy( $null, $column_name, $term_id ) {
+
+				if ( is_string( $this->param['rowlabelfunction'] ) ) {
+
+					eval( $this->param['rowlabelfunction'] );
+				}
+
+				if ( is_callable( $this->param['rowlabelfunction'] ) ) {
+
+					echo $this->param['rowlabelfunction']( $null, $column_name, $term_id );
+				}
+			}*/
 
 			function column_register_sortable( $columns ) {
 
