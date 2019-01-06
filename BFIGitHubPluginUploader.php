@@ -114,7 +114,7 @@ class BFIGitHubPluginUpdater {
 				is_array( $this->githubAPIResults )
 			) {
 
-				set_transient( 'plugin_wordpress_toolset_latest_release_data', $this->githubAPIResults, HOUR_IN_SECONDS );
+				set_transient( 'plugin_wordpress_toolset_latest_release_data', $this->githubAPIResults, DAY_IN_SECONDS );
 			}
 
 		}
