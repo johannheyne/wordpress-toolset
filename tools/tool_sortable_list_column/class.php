@@ -9,9 +9,9 @@
 				// DEFAULTS {
 
 					$defaults = array(
+						'posttype' => 'posts',
 						'postname' => false,
 						'position' => 2,
-						'posttype' => 'posts',
 						'colid' => false,
 						'collabel' => 'Label',
 						'rowlabelfunction' => false,
@@ -25,13 +25,15 @@
 
 				// }
 
+				$manage_custom_column_slug = $this->param['posttype'];
+
 				if ( $this->param['posttype'] == 'taxonomies' ) {
 
-					$this->param['posttype'] = $this->param['postname'];
+					$manage_custom_column_slug = $this->param['postname'];
 				}
 
 				add_filter( 'manage_edit-' . $this->param['postname'] . '_columns', array( $this, 'add_column' ) );
-				add_action( 'manage_' . $this->param['posttype'] . '_custom_column', array( $this, 'column_content' ), 10, 3 );
+				add_action( 'manage_' . $manage_custom_column_slug . '_custom_column', array( $this, 'column_content' ), 10, 3 );
 				//add_filter( 'manage_' . $this->param['posttype'] . '_custom_column', array( $this, 'column_content_taxonomy' ), 10, 3 );
 
 				// bei hirarchichen Listen 'manage_pages_custom_column'
