@@ -60,6 +60,8 @@
 				    // DEFAULTS {
 
 				        $defaults = array(
+							'menu_item_object_id_by_acf_field' => false,
+							'menu_item_object_id' => false,
 			            	'menu_item_id' => false,
 			            	'is_posttype' => false,
 			            	'rules' => false,
@@ -77,6 +79,39 @@
 						if ( $set['menu_item_id'] ) {
 
 					    	if ( $item->ID != $set['menu_item_id'] ) {
+
+								$check = false;
+							}
+						}
+
+					// }
+
+					// menu_item_object_id {
+
+						if ( $set['menu_item_object_id'] ) {
+
+							if ( $item->object_id != $set['menu_item_object_id'] ) {
+
+								$check = false;
+							}
+						}
+
+					// }
+
+					// menu_item_object_id_by_acf_field {
+
+						if ( $set['menu_item_object_id_by_acf_field'] ) {
+
+							if ( function_exists( 'get_field' ) ) {
+
+								$id = get_field( $set['menu_item_object_id_by_acf_field'][0], $set['menu_item_object_id_by_acf_field'][1] );
+
+								if ( $item->object_id != $id ) {
+
+									$check = false;
+								}
+							}
+							else {
 
 								$check = false;
 							}
