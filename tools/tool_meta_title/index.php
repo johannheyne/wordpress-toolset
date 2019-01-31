@@ -25,10 +25,15 @@
 			// DEFAULTS {
 
 				$defaults = array(
+					'post_id' => get_the_ID(),
 					'delimiter' => ' - ',
 					'rules' => false,
-					'page_title_on_hompage' => false,
+					'page_title_on_hompage' => false, // boolean
 					'prepend_posttype_name_on_archives' => false,
+					'titles' => array(
+						'is_home' => 'Blog',
+						'is_404' => '404',
+					),
 				);
 
 				if ( empty( $GLOBALS['toolset']['inits']['tool_meta_title'] ) ) {
@@ -63,6 +68,11 @@
 					);
 				}
 
+				if ( is_404() ) {
+
+					$p['post_id'] = get_field( 'opt_404_page', 'option' );
+				}
+
 			// }
 
 			$v = array(
@@ -86,7 +96,7 @@
 
 						if (
 							$p['page_title_on_hompage'] === false &&
-							in_array( get_the_ID(), $p['homepages'] )
+							in_array( $p['post_id'], $p['homepages'] )
 						) {
 
 							// no page title on homepage
@@ -104,7 +114,7 @@
 
 				if ( is_home() ) {
 
-					$v['{page_title}'] = 'Blog';
+					$v['{page_title}'] = $p['titles']['is_home'];
 				}
 
 				if ( is_archive() ) {
@@ -134,6 +144,11 @@
 					$v['{page_title}'] = $v['post_type_name'] . single_tag_title( ' ', false );
 				}
 
+				if ( is_404() ) {
+
+					$v['{page_title}'] = $p['titles']['is_404'];
+				}
+
 			// }
 
 			// CUSTOM PAGE TITLE {
@@ -142,13 +157,13 @@
 
 					if ( empty( $GLOBALS['toolset']['multilanguage'] ) ) {
 
-						$v['title_custom_page'] = get_field( 'meta_page_title' );
+						$v['title_custom_page'] = get_field( 'meta_page_title', $p['post_id'] );
 
 						// OLD VERSION {
 
 							if ( ! $v['title_custom_page'] ) {
 
-								$v['title_custom_page'] = get_field( 'meta_seitentitel' );
+								$v['title_custom_page'] = get_field( 'meta_seitentitel', $p['post_id'] );
 
 							}
 
@@ -161,11 +176,11 @@
 					}
 					else {
 
-						$v['title_custom_page'] = get_lang_field( 'page_meta_searchengines' );
+						$v['title_custom_page'] = get_lang_field( 'page_meta_searchengines/title', $p['post_id'] );
 
-						if ( ! empty( $v['title_custom_page']['title'] ) ) {
+						if ( ! empty( $v['title_custom_page'] ) ) {
 
-							$v['{page_title}'] = $v['title_custom_page']['title'];
+							$v['{page_title}'] = $v['title_custom_page'];
 						}
 					}
 				}
