@@ -90,9 +90,9 @@
 
 			function add_translation_filters() {
 
-				add_filter( 'acf/prepare_field', array( $this, 'translate' ) ); // All
-				add_filter( 'acf/get_field_groups', array( $this, 'translate' ) ); // Grouptitles in Optionpages
-				add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // Grouptitles in FlexContent after Toggle
+				add_filter( 'acf/prepare_field', array( $this, 'translate' ), 9999 ); // All
+				add_filter( 'acf/get_field_groups', array( $this, 'translate' ), 9999 ); // Grouptitles in Optionpages
+				add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ), 9999 ); // Grouptitles in FlexContent after Toggle
 
 				//add_filter( 'acf/get_valid_field', array( $this, 'translate' ) ); // Fields
 				//add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
