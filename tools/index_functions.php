@@ -359,6 +359,20 @@
 
 				// }
 
+				// tool_multilanguage {
+
+					'tool_multilanguage_get_lang_list' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_get_lang_list',
+					),
+
+					'tool_multilanguage_get_lang_label' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_get_lang_label',
+					),
+
+				// }
+
 			)
 		);
 
