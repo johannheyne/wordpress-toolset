@@ -53,7 +53,7 @@
 
 		// LOAD LANGUAGE FROM SOURCE {
 
-			$path = $plugin_path . 'data/' . $p['locale'] . '.php';
+			$path = $plugin_path . 'data-languages/' . $p['locale'] . '.php';
 
 			if (
 				empty( $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ] ) AND
