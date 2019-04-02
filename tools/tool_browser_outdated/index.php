@@ -22,13 +22,19 @@
 
 			// }
 
+			$curr_lang = config_get_curr_site_lang();
+
 			if ( $p['lang'] ) {
 
 				$browseroutdated = $p['message'][ $p['lang'] ];
 			}
+			else if ( ! empty( $p['message'][ $curr_lang ] ) ) {
+
+				$browseroutdated = $p['message'][ $curr_lang ];
+			}
 			else {
 
-				$browseroutdated = $p['message'][ config_get_curr_site_lang() ];
+				$browseroutdated = $p['message']['en'];
 			}
 
 			echo '<!--[if lt IE ' . ( $p['version'] + 1 ) . ']>';
