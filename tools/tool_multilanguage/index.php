@@ -168,3 +168,74 @@
 
 		return $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $p['langcode'] ];
 	}
+
+
+	function tool_multilanguage_require_countries( $p = array() ) {
+
+		/*
+			This function loads the required countries into the
+			$GLOBALS['toolset']['multilanguage_countries'] array.
+			This can be a general or localized language.
+			general: $GLOBALS['toolset']['multilanguage_langs']['en']
+			localized: $GLOBALS['toolset']['multilanguage_langs']['en_US']
+		*/
+
+		$plugin_path = plugin_dir_path( __FILE__ );
+
+		if ( ! isset( $GLOBALS['toolset']['multilanguage_countries'] ) ) {
+
+			$GLOBALS['toolset']['multilanguage_countries'] = array();
+		}
+
+		// DEFAULTS {
+
+			$defaults = array(
+				'locale' => 'en', // alternative to lang and country
+			);
+
+			$p = array_replace_recursive( $defaults, $p );
+
+		// }
+
+
+		// LOAD COUNTRY FROM SOURCE {
+
+			$path = $plugin_path . 'data-countries/' . $p['locale'] . '/country.php';
+
+			if (
+				empty( $GLOBALS['toolset']['multilanguage_countries'][ $p['locale'] ] ) AND
+				file_exists( $path )
+			) {
+
+				$GLOBALS['toolset']['multilanguage_countries'][ $p['locale'] ] = require_once( $path );
+			}
+
+		// }
+
+	}
+
+	function tool_multilanguage_get_country_label( $p = array() ) {
+
+		/*
+			Returns the county $label of an given langcode.
+		*/
+
+		// DEFAULTS {
+
+			$defaults = array(
+				'countrycode' => 'DE',
+				'locale' => 'en',
+			);
+
+			$p = array_replace_recursive( $defaults, $p );
+
+		// }
+
+
+		tool_multilanguage_require_countries( array(
+			'locale' => $p['locale'],
+		) );
+
+
+		return $GLOBALS['toolset']['multilanguage_countries'][ $p['locale'] ][ strtoupper( $p['countrycode'] ) ];
+	}

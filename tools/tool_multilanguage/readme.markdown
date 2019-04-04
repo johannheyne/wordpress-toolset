@@ -53,4 +53,19 @@ Returns the language label of an given langcode translated an locale.
 
 ````
 
+### tool_multilanguage_get_lang_label
+
+Returns the country label translated by an locale.
+
+````php
+	$string = tool( array(
+		'name' => 'tool_multilanguage_get_country_label',
+		'param' => array(
+			'countrycode' => 'US',
+			'locale' => 'ca_FR',
+		),
+	);
+
+````
+
 [back to overview](../../README.markdown#tools)

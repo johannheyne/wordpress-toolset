@@ -371,6 +371,14 @@
 						'funame' => 'tool_multilanguage_get_lang_label',
 					),
 
+					'tool_multilanguage_get_country_label' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_get_country_label',
+					),
+
+
+				// }
+
 				// tool_hreflang {
 
 					'tool_hreflang' => array(
