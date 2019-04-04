@@ -179,6 +179,7 @@ $GLOBALS['toolset'] = array(
 * [Get Locale by URL](tools/tool_get_locale_by_url/readme.markdown)
 * [Register Navigation Menu](tools/tool_nav_menu_register/readme.markdown)
 * [Multilanguage](tools/multilanguage/readme.markdown)
+* [Hreflang](tools/tool_hreflang/readme.markdown)
 
 ### Assets
 

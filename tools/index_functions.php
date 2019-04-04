@@ -371,6 +371,13 @@
 						'funame' => 'tool_multilanguage_get_lang_label',
 					),
 
+				// tool_hreflang {
+
+					'tool_hreflang' => array(
+						'dir' => 'tool_hreflang',
+						'funame' => 'tool_hreflang',
+					),
+
 				// }
 
 			)
