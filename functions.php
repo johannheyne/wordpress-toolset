@@ -39,6 +39,40 @@
 
 		require_once( 'classes.php' );
 
+		// AUTOLOAD PHP CLASSES ( Version 3 ) {
+
+			/* Info: http://php.net/manual/de/language.oop5.autoload.php */
+
+			spl_autoload_register( function ( $class_name ) {
+
+				if ( isset( $GLOBALS['toolset']['autoload_php_classes_plugin'] ) ) {
+
+					foreach ( $GLOBALS['toolset']['autoload_php_classes_plugin'] as $key => $value ) {
+
+						if ( $class_name == $key ) {
+
+							require_once( $value );
+						}
+
+					}
+				}
+
+				if ( isset( $GLOBALS['toolset']['autoload_php_classes'] ) ) {
+
+					foreach ( $GLOBALS['toolset']['autoload_php_classes'] as $key => $value ) {
+
+						if ( $class_name == $key ) {
+
+							require_once( get_template_directory() . $value );
+						}
+
+					}
+				}
+
+			} );
+
+		// }
+
 	// }
 
 
@@ -243,40 +277,6 @@
 						}
 					}
 				}
-
-			// }
-
-			// AUTOLOAD PHP CLASSES ( Version 3 ) {
-
-				/* Info: http://php.net/manual/de/language.oop5.autoload.php */
-
-				spl_autoload_register( function ( $class_name ) {
-
-					if ( isset( $GLOBALS['toolset']['autoload_php_classes_plugin'] ) ) {
-
-						foreach ( $GLOBALS['toolset']['autoload_php_classes_plugin'] as $key => $value ) {
-
-							if ( $class_name == $key ) {
-
-								require_once( $value );
-							}
-
-						}
-					}
-
-					if ( isset( $GLOBALS['toolset']['autoload_php_classes'] ) ) {
-
-						foreach ( $GLOBALS['toolset']['autoload_php_classes'] as $key => $value ) {
-
-							if ( $class_name == $key ) {
-
-								require_once( get_template_directory() . $value );
-							}
-
-						}
-					}
-
-				} );
 
 			// }
 
