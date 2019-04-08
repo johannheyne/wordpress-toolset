@@ -1,3 +1,24 @@
+## Updates Tool "multilanguage"
+
+- Fixes link in Readme
+- Adds tool multilanguage func tool_multilanguage_get_country_label
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_multilanguage/readme.markdown)
+
+
+
+## Adds Tool "hreflang"
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_hreflang/readme.markdown)
+
+
+
+## Fixes Tool "browser_outdated"
+
+Adds default language "en"
+
+
+
 ## Title
 
 Description
@@ -5,5 +26,3 @@ Description
 ````php
 code
 ````
-
-[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/__toolslug__/readme.markdown)

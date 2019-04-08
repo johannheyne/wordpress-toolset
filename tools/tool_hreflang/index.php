@@ -82,7 +82,17 @@
 						$current_relative_url = '/' . implode( '/', $array );
 					}
 
-					foreach ( $GLOBALS['toolset']['sites']['1']['languages'] as $key => $item ) {
+					// GET HREFLANG POST META {
+
+						foreach ( $GLOBALS['toolset']['sites'] as $site ) {
+
+							//error_log( print_r( $site, true) );
+							//error_log( print_r( $GLOBALS['toolset']['classes']['ToolHreflang'], true) );
+						}
+
+					// }
+
+					/*foreach ( $GLOBALS['toolset']['sites']['1']['languages'] as $key => $item ) {
 
 						if ( $key === 0 ) {
 
@@ -92,16 +102,18 @@
 
 							$return .= '<link rel="alternate" href="' . $site_url . '/' . $item['language'] . $current_relative_url . '" hreflang="' . convert_hreflang( $item['language'] ) .'" />';
 						}
-					}
+					}*/
 				}
-
-				/*foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site_item ) {
-
-
-				}*/
 			}
 
 		// }
 
 		echo $return;
+	}
+
+	if ( is_admin() ) {
+
+		$GLOBALS['toolset']['classes']['ToolHreflang'] = new ToolHreflang();
+		//$GLOBALS['toolset']['classes']['ToolHreflang']->add_post_type( array( 'post_type' => 'page' ) );
+		//$GLOBALS['toolset']['classes']['ToolHreflang']->run();
 	}
