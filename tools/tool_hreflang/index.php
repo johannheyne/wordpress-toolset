@@ -114,6 +114,4 @@
 	if ( is_admin() ) {
 
 		$GLOBALS['toolset']['classes']['ToolHreflang'] = new ToolHreflang();
-		//$GLOBALS['toolset']['classes']['ToolHreflang']->add_post_type( array( 'post_type' => 'page' ) );
-		//$GLOBALS['toolset']['classes']['ToolHreflang']->run();
 	}
