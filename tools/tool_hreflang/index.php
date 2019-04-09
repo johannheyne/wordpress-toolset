@@ -1,5 +1,7 @@
 <?php
 
+	$GLOBALS['toolset']['classes']['ToolHreflang'] = new ToolHreflang();
+
 	function tool_hreflang( $p = array() ) {
 
 		// DEFAULTS {
@@ -84,10 +86,36 @@
 
 					// GET HREFLANG POST META {
 
-						foreach ( $GLOBALS['toolset']['sites'] as $site ) {
+						foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site ) {
 
-							//error_log( print_r( $site, true) );
-							//error_log( print_r( $GLOBALS['toolset']['classes']['ToolHreflang'], true) );
+							$hreflang_post_id = $GLOBALS['toolset']['classes']['ToolHreflang']->get_post_meta_hreflang( get_the_ID(), $site['id'] );
+
+							if ( ! empty( $hreflang_post_id ) ) {
+
+								foreach ( $GLOBALS['toolset']['sites'][ $site_id ]['languages'] as $language ) {
+
+									$permalink = '';
+
+									switch_to_blog( $site_id );
+
+										$permalink = get_lang_permalink( $hreflang_post_id, $language['language'] );
+
+									restore_current_blog();
+
+									if (
+										! empty( $GLOBALS['toolset']['sites'][ $site_id ]['country_code'] ) AND
+										strpos( $language['language'], '_' )
+									) {
+
+										$language['language'] = str_replace( '_' . $GLOBALS['toolset']['sites'][ $site_id ]['country_code'], '', $language['language'] );
+										$language['language'] .= '_' . $GLOBALS['toolset']['sites'][ $site_id ]['country_code'];
+									}
+
+									$return .= '<link rel="alternate" href="' . $permalink . '" hreflang="' . $language['language'] . '" />';
+								}
+							}
+
+							//$return .= '<link rel="alternate" href="' . $permalink . '" hreflang="x-default" />';
 						}
 
 					// }
@@ -109,9 +137,4 @@
 		// }
 
 		echo $return;
-	}
-
-	if ( is_admin() ) {
-
-		$GLOBALS['toolset']['classes']['ToolHreflang'] = new ToolHreflang();
 	}
