@@ -12,6 +12,8 @@
 
 		public $post_id = array();
 
+		public $post_type = false;
+
 		public $post_links = false;
 
 		public function add_post_type( $p = array() ) {
@@ -51,7 +53,8 @@
 
 			add_filter( 'acf/prepare_field/type=select', array( $this, 'filter_adds_field_choices' ), 10, 3 );
 			add_action( 'before_delete_post', array( $this, 'action_remove_links_from_relations' ) );
-			add_filter( 'after_setup_theme', array( $this, 'run' ) );
+			add_action( 'after_setup_theme', array( $this, 'set_post_type' ) );
+			add_action( 'after_setup_theme', array( $this, 'run' ) );
 
 			if ( ! empty( $this->post_id ) ) {
 
@@ -135,42 +138,42 @@
 			}
 
 			$site_id = $this->get_site_id_from_field( $field );
+			$this->post_type = get_post_type( $this->post_id );
 
 			switch_to_blog( $site_id );
 
-			$results = get_posts(array(
-				'numberposts' => -1,
-				'post_status' => 'any',
-				'post_type' => 'page',
-				'orderby' => 'menu_order',
-				'order' => 'ASC',
-			));
+				$results = get_posts(array(
+					'numberposts' => -1,
+					'post_status' => 'any',
+					'post_type' => $this->post_type,
+					'orderby' => 'menu_order',
+					'order' => 'ASC',
+				));
 
+				$new = array();
 
-			$new = array();
+				hierachical_order_posts( $results, $new );
 
-			hierachical_order_posts( $results, $new );
+				foreach ( $results as $post_item ) {
 
-			foreach ( $results as $post_item ) {
+					$has_hreflang = false;
 
-				$has_hreflang = false;
+					foreach ( $GLOBALS['toolset']['sites'] as $item_site_id => $site ) {
 
-				foreach ( $GLOBALS['toolset']['sites'] as $item_site_id => $site ) {
+						if ( ! empty( $this->get_post_meta_hreflang( $post_item->ID, $item_site_id ) ) ) {
 
-					if ( ! empty( $this->get_post_meta_hreflang( $post_item->ID, $item_site_id ) ) ) {
+							$has_hreflang = true;
+						}
 
-						$has_hreflang = true;
 					}
 
+					$field['choices'][ $post_item->ID ] = $post_item->post_title;
+
+					if ( $has_hreflang ) {
+
+						$field['choices'][ $post_item->ID ] .= ' (verlink)';
+					}
 				}
-
-				$field['choices'][ $post_item->ID ] = $post_item->post_title;
-
-				if ( $has_hreflang ) {
-
-					$field['choices'][ $post_item->ID ] .= ' (verlink)';
-				}
-			}
 
 			restore_current_blog();
 
@@ -439,6 +442,14 @@
 			}
 		}
 
+		public function set_post_type() {
+
+			if ( ! empty( $this->post_id ) ) {
+
+				$this->post_type = get_post_type( $this->post_id );
+			}
+		}
+
 		private function set_sites() {
 
 			$this->sites = $GLOBALS['toolset']['sites'];
@@ -460,7 +471,6 @@
 				$this->post_links[ $site_id ] = $link_id;
 			}
 		}
-
 
 		public function get_post_links( $post_id ) {
 
