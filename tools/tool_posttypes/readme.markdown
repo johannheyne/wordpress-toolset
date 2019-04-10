@@ -30,12 +30,19 @@ add_action( 'toolset_config', function() {
 ````php
 if ( is_admin() ) {
 
-    $current_posttype = tool( array(
-        'name' => 'tool_get_admin_current_post_type',
-    ));
+    add_action( 'current_screen', function() {
 
-    if ( $current_posttype === 'product' ) {
+        $current_posttype = tool( array(
+            'name' => 'tool_get_admin_current_post_type',
+            'param' => array(
+                'is_archive' => true, // requires tool execution in action "current_screen"
+                'is_single' => true,  // requires tool execution in action "current_screen"
+            )
+        ));
 
+        if ( $current_posttype === 'product' ) {
+
+        }
     }
 }
 ````

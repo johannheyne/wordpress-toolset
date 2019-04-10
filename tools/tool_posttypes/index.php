@@ -36,26 +36,52 @@
 
 	add_action( 'init', 'tool_posttypes_register' );
 
-	function tool_get_admin_current_post_type() {
+	function tool_get_admin_current_post_type( $p ) {
+
+		// DEFAULTS {
+
+			$defaults = array(
+				'is_archive' => true,
+				'is_single' => true,
+			);
+
+			$p = array_replace_recursive( $defaults, $p );
+
+		// }
 
 		global $post, $typenow, $current_screen;
 
 		// we have a post so we can just get the post type from that
-		if ( $post && $post->post_type ) {
+		if (
+			$p['is_single'] AND
+			$post && $post->post_type
+		) {
 
 			return $post->post_type;
+		}
+
+		// check the global $current_screen object - set in sceen.php
+		elseif (
+			$current_screen && $current_screen->post_type
+		) {
+
+			if ( ! $p['is_single'] AND $current_screen->base == 'post' ) {
+
+				return false;
+			}
+
+			if ( ! $p['is_archive'] AND $current_screen->base == 'edit' ) {
+
+				return false;
+			}
+
+			return $current_screen->post_type;
 		}
 
 		// check the global $typenow - set in admin.php
 		elseif ( $typenow ) {
 
 			return $typenow;
-		}
-
-		// check the global $current_screen object - set in sceen.php
-		elseif ( $current_screen && $current_screen->post_type ) {
-
-			return $current_screen->post_type;
 		}
 
 		// lastly check the post_type querystring
