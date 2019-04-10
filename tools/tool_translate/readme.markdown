@@ -42,7 +42,7 @@ $GLOBALS['toolset']['classes']['ToolsetL10N']->_x( array(
 	),
 	'context' => 'my_context',
 	'domain' => 'my_text_domain',
-	'locale' => 'auto', // 'auto' detetect locale wether from admin user or frontend, 'user' translates by user locale, 'front' translates by frontend locale
+	'locale' => 'auto', // 'auto' detetects locale wether from admin user or frontend, 'user' translates by user locale, 'front' translates by frontend locale
 ));
 ````
 
