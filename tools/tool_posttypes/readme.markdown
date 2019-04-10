@@ -32,7 +32,7 @@ if ( is_admin() ) {
 
     $current_posttype = tool( array(
         'name' => 'tool_get_admin_current_post_type',
-    );
+    ));
 
     if ( $current_posttype === 'product' ) {
 
