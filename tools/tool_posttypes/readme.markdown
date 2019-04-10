@@ -5,6 +5,7 @@ Tool Posttypes
 
 ### Add Custom PostType
 
+````php
 add_action( 'toolset_config', function() {
 
     config_add_init( array(
@@ -22,20 +23,21 @@ add_action( 'toolset_config', function() {
     ) );
 
 }, 10 );
+````
 
 ### Get Admins Current PostType
 
 ````php
-    if ( is_admin() ) {
+if ( is_admin() ) {
 
-        $current_posttype = tool( array(
-            'name' => 'tool_get_admin_current_post_type',
-        );
+    $current_posttype = tool( array(
+        'name' => 'tool_get_admin_current_post_type',
+    );
 
-        if ( $current_posttype === 'product' ) {
+    if ( $current_posttype === 'product' ) {
 
-        }
     }
+}
 ````
 
 [back to overview](../../README.markdown#tools)
