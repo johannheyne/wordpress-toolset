@@ -221,6 +221,11 @@
 						'funame' => 'tool_posttypes',
 					),
 
+					'tool_get_admin_current_post_type' => array(
+						'dir' => 'tool_posttypes',
+						'funame' => 'tool_get_admin_current_post_type',
+					),
+
 				// }
 
 				// tool_meta_title {
