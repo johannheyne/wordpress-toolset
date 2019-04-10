@@ -180,6 +180,8 @@ $GLOBALS['toolset'] = array(
 * [Register Navigation Menu](tools/tool_nav_menu_register/readme.markdown)
 * [Multilanguage](tools/tool_multilanguage/readme.markdown)
 * [Hreflang](tools/tool_hreflang/readme.markdown)
+* [Admin Get Posttype](tools/tool_posttypes/readme.markdown)
+* [Add Posttype](tools/tool_posttypes/readme.markdown)
 
 ### Assets
 
