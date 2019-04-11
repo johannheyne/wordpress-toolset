@@ -635,7 +635,7 @@
 							return;
 						}
 
-						echo '<style>#delete-action, #misc-publishing-actions, #minor-publishing, .row-actions { display: none; }</style>';
+						echo '<style>#delete-action, #misc-publishing-actions, #minor-publishing, .row-actions, .tablenav.top { display: none; }</style>';
 
 					} );
 
@@ -659,6 +659,13 @@
 						}
 
 						echo get_post_meta( $post_id, 'context', true );
+
+						$description = get_post_meta( $post_id, 'description', true );
+
+						if ( $description ) {
+
+							echo '<br><small>' . $description . '</small>';
+						}
 					};
 
 					$cols[] = array(
