@@ -18,6 +18,7 @@
 				add_action( 'init', array( $this, 'check_for_update' ) );
 				add_action( 'init', array( $this, 'register_posttype' ) );
 				add_action( 'init', array( $this, 'removes_obsolte_post_editing_functionalities' ) );
+				add_action( 'init', array( $this, 'adds_admin_list_colums' ) );
 				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) ); // $this->add_text to post metas, runs on admin posttype lis only
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
@@ -633,7 +634,7 @@
 							return;
 						}
 
-						echo '<style>#delete-action, #misc-publishing-actions, #minor-publishing { display: none; }</style>';
+						echo '<style>#delete-action, #misc-publishing-actions, #minor-publishing, .row-actions { display: none; }</style>';
 
 					} );
 
@@ -641,6 +642,98 @@
 
 			}
 
+			public function adds_admin_list_colums() {
+
+				$col_index = 1;
+
+				$cols = array();
+
+				// SETUP COL "CONTEXT" {
+
+					$func = function( $col_id, $post_id ) {
+
+						if ( $col_id != 'context' ) {
+
+							return;
+						}
+
+						echo get_post_meta( $post_id, 'context', true );
+					};
+
+					$cols[] = array(
+						'sorttype' => 'meta',
+						'sortmetakey' => 'context',
+						'colid' => 'context',
+						'collabel' => 'Context',
+						'rowlabelfunction' => $func,
+					);
+
+				// }
+
+				// SETUP COL "TEXT" {
+
+					$func = function( $col_id, $post_id ) {
+
+						if ( $col_id != 'text' ) {
+
+							return;
+						}
+
+						echo get_post_meta( $post_id, 'text', true );
+					};
+
+					$cols[] = array(
+						'sorttype' => 'meta',
+						'sortmetakey' => 'text',
+						'colid' => 'text',
+						'collabel' => 'Default Text',
+						'rowlabelfunction' => $func,
+					);
+
+				// }
+
+				// SETUP COLS LANGS {
+
+					foreach ( $GLOBALS['toolset']['language_array'] as $lang_code => $value ) {
+
+						$func = function( $col_id, $post_id ) use ( $lang_code ) {
+
+							if ( $col_id != 'transl_' . $lang_code ) {
+
+								return;
+							}
+
+							echo get_post_meta( $post_id, 'transl_' . $lang_code, true );
+						};
+
+						$cols[] = array(
+							'sorttype' => 'meta',
+							'sortmetakey' => 'transl_' . $lang_code,
+							'colid' => 'transl_' . $lang_code,
+							'collabel' => 'Translation: ' . $lang_code,
+							'rowlabelfunction' => $func,
+						);
+					}
+
+				// }
+
+				// INIT COLS {
+
+					foreach ( $cols as $item ) {
+
+						$default = array(
+							'posttype' => 'posts',
+							'postname' => 'translate',
+							'position' => ++$col_index,
+						);
+
+						$args = array_replace_recursive( $default, $item );
+
+						new wpSortableListColumn( $args );
+					}
+
+				// }
+			}
 
 			// Option List
 
