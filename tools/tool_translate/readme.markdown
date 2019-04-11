@@ -9,13 +9,15 @@ Registers a posttype 'translations' and provides an Admin Interface for translat
 
 ````php
 $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
-    'text' => 'products', // use in _x( 'products', 'URL SLug', 'tool_translate' ),
-    'text_default' => 'products', // returned default text if there is no translation
-    'type' => 'text', // editing field type: 'text', 'textarea'
+    'text' => 'products', // use it like _x( 'products', 'URL SLug', 'tool_translate' ),
     'context' => 'URL Slug',
-    'default_transl' => array(
-        'de_DE' => 'produkt',
-        'fr_CA' => 'produit',
+    'param' => array(
+        'text_default' => 'products', // The default text if there is no translation
+        'type' => 'text', // editing field type: 'text', 'textarea'
+        'default_transl' => array(
+            'de_DE' => 'produkt',
+            'fr_CA' => 'produit',
+        ),
     ),
     // The text domain is 'tool_translate'.
 ));
