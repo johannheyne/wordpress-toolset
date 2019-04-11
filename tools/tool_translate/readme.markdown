@@ -9,9 +9,9 @@ Registers a posttype 'translations' and provides an Admin Interface for translat
 
 ````php
 $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
-	'text' => 'products',
-	'context' => 'URL Slug',
-	// The text domain is 'tool_translate'.
+    'text' => 'products',
+    'context' => 'URL Slug',
+    // The text domain is 'tool_translate'.
 ));
 ````
 
@@ -23,8 +23,8 @@ $string = _x( 'products', 'URL SLug', 'tool_translate' );
 The context 'URL Slug' especially adds the translations to the rewrite rule of 'products'. The context 'URL Slug' must be used in combination with rewriting custom posttype slugs…
 ````php
 'rewrite' => array(
-	'slug' => _x( 'products', 'URL SLug', 'tool_translate' ),
-	'with_front' => false // prevents "/blog/" on mainsite of multisites
+    'slug' => _x( 'products', 'URL SLug', 'tool_translate' ),
+    'with_front' => false // prevents "/blog/" on mainsite of multisites
 ),
 ````
 
@@ -35,14 +35,14 @@ Translate strings for Frontend and Admin Area.
 Defines a Translation…
 ````php
 $GLOBALS['toolset']['classes']['ToolsetL10N']->_x( array(
-	'text' => 'Translation',
-	'translations' => array(
-		'default' => 'Translation',
-		'de' =>  'Übersetzung', // 'de' also translates locales like 'de_DE', 'de_AU'
-	),
-	'context' => 'my_context',
-	'domain' => 'my_text_domain',
-	'locale' => 'auto', // 'auto' detetects locale wether from admin user or frontend, 'user' translates by user locale, 'front' translates by frontend locale
+    'text' => 'Translation',
+    'translations' => array(
+        'default' => 'Translation',
+        'de' =>  'Übersetzung', // 'de' also translates locales like 'de_DE', 'de_AU'
+    ),
+    'context' => 'my_context',
+    'domain' => 'my_text_domain',
+    'locale' => 'auto', // 'auto' detetects locale wether from admin user or frontend, 'user' translates by user locale, 'front' translates by frontend locale
 ));
 ````
 
