@@ -15,10 +15,11 @@
 				add_action( 'acf/init', array( $this, 'adds_acf_fieldgroup' ) );
 				add_action( 'setup_theme', array( $this, 'get_option_text_list' ) );
 				add_action( 'setup_theme', array( $this, 'add_rewrite_rules' ) );
+				add_action( 'init', array( $this, 'check_for_update' ) );
 				add_action( 'init', array( $this, 'register_posttype' ) );
 				add_action( 'init', array( $this, 'removes_obsolte_post_editing_functionalities' ) );
-				add_action( 'init', array( $this, 'updates_option_text_list' ) );
-				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) );
+				add_action( 'init', array( $this, 'updates_option_text_list' ) ); // based on post metas
+				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) ); // $this->add_text to post metas, runs on admin posttype lis only
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
 			}
@@ -40,17 +41,20 @@
 
 					// CHECK IF IS POSTTYPE translate ARCHIVE {
 
-						$current_posttype = tool( array(
-							'name' => 'tool_get_admin_current_post_type',
-							'param' => array(
-								'is_archive' => true,
-								'is_single' => false,
-							)
-						) );
+						if ( empty( $GLOBALS['toolset']['updated'] ) ) {
 
-						if ( $current_posttype != 'translate' ) {
+							$current_posttype = tool( array(
+								'name' => 'tool_get_admin_current_post_type',
+								'param' => array(
+									'is_archive' => true,
+									'is_single' => false,
+								)
+							) );
 
-							return;
+							if ( $current_posttype != 'translate' ) {
+
+								return;
+							}
 						}
 
 					// }
@@ -86,6 +90,20 @@
 				}
 
 				return false;
+			}
+
+
+			// On Update
+
+			public function check_for_update() {
+
+				if ( ! empty( $GLOBALS['toolset']['updated'] ) ) {
+
+					// Takes over changed provided by $this-add_text()
+
+					$this->updates_posttype_entries();
+					$this->updates_option_text_list();
+				}
 			}
 
 
