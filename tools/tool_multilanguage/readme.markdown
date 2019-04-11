@@ -14,7 +14,7 @@ the required language and countrycode.
 		'param' => array(
 			'locale' => 'ca_FR',
 		),
-	);
+	));
 
 	// OR
 
@@ -24,7 +24,7 @@ the required language and countrycode.
 			'lang' => 'ca',
 			'country' => 'fr', // default: false
 		),
-	);
+	));
 ````
 
 ### tool_multilanguage_get_lang_label
@@ -38,7 +38,7 @@ Returns the language label of an given langcode translated an locale.
 			'langcode' => 'en_US',
 			'locale' => 'ca_FR',
 		),
-	);
+	));
 
 	// OR
 
@@ -49,11 +49,11 @@ Returns the language label of an given langcode translated an locale.
 			'lang' => 'fr',
 			'country' => 'ca', // default: false
 		),
-	);
+	));
 
 ````
 
-### tool_multilanguage_get_lang_label
+### tool_multilanguage_get_country_label
 
 Returns the country label translated by an locale.
 
@@ -64,7 +64,7 @@ Returns the country label translated by an locale.
 			'countrycode' => 'US',
 			'locale' => 'ca_FR',
 		),
-	);
+	));
 
 ````
 
