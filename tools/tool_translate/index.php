@@ -18,7 +18,6 @@
 				add_action( 'init', array( $this, 'check_for_update' ) );
 				add_action( 'init', array( $this, 'register_posttype' ) );
 				add_action( 'init', array( $this, 'removes_obsolte_post_editing_functionalities' ) );
-				add_action( 'init', array( $this, 'updates_option_text_list' ) ); // based on post metas
 				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) ); // $this->add_text to post metas, runs on admin posttype lis only
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
@@ -32,9 +31,12 @@
 
 					// CHECK IF IS ADMIN {
 
-						if ( ! is_admin() ) {
+						if ( empty( $GLOBALS['toolset']['updated'] ) ) {
 
-							return;
+							if ( ! is_admin() ) {
+
+								return;
+							}
 						}
 
 					// }
@@ -214,7 +216,7 @@
 			public function updates_posttype_entries() {
 
 				/*
-					(1) Runs only if posttype "translation" archive is viewed
+					(1) Runs only if posttype "translation" archive is viewed or on $GLOBALS['toolset']['updated']
 					(2) Compares the $this->add_text_list against the entries in the posttype list
 					(3) Adds missing entries
 					(4) Trashes obsolete entries
@@ -225,26 +227,32 @@
 
 					// CHECK IF IS ADMIN {
 
-						if ( ! is_admin() ) {
+						if ( empty( $GLOBALS['toolset']['updated'] ) ) {
 
-							return;
+							if ( ! is_admin() ) {
+
+								return;
+							}
 						}
 
 					// }
 
 					// CHECK IF IS POSTTYPE translate ARCHIVE {
 
-						$current_posttype = tool( array(
-							'name' => 'tool_get_admin_current_post_type',
-							'param' => array(
-								'is_archive' => true,
-								'is_single' => false,
-							)
-						) );
+						if ( empty( $GLOBALS['toolset']['updated'] ) ) {
 
-						if ( $current_posttype != 'translate' ) {
+							$current_posttype = tool( array(
+								'name' => 'tool_get_admin_current_post_type',
+								'param' => array(
+									'is_archive' => true,
+									'is_single' => false,
+								)
+							) );
 
-							return;
+							if ( $current_posttype != 'translate' ) {
+
+								return;
+							}
 						}
 
 					// }
@@ -281,9 +289,9 @@
 
 								foreach ( $context_items as $text => $transl_param ) {
 
-									// CHECK IF TEXT EXISTS AS POST {
+									$translation_post_exists = false;
 
-										$translation_post_exists = false;
+									// CHECK IF TEXT EXISTS AS POST {
 
 										foreach ( $posts as $post_item ) {
 
@@ -339,9 +347,9 @@
 
 													// ADD TRANSLATIONS METAS BY DEFAULTS {
 
-														if ( ! empty( $args['default_transl'] ) ) {
+														if ( ! empty( $transl_param['default_transl'] ) ) {
 
-															foreach ( $args['default_transl'] as $lang => $lang_value ) {
+															foreach ( $transl_param['default_transl'] as $lang => $lang_value ) {
 
 																update_post_meta( $post_id, 'transl_' . $lang, $lang_value );
 															}
@@ -379,11 +387,18 @@
 
 
 				// }
+
+				$this->updates_option_text_list();
 			}
 
 			public function save_post( $post_id, $post, $update ) {
 
 				if ( $post->post_type != 'translate' ) {
+
+					return;
+				}
+
+				if ( ! $update ) {
 
 					return;
 				}
@@ -654,6 +669,7 @@
 							'status' => $metas['status'][0],
 							'type' => $metas['type'][0],
 							'description' => $metas['description'][0],
+							'text_default' => $metas['text_default'][0],
 							'default_transl' => unserialize( $metas['default_transl'][0] ),
 							'transl' => array(),
 						);
@@ -705,11 +721,13 @@
 			public function gettext_with_context( $translation, $text, $context, $domain ) {
 
 				if (
-					! empty( $this->option_text_list[ $domain ][ $context ][ $text ] ) AND
-					! empty( $this->option_text_list[ $domain ][ $context ][ $text ]['transl'][ $GLOBALS['toolset']['frontend_locale'] ] )
-				 ) {
+					! empty( $this->option_text_list[ $domain ][ $context ][ $text ]['transl'] )
+				) {
 
-					$translation = $this->option_text_list[ $domain ][ $context ][ $text ]['transl'][ $GLOBALS['toolset']['frontend_locale'] ];
+					$transl = $this->option_text_list[ $domain ][ $context ][ $text ]['transl'];
+					$transl['default'] = $this->option_text_list[ $domain ][ $context ][ $text ]['text_default'];
+
+					$translation = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $transl );
 				}
 
 				return $translation;
