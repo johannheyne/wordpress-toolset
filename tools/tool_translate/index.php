@@ -19,6 +19,7 @@
 				add_action( 'init', array( $this, 'register_posttype' ) );
 				add_action( 'init', array( $this, 'removes_obsolte_post_editing_functionalities' ) );
 				add_action( 'init', array( $this, 'adds_admin_list_colums' ) );
+				add_action( 'init', array( $this, 'extend_admin_search' ) );
 				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) ); // $this->add_text to post metas, runs on admin posttype lis only
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
@@ -734,6 +735,82 @@
 
 				// }
 			}
+
+			public function extend_admin_search( $query ) {
+
+				$current_posttype = tool( array(
+					'name' => 'tool_get_admin_current_post_type',
+					'param' => array(
+						'is_archive' => false,
+						'is_single' => true,
+					)
+				) );
+
+				if ( $current_posttype !== 'translate' ) {
+
+					return;
+				}
+
+				add_filter( 'posts_join', function( $join ){
+
+					global $pagenow, $wpdb;
+
+					if (
+						is_admin() &&
+						$pagenow == 'edit.php' &&
+						! empty( $_GET['post_type'] ) &&
+						$_GET['post_type'] == 'translate' &&
+						! empty( $_GET['s'] )
+					) {
+
+						$join .= 'LEFT JOIN ' . $wpdb->postmeta . ' ON ' . $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
+					}
+
+					return $join;
+				} );
+
+
+				add_filter( 'posts_where', function( $where ) {
+
+					global $pagenow, $wpdb;
+
+					if (
+						is_admin() &&
+						$pagenow == 'edit.php' &&
+						! empty( $_GET['post_type'] ) &&
+						$_GET['post_type'] == 'translate' &&
+						! empty( $_GET['s'] )
+					) {
+						$where = preg_replace(
+							"/\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+							"(" . $wpdb->posts . ".post_title LIKE $1) OR (" . $wpdb->postmeta . ".meta_value LIKE $1 AND " . $wpdb->postmeta . ".meta_key = 'context' ) OR (" . $wpdb->postmeta . ".meta_value LIKE $1 AND " . $wpdb->postmeta . ".meta_key = 'text' )",
+						$where );
+					}
+
+					return $where;
+				} );
+
+
+				add_filter( 'posts_distinct', function( $where ) {
+
+					global $pagenow, $wpdb;
+
+					if (
+						is_admin() &&
+						$pagenow == 'edit.php' &&
+						! empty( $_GET['post_type'] ) &&
+						$_GET['post_type'] == 'translate' &&
+						! empty( $_GET['s'] )
+					) {
+
+						return "DISTINCT";
+					}
+
+					return $where;
+				} );
+
+			}
+
 
 			// Option List
 
