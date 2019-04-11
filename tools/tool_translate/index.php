@@ -4,16 +4,92 @@
 
 		class ToolsetTranslation {
 
-			public $text_list = array();
+			public $add_text_list = array();
+
+			public $option_text_list = array();
 
 			public $text_domain = 'tool_translate';
 
 			function __construct() {
 
-				add_action( 'init', array( $this, 'register_posttype' ) );
 				add_action( 'acf/init', array( $this, 'adds_acf_fieldgroup' ) );
+				add_action( 'setup_theme', array( $this, 'get_option_text_list' ) );
+				add_action( 'setup_theme', array( $this, 'add_rewrite_rules' ) );
+				add_action( 'init', array( $this, 'register_posttype' ) );
+				add_action( 'init', array( $this, 'removes_obsolte_post_editing_functionalities' ) );
+				add_action( 'init', array( $this, 'updates_option_text_list' ) );
 				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) );
+				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
+				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
 			}
+
+			// Public
+
+			public function add_text( $p ) {
+
+				// (1) Runs only if posttype "translation" archive is viewed {
+
+					// CHECK IF IS ADMIN {
+
+						if ( ! is_admin() ) {
+
+							return;
+						}
+
+					// }
+
+					// CHECK IF IS POSTTYPE translate ARCHIVE {
+
+						$current_posttype = tool( array(
+							'name' => 'tool_get_admin_current_post_type',
+							'param' => array(
+								'is_archive' => true,
+								'is_single' => false,
+							)
+						) );
+
+						if ( $current_posttype != 'translate' ) {
+
+							return;
+						}
+
+					// }
+
+				// }
+
+				// DEFAULTS {
+
+					$defaults = array(
+						'domain' => $this->text_domain,
+						'context' => '',
+						'text' => '',
+						'param' => array(
+							'text_default' => '',
+							'type' => 'text',
+							'description' => '',
+							'default_transl' => array(
+								/*'de_DE' => 'produkt',
+								'fr_CA' => 'produit',*/
+							),
+						),
+					);
+
+					$p = array_replace_recursive( $defaults, $p );
+
+				// }
+
+				if ( ! isset( $this->add_text_list[ $p['domain'] ][ $p['context'] ][ $p['text'] ] ) ) {
+
+					$this->add_text_list[ $p['domain'] ][ $p['context'] ][ $p['text'] ] = $p['param'];
+
+					return true;
+				}
+
+				return false;
+			}
+
+
+			// Posttype
 
 			public function register_posttype() {
 
@@ -106,73 +182,22 @@
 							// category = default post category
 							// post_tag = default post tags
 							// translation = custom taxomonie name
-
+						//'capability_type' => 'translate',
 						'capabilities' => array(
-							//'create_posts' => 'do_not_allow', // Removes support for the "Add New" function
+							'create_posts' => 'do_not_allow', // Removes support for the "Add New" function
+							'delete_posts' => 'do_not_allow',
 						),
-						// 'map_meta_cap' => true, // Set to false, if users are not allowed to edit/delete existing posts
+						//'map_meta_cap' => false, // Set to false, if users are not allowed to edit/delete existing posts
 
 					)
 				);
-			}
-
-			public function adds_acf_fieldgroup() {
-
-				if ( function_exists('acf_add_local_field_group') ) {
-
-					tool( array(
-						'name' => 'tool_acf_translate',
-						'param' => array(
-							'strings' => array(
-								'Translations' => array(
-									'de_DE' => 'Übersetzungen'
-								),
-							),
-						),
-					) );
-
-					acf_add_local_field_group( array(
-						'key' => 'group_posttype_translate_group',
-						'title' => tool_acf_translate_string( 'Translations' ),
-						'fields' => array(),
-						'location' => array (
-							array (
-								array (
-									'param' => 'post_type',
-									'operator' => '==',
-									'value' => 'translate',
-								),
-							),
-						),
-						'menu_order' => 0,
-						'style' => 'seamless',
-						'hide_on_screen' => [
-							'permalink',
-							'the_content',
-							'excerpt',
-							'discussion',
-							'comments',
-							'revisions',
-							'slug',
-							'author',
-							'format',
-							'page_attributes',
-							'featured_image',
-							'categories',
-							'tags',
-							'send-trackbacks'
-						],
-					) );
-
-				}
-
 			}
 
 			public function updates_posttype_entries() {
 
 				/*
 					(1) Runs only if posttype "translation" archive is viewed
-					(2) Compares the $this->text_list against the entries in the posttype list
+					(2) Compares the $this->add_text_list against the entries in the posttype list
 					(3) Adds missing entries
 					(4) Trashes obsolete entries
 					(5) Updates option "tool_translate_text"
@@ -208,18 +233,11 @@
 
 				// }
 
-				// (2) Compares the $this->text_list against the entries in the posttype list {
+				// (2) Compares the $this->add_text_list against the entries in the posttype list {
 
 					// GET TRANSLATIONS {
 
-						$posts = get_posts( array(
-							'numberposts' => -1,
-							'post_status' => 'publish',
-							'post_type' => 'translate',
-
-							'orderby' => 'post_name',
-							'order' => 'ASC',
-						));
+						$posts = $this->get_posts();
 
 					// }
 
@@ -230,18 +248,20 @@
 							$posts[ $key ]->translate_text_domain = get_post_meta( $item->ID, 'text_domain', true );
 							$posts[ $key ]->translate_context = get_post_meta( $item->ID, 'context', true );
 							$posts[ $key ]->translate_text = get_post_meta( $item->ID, 'text', true );
-							$posts[ $key ]->translate_status = get_post_meta( $item->ID, 'status', true );
+							//$posts[ $key ]->translate_text_default = get_post_meta( $item->ID, 'text_default', true );
+							//$posts[ $key ]->translate_status = get_post_meta( $item->ID, 'status', true );
+							//$posts[ $key ]->translate_type = get_post_meta( $item->ID, 'type', true );
 						}
 
 					// }
 
 					// LOOP TEXT LIST AND ADDS MISSING POSTTYPE ENTRIES {
 
-						foreach ( $this->text_list as $text_domain => $text_domain_items ) {
+						foreach ( $this->add_text_list as $text_domain => $text_domain_items ) {
 
 							foreach ( $text_domain_items as $context => $context_items ) {
 
-								foreach ( $context_items as $text => $args ) {
+								foreach ( $context_items as $text => $transl_param ) {
 
 									// CHECK IF TEXT EXISTS AS POST {
 
@@ -255,7 +275,17 @@
 												$post_item->translate_text == $text
 											) {
 
-												$translation_post_exists = true;
+												// POST EXISTS {
+
+													// UPDATE ARGS
+													foreach ( $transl_param as $transl_param_key => $transl_param_value ) {
+
+														update_post_meta( $post_item->ID, $transl_param_key, $transl_param_value );
+													}
+
+													$translation_post_exists = true;
+
+												// }
 											}
 										}
 
@@ -268,32 +298,40 @@
 											// (3) Adds missing entry {
 
 												// Create post object
-												$param = array(
+												$post_param = array(
 													'post_title' => wp_strip_all_tags( wp_trim_words( $text, 10 ) ),
 													'post_type' => 'translate',
 													'post_status' => 'publish',
 												);
 
 												// Insert the post into the database
-												$post_id = wp_insert_post( $param );
+												$post_id = wp_insert_post( $post_param );
 
-												// Adds metas
-												update_post_meta( $post_id, 'text_domain', $text_domain );
-												update_post_meta( $post_id, 'context', $context );
-												update_post_meta( $post_id, 'text', $text );
-												update_post_meta( $post_id, 'status', 'untranslated' );
+												// ADDS POST METAS {
 
-											// }
+													update_post_meta( $post_id, 'text_domain', $text_domain );
+													update_post_meta( $post_id, 'context', $context );
+													update_post_meta( $post_id, 'text', $text );
+													update_post_meta( $post_id, 'status', 'untranslated' );
 
-											// ADDS DEFAULT TRANSLATIONS {
+													foreach ( $transl_param as $transl_param_key => $transl_param_value ) {
 
-												if ( ! empty( $args['defaults'] ) ) {
-
-													foreach ( $args['defaults'] as $lang => $lang_value ) {
-
-														update_post_meta( $post_id, 'transl_' . $lang, $lang_value );
+														update_post_meta( $post_id, $transl_param_key, $transl_param_value );
 													}
-												}
+
+													// ADD TRANSLATIONS METAS BY DEFAULTS {
+
+														if ( ! empty( $args['default_transl'] ) ) {
+
+															foreach ( $args['default_transl'] as $lang => $lang_value ) {
+
+																update_post_meta( $post_id, 'transl_' . $lang, $lang_value );
+															}
+														}
+
+													// }
+
+												// }
 
 											// }
 										}
@@ -313,7 +351,7 @@
 
 						foreach ( $posts as $post_item ) {
 
-							if ( ! isset( $this->text_list[ $post_item->translate_text_domain ][ $post_item->translate_context ][ $post_item->translate_text ] ) ) {
+							if ( ! isset( $this->add_text_list[ $post_item->translate_text_domain ][ $post_item->translate_context ][ $post_item->translate_text ] ) ) {
 
 								wp_trash_post( $post_item->ID );
 							}
@@ -325,133 +363,381 @@
 				// }
 			}
 
-			public function add_text( $p ) {
+			public function save_post( $post_id, $post, $update ) {
 
-				// (1) Runs only if posttype "translation" archive is viewed {
+				if ( $post->post_type != 'translate' ) {
 
-					// CHECK IF IS ADMIN {
+					return;
+				}
 
-						if ( ! is_admin() ) {
+				$this->updates_option_text_list();
 
-							return;
-						}
+				// FLUSH REWRITE RULES {
+
+					$context = get_post_meta( $post_id, 'context', true );
+
+					if ( $context === 'URL Slug' ) {
+
+						$this->update_rewrite_rules();
+					}
+
+				// }
+			}
+
+			public function get_posts() {
+
+				$posts = get_posts( array(
+					'numberposts' => -1,
+					'post_status' => 'publish',
+					'post_type' => 'translate',
+					'orderby' => 'post_name',
+					'order' => 'ASC',
+				));
+
+				return $posts;
+			}
+
+
+			// Fieldgroup
+
+			public function adds_acf_fieldgroup() {
+
+				if ( function_exists('acf_add_local_field_group') ) {
+
+					$field_type = 'text';
+
+					if ( ! empty( $_REQUEST['post'] ) ) {
+
+						$post_id = sanitize_text_field( (int) $_REQUEST['post'] );
+						$field_type = get_post_meta( $post_id, 'type', true );
+						$text_default = get_post_meta( $post_id, 'text_default', true );
+						$description = get_post_meta( $post_id, 'description', true );
+					}
+
+					$GLOBALS['toolset']['classes']['ToolsetL10N']->_x( array(
+						'text' => 'Translations',
+						'translations' => array(
+							'default' => 'Translations',
+							'de' =>  'Übersetzungen',
+						),
+						'context' => 'tool_translate',
+						'domain' => 'toolset',
+					));
+
+					$GLOBALS['toolset']['classes']['ToolsetL10N']->_x( array(
+						'text' => 'Text Translation',
+						'translations' => array(
+							'default' => 'Text Translation',
+							'de' =>  'Text Übersetzung',
+						),
+						'context' => 'tool_translate',
+						'domain' => 'toolset',
+					));
+
+					$GLOBALS['toolset']['classes']['ToolsetL10N']->_x( array(
+						'text' => 'Text (Default)',
+						'translations' => array(
+							'default' => '(Text Default)',
+							'de' =>  'Text (Standard)',
+						),
+						'context' => 'tool_translate',
+						'domain' => 'toolset',
+					));
+
+					// GENERATE LANG FIELDS {
+
+						$fields = array();
+
+						// META FIELDS {
+
+							if ( ! empty( $post_id ) ) {
+
+								$fields[] = array(
+									'key' => 'context',
+									'label' => _x( 'Context', 'tool_translate', 'toolset' ),
+									'name' => 'context',
+									'type' => 'text',
+									'readonly' => 1,
+									'instructions' => $description,
+								);
+							}
+
+							if ( ! empty( $post_id ) ) {
+
+								$fields[] = array(
+									'key' => 'text_default',
+									'label' => _x( 'Text (Default)', 'tool_translate', 'toolset' ),
+									'name' => 'text_default',
+									'type' => $field_type,
+									'default_value' => $text_default,
+									'rows' => 2,
+									'readonly' => 1,
+								);
+							}
+
+						// }
+
+						// TRANSLATION FIELDS {
+
+							if ( ! empty( $GLOBALS['toolset']['language_array'] ) ) {
+
+								foreach ( $GLOBALS['toolset']['language_array'] as $lang_code => $item ) {
+
+									$label_lang = tool( array(
+										'name' => 'tool_multilanguage_get_lang_label',
+										'param' => array(
+											'langcode' => $lang_code,
+											'locale' => $GLOBALS['toolset']['user_locale'],
+										)
+									));
+
+									$fields[] = array(
+										'key' => 'transl_' . $lang_code,
+										'label' => _x( 'Text Translation', 'tool_translate', 'toolset' ) . ' (' . $label_lang . ')',
+										'name' => 'transl_' . $lang_code,
+										'type' => $field_type,
+										'rows' => 2,
+										'instructions' => '',
+										'required' => 0,
+										'conditional_logic' => 0,
+										'wrapper' => array(
+											'width' => '',
+											'class' => '',
+											'id' => ''
+										),
+										'default_value' => '',
+										'placeholder' => '',
+										'prepend' => '',
+										'append' => '',
+										'maxlength' => ''
+									);
+								}
+							}
+
+						// }
 
 					// }
 
-					// CHECK IF IS POSTTYPE translate ARCHIVE {
+					acf_add_local_field_group( array(
+						'key' => 'group_posttype_translate_group',
+						'title' => _x( 'Translations', 'tool_translate', 'toolset' ),
+						'fields' => $fields,
+						'location' => array (
+							array (
+								array (
+									'param' => 'post_type',
+									'operator' => '==',
+									'value' => 'translate',
+								),
+							),
+						),
+						'menu_order' => 0,
+						'style' => 'seamless',
+						'hide_on_screen' => [
+							'permalink',
+							'the_content',
+							'excerpt',
+							'discussion',
+							'comments',
+							'revisions',
+							'slug',
+							'author',
+							'format',
+							'page_attributes',
+							'featured_image',
+							'categories',
+							'tags',
+							'send-trackbacks'
+						],
+						'label_placement' => 'left',
+					) );
+
+				}
+
+			}
+
+
+			// Frontend Customisation
+
+			public function removes_obsolte_post_editing_functionalities() {
+
+				// REMOVES OBSOLTES EDITING FUNCTIONALITIES {
+
+					// removes post list actions
+					add_filter( 'post_row_actions', function( $actions, $post ) {
+
+						if ( $post->post_type !== 'translate' ) {
+
+							return $actions;
+						}
+
+						unset( $actions['trash'] );
+						unset( $actions['clone'] );
+
+						// hides QickEdit
+						if ( isset( $actions['inline hide-if-no-js'] ) ) {
+
+							unset( $actions['inline hide-if-no-js'] );
+						}
+
+						return $actions;
+
+					}, 10, 2 );
+
+					// removes post edit actions
+					add_action( 'admin_head', function () {
 
 						$current_posttype = tool( array(
 							'name' => 'tool_get_admin_current_post_type',
 							'param' => array(
-								'is_archive' => true,
-								'is_single' => false,
+								'is_archive' => false,
+								'is_single' => true,
 							)
 						) );
 
-						if ( $current_posttype != 'translate' ) {
+						if ( $current_posttype !== 'translate' ) {
 
 							return;
 						}
 
-					// }
+						echo '<style>#delete-action, #misc-publishing-actions, #minor-publishing { display: none; }</style>';
+
+					} );
 
 				// }
 
-				// DEFAULTS {
+			}
 
-					$defaults = array(
-						'text' => '',
-						'param' => array(),
-						'context' => '',
-						'domain' => $this->text_domain,
-					);
 
-					/*
+			// Option List
+
+			public function updates_option_text_list() {
+
+				$this->option_text_list = array();
+
+				$posts = $this->get_posts();
+
+				// LOOP POSTS, GET METAS, BUILD OPTION ARRAY {
+
+					foreach ( $posts as $post ) {
+
+						$metas = get_post_meta( $post->ID );
+
+						// $metas['text_domain'][0]
+						// $metas['context'][0]
+						// $metas['text'][0]
+						// $metas['status'][0]
+						// $metas['type'][0]
+						// $metas['description'][0]
+						// $metas['default_transl'][0]
+						// $metas['text_default'][0]
+
 						$param = array(
-							'defaults' => array(
-								'de_DE' => 'Hallo',
-								'en_CA' => 'Hi',
-							)
-						)
-					*/
+							'status' => $metas['status'][0],
+							'type' => $metas['type'][0],
+							'description' => $metas['description'][0],
+							'default_transl' => unserialize( $metas['default_transl'][0] ),
+							'transl' => array(),
+						);
 
-					$p = array_replace_recursive( $defaults, $p );
+						foreach ( $GLOBALS['toolset']['language_array'] as $lang_code => $value ) {
 
-				// }
+							$transl_value = '';
 
-				if ( empty( $this->text_list[ $p['domain'] ][ $p['context'] ][ $p['text'] ] ) ) {
+							// translation meta field
+							if ( ! empty( $metas[ 'transl_' . $lang_code ] ) ) {
 
-					$this->text_list[ $p['domain'] ][ $p['context'] ][ $p['text'] ] = $p['param'];
+								$transl_value = $metas[ 'transl_' . $lang_code ][0];
+							}
+							// default_transl meta field
+							elseif ( ! empty( $param['default_transl'][ $lang_code ] ) ) {
 
-					// ADD REWRITE RULES, IF TEXT IS URL SLUG {
+								$transl_value = $param['default_transl'][ $lang_code ];
+							}
+							// text_default meta field
+							elseif ( ! empty( $metas['text_default'][0] ) ) {
 
-						if ( $p['context'] === 'URL Slug' ) {
+								$transl_value = $metas['text_default'][0];
+							}
+							// text meta field
+							else {
 
-							$this->add_rewrite_rule( $p );
+								$transl_value = $metas['text'][0];
+							}
+
+							$param['transl'][ $lang_code ] = $transl_value;
 						}
 
-					// }
-
-					return true;
-				}
-
-				return false;
-			}
-
-			public function add_rewrite_rule( $p ) {
-
-				add_filter( 'rewrite_rules_array_translation', function( $translations ) {
-
-					// GET TRANSLATIONS FOR THE TEXT FROM POSTTYPE "translation" {
-
-						// get_post, use posttype and text, context meta, both should be disabled acf fields
-
-					// }
-
-					// BUILD TRANSLATIONS ARRAY {
-
-						//$translations['products'] = array(
-						//	'en' => 'produkte',
-						//);
-
-					// }
-
-					return $translations;
-				});
-			}
-
-			// [ ] FLUSH REWRITE RULES IF POST IS UPDATED WITH CONTEXT "URL Slug"
-
-			// [ ] ADD filter gettext_with_context PROVIDING $this->text_list TRANSLATIONS
-
-				/*add_filter( 'gettext_with_context', function( $translation, $text, $context, $domain ) {
-
-					// _x( 'kickstart', $context, $domain );
-
-					if (
-						$domain === 'toolset' AND
-						$context === 'URL slug' AND
-						$text === 'kickstart'
-					) {
-
-						$translation = translate_standalone( array(
-							'default' => 'kickstart',
-							'de' => 'kickstart',
-							'fr' => 'kickstart',
-						));
-
-						//error_log( print_r( $translation, true) );
+						$this->option_text_list[ $metas['text_domain'][0] ][ $metas['context'][0] ][ $metas['text'][0] ] = $param;
 					}
 
-					return $translation;
+				// }
 
-				}, 10, 4 );*/
+				update_option( 'tool_translate_translations', $this->option_text_list );
+			}
 
+			public function get_option_text_list() {
+
+				$this->option_text_list = get_option( 'tool_translate_translations' );
+			}
+
+
+			// GetText Filter
+
+			public function gettext_with_context( $translation, $text, $context, $domain ) {
+
+				if (
+					! empty( $this->option_text_list[ $domain ][ $context ][ $text ] ) AND
+					! empty( $this->option_text_list[ $domain ][ $context ][ $text ]['transl'][ $GLOBALS['toolset']['frontend_locale'] ] )
+				 ) {
+
+					$translation = $this->option_text_list[ $domain ][ $context ][ $text ]['transl'][ $GLOBALS['toolset']['frontend_locale'] ];
+				}
+
+				return $translation;
+			}
+
+
+			// Rewrite Rules
+
+			public function add_rewrite_rules() {
+
+				foreach (  $this->option_text_list as $text_domain => $text_domain_items ) {
+
+					foreach ( $text_domain_items as $context => $context_items ) {
+
+						foreach ( $context_items as $text => $transl_param ) {
+
+							if ( $context === 'URL Slug' ) {
+
+								$text = $text;
+								$transl = $this->option_text_list[ $text_domain ][ $context ][ $text ]['transl'];
+
+								add_filter( 'rewrite_rules_array_translation', function( $translations ) use ( $text, $transl ) {
+
+									$translations[ $text ] = $transl;
+
+									return $translations;
+
+								}, 1, 123 ); // this priority "123" is used to remove only these 'rewrite_rules_array_translation' filters in $this->update_rewrite_rules()
+							}
+						}
+					}
+				}
+			}
+
+			public function update_rewrite_rules() {
+
+				remove_all_filters( 'rewrite_rules_array_translation', 123 ); // The priority "123" removes only the filters added in $this->add_rewrite_rules()
+
+				$this->add_rewrite_rules();
+
+				flush_rewrite_rules();
+			}
 		}
 
 		$GLOBALS['toolset']['classes']['ToolsetTranslation'] = new ToolsetTranslation();
 	}
-
 
 	class ToolsetL10N {
 
@@ -471,14 +757,28 @@
 
 				$string = '';
 
-				if ( $locale_type === 'user' ) {
+				if (
+					$locale_type === 'user' AND
+					! empty( $GLOBALS['toolset']['user_locale'] )
+				) {
 
 					$locale = $GLOBALS['toolset']['user_locale'];
 				}
+				else {
 
-				if ( $locale_type === 'frontend' ) {
+					$locale_type = 'auto';
+				}
+
+				if (
+					$locale_type === 'frontend' AND
+					! empty( $GLOBALS['toolset']['frontend_locale'] )
+				) {
 
 					$locale = $GLOBALS['toolset']['frontend_locale'];
+				}
+				else {
+
+					$locale_type = 'auto';
 				}
 
 				if ( $locale_type === 'auto' ) {
@@ -493,7 +793,6 @@
 						$locale = $GLOBALS['toolset']['frontend_locale'];
 					}
 				}
-
 
 				// IF LOCALE DOES NOT MATCH TRANSLATIONS, REMOVE COUNTRY CODE FROM LOCALE {
 
