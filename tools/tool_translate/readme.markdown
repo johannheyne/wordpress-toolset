@@ -9,7 +9,8 @@ Registers a posttype 'translations' and provides an Admin Interface for translat
 
 ````php
 $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
-    'text' => 'products',
+    'text' => 'products', // use in _x( 'products', 'URL SLug', 'tool_translate' ),
+    'text_default' => 'products', // returned default text if there is no translation
     'context' => 'URL Slug',
     // The text domain is 'tool_translate'.
 ));
