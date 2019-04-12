@@ -3,7 +3,13 @@
 Tool Translate
 ===============================
 
-### Translations Admin List
+Enable Tool by…
+
+````php
+$GLOBALS['toolset']['classes']['tool_translate'] = true;
+````
+
+### Admin UI for Translations
 
 Registers a posttype 'translations' and provides an Admin Interface for translating strings. The strings must registered by the following code snippet and appears automatically on the 'translations' posttype list for translation.
 
