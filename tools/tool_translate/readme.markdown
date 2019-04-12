@@ -20,6 +20,7 @@ $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
     'param' => array(
         'text_default' => 'products', // The default text if there is no translation
         'type' => 'text', // editing field type: 'text', 'textarea'
+        'description' => 'URL Slug of Posttype "products"',
         'default_transl' => array(
             'de_DE' => 'produkt',
             'fr_CA' => 'produit',
