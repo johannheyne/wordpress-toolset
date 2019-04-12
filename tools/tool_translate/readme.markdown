@@ -6,7 +6,7 @@ Tool Translate
 Enable Tool by…
 
 ````php
-$GLOBALS['toolset']['classes']['tool_translate'] = true;
+$GLOBALS['toolset']['inits']['tool_translate'] = true;
 ````
 
 ### Admin UI for Translations
