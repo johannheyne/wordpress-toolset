@@ -351,7 +351,7 @@
 
 				foreach ( $this->sites as $site_id => $site ) {
 
-					$val = $this-get_post_meta_hreflang( $post_id, $site_id );
+					$val = $this->get_post_meta_hreflang( $post_id, $site_id );
 
 					$alternate_id = false;
 
