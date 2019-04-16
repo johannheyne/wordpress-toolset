@@ -311,6 +311,11 @@
 
 							$img_attr['src'] = $img_src . $sufix;
 
+							if ( strpos( $img_src, '.svg' ) !== false ) {
+
+								$img_attr['src'] = $img_src;
+							}
+
 						// }
 
 						// IMAGE / CAPTION CLASSES {
