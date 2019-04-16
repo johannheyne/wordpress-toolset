@@ -266,7 +266,7 @@
 
 						if ( $p['link_title'] === 'alt' ) {
 
-							$data = get_post_meta( $p['id'], '_wp_attachment_image_alt' );
+							$data = get_post_meta( $p['id'], '_wp_attachement_image_alt' );
 							$title = $data[0];
 						}
 
