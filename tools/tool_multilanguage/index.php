@@ -401,7 +401,7 @@
 				),
 			));
 
-			$html_list .= '<ul>';
+			$html_list .= '<ul class="region-select-list-regions">';
 
 				foreach ( $regions as $region_code => $region_label ) {
 
@@ -455,8 +455,8 @@
 												$data[ $region_code ]['lable'] = $region_label;
 												$data[ $region_code ]['items'] = array();
 
-												$html_list .=  '<li>' . $region_label;
-												$html_list .=  '<ul>';
+												$html_list .=  '<li><span class="region-select-region-label">' . $region_label . '</span>';
+												$html_list .=  '<ul class="region-select-list-sites">';
 											}
 
 										// }
@@ -509,7 +509,7 @@
 										$data[ $region_code ]['items'][ $lang_code ]['label']['country'] = $country_label;
 										$data[ $region_code ]['items'][ $lang_code ]['label']['language'] = $lang_label;
 
-										$html_list .=  '<li><a href="' . $url. '/">' . $label . '</a></li>';
+										$html_list .=  '<li class="region-select-item"><a  class="region-select-link" href="' . $url. '/">' . $label . '</a></li>';
 									}
 
 								// }
