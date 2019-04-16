@@ -49,7 +49,7 @@
 			'SM' => 'san marino',
 			'SE' => 'sweden',
 			'GB' => 'united kingdom'
-		},
+		),
 		'oc'=>  array( // oceania
 			'CK' => 'cook islands',
 			'PW' => 'palau',
@@ -66,7 +66,7 @@
 			'WS' => 'samoa',
 			'FJ' => 'fiji',
 			'FM' => 'micronesia'
-		},
+		),
 		'af'=>  array( // africa
 			'GW' => 'guinea-bissau',
 			'ZM' => 'zambia',
@@ -121,7 +121,7 @@
 			'UG' => 'uganda',
 			'SD' => 'sudan',
 			'MZ' => 'mozambique'
-		},
+		),
 		'as'=>  array( // asia
 			'MN' => 'mongolia',
 			'CN' => 'china',
@@ -160,7 +160,7 @@
 			'MV' => 'maldives',
 			'KZ' => 'kazakhstan',
 			'MY' => 'malaysia'
-		},
+		),
 		'na'=>  array( // north america
 			'GT' => 'guatemala',
 			'AG' => 'antigua and barbuda',
@@ -192,7 +192,7 @@
 			'MS' => 'monsterrat (uk)',
 			'KY' => 'cayman islands (uk)',
 			'MX' => 'mexico'
-		},
+		),
 		'sa'=>  array( // south america
 			'GD' => 'south georgia',
 			'PY' => 'paraguay',
@@ -209,7 +209,7 @@
 			'PE' => 'peru',
 			'UY' => 'uruguay',
 			'FK' => 'falkland islands'
-		},
+		),
 		'me'=>  array( // middle east
 			'OM' => 'oman',
 			'LB' => 'lebanon',
@@ -224,5 +224,5 @@
 			'IL' => 'israel',
 			'AE' => 'united arab emirates',
 			'SA' => 'saudi arabia'
-		}
+		)
 	);
