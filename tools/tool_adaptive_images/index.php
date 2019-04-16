@@ -307,6 +307,22 @@
 
 						// }
 
+						// IMAGE ALT {
+
+							if ( empty( $p['alt'] ) ) {
+
+								if ( ! empty( $GLOBALS['toolset']['frontend_locale'] ) ) {
+
+									$p['alt'] = get_post_meta( $p['id'], 'lang_attachement_image_' . $GLOBALS['toolset']['frontend_locale'] . '_alt', true );
+								}
+								else {
+
+									$p['alt'] = get_post_meta( $p['id'], '_wp_attachment_image_alt', true );
+								}
+							}
+
+						// }
+
 						// IMAGE SRC {
 
 							$img_attr['src'] = $img_src . $sufix;
