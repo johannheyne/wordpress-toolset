@@ -47,6 +47,7 @@
 						'img_class' => '',
 						'img_class_resp' => 'resp',
 						'img_data' => false,
+						'img_title' => false,
 						'link_image' => false, /* true or size */
 						'link_page' => false, /* true or id of page */
 						'link_url' => false,
@@ -266,8 +267,14 @@
 
 						if ( $p['link_title'] === 'alt' ) {
 
-							$data = get_post_meta( $p['id'], '_wp_attachement_image_alt' );
-							$title = $data[0];
+							if ( ! empty( $GLOBALS['toolset']['frontend_locale'] ) ) {
+
+								$title = get_post_meta( $p['id'], 'lang_attachement_image_' . $GLOBALS['toolset']['frontend_locale'] . '_alt', true );
+							}
+							else {
+
+								$title = get_post_meta( $p['id'], '_wp_attachment_image_alt', true );
+							}
 						}
 
 						$link_title = ' title="' . $title . '"';
