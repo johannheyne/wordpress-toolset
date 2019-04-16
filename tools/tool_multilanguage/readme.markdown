@@ -66,4 +66,31 @@ $string = tool( array(
 ));
 ````
 
+### tool_multilanguage_get_regions
+
+Returns the regions with labels translated by an locale.
+
+````php
+$string = tool( array(
+    'name' => 'tool_multilanguage_get_regions',
+    'param' => array(
+        'locale' => 'ca_FR',
+    ),
+));
+````
+
+### tool_multilanguage_country_in_region
+
+Returns the regions with labels translated by an locale.
+
+````php
+$string = tool( array(
+    'name' => 'tool_multilanguage_country_in_region',
+    'param' => array(
+        'country_code' => 'ca',
+        'region_code' => 'eu',
+    ),
+));
+````
+
 [back to overview](../../README.markdown#tools)

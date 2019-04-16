@@ -1,3 +1,20 @@
+## Adds Tool "translate"
+
+- Adds support for _x()
+- Offers a function to add translation
+- Offers an admin UI for translations
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_translate/readme.markdown)
+
+
+## Updates Tool "posttypes"
+
+- Add function "tool_get_admin_current_post_type"
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_posttypes/readme.markdown)
+
+
+
 ## Updates Tool "multilanguage"
 
 - Fixes link in Readme

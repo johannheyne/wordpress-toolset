@@ -381,6 +381,20 @@
 						'funame' => 'tool_multilanguage_get_country_label',
 					),
 
+					'tool_multilanguage_get_regions' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_get_regions',
+					),
+
+					'tool_multilanguage_country_in_region' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_country_in_region',
+					),
+
+					'tool_multilanguage_region_select' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_region_select',
+					),
 
 				// }
 
