@@ -687,7 +687,7 @@
 							return;
 						}
 
-						echo get_post_meta( $post_id, 'text', true );
+						echo get_post_meta( $post_id, 'text_default', true );
 					};
 
 					$cols[] = array(
