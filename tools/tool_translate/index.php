@@ -915,6 +915,11 @@
 
 			public function add_rewrite_rules() {
 
+				if ( empty( $this->option_text_list ) ) {
+
+					return;
+				}
+
 				foreach (  $this->option_text_list as $text_domain => $text_domain_items ) {
 
 					foreach ( $text_domain_items as $context => $context_items ) {
