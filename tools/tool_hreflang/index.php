@@ -1,5 +1,7 @@
 <?php
 
+	require_once( realpath( dirname(__FILE__) . '/../tool_order_posts/index.php' ) );
+
 	$GLOBALS['toolset']['classes']['ToolHreflang'] = new ToolHreflang();
 
 	function tool_hreflang( $p = array() ) {

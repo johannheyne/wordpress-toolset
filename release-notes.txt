@@ -1,3 +1,10 @@
+## Adds Tool "order_posts"
+
+- Adds tool_hierachical_order_posts();
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_order_posts/readme.markdown)
+
+
 ## Adds Tool "translate"
 
 - Adds support for _x()

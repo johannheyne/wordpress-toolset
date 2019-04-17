@@ -183,6 +183,7 @@ $GLOBALS['toolset'] = array(
 * [Hreflang](tools/tool_hreflang/readme.markdown)
 * [Admin Get Posttype](tools/tool_posttypes/readme.markdown)
 * [Add Posttype](tools/tool_posttypes/readme.markdown)
+* [Hierarchical Order Posts](tools/tool_order_posts/readme.markdown)
 
 ### Assets
 

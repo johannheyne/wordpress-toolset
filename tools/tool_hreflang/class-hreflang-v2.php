@@ -152,7 +152,7 @@
 
 				$new = array();
 
-				hierachical_order_posts( $results, $new );
+				tool_hierachical_order_posts( $results, $new );
 
 				foreach ( $results as $post_item ) {
 
