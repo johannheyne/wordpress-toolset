@@ -171,7 +171,7 @@
 
 					if ( $has_hreflang ) {
 
-						$field['choices'][ $post_item->ID ] .= ' (verlink)';
+						$field['choices'][ $post_item->ID ] .= ' (linked)';
 					}
 				}
 
