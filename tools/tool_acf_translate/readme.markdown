@@ -4,6 +4,7 @@ Tool ACF Translate
 ===============================
 
 Translates ACF group and field complete text values.
+
 title, page_title, menu_title, label, button_label, description, instructions, message, default_value, append, prepend, placeholder, choices values
 
 It also tries to translate parts of a text using {{translate this text}}.
