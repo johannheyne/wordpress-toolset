@@ -1,3 +1,9 @@
+## Updates Tool "acf_translate"
+
+- Adds translation of text parts by {{}};
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_acf_translate/readme.markdown)
+
 ## Adds Tool "order_posts"
 
 - Adds tool_hierachical_order_posts();

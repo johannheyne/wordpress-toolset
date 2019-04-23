@@ -132,6 +132,30 @@
 								$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
 							}
 
+							if (
+								is_string( $item ) AND
+								in_array( $key, $keys )
+							) {
+
+								preg_match_all(
+									'|\{\{(.*)\}\}|U',
+									$item,
+									$matches,
+									PREG_SET_ORDER
+								);
+
+								if ( ! empty( $matches ) ) {
+
+									foreach ( $matches as $match ) {
+
+										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
+
+											$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
+										}
+									}
+								}
+							}
+
 						// }
 
 						// ARRAYS {
@@ -159,6 +183,30 @@
 									) {
 
 										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+									}
+
+									if (
+										is_string( $item ) AND
+										in_array( $key, $keys )
+									) {
+
+										preg_match_all(
+											'|\{\{(.*)\}\}|U',
+											$item,
+											$matches,
+											PREG_SET_ORDER
+										);
+
+										if ( ! empty( $matches ) ) {
+
+											foreach ( $matches as $match ) {
+
+												if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
+
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
+												}
+											}
+										}
 									}
 
 								} );
@@ -199,6 +247,29 @@
 									) {
 
 										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+									}
+
+									if (
+										in_array( $key, $keys )
+									) {
+
+										preg_match_all(
+											'|\{\{(.*)\}\}|U',
+											$item,
+											$matches,
+											PREG_SET_ORDER
+										);
+
+										if ( ! empty( $matches ) ) {
+
+											foreach ( $matches as $match ) {
+
+												if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
+
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
+												}
+											}
+										}
 									}
 								} );
 							}
