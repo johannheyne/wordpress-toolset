@@ -34,6 +34,7 @@
 
 				add_filter( 'manage_edit-' . $this->param['postname'] . '_columns', array( $this, 'add_column' ) );
 				add_action( 'manage_' . $manage_custom_column_slug . '_custom_column', array( $this, 'column_content' ), 10, 3 );
+
 				//add_filter( 'manage_' . $this->param['posttype'] . '_custom_column', array( $this, 'column_content_taxonomy' ), 10, 3 );
 
 				// bei hirarchichen Listen 'manage_pages_custom_column'
@@ -74,12 +75,12 @@
 
 					if ( empty( $arg1 ) ) {
 
-						echo $this->param['rowlabelfunction']( $arg2, $arg3 );
+						echo $this->param['rowlabelfunction']( $arg2, $arg3, $this );
 					}
 
 					if ( empty( $arg3 ) ) {
 
-						echo $this->param['rowlabelfunction']( $arg1, $arg2 );
+						echo $this->param['rowlabelfunction']( $arg1, $arg2, $this );
 					}
 				}
 			}
@@ -131,6 +132,55 @@
 				}
 
 				return $clauses;
+			}
+
+			// methodes for usage in the row label function
+
+			function get_taxonomy_term_meta_label( $p = array() ) {
+
+				// DEFAULTS {
+
+					$defaults = array(
+						'taxonomy_name' => false,
+						'meta_post_type' => false,
+						'meta_taxonomy_name' => false,
+						'meta_key' => false,
+						'meta_id' => false,
+					);
+
+					$p = array_replace_recursive( $defaults, $p );
+
+					$return = '';
+
+				// }
+
+				$meta_value = get_field( $p['meta_key'], $p['taxonomy_name'] .'_' . $p['meta_id'] );
+
+				if ( ! empty( $meta_value ) ) {
+
+					$results = array();
+
+					if ( is_array( $meta_value ) ) {
+
+						foreach ( $meta_value as $id ) {
+
+							$term = get_term( $id , $p['meta_taxonomy_name'] );
+							$term_name = get_lang_field( 'lang_taxonomy/name', $p['meta_taxonomy_name'] . '_' . $term->term_id );
+							array_push( $results, '<a href="term.php?taxonomy=' . $p['meta_taxonomy_name'] . '&tag_ID=' . $term->term_id . '&post_type=' . $p['meta_post_type'] . '">' . $term_name . '</a>' );
+						}
+					}
+
+					elseif ( is_string( $id ) ) {
+
+						$term = get_term( $id , $p['meta_taxonomy_name'] );
+						$term_name = get_lang_field( 'lang_taxonomy/name', $p['meta_taxonomy_name'] . '_' . $term->term_id );
+						array_push( $results, '<a href="term.php?taxonomy=' . $p['meta_taxonomy_name'] . '&tag_ID=' . $term->term_id . '&post_type=' . $p['meta_post_type'] . '">' . $term_name . '</a>' );
+					}
+
+					$return = implode( ', ', $results );
+				}
+
+				return $return;
 			}
 
 		}
