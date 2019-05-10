@@ -45,18 +45,38 @@
 		class ToolACFTranslate {
 
 			public $locale;
+			public $locale_general;
 			public $current_screen;
 
 			function __construct() {
 
-				if ( empty( $GLOBALS['toolset']['user_locale'] ) ) {
+				// SET LOCALE {
 
-					$this->locale = get_user_locale();
-				}
-				else {
+					if ( empty( $GLOBALS['toolset']['user_locale'] ) ) {
 
-					$this->locale = $GLOBALS['toolset']['user_locale'];
-				}
+						$this->locale = get_user_locale();
+					}
+					else {
+
+						$this->locale = $GLOBALS['toolset']['user_locale'];
+					}
+
+				// }
+
+				// SET GENERAL LOCALE {
+
+					$arr = explode( '_', $this->locale );
+
+					if ( count( $arr ) > 1 ) {
+
+						$this->locale_general = $arr[0];
+					}
+					else{
+
+						$this->locale_general = $this->locale;
+					}
+
+				// }
 
 				// make sure there is a locale like "en_US" for translation
 				if ( $this->locale ) {
@@ -114,6 +134,45 @@
 
 						$array = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ][ $this->locale ];
 					}
+					elseif (
+						! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ][ $this->locale_general ] )
+					) {
+
+						$array = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ][ $this->locale_general ];
+					}
+					elseif (
+						! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ]['default'] )
+					) {
+
+						$array = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $array ]['default'];
+					}
+
+					preg_match_all(
+						'|\<span class="acf-translate"\>(.*)<\/span\>|U',
+						$array,
+						$matches,
+						PREG_SET_ORDER
+					);
+
+					if ( ! empty( $matches ) ) {
+
+						foreach ( $matches as $match ) {
+
+							if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
+
+								$array = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $array );
+							}
+							elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ] ) ) {
+
+								$array = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ], $array );
+							}
+							elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'] ) ) {
+
+								$array = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $array );
+							}
+						}
+					}
+
 				}
 				else {
 
@@ -126,15 +185,27 @@
 							if (
 								is_string( $item ) AND
 								in_array( $key, $keys ) AND
-								! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
+								! empty( $key )
 							) {
 
-								$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+								if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
+
+									$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+								}
+								elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale_general ] ) ) {
+
+									$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale_general ];
+								}
+								elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'] ) ) {
+
+									$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'];
+								}
 							}
 
 							if (
 								is_string( $item ) AND
-								in_array( $key, $keys )
+								in_array( $key, $keys ) AND
+								! empty( $key )
 							) {
 
 								preg_match_all(
@@ -151,6 +222,14 @@
 										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
 
 											$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ] ) ) {
+
+											$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ], $item );
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'] ) ) {
+
+											$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $item );
 										}
 									}
 								}
@@ -179,14 +258,113 @@
 									if (
 										is_string( $item ) AND
 										in_array( $key, $keys ) AND
-										! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
+										! empty( $key )
 									) {
 
-										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
+
+											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale_general ] ) ) {
+
+											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale_general ];
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'] ) ) {
+
+											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'];
+										}
 									}
 
 									if (
 										is_string( $item ) AND
+										in_array( $key, $keys ) AND
+										! empty( $key )
+									) {
+
+										preg_match_all(
+											'|\{\{(.*)\}\}|U',
+											$item,
+											$matches,
+											PREG_SET_ORDER
+										);
+
+										if ( ! empty( $matches ) ) {
+
+											foreach ( $matches as $match ) {
+
+												if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
+
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
+												}
+												elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ] ) ) {
+
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ], $item );
+												}
+												elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'] ) ) {
+
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $item );
+												}
+											}
+										}
+									}
+
+								} );
+
+							}
+
+						// }
+
+						// CHOICES {
+
+							if ( $key === 'choices' ) {
+
+								foreach ( $item as $key => $value ) {
+
+									if ( ! is_array( $value ) ) {
+
+										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ] ) ) {
+
+											$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ];
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale_general ] ) ) {
+
+											$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale_general ];
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ]['default'] ) ) {
+
+											$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ]['default'];
+										}
+									}
+								}
+							}
+
+						// }
+
+						// LAYOUTS {
+
+							if ( $key === 'layouts' ) {
+
+								array_walk_recursive ( $item , function( &$item, $key ) {
+
+									$keys = array( 'title', 'label', 'description', 'instructions' );
+
+									if ( in_array( $keys, $keys ) ) {
+
+										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
+
+											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale_general ] ) ) {
+
+											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale_general ];
+										}
+										elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'] ) ) {
+
+											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'];
+										}
+									}
+
+									if (
 										in_array( $key, $keys )
 									) {
 
@@ -205,68 +383,13 @@
 
 													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
 												}
-											}
-										}
-									}
+												elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ] ) ) {
 
-								} );
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ], $item );
+												}
+												elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'] ) ) {
 
-							}
-
-						// }
-
-						// CHOICES {
-
-							if ( $key === 'choices' ) {
-
-								foreach ( $item as $key => $value ) {
-
-									if (
-										! is_array( $value ) AND
-										! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ] )
-									 ) {
-
-										$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ];
-									}
-								}
-							}
-
-						// }
-
-						// LAYOUTS {
-
-							if ( $key === 'layouts' ) {
-
-								array_walk_recursive ( $item , function( &$item, $key ) {
-
-									$keys = array( 'title', 'label', 'description', 'instructions' );
-
-									if (
-										in_array( $keys, $keys ) AND
-										! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] )
-									) {
-
-										$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
-									}
-
-									if (
-										in_array( $key, $keys )
-									) {
-
-										preg_match_all(
-											'|\{\{(.*)\}\}|U',
-											$item,
-											$matches,
-											PREG_SET_ORDER
-										);
-
-										if ( ! empty( $matches ) ) {
-
-											foreach ( $matches as $match ) {
-
-												if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
-
-													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $item );
+													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $item );
 												}
 											}
 										}
