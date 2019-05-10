@@ -382,6 +382,8 @@
 
 			$defaults = array(
 				'return' => 'html_list', // html_list, data
+				'country_prepend' => '',
+				'country_append' => '',
 			);
 
 			$p = array_replace_recursive( $defaults, $p );
@@ -509,7 +511,7 @@
 										$data[ $region_code ]['items'][ $lang_code ]['label']['country'] = $country_label;
 										$data[ $region_code ]['items'][ $lang_code ]['label']['language'] = $lang_label;
 
-										$html_list .=  '<li class="region-select-item"><a  class="region-select-link" href="' . $url. '/">' . $label . '</a></li>';
+										$html_list .=  '<li class="region-select-item"><a  class="region-select-link" href="' . $url. '/">' . $p['country_prepend'] . $label . $p['country_append'] . '</a></li>';
 									}
 
 								// }
