@@ -1,3 +1,10 @@
+## Updates tool "sortable_list_columns"
+
+Adds methode for getting labels from a ACF taxonomy field
+
+[Documentation on GitHub](https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_sortable_list_columns/readme.markdown)
+
+
 ## Updates Tool "acf_translate"
 
 - Adds translation of text parts by {{}};
