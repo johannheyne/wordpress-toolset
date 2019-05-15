@@ -21,7 +21,12 @@
 
 		public function add_action() {
 
-			add_action('wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
+			add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
+
+			if ( is_multisite() ) {
+
+				add_action( 'wp_network_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
+			}
 		}
 
 		public function add_dashboard_widget() {
