@@ -5,6 +5,9 @@
 	// https://github.com/umpirsky/country-list
 
 	return array (
+		'int'=>  array( // international
+			'INT' => 'international',
+		),
 		'eu'=>  array( // europe
 			'VA' => 'vatican city',
 			'CH' => 'switzerland',

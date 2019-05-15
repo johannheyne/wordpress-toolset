@@ -1,6 +1,7 @@
 <?php
 
 	return array(
+		'int' => 'International',
 		'eu' => 'Europe',
 		'oc' => 'Oceania',
 		'af' => 'Africa',

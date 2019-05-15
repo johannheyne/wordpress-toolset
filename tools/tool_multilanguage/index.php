@@ -229,6 +229,11 @@
 
 			$p = array_replace_recursive( $defaults, $p );
 
+			if ( $p['countrycode'] == 'INT' ) {
+
+				return 'International';
+			}
+
 		// }
 
 
@@ -414,6 +419,11 @@
 						foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site_item ) {
 
 							if (  $site_id === 1 ) {
+
+								continue;
+							}
+
+							if ( empty( $site_item['languages'] ) ) {
 
 								continue;
 							}
