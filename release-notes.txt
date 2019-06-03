@@ -1,3 +1,7 @@
+## Updates Tool "meta_titel"
+
+- Adds option 'site_title'
+
 ## Updates tool "sortable_list_columns"
 
 Adds methode for getting labels from a ACF taxonomy field

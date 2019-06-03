@@ -29,6 +29,7 @@
 					'delimiter' => ' - ',
 					'rules' => false,
 					'page_title_on_hompage' => false, // boolean
+					'site_title' => false,
 					'prepend_posttype_name_on_archives' => false,
 					'titles' => array(
 						'is_home' => 'Blog',
@@ -89,7 +90,14 @@
 
 					if ( $key === '{site_title}' && $value ) {
 
-						$v['{site_title}'] = get_bloginfo( 'name' );
+						if ( empty( $p['site_title'] ) ) {
+
+							$v['{site_title}'] = get_bloginfo( 'name' );
+						}
+						else {
+
+							$v['{site_title}'] = $p['site_title'];
+						}
 					}
 
 					if ( $key === '{page_title}' && $value ) {

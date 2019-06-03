@@ -15,6 +15,7 @@ This tool generates a `<title></title>` by rules.
             ),
             'delimiter' => ' - ',
             'page_title_on_homepage' => false,
+            'site_title' => false,
             'prepend_posttype_name_on_archives' => false,
             'titles' => array(
                 'is_home' => 'Blog',
