@@ -23,6 +23,7 @@
 				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) ); // $this->add_text to post metas, runs on admin posttype lis only
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
+				add_action( 'localize_theme_script', array( $this, 'javascript_translation' ) );
 			}
 
 			// Public
@@ -79,6 +80,7 @@
 								/*'de_DE' => 'produkt',
 								'fr_CA' => 'produit',*/
 							),
+							'js' => false,
 						),
 					);
 
@@ -850,6 +852,7 @@
 							'text_default' => $metas['text_default'][0],
 							'default_transl' => unserialize( $metas['default_transl'][0] ),
 							'transl' => array(),
+							'js' => $metas['js'][0],
 						);
 
 						foreach ( $GLOBALS['toolset']['language_array'] as $lang_code => $value ) {
@@ -953,6 +956,39 @@
 
 				flush_rewrite_rules();
 			}
+
+
+			// JavaScript translations
+
+			public function javascript_translation() {
+
+				$translations = array();
+
+				if ( ! empty( $this->option_text_list ) ) {
+
+					foreach ( $this->option_text_list  as $domain => $item ) {
+
+						foreach ( $item  as $context => $item2 ) {
+
+							foreach ( $item2  as $text => $item3 ) {
+
+								if ( $item3['js'] == 'current' ) {
+
+									$data = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $item3['transl'], 'auto', 'data' );
+									$translations[ $domain ][ $context ][ $text ][ $data['locale'] ] = $data['string'];
+								}
+
+								if ( $item3['js'] == 'all' ) {
+
+									$translations[ $domain ][ $context ][ $text ]= $item3['transl'];
+								}
+							}
+						}
+					}
+				}
+
+				wp_localize_script( 'theme_script', 'AppTranslData', $translations );
+			}
 		}
 
 		$GLOBALS['toolset']['classes']['ToolsetTranslation'] = new ToolsetTranslation();
@@ -960,11 +996,15 @@
 
 	class ToolsetL10N {
 
+		public $transl_list = array();
+
 		function __contruct() {
+
+			add_action( 'localize_theme_script', array( $this, 'javascript_translation' ) );
 
 		}
 
-		function translate( $translations, $locale_type = 'auto' ) {
+		function translate( $translations, $locale_type = 'auto', $return = 'value' ) {
 
 			// DEFAULTS {
 
@@ -1036,6 +1076,16 @@
 				$string = $translations['default'];
 			}
 
+			if ( $return === 'data' ) {
+
+				$ret = array(
+					'locale' => $locale,
+					'string' => $string,
+				);
+
+				return $ret;
+			}
+
 			return $string;
 		}
 
@@ -1052,6 +1102,7 @@
 					'context' => 'posttype_label',
 					'domain' => 'toolset',
 					'locale' => 'user', // user, front
+					'js' => false, // false, 'all', 'current' // translation accessable with App.ln.get( string, context, domain );
 				));
 
 			*/
@@ -1063,7 +1114,8 @@
 					'translations' => array(),
 					'context' => '',
 					'domain' => '',
-					'locale' => 'user', // user, front
+					'locale' => 'auto', // 'auto' detetects locale wether from admin user or frontend, 'user' translates by user locale, 'front' translates by frontend locale
+					'js' => false, // false, 'all', 'current'
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -1094,8 +1146,46 @@
 				return $translation;
 
 			}, 10, 4 );
+
+			// JAVASCRIPT {
+
+				if ( $p['js'] === 'all' ) {
+
+					$this->transl_list[ $p['domain'] ][ $p['context'] ][ $p['text'] ] = $p['translations'];
+				}
+
+				if ( $p['js'] === 'current' ) {
+
+					$data = $this->translate( $item3['transl'], 'auto', 'data' );
+
+					$this->transl_list[ $p['domain'] ][ $p['context'] ][ $p['text'] ][ $data['locale'] ] = $data['string'];
+				}
+
+			// }
 		}
 
+		// JavaScript translations
+
+		public function javascript_translation() {
+
+			$translations = array();
+
+			if ( ! empty( $this->transl_list ) ) {
+
+				foreach ( $this->transl_list   as $domain => $item ) {
+
+					foreach ( $item  as $context => $item2 ) {
+
+						foreach ( $item2  as $text => $item3 ) {
+
+
+						}
+					}
+				}
+			}
+
+			wp_localize_script( 'theme_script', 'AppLnData', $this->transl_list );
+		}
 	}
 
 	$GLOBALS['toolset']['classes']['ToolsetL10N'] = new ToolsetL10N();
