@@ -205,6 +205,7 @@
 							// post_tag = default post tags
 							// translation = custom taxomonie name
 						//'capability_type' => 'translate',
+						'map_meta_cap' => true,
 						'capabilities' => array(
 							'create_posts' => 'do_not_allow', // Removes support for the "Add New" function
 							'delete_posts' => 'do_not_allow',
