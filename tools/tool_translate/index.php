@@ -972,16 +972,20 @@
 
 							foreach ( $item2  as $text => $item3 ) {
 
-								if ( $item3['js'] == 'current' ) {
+								if ( ! empty(  $item3['js'] ) ) {
 
-									$data = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $item3['transl'], 'auto', 'data' );
-									$translations[ $domain ][ $context ][ $text ][ $data['locale'] ] = $data['string'];
+									if ( $item3['js'] == 'current' ) {
+
+										$data = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $item3['transl'], 'auto', 'data' );
+										$translations[ $domain ][ $context ][ $text ][ $data['locale'] ] = $data['string'];
+									}
+
+									if ( $item3['js'] == 'all' ) {
+
+										$translations[ $domain ][ $context ][ $text ]= $item3['transl'];
+									}
 								}
 
-								if ( $item3['js'] == 'all' ) {
-
-									$translations[ $domain ][ $context ][ $text ]= $item3['transl'];
-								}
 							}
 						}
 					}
