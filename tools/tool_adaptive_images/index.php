@@ -300,20 +300,6 @@
 
 						// }
 
-						// LINK OPEN {
-
-							if ( $link_url OR $link_class OR $link_rel OR $link_title OR $link_target ) {
-
-								if ( $link_url ) {
-
-									$link_url =  ' href="' . $link_url . '"';
-								}
-
-								$return .= '<a' . $link_url . $link_class . $link_rel . $link_title . $link_data . $link_target . '>';
-							}
-
-						// }
-
 						// IMAGE ALT {
 
 							if ( empty( $p['alt'] ) ) {
@@ -360,6 +346,20 @@
 							if ( $p['figcaption_cont'] ) {
 
 								$return .= '<figure class="' . $caption_attr['class'] . '">';
+							}
+
+						// }
+
+						// LINK OPEN {
+
+							if ( $link_url OR $link_class OR $link_rel OR $link_title OR $link_target ) {
+
+								if ( $link_url ) {
+
+									$link_url =  ' href="' . $link_url . '"';
+								}
+
+								$return .= '<a' . $link_url . $link_class . $link_rel . $link_title . $link_data . $link_target . '>';
 							}
 
 						// }
