@@ -13,7 +13,7 @@
 
 		*/
 
-		$plugin_path = plugin_dir_path( __FILE__ );
+		//$plugin_path = plugin_dir_path( __FILE__ );
 
 		if ( ! isset( $GLOBALS['toolset']['multilanguage_langs'] ) ) {
 
@@ -51,20 +51,21 @@
 
 		// }
 
-		// LOAD LANGUAGE FROM SOURCE {
-
-			$path = $plugin_path . 'data-languages/' . $p['locale'] . '.php';
+		// BUILD LANGUAGE ARRAY{
 
 			if (
-				empty( $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ] ) AND
-				file_exists( $path )
+				empty( $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ] )
 			) {
 
-				$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ] = require_once( $path );
+				$locales = resourcebundle_locales( '' );
+
+				foreach ( $locales as $item ) {
+
+					$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $item ] = Locale::getDisplayName( $item, $GLOBALS['toolset']['user_locale'] );
+				}
 			}
 
 		// }
-
 	}
 
 	function tool_multilanguage_get_lang_list( $p = array() ) {
@@ -154,19 +155,15 @@
 
 			if (
 				! $p['locale'] AND
-				$p['country'] ) {
+				$p['country']
+			) {
 
 				$p['locale'] .= '_' . $p['country'];
 			}
 
 		// }
 
-		tool_multilanguage_require_lang( array(
-			'locale' => $p['locale'],
-		) );
-
-
-		return $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $p['langcode'] ];
+		return Locale::getDisplayName( $p['langcode'], $p['locale'] );
 	}
 
 
@@ -491,7 +488,7 @@
 												'name' => 'tool_multilanguage_get_lang_label',
 												'param' => array(
 													'langcode' => $lang_code,
-													'locale' => $lang_code,
+													'locale' => Locale::getPrimaryLanguage( $lang_code ),
 												),
 											));
 
