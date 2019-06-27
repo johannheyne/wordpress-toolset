@@ -2,7 +2,7 @@
 
 	function tool_multilanguage_require_lang( $p = array() ) {
 
-		/*
+		/* Info
 			This function loads the required language into the
 			$GLOBALS['toolset']['multilanguage_langs'] array.
 			This can be a general or localized language.
@@ -23,9 +23,10 @@
 		// DEFAULTS {
 
 			$defaults = array(
+				'locale' => 'en_GB', // alternative to lang and country
 				'lang' => false,
 				'country' => false,
-				'locale' => 'en', // alternative to lang and country
+				'only_locales_with_region' => true,
 			);
 
 			$p = array_replace_recursive( $defaults, $p );
@@ -36,22 +37,16 @@
 
 			if (
 				! $p['locale'] AND
-				$p['lang']
+				$p['lang'] AND
+				$p['country']
 			) {
 
-				$p['locale'] = $p['lang'];
-			}
-
-			if (
-				! $p['locale'] AND
-				$p['country'] ) {
-
-				$p['locale'] .= '_' . $p['country'];
+				$p['locale'] = $p['lang'] . '_' . strtoupper( $p['country'] );
 			}
 
 		// }
 
-		// BUILD LANGUAGE ARRAY{
+		// BUILD LANGUAGE ARRAY {
 
 			if (
 				empty( $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ] )
@@ -59,9 +54,13 @@
 
 				$locales = resourcebundle_locales( '' );
 
-				foreach ( $locales as $item ) {
+				foreach ( $locales as $key => $item ) {
 
-					$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $item ] = Locale::getDisplayName( $item, $GLOBALS['toolset']['user_locale'] );
+					if ( strpos( $item, '_' ) ) {
+
+						$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $item ] = Locale::getDisplayName( $item, $GLOBALS['toolset']['user_locale'] );
+
+					}
 				}
 			}
 
@@ -78,7 +77,7 @@
 		// DEFAULTS {
 
 			$defaults = array(
-				'locale' => 'en',
+				'locale' => 'en_GB',
 				'lang' => false,
 				'country' => false,
 			);
@@ -93,20 +92,14 @@
 
 			if (
 				! $p['locale'] AND
-				$p['lang']
+				$p['lang'] AND
+				$p['country']
 			) {
 
-				$p['locale'] = $p['lang'];
+				$p['locale'] = $p['lang'] . '_' . strtoupper( $p['country'] );
 			}
 
-			if (
-				! $p['locale'] AND
-				$p['country'] ) {
-
-				$p['locale'] .= '_' . $p['country'];
-			}
-
-		// }
+			// }
 
 		tool_multilanguage_require_lang( array(
 			'locale' => $p['locale'],
@@ -163,7 +156,7 @@
 
 		// }
 
-		return Locale::getDisplayName( $p['langcode'], $p['locale'] );
+		return Locale::getDisplayLanguage( $p['langcode'], $p['locale'] );
 	}
 
 
@@ -231,13 +224,21 @@
 				return 'International';
 			}
 
-		// }
+			if ( $p['countrycode'] == '001' ) {
 
+				return 'International';
+			}
+
+			if ( $p['countrycode'] == '150' ) {
+
+				return 'Europe';
+			}
+
+		// }
 
 		tool_multilanguage_require_countries( array(
 			'locale' => $p['locale'],
 		) );
-
 
 		return $GLOBALS['toolset']['multilanguage_countries'][ $p['locale'] ][ strtoupper( $p['countrycode'] ) ];
 	}
@@ -358,7 +359,7 @@
 		// DEFAULTS {
 
 			$defaults = array(
-				'country_code' => 'uk',
+				'country_code' => 'gb',
 				'region_code' => 'eu',
 			);
 
@@ -378,19 +379,16 @@
 		}
 	}
 
-	function tool_multilanguage_region_select( $p = array() ) {
+
+	function tool_multilanguage_region_lang_data( $p = array() ) {
 
 		// DEFAULTS {
 
 			$defaults = array(
-				'return' => 'html_list', // html_list, data
-				'country_prepend' => '',
-				'country_append' => '',
+				'url' => 'home_url',
 			);
 
 			$p = array_replace_recursive( $defaults, $p );
-
-			$html_list = '';
 
 			$data = array();
 
@@ -401,17 +399,17 @@
 			$regions = tool( array(
 				'name' => 'tool_multilanguage_get_regions',
 				'param' => array(
-					'locale' => 'en',
+					'locale' => 'en', // no other translations aviable
 				),
 			));
 
-			$html_list .= '<ul class="region-select-list-regions">';
+			foreach ( $regions as $region_code => $region_label ) {
 
-				foreach ( $regions as $region_code => $region_label ) {
+				$has_region = false;
 
-					$has_region = false;
+				// MULTISITE LOOP REGIONS > SITES > LANGS {
 
-					// LOOP SITES > LANGS {
+					if ( $GLOBALS['toolset']['multisite'] ) {
 
 						foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site_item ) {
 
@@ -452,6 +450,30 @@
 										),
 									));
 
+									// IS WORLD {
+
+										if (
+											$region_code == '001' AND
+											$country_code == '001'
+										) {
+
+											$is_country_in_region = true;
+										}
+
+									// }
+
+									// IS EUROPE {
+
+										if (
+											$region_code == '150' AND
+											$country_code == '150'
+										) {
+
+											$is_country_in_region = true;
+										}
+
+									// }
+
 									if ( $is_country_in_region ) {
 
 										// OUTPUT REGION LABEL {
@@ -463,9 +485,6 @@
 												$data[ $region_code ] = array();
 												$data[ $region_code ]['lable'] = $region_label;
 												$data[ $region_code ]['items'] = array();
-
-												$html_list .=  '<li><span class="region-select-region-label">' . $region_label . '</span>';
-												$html_list .=  '<ul class="region-select-list-sites">';
 											}
 
 										// }
@@ -503,12 +522,13 @@
 
 										// GET URL {
 
-											$url = $site_item['home_url'];
-
-											if ( $site_item['default_language'] !== $lang_code ) {
-
-												$url.= '/' . $lang_code;
-											}
+											$url = tool( array(
+												'name' => 'tool_multilanguage_add_locale_to_url',
+												'param' => array(
+													'lang' => $lang_code,
+													'url' => $p['url'],
+												),
+											));
 
 										// }
 
@@ -517,13 +537,292 @@
 										$data[ $region_code ]['items'][ $lang_code ]['label'] = array();
 										$data[ $region_code ]['items'][ $lang_code ]['label']['country'] = $country_label;
 										$data[ $region_code ]['items'][ $lang_code ]['label']['language'] = $lang_label;
-
-										$html_list .=  '<li class="region-select-item"><a  class="region-select-link" href="' . $url. '/">' . $p['country_prepend'] . $label . $p['country_append'] . '</a></li>';
 									}
 
 								// }
 							}
 						}
+					}
+
+				// }
+
+				// SINGLE SITE LOOP REGIONS > LANGS {
+
+					else {
+
+						foreach ( $GLOBALS['toolset']['language_array'] as $language_key => $language_item ) {
+
+							$lang_code = $language_key;
+
+							// EXTRACT COUNTRY CODE {
+
+								if ( strstr( $lang_code, '_' ) ) {
+
+									$country_code = explode( '_', $lang_code )[1];
+								}
+
+							// }
+
+							// CHECK IF COUNTRY IN CURRENT REGION {
+
+								$is_country_in_region = tool( array(
+									'name' => 'tool_multilanguage_country_in_region',
+									'param' => array(
+										'country_code' => $country_code,
+										'region_code' => $region_code,
+									),
+								));
+
+								// IS WORLD {
+
+									if (
+										$region_code == '001' AND
+										$country_code == '001'
+									) {
+
+										$is_country_in_region = true;
+									}
+
+								// }
+
+								// IS EUROPE {
+
+									if (
+										$region_code == '150' AND
+										$country_code == '150'
+									) {
+
+										$is_country_in_region = true;
+									}
+
+								// }
+
+								if ( $is_country_in_region ) {
+
+									// OUTPUT REGION LABEL {
+
+										if ( ! $has_region ) {
+
+											$has_region = true;
+
+											$data[ $region_code ] = array();
+											$data[ $region_code ]['lable'] = $region_label;
+											$data[ $region_code ]['items'] = array();
+										}
+
+									// }
+
+									// GET COUNTRY LABEL {
+
+										$country_label = tool( array(
+											'name' => 'tool_multilanguage_get_country_label',
+											'param' => array(
+												'countrycode' => $country_code,
+												'locale' => $lang_code,
+											),
+										));
+
+									// }
+
+									// GET LANG LABEL {
+
+										$lang_label = tool( array(
+											'name' => 'tool_multilanguage_get_lang_label',
+											'param' => array(
+												'langcode' => $lang_code,
+												'locale' => Locale::getPrimaryLanguage( $lang_code ),
+											),
+										));
+
+									// }
+
+									// VALIDATES LABEL {
+
+										$lang_label = trim( preg_replace( "/\((.*)\)(.*)/", '$2', $lang_label ) );
+
+									// }
+
+									$url = tool( array(
+										'name' => 'tool_multilanguage_add_locale_to_url',
+										'param' => array(
+											'lang' => $lang_code,
+											'url' => $p['url'],
+										),
+									));
+
+									$data[ $region_code ]['items'][ $lang_code ] = array();
+									$data[ $region_code ]['items'][ $lang_code ]['url'] = $url;
+									$data[ $region_code ]['items'][ $lang_code ]['label'] = array();
+									$data[ $region_code ]['items'][ $lang_code ]['label']['country'] = $country_label;
+									$data[ $region_code ]['items'][ $lang_code ]['label']['language'] = $lang_label;
+								}
+
+							// }
+						}
+					}
+
+				// }
+			}
+
+		// }
+
+
+		return $data;
+	}
+
+	function tool_multilanguage_region_select( $p = array() ) {
+
+		// DEFAULTS {
+
+			$defaults = array(
+				'return' => 'html_list', // html_list, data
+				'country_prepend' => '',
+				'country_append' => '',
+				'url' => 'home_url',
+			);
+
+			$p = array_replace_recursive( $defaults, $p );
+
+			$html_list = '';
+
+			$data = array();
+
+		// }
+
+		// GET WORLD REGIONS AND WALK TRUE {
+
+			$regions = tool( array(
+				'name' => 'tool_multilanguage_get_regions',
+				'param' => array(
+					'locale' => 'en',
+				),
+			));
+
+			$html_list .= '<ul class="region-select-list-regions">';
+
+				foreach ( $regions as $region_code => $region_label ) {
+
+					$has_region = false;
+
+					// MULTISITE LOOP SITES > LANGS {
+
+						if ( $GLOBALS['toolset']['multisite'] ) {
+
+							foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site_item ) {
+
+								if (  $site_id === 1 ) {
+
+									continue;
+								}
+
+								if ( empty( $site_item['languages'] ) ) {
+
+									continue;
+								}
+
+								$country_code = $site_item['country_code'];
+
+								$has_multiple_langs = count( $site_item['languages'] );
+
+								foreach ( $site_item['languages'] as $language_key => $language_item ) {
+
+									$lang_code = $language_item['language'];
+
+									// EXTRACT COUNTRY CODE {
+
+										if ( strstr( $lang_code, '_' ) ) {
+
+											$country_code = explode( '_', $lang_code )[1];
+										}
+
+									// }
+
+									// CHECK IF COUNTRY IN CURRENT REGION {
+
+										$is_country_in_region = tool( array(
+											'name' => 'tool_multilanguage_country_in_region',
+											'param' => array(
+												'country_code' => $country_code,
+												'region_code' => $region_code,
+											),
+										));
+
+										if ( $is_country_in_region ) {
+
+											// OUTPUT REGION LABEL {
+
+												if ( ! $has_region ) {
+
+													$has_region = true;
+
+													$data[ $region_code ] = array();
+													$data[ $region_code ]['lable'] = $region_label;
+													$data[ $region_code ]['items'] = array();
+
+													$html_list .=  '<li><span class="region-select-region-label">' . $region_label . '</span>';
+													$html_list .=  '<ul class="region-select-list-sites">';
+												}
+
+											// }
+
+											// GET COUNTRY LABEL {
+
+												$country_label = tool( array(
+													'name' => 'tool_multilanguage_get_country_label',
+													'param' => array(
+														'countrycode' => $country_code,
+														'locale' => $lang_code,
+													),
+												));
+
+
+											// }
+
+											// GET LANG LABEL {
+
+												$lang_label = tool( array(
+													'name' => 'tool_multilanguage_get_lang_label',
+													'param' => array(
+														'langcode' => $lang_code,
+														'locale' => Locale::getPrimaryLanguage( $lang_code ),
+													),
+												));
+
+											// }
+
+											// COMBINE LABELS {
+
+												$label = $country_label;
+												$label .= ' (' . $lang_label . ')';
+
+											// }
+
+											// GET URL {
+
+												$url = tool( array(
+													'name' => 'tool_multilanguage_add_locale_to_url',
+													'param' => array(
+														'lang' => $lang_code,
+														'url' => $p['url'],
+													),
+												));
+
+											// }
+
+											$data[ $region_code ]['items'][ $lang_code ] = array();
+											$data[ $region_code ]['items'][ $lang_code ]['url'] = $url;
+											$data[ $region_code ]['items'][ $lang_code ]['label'] = array();
+											$data[ $region_code ]['items'][ $lang_code ]['label']['country'] = $country_label;
+											$data[ $region_code ]['items'][ $lang_code ]['label']['language'] = $lang_label;
+
+											$html_list .=  '<li class="region-select-item"><a  class="region-select-link" href="' . $url. '/">' . $p['country_prepend'] . $label . $p['country_append'] . '</a></li>';
+										}
+
+									// }
+								}
+							}
+						}
+
 
 					// }
 
@@ -548,4 +847,40 @@
 		}
 
 		return $html_list;
+	}
+
+	function tool_multilanguage_add_locale_to_url( $p = array() ) {
+
+		// DEFAULTS {
+
+			$defaults = array(
+				'lang' => $GLOBALS['toolset']['default_lang'],
+				'url' => 'curr_url', // home_url, curr_url
+			);
+
+			$p = array_replace_recursive( $defaults, $p );
+
+		// }
+
+		// DEFINE URL {
+
+			$url = $GLOBALS['toolset']['curr_url'];
+
+			if ( $p['url'] === 'home_url' ) {
+
+				$url = $GLOBALS['toolset']['home_url'];
+			}
+
+		// }
+
+		// removes current lang slug from item url
+		$url = str_replace( $GLOBALS['toolset']['home_url'] . '/' . encode_lang_slug( $GLOBALS['toolset']['frontend_locale'] ), $GLOBALS['toolset']['home_url'], $GLOBALS['toolset']['curr_url'] );
+
+		// adds item lang slug to item url
+		if ( $p['lang'] !== $GLOBALS['toolset']['default_lang'] ) {
+
+			$url = str_replace( $GLOBALS['toolset']['home_url'], $GLOBALS['toolset']['home_url'] . '/' . encode_lang_slug( $p['lang'] ), $url );
+		}
+
+		return $url;
 	}

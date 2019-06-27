@@ -1,6 +1,8 @@
 <?php
 
 	return array(
+		'001' => 'Global',
+		'150' => 'Europe',
 		'int' => 'International',
 		'eu' => 'Europe',
 		'oc' => 'Oceania',

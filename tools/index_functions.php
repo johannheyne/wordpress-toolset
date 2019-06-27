@@ -396,6 +396,16 @@
 						'funame' => 'tool_multilanguage_region_select',
 					),
 
+					'tool_multilanguage_region_lang_data' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_region_lang_data',
+					),
+
+					'tool_multilanguage_add_locale_to_url' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_add_locale_to_url',
+					),
+
 				// }
 
 				// tool_hreflang {
