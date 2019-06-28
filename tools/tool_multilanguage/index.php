@@ -244,6 +244,28 @@
 	}
 
 
+	function tool_multilanguage_get_locale_label( $p = array() ) {
+
+		/*
+			Returns the locale $label
+		*/
+
+		// DEFAULTS {
+
+			$defaults = array(
+				'langcode' => 'en_GB',
+				'locale' => 'en_GB',
+			);
+
+			$p = array_replace_recursive( $defaults, $p );
+
+		// }
+
+
+		return Locale::getDisplayName( $p['langcode'], $p['locale'] );
+	}
+
+
 	function tool_multilanguage_require_regions( $p = array() ) {
 
 		/*
