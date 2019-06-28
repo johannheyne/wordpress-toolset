@@ -314,6 +314,43 @@
 														update_post_meta( $post_item->ID, $transl_param_key, $transl_param_value );
 													}
 
+													if ( ! empty( $transl_param['default_transl'] ) ) {
+
+														foreach ( $GLOBALS['toolset']['language_array'] as $lang => $item ) {
+
+															$value = false;
+
+															if ( ! empty( $transl_param['default_transl'][ $lang ] ) ) {
+
+																$value = $transl_param['default_transl'][ $lang ];
+															}
+
+															// USES DEFAULT TRANSL like "en" FOR "en_US", "en_GB" etc. {
+
+																if ( empty( $value ) ) {
+
+																	$lang_primary = locale_get_primary_language( $lang );
+
+																	if ( ! empty( $transl_param['default_transl'][ $lang_primary ] ) ) {
+
+																		$value = $transl_param['default_transl'][ $lang_primary ];
+																	}
+																}
+
+															// }
+
+															if ( ! empty( $value ) ) {
+
+																$meta_value = get_post_meta( $post_item->ID, 'transl_' . $lang, true );
+
+																if ( empty( $meta_value ) ) {
+
+																	update_post_meta( $post_item->ID, 'transl_' . $lang, $value );
+																}
+															}
+														}
+													}
+
 													$translation_post_exists = true;
 
 												// }
@@ -354,9 +391,33 @@
 
 														if ( ! empty( $transl_param['default_transl'] ) ) {
 
-															foreach ( $transl_param['default_transl'] as $lang => $lang_value ) {
+															foreach ( $GLOBALS['toolset']['language_array'] as $lang => $item ) {
 
-																update_post_meta( $post_id, 'transl_' . $lang, $lang_value );
+																$value = false;
+
+																if ( ! empty( $transl_param['default_transl'][ $lang ] ) ) {
+
+																	$value = $transl_param['default_transl'][ $lang ];
+																}
+
+																// USES DEFAULT TRANSL like "en" FOR "en_US", "en_GB" etc. {
+
+																	if ( empty( $value ) ) {
+
+																		$lang_primary = locale_get_primary_language( $lang );
+
+																		if ( ! empty( $transl_param['default_transl'][ $lang_primary ] ) ) {
+
+																			$value = $transl_param['default_transl'][ $lang_primary ];
+																		}
+																	}
+
+																// }
+
+																if ( ! empty( $value ) ) {
+
+																	update_post_meta( $post_id, 'transl_' . $lang, $value );
+																}
 															}
 														}
 
@@ -522,7 +583,7 @@
 								foreach ( $GLOBALS['toolset']['language_array'] as $lang_code => $item ) {
 
 									$label_lang = tool( array(
-										'name' => 'tool_multilanguage_get_lang_label',
+										'name' => 'tool_multilanguage_get_locale_label',
 										'param' => array(
 											'langcode' => $lang_code,
 											'locale' => $GLOBALS['toolset']['user_locale'],
@@ -531,7 +592,7 @@
 
 									$fields[] = array(
 										'key' => 'transl_' . $lang_code,
-										'label' => _x( 'Text Translation', 'tool_translate', 'toolset' ) . ' (' . $label_lang . ')',
+										'label' => _x( 'Text Translation', 'tool_translate', 'toolset' ) . ' <span class="tooltip tooltip-style-small tooltip-inline">' . $lang_code . '<span class="tooltiptext">' . $label_lang . '</span></span>',
 										'name' => 'transl_' . $lang_code,
 										'type' => $field_type,
 										'rows' => 2,
