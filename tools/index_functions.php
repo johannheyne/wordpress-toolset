@@ -422,6 +422,15 @@
 
 				// }
 
+				// tool_sidebar_registe {
+
+					'tool_sidebar_register' => array(
+						'dir' => 'tool_sidebars_register',
+						'funame' => 'tool_sidebar_register',
+					),
+
+				// }
+
 			)
 		);
 

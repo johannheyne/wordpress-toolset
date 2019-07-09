@@ -10,4 +10,18 @@
 			}
 		}
 
+		function tool_sidebar_register( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array();
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			register_sidebar( $p );
+
+		}
+
 	// }
