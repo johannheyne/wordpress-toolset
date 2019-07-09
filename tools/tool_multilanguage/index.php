@@ -582,6 +582,10 @@
 
 									$country_code = explode( '_', $lang_code )[1];
 								}
+								else {
+
+									$country_code = '001';
+								}
 
 							// }
 
