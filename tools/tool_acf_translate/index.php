@@ -231,7 +231,14 @@
 
 											$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $item );
 										}
+										else {
+
+											$item = str_replace( '{{' . $match[1] . '}}', $match[1], $item );
+										}
 									}
+								}
+								else {
+
 								}
 							}
 
@@ -304,8 +311,13 @@
 
 													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $item );
 												}
+												else {
+
+													$item = str_replace( '{{' . $match[1] . '}}', $match[1], $item );
+												}
 											}
 										}
+
 									}
 
 								} );
@@ -390,6 +402,10 @@
 												elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'] ) ) {
 
 													$item = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $item );
+												}
+												else {
+
+													$item = str_replace( '{{' . $match[1] . '}}', $match[1], $item );
 												}
 											}
 										}
