@@ -801,7 +801,6 @@
 													),
 												));
 
-
 											// }
 
 											// GET LANG LABEL {
@@ -825,13 +824,15 @@
 
 											// GET URL {
 
-												$url = tool( array(
+												/*$url = tool( array(
 													'name' => 'tool_multilanguage_add_locale_to_url',
 													'param' => array(
 														'lang' => $lang_code,
 														'url' => $p['url'],
 													),
-												));
+												));*/
+
+												$url = $GLOBALS['toolset']['home_url'] . $site_item['slug'];
 
 											// }
 
