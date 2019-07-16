@@ -66,14 +66,14 @@
 				$site_id = $GLOBALS['toolset']['blog_id'];
 				$site_url = get_home_url( $site_id );
 
-				if (
-					$GLOBALS['toolset']['blog_id'] == 1 AND
-					is_front_page()
-				 ) {
+				// x-default {
 
-					$return .= '<link rel="alternate" href="' . $site_url . '" hreflang="x-default" />';
-				}
-				else {
+					$default_url = get_home_url( 1 );
+					$return .= '<link rel="alternate" href="' . $default_url . '" hreflang="x-default" />';
+
+				// }
+
+				// GET RELATIVE URL {
 
 					$current_relative_url = str_replace( $site_url, '', $GLOBALS['toolset']['current_url'] );
 
@@ -86,54 +86,60 @@
 						$current_relative_url = '/' . implode( '/', $array );
 					}
 
-					// GET HREFLANG POST META {
+				// }
 
-						foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site ) {
 
-							$hreflang_post_id = $GLOBALS['toolset']['classes']['ToolHreflang']->get_post_meta_hreflang( get_the_ID(), $site['id'] );
+				// GET HREFLANG POST META {
 
-							if ( ! empty( $hreflang_post_id ) ) {
+					foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site ) {
 
-								foreach ( $GLOBALS['toolset']['sites'][ $site_id ]['languages'] as $language ) {
+						$hreflang_post_id = $GLOBALS['toolset']['classes']['ToolHreflang']->get_post_meta_hreflang( get_the_ID(), $site['id'] );
 
-									$permalink = '';
+						if ( ! empty( $hreflang_post_id ) ) {
 
-									switch_to_blog( $site_id );
+							foreach ( $GLOBALS['toolset']['sites'][ $site_id ]['languages'] as $language ) {
 
-										$permalink = get_lang_permalink( $hreflang_post_id, $language['language'] );
+								$permalink = '';
 
-									restore_current_blog();
+								switch_to_blog( $site_id );
 
-									if (
-										! empty( $GLOBALS['toolset']['sites'][ $site_id ]['country_code'] ) AND
-										strpos( $language['language'], '_' )
-									) {
+									$permalink = get_permalink( $hreflang_post_id );
 
-										$language['language'] = str_replace( '_' . $GLOBALS['toolset']['sites'][ $site_id ]['country_code'], '', $language['language'] );
-										$language['language'] .= '_' . $GLOBALS['toolset']['sites'][ $site_id ]['country_code'];
-									}
+								restore_current_blog();
 
-									$return .= '<link rel="alternate" href="' . $permalink . '" hreflang="' . $language['language'] . '" />';
+								if (
+									! empty( $GLOBALS['toolset']['sites'][ $site_id ]['country_code'] ) AND
+									$GLOBALS['toolset']['sites'][ $site_id ]['country_code'] != 'INT' AND
+									$GLOBALS['toolset']['sites'][ $site_id ]['country_code'] != 'EU' AND
+									! strpos( $language['language'], '_' )
+								) {
+
+									//$language['language'] = str_replace( '_' . $GLOBALS['toolset']['sites'][ $site_id ]['country_code'], '', $language['language'] );
+									$language['language'] .= '_' . $GLOBALS['toolset']['sites'][ $site_id ]['country_code'];
 								}
+
+								$language['language'] = str_replace( '_', '-', $language['language'] );
+
+								$return .= '<link rel="alternate" href="' . $permalink . '" hreflang="' . $language['language'] . '" />';
 							}
-
-							//$return .= '<link rel="alternate" href="' . $permalink . '" hreflang="x-default" />';
 						}
 
-					// }
+						//$return .= '<link rel="alternate" href="' . $permalink . '" hreflang="x-default" />';
+					}
 
-					/*foreach ( $GLOBALS['toolset']['sites']['1']['languages'] as $key => $item ) {
+				// }
 
-						if ( $key === 0 ) {
+				/*foreach ( $GLOBALS['toolset']['sites']['1']['languages'] as $key => $item ) {
 
-							$return .= '<link rel="alternate" href="' . $site_url . $current_relative_url . '" hreflang="' . convert_hreflang( $item['language'] ) .'" />';
-						}
-						else {
+					if ( $key === 0 ) {
 
-							$return .= '<link rel="alternate" href="' . $site_url . '/' . $item['language'] . $current_relative_url . '" hreflang="' . convert_hreflang( $item['language'] ) .'" />';
-						}
-					}*/
-				}
+						$return .= '<link rel="alternate" href="' . $site_url . $current_relative_url . '" hreflang="' . convert_hreflang( $item['language'] ) .'" />';
+					}
+					else {
+
+						$return .= '<link rel="alternate" href="' . $site_url . '/' . $item['language'] . $current_relative_url . '" hreflang="' . convert_hreflang( $item['language'] ) .'" />';
+					}
+				}*/
 			}
 
 		// }
