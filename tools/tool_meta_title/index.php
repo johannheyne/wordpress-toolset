@@ -209,7 +209,7 @@
 
 			// }
 
-			echo '<title>' . $v['return'] . '</title>' . "\n";
+			echo '<title>' . sanitize_text_field( $v['return'] )  . '</title>' . "\n";
 		}
 
 	// }
