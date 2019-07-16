@@ -56,10 +56,12 @@
 
 				foreach ( $locales as $key => $item ) {
 
-					if ( strpos( $item, '_' ) ) {
+					if (
+						$GLOBALS['toolset']['multisite'] OR // all langs, also without countrycode
+						strpos( $item, '_' )
+					) {
 
 						$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $item ] = Locale::getDisplayName( $item, $GLOBALS['toolset']['user_locale'] );
-
 					}
 				}
 			}
@@ -433,7 +435,170 @@
 
 					if ( $GLOBALS['toolset']['multisite'] ) {
 
-						foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site_item ) {
+						// GET HREFLANG ENTRIES {
+
+							$post_id = get_the_ID();
+							$alternate_posts = array();
+
+							// GET ALTERNATE POSTS {
+
+								foreach ( $GLOBALS['toolset']['sites'] as $blog_id => $site ) {
+
+									$hreflang_post_id = $GLOBALS['toolset']['classes']['ToolHreflang']->get_post_meta_hreflang( $post_id, $blog_id );
+
+									if ( ! empty( $hreflang_post_id ) ) {
+
+										$alternate_posts[ $blog_id ] = array(
+											'post_id' => $hreflang_post_id
+										);
+									}
+								}
+
+							// }
+
+							// GET POST DATA {
+
+								if ( ! empty( $alternate_posts ) ) {
+
+									foreach ( $alternate_posts as $blog_id => $item ) {
+
+										// GET SITE DEFAULT LOCALE {
+
+											$default_locale = $GLOBALS['toolset']['sites'][ $blog_id ]['default_language'];
+
+											if ( ! strpos( $default_locale, '_' )  ) {
+
+												if ( $GLOBALS['toolset']['sites'][ $blog_id ]['country_code'] ) {
+
+													$default_locale .= '_' . $GLOBALS['toolset']['sites'][ $blog_id ]['country_code'];
+												}
+												else {
+													$default_locale .= '_int';
+												}
+											}
+
+											$default_locale = decode_lang_slug( $default_locale );
+
+										// }
+
+										// GET REGION CODE {
+
+											$country_code = Locale::getRegion( $default_locale );
+
+										// }
+
+										// CHECK IF COUNTRY IN CURRENT REGION {
+
+											$is_country_in_region = tool( array(
+												'name' => 'tool_multilanguage_country_in_region',
+												'param' => array(
+													'country_code' => $country_code,
+													'region_code' => $region_code,
+												),
+											));
+
+											// IS WORLD {
+
+												if (
+													$region_code == '001' AND
+													$country_code == '001'
+												) {
+
+													$is_country_in_region = true;
+												}
+
+											// }
+
+											// IS EUROPE {
+
+												if (
+													$region_code == '150' AND
+													$country_code == '150'
+												) {
+
+													$is_country_in_region = true;
+												}
+
+											// }
+
+											if ( $is_country_in_region ) {
+
+												// OUTPUT REGION LABEL {
+
+													if ( ! $has_region ) {
+
+														$has_region = true;
+
+														$data[ $region_code ] = array();
+														$data[ $region_code ]['lable'] = $region_label;
+														$data[ $region_code ]['items'] = array();
+													}
+
+												// }
+
+												// GET LANG CODE {
+
+													$lang_code = Locale::getPrimaryLanguage( $default_locale );
+
+												// }
+
+												// GET COUNTRY LABEL {
+
+													$country_label = tool( array(
+														'name' => 'tool_multilanguage_get_country_label',
+														'param' => array(
+															'countrycode' => $country_code,
+															'locale' => $lang_code,
+														),
+													));
+
+												// }
+
+												// GET LANG LABEL {
+
+													$lang_label = tool( array(
+														'name' => 'tool_multilanguage_get_lang_label',
+														'param' => array(
+															'langcode' => $lang_code,
+															'locale' => Locale::getPrimaryLanguage( $lang_code ),
+														),
+													));
+
+												// }
+
+												// SETUP ALTERNATE ARRAY {
+
+													$data[ $region_code ]['items'][ $lang_code . '_' . $country_code ] = array();
+													$data[ $region_code ]['items'][ $lang_code . '_' . $country_code ]['label'] = array();
+													$data[ $region_code ]['items'][ $lang_code . '_' . $country_code ]['label']['country'] = $country_label;
+													$data[ $region_code ]['items'][ $lang_code . '_' . $country_code ]['label']['language'] = $lang_label;
+
+													if ( $GLOBALS['toolset']['blog_details']->blog_id != $blog_id ) {
+
+														switch_to_blog( $blog_id );
+													}
+
+														$data[ $region_code ]['items'][ $lang_code . '_' . $country_code ]['url'] = get_permalink( $item['post_id'] ); // , $GLOBALS['toolset']['sites'][ $blog_id ]['default_language'];
+
+														if ( $GLOBALS['toolset']['blog_details']->blog_id != $blog_id ) {
+
+														restore_current_blog();
+													}
+
+												// }
+
+											}
+
+										// }
+
+									}
+								}
+
+							// }
+
+						// }
+
+						/*foreach ( $GLOBALS['toolset']['sites'] as $site_id => $site_item ) {
 
 							if (  $site_id === 1 ) {
 
@@ -563,7 +728,7 @@
 
 								// }
 							}
-						}
+						}*/
 					}
 
 				// }
