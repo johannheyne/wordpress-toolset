@@ -80,7 +80,7 @@
 
 		if ( $v['description'] ) {
 
-			echo '<meta name="description" content="' . $v['description'] . '"/>' . "\n";
+			echo '<meta name="description" content="' . esc_attr( sanitize_text_field( $v['description'] ) ) . '"/>' . "\n";
 		}
 
 	}
