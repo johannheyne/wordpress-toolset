@@ -8,8 +8,8 @@
 
 		function __construct() {
 
-			add_action( 'wp_head', array( $this, 'ob_start' ) ); // after_setup_theme
-			add_action( 'wp_footer', array( $this, 'ob_end_flush' ) ); // shutdown
+			add_action( 'wp_loaded', array( $this, 'ob_start' ) ); // after_setup_theme
+			add_action( 'wp_print_footer_scripts', array( $this, 'ob_end_flush' ) ); // shutdown
 		}
 
 		function ob_start() {
