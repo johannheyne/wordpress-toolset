@@ -246,6 +246,15 @@
 
 				// }
 
+				// tool_meta_description {
+
+					'tool_meta_robots' => array(
+						'dir' => 'tool_meta_robots',
+						'funame' => 'tool_meta_robots',
+					),
+
+				// }
+
 				// tool_wp_nonce {
 
 					'tool_wp_nonce' => array(

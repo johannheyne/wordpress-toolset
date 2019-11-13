@@ -173,6 +173,7 @@ $GLOBALS['toolset'] = array(
 * [Ajax Call](tools/tool_ajax/readme.markdown)
 * [Meta Title](tools/tool_meta_title/readme.markdown)
 * [Meta Description](tools/tool_meta_description/readme.markdown)
+* [Meta Robots](tools/tool_meta_robots/readme.markdown)
 * [User Login/Logout](tools/tool_wp_user/readme.markdown)
 * [Instagram](tools/tool_instagram/readme.markdown)
 * [Transient](tools/tool_transient/readme.markdown)

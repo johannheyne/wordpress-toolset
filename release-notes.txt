@@ -59,6 +59,17 @@ Adds methode for getting labels from a ACF taxonomy field
 Adds default language "en"
 
 
+## Adds Tool "meta_robots"
+
+Inserts "robots" meta tag in head element driffen by ACF fields in pages and posts.
+
+````php
+tool( array(
+	'name' => 'tool_meta_robots'
+) );
+````
+
+
 
 ## Title
 
