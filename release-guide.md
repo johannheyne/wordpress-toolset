@@ -1,4 +1,6 @@
-1. Commit Changes!
+# Release Guide
+
+1. Commit changes local!
 
 2. Terminal: grunt bump
 …changes are pushed to github
