@@ -440,6 +440,14 @@
 
 				// }
 
+				// tool_html5 {
+
+					'tool_html5' => array(
+						'dir' => 'tool_html5',
+					),
+
+				// }
+
 			)
 		);
 

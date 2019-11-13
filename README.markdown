@@ -166,6 +166,7 @@ $GLOBALS['toolset'] = array(
 * [ACF Save Post After](tools/tool_acf_save_post_after/readme.markdown)
 * [ACF Translate](tools/tool_acf_translate/readme.markdown)
 * [API SiteData](tools/tool_api_sitedata/readme.markdown)
+* [HTML5](tools/tool_html5/readme.markdown)
 
 ### Tools
 
