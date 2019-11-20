@@ -14,22 +14,26 @@
 	// IMAGE SIZE ( Version 7 ) {
 
 		add_filter('intermediate_image_sizes_advanced', function( $sizes ) {
+
 			// unset( $sizes['thumbnail']);
 			// unset( $sizes['medium']);
 			unset( $sizes['medium_large']);
-			// unset( $sizes['large']); // needed for WordPress image detail view
+			unset( $sizes['1536x1536']); // since WordPress 5.3
+			unset( $sizes['2048x2048']); // since WordPress 5.3
+			// unset( $sizes['large']); // required for WordPress image detail view
+
 			return $sizes;
 		});
 
 		/* sizes for icons and previews in wordpress */
-		add_image_size( 'thumbnail', '160', '160', /* crop */ false );
-		add_image_size( 'medium', '118', '118', /* crop */ false );
+		add_image_size( 'thumbnail', '160', '160', /* crop */ false ); // required for postthumb preview in post/pages
+		add_image_size( 'medium', '118', '118', /* crop */ false ); // used for media listing
 
 	// }
 
 	// ADAPTIVE IMAGES ( Version 24 (AIFWP 1.1) ) {
 
-		add_image_size( 'adaptive-image-base', '2000', '2000', /* crop */ false );
+		add_image_size( 'adaptive-image-base', '2048', '2048', /* crop */ false );
 
 		// GET ADAPTIVE IMAGE {
 
