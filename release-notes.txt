@@ -1,7 +1,6 @@
-## Updates tool "adaptive_images"
+## Updates
 
-- Inceases image size "adaptive-image-base" to 2048px
-- Removes new WP 5.3 image sizes "1536x1536" and "2048x2048"
+Description
 
 ````php
 code
