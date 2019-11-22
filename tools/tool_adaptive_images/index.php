@@ -476,6 +476,59 @@
 
 		// }
 
+		// GET DATA {
+
+			function get_adaptive_image_data( $p = array(
+				'name' => 'full',
+				'id' => false,
+			) ) {
+
+				$sufix = '?size=' . $p['name'];
+
+				/* image src */
+				$img_param = wp_get_attachment_image_src( $p['id'], 'adaptive-image-base' );
+
+				$data = array();
+				$data['src'] = $img_param[0].$sufix;
+				$data['w'] = $img_param[1];
+				$data['h'] = $img_param[2];
+				$data['rel_h'] = ( 100 / $data['w'] ) * $data['h'];
+				$data['ratio'] = ( 1 / $data['w'] ) * $data['h'];
+
+				$aspect_ratio = tool_get_aspect_ratio( $data['w'], $data['h'] );
+				$data['aspect_ratio'] = $aspect_ratio['array'];
+				$data['orig'] = false;
+
+				if ( ! $img_param[3] ) {
+
+					$data['orig'] = true;
+				}
+
+				return  $data;
+			}
+
+		// }
+
+		// GET ASPECT RATIO {
+
+			function tool_get_aspect_ratio( $a, $b ) {
+
+				$gcd = function( $a, $b ) use ( &$gcd ) {
+
+					return ( $a % $b ) ? $gcd( $b, $a % $b ) : $b;
+				};
+
+				$g = $gcd( $a, $b );
+
+				$return = array();
+				$return['string'] = $a/$g . ':' . $b/$g;
+				$return['array'] = array( $a/$g, $b/$g );
+
+				return $return;
+			}
+
+		// }
+
 		// MULTISITE {
 
 			function multisite_urls_2_real_urls( $buffer ) {

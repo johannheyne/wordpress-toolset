@@ -69,6 +69,10 @@
 						'dir' => 'tool_adaptive_images',
 						'funame' => 'get_adaptive_image_src',
 					),
+					'get_adaptive_image_data' => array(
+						'dir' => 'tool_adaptive_images',
+						'funame' => 'get_adaptive_image_data',
+					),
 
 					'get_adaptive_image_resp' => array(
 						'dir' => 'tool_adaptive_images',

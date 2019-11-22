@@ -57,4 +57,57 @@ This tool provides a function to insert Adaptive Images in a template.
 	) );
 ````
 
+## Get Image SRC
+
+```php
+$image_src = tool( array(
+	'name' => 'get_adaptive_image_src',
+	'param' => array(
+		'name' => 'my_size', // AI size
+		'id' => $image_id, // image ID
+	),
+) );
+```
+
+## Get Image Data
+
+```php
+$image_data = tool( array(
+	'name' => 'get_adaptive_image_data',
+	'param' => array(
+		'name' => 'my_size', // AI size
+		'id' => $image_id, // image ID
+	),
+) );
+
+/* returns
+$image_data['src'] = (string);
+$image_data['w'] = (integer);
+$image_data['h'] = (integer);
+$image_data['ratio'] = (integer); // like 1.5
+$image_data['aspect_ratio'] = (array); // like array(16,9);
+$image_data['rel_h'] = (integer); // relative height
+$image_data['orig'] = (boolean); // wether is original or not
+*/
+```
+
+#### Use Relative Height Alias "rel_h"
+```php
+echo '<div style="padding-top: ' . $image_data['rel_h'] . '%;">';
+	// container with aspect ratio of image
+echo '</div>';
+
+```
+
+## Get Aspect Ratio
+
+```php
+$result = tool_get_aspect_ratio( $w, $h );
+
+/* returns
+$result['string'] // like "16:9"
+$result['array'] // like array( 16, 9 )
+*/
+```
+
 [back to overview](../../README.markdown#initial-functionality)
