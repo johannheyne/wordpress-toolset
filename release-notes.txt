@@ -1,6 +1,7 @@
-## Updates tool "adaptive_images"
+## Updates
 
-Adds Tool "get_adaptive_image_data"
-Adds Methode tool_get_aspect_ratio()
+Description
 
-(Documentation:)[https://github.com/johannheyne/wordpress-toolset/blob/master/tools/tool_adaptive_images/readme.markdown]
+```php
+code
+```
