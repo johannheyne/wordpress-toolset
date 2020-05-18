@@ -452,6 +452,14 @@
 
 				// }
 
+				// tool_menu_item_types {
+
+					'tool_menu_item_types' => array(
+						'dir' => 'tool_menu_item_types',
+					),
+
+				// }
+
 			)
 		);
 
