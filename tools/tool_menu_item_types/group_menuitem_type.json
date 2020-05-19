@@ -4,9 +4,9 @@
     "fields": [
         {
             "key": "field_5ec269b4459c5",
-            "label": "Type",
-            "name": "link_type",
-            "type": "select",
+            "label": "",
+            "name": "",
+            "type": "message",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,19 +15,9 @@
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "url": "URL",
-                "email": "E-Mail",
-                "phone": "Telefon",
-                "fax": "Fax"
-            },
-            "default_value": "url",
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "value",
-            "ajax": 0,
-            "placeholder": ""
+            "message": "Adding \"mailto:\", \"tel:\" or \"fax:\" to the URL field without a number or mail address will use the <a href=\"admin.php?page=option-contactdata\">contactdata<\/a> settings instead. Leaf the \"Display Name\" field blank to display the number or email-address in the menu.",
+            "new_lines": "wpautop",
+            "esc_html": 0
         }
     ],
     "location": [
@@ -47,5 +37,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "{\"type\":\"menu_item\",\"module\":\"multilanguage\",\"cache\":\"group_lang_menu_item.json\"}",
-    "modified": 1589800364
+    "modified": 1589814688
 }
