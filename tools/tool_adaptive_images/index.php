@@ -333,14 +333,33 @@
 
 						// IMAGE / CAPTION CLASSES {
 
+							$img_attr['class'] = trim( $p['img_class_resp'] );
+
 							if ( ! $p['figcaption_cont'] ) {
 
-								$img_attr['class'] = trim( $p['img_class_resp'] . ' ' . $p['img_class'] . ' size-' . $p['name'] );
+								if ( $p['img_class'] ) {
+
+									$img_attr['class'] .= ' ' . trim( $p['img_class'] );
+								}
+
+								if ( $p['name'] ) {
+
+									$img_attr['class'] .= ' size-' . trim( $p['name'] );
+								}
 							}
 							else {
 
-								$img_attr['class'] = $p['img_class_resp'];
-								$caption_attr['class'] = trim( $p['img_class'] . ' size-' . $p['name'] . ' ' . $p['figure_class'] );
+								$caption_attr['class'] = trim( $p['img_class'] );
+
+								if ( $p['name'] ) {
+
+									$caption_attr['class'] .= ' size-' . trim( $p['name'] );
+								}
+
+								if ( $p['figure_class'] ) {
+
+									$caption_attr['class'] .= ' ' . trim( $p['figure_class'] );
+								}
 							}
 
 						// }
