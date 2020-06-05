@@ -66,6 +66,8 @@
 					$value = get_lang_field( 'opt_contactdata/email', 'option' );
 					$title = antispambot( $value );
 				}
+
+				$title = '<span>' . $title . '</span>';
 			}
 
 			if ( trim( $item->url ) === 'tel:' ) {
@@ -75,6 +77,8 @@
 					$value = get_lang_field( 'opt_contactdata/fon', 'option' );
 					$title = $value;
 				}
+
+				$title = '<span>' . $title . '</span>';
 			}
 
 			if ( trim( $item->url ) === 'fax:' ) {
@@ -84,6 +88,8 @@
 					$value = get_lang_field( 'opt_contactdata/fax', 'option' );
 					$title = $value;
 				}
+
+				$title = '<span>' . $title . '</span>';
 			}
 
 			return $title;
