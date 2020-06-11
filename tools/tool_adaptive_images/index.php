@@ -33,7 +33,7 @@
 
 	// ADAPTIVE IMAGES ( Version 24 (AIFWP 1.1) ) {
 
-		add_image_size( 'adaptive-image-base', '2048', '2048', /* crop */ false );
+		add_image_size( 'adaptive-image-base', '2560', '2560', /* crop */ false );
 
 		// GET ADAPTIVE IMAGE {
 
