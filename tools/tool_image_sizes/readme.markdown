@@ -19,16 +19,17 @@ Tool tool_image_sizes
 						'width' => '550',
 						'height' => '0',
 						'crop' => false,
+						'js' => true, // registers the image size for use in JavaScript like wp.media
 					),
 				),
-				
+
 				'editor_images_remove' => array(
 					'thumbnail' => array( 'post', 'page' ),
 					'medium' => array( 'post', 'page' ),
 					'large' => array( 'post', 'page' ),
 					'full' => array( 'post', 'page' ),
 				),
-				
+
 				'editor_images_add' => array(
 					'custom_size_name' => array(
 						'label' => 'Custom Image',

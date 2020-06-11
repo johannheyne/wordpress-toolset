@@ -7,6 +7,28 @@
 			foreach ( $GLOBALS['toolset']['inits']['tool_image_sizes']['add_image_sizes'] as $size => $item ) {
 
 				add_image_size( $size, $item['width'], $item['height'], $item['crop'] );
+
+				if ( ! empty( $item['js'] ) ) {
+
+					add_filter ( 'wp_prepare_attachment_for_js',  function( $response, $attachment, $meta ) use ( $size ) {
+
+						if ( isset( $meta['sizes'][ $size ] ) ) {
+
+							$attachment_url = wp_get_attachment_url( $attachment->ID );
+							$base_url = str_replace( wp_basename( $attachment_url ), '', $attachment_url );
+							$size_meta = $meta['sizes'][ $size ];
+
+							$response['sizes'][ $size ] = array(
+								'height'        => $size_meta['height'],
+								'width'         => $size_meta['width'],
+								'url'           => $base_url . $size_meta['file'],
+								'orientation'   => $size_meta['height'] > $size_meta['width'] ? 'portrait' : 'landscape',
+							);
+						}
+
+						return $response;
+					} , 10, 3  );
+				}
 			}
 		}
 
