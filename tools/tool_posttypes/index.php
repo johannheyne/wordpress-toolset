@@ -93,3 +93,23 @@
 		//we do not know the post type!
 		return null;
 	}
+
+	function tool_get_current_post_type() {
+
+		$post_type = get_post_type();
+
+		if ( empty( $post_type ) ) {
+
+			global $wp_query;
+
+			if (
+				! empty( $wp_query ) AND
+				! empty( $wp_query->query_vars['post_type'] )
+			) {
+
+				$post_type = $wp_query->query_vars['post_type'];
+			}
+		}
+
+		return $post_type;
+	}
