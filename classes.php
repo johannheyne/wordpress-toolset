@@ -8,3 +8,4 @@
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['Tool_Dashboard_Widget'] = 'tools/tool_dashboard_widget/class.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['YerForm'] = 'assets/yerform/core/yerform.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolHreflang'] = 'tools/tool_hreflang/class-hreflang-v2.php';
+	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolArrayPos'] = 'tools/tool_array_pos/class-tool_array_pos.php';
