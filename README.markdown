@@ -187,6 +187,7 @@ $GLOBALS['toolset'] = array(
 * [Add Posttype](tools/tool_posttypes/readme.markdown)
 * [Hierarchical Order Posts](tools/tool_order_posts/readme.markdown)
 * [Sortable Admin List Columns](tools/tool_sortable_list_column/readme.markdown)
+* [Form](tools/tool_form/readme.md)
 
 ### Assets
 
