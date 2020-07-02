@@ -219,8 +219,16 @@
 
 		private function get_field( $html, $item ) {
 
-			$html .= apply_filters( 'class/Form/before_item', '<div class="form-field">', $this->p );
-			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], '', $this->p );
+			$attrs = array(
+				'class' => array( 'form-field' ),
+			);
+
+			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
+			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
+			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
+
+			$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p );
+			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
 
 				if ( $item['type'] === 'text'  ) {
 
@@ -242,8 +250,8 @@
 					$html .= $this->get_submit_field( $item );
 				}
 
-			$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], '', $this->p );
-			$html .= apply_filters( 'class/Form/after_item', '</div>', $this->p );
+				$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p );
+				$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
 
 			return $html;
 		}

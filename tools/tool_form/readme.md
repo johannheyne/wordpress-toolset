@@ -7,6 +7,7 @@ __Table of Content__
 - [Add a Form](#add_a_form)
 - [Adding Form Messages](#adding_form_messages)
 - [Adding Fieldsets](#adding_fieldsets)
+- [Adding Field Item Attributes](#field_wrapper_attrs)
 - [Adding Fields](#adding_items_to_form)
 	- Paramameter sanitize
 - [Field Types](#form_field)
@@ -20,7 +21,6 @@ __Table of Content__
 	- [custom](#custom_field)
 	- [submit](#submit)
 - [todo] (Fields HTML5/JS Validation)
-- [Adding Field Item Wrapper Element](#adding_item_wrapper)
 - [Adding Content Prepending and Appending Form](#adding_content_prepending_appending_form)
 - [todo] Ajax
 - [todo] E-Mail Form
@@ -113,6 +113,29 @@ add_filter( 'class/Form/fieldsets/form_id={form_id}', function( $items, $param )
 
 }, 10, 2 );
 ```
+
+
+
+<a id="field_wrapper_attrs"></a>
+## Adding Field Wrapper Item Attributs
+
+```
+class/Form/item_attrs
+class/Form/items/form_group=
+class/Form/item_attrs/form_id=
+```
+
+```php
+add_filter( 'class/Form/item_attrs/form_id={form_id}', function( $attrs, $param ) {
+
+	$attrs['class'][] = 'my-class';
+
+	return $attrs;
+
+}, 10, 2 );
+```
+
+
 
 <a id="adding_items_to_form"></a>
 ## Adding Fields
