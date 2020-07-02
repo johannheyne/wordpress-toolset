@@ -83,6 +83,7 @@
 
 				if (
 					isset( $item['pos_before'] ) AND
+					isset( $item['pos_key'] ) AND
 					$current_item[ $this->param['pos_key'] ] === $item['pos_before']
 				) {
 
@@ -101,6 +102,7 @@
 
 				if (
 					isset( $item['pos_after'] ) AND
+					isset( $item['pos_key'] ) AND
 					$current_item[ $this->param['pos_key'] ] === $item['pos_after']
 				) {
 
