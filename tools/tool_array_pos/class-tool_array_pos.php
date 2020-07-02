@@ -17,7 +17,7 @@
 				$defaults = array(
 					'array' => false, // array to sort
 					'param' => array(
-						'pos_key' => 'false', // item array key used for positioning by pos_before and pos_after
+						'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
 					),
 				);
 
@@ -62,15 +62,24 @@
 
 					// }
 
-					$this->array_pos[ $item['pos'] ][] = $item;
+					// CHECK without pos_before and pos_after {
+
+						if (
+							! isset( $item['pos_before'] ) AND
+							! isset( $item['pos_after'] )
+						) {
+
+							$this->array_pos[ $item['pos'] ][] = $item;
+							unset( $this->array[ $key ] );
+						}
+
+					// }
 
 					// CHECK pos_after {
 
 						$this->adds_pos_after( $item, $item['pos'], $this->array_pos );
 
 					// }
-
-					unset( $this->array[ $key ] );
 				}
 			}
 
@@ -83,7 +92,7 @@
 
 				if (
 					isset( $item['pos_before'] ) AND
-					isset( $item['pos_key'] ) AND
+					isset( $current_item[ $this->param['pos_key'] ] ) AND
 					$current_item[ $this->param['pos_key'] ] === $item['pos_before']
 				) {
 
@@ -102,7 +111,7 @@
 
 				if (
 					isset( $item['pos_after'] ) AND
-					isset( $item['pos_key'] ) AND
+					isset( $current_item[ $this->param['pos_key'] ] ) AND
 					$current_item[ $this->param['pos_key'] ] === $item['pos_after']
 				) {
 
