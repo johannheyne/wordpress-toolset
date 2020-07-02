@@ -561,7 +561,9 @@
 			// DEFAULTS {
 
 				$defaults = array(
+					'type' => 'submit',
 					'attrs_field' => array(
+						'type' => 'submit',
 						'name' => '',
 						'value' => '',
 					),
@@ -575,9 +577,7 @@
 			// ATTRS FIELD {
 
 				$attrs_field_defaults = array(
-					'type' => 'submit',
 					'id' => $p['attrs_field']['name'],
-					'class' => array(),
 				);
 
 				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );

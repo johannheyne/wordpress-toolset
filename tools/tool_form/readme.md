@@ -18,6 +18,7 @@ __Table of Content__
 	- [todo] checkbox_list
 	- [todo] select
 	- [custom](#custom_field)
+	- [submit](#submit)
 - [todo] (Fields HTML5/JS Validation)
 - [Adding Field Item Wrapper Element](#adding_item_wrapper)
 - [Adding Content Prepending and Appending Form](#adding_content_prepending_appending_form)
@@ -263,6 +264,30 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 }, 10, 2 );
 ```
+
+
+
+<a id="submit"></a>
+### Submit
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'submit',
+		'pos' => 10,
+		'attrs_field' => array(
+			/* The 'name' and 'id' should different
+			than "submit" because this conflicts
+			jQuery $('form').submit(); methode */
+			'name' => '{field_name}',
+			'value' => 'Submit',
+		),
+	);
+
+	return $items;
+
+}, 10, 2 );
 
 
 
