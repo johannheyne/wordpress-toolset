@@ -12,23 +12,25 @@ The following example orders the array items so, that the id`s are in the order 
 ````php
 $array = array(
 	array(
-		'id' => 'c',
+		'pos_key' => 'c',
 		'pos' => 10,
 	),
 	array(
-		'id' => 'a',
+		'pos_key' => 'a',
 		'pos_top' = 10, // if multiple 'pos_top' items, the number reflects the order
 	),
 	array(
-		'id' => 'e',
+		'pos_key' => 'e',
 		'pos_bottom' = 10, // if multiple 'pos_top' items, the number reflects the order
 	),
 	array(
-		'id' => 'b',
+		'pos_key' => 'b',
+		'pos' => 10,
 		'pos_before' => 'c', // if multiple 'pos_before' items, the order in the source array reflects the order
 	),
 	array(
-		'id' => 'd',
+		'pos_key' => 'd',
+		'pos' => 10,
 		'pos_after' => 'c', // if multiple 'pos_after' items, the order in the source array reflects the order
 	),
 );
@@ -36,7 +38,7 @@ $array = array(
 $pos = new ToolArrayPos( array(
 	'array' => $array, // array to sort
 	'param' => array(
-		'pos_key' => 'id', // item array key used for positioning by pos_before and pos_after
+		'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
 	),
 ));
 

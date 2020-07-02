@@ -170,6 +170,7 @@ $GLOBALS['toolset'] = array(
 
 ### Tools
 
+* [Array Positioning](tools/tool_array_pos/readme.markdown)
 * [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
 * [Ajax Call](tools/tool_ajax/readme.markdown)
 * [Meta Title](tools/tool_meta_title/readme.markdown)
