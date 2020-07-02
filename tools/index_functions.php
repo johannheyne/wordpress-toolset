@@ -429,6 +429,11 @@
 						'funame' => 'tool_multilanguage_add_locale_to_url',
 					),
 
+					'tool_get_lang_value_from_array' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_get_lang_value_from_array',
+					),
+
 				// }
 
 				// tool_hreflang {

@@ -1075,3 +1075,39 @@
 
 		return $url;
 	}
+
+	function tool_get_lang_value_from_array( $array ) {
+
+		$locale = $GLOBALS['toolset']['frontend_locale'];
+
+		// GETS BY LOCALE {
+
+			if ( ! empty( $array[ $locale ] ) ) {
+
+				return $array[ $locale ];
+			}
+
+		// }
+
+		// GETS BY LANG {
+
+			$lang = explode( '_', $locale )[0];
+
+			if ( ! empty( $array[ $lang ] ) ) {
+
+				return $array[ $lang ];
+			}
+
+		// }
+
+		// GETS BY DEFAULT {
+
+			if ( ! empty( $array['default'] ) ) {
+
+				return $array['default'];
+			}
+
+		// }
+
+		return false;
+	}

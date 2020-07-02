@@ -444,7 +444,12 @@
 							$attrs['selected'] = 'selected';
 						}
 
-						array_push( $list, '<option' . attrs( $attrs ) . '>'. get_lang_value_from_array( $p['allow_null']['label'] ) . '</option>' );
+						$label = tool( array(
+							'name' => 'tool_get_lang_value_from_array',
+							'param' => $p['allow_null']['label'],
+						) );
+
+						array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
 					}
 
 				// }
@@ -637,7 +642,10 @@
 
 					if ( ! empty( $this->form_messages[ $value ] ) ) {
 
-						$html .= get_lang_value_from_array( $this->form_messages[ $value ] );
+						$html .= tool( array(
+							'name' => 'tool_get_lang_value_from_array',
+							'param' => $this->form_messages[ $value ],
+						) );
 					}
 				}
 

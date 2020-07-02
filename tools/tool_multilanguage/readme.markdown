@@ -93,4 +93,19 @@ $string = tool( array(
 ));
 ````
 
+### tool_get_lang_value_from_array
+
+Gets the translation of the current locale or language.
+
+````php
+$text_in_current_lang = tool( array(
+    'name' => 'tool_get_lang_value_from_array',
+    'param' => array(
+		'default' => 'default text',
+		'en_GB' => 'translation for locale',
+		'en' => 'translation for a language',
+    ),
+);
+````
+
 [back to overview](../../README.markdown#tools)
