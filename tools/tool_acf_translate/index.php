@@ -78,6 +78,7 @@
 
 				// }
 
+
 				// make sure there is a locale like "en_US" for translation
 				if ( $this->locale ) {
 
@@ -115,7 +116,7 @@
 				add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ), 9999 ); // Grouptitles in FlexContent after Toggle
 
 				//add_filter( 'acf/get_valid_field', array( $this, 'translate' ) ); // Fields
-				//add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
+				add_filter( 'acf/get_valid_field_group', array( $this, 'translate' ) ); // missed fieldgroup titles at aside postboxes
 				//add_filter( 'acf/fields/flexible_content/layout_title', array( $this, 'translate' ) ); // missed fieldgroup titles at option pages
 			}
 
