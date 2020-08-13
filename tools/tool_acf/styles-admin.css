@@ -1,0 +1,39 @@
+/* REMOVES OBSOLETE SPACE IN ACF WYSIWYG EDITOR */
+
+	.acf-input .wp-editor-tabs {
+		margin-top: -30px;
+	}
+
+	.acf-input .wp-media-buttons + .wp-editor-tabs {
+		margin-top: 0;
+	}
+
+	/* FIXES SPACE FOR DESCRIPTION */
+	[data-type="wysiwyg"] .acf-label .description {
+		margin-bottom: 30px;
+	}
+
+
+/* ADD SPACE AND LINE TO ACF GROUP HEADLINES IN TERM EDIT PAGES */
+
+	.term-php h2 {
+		padding-top: 3em;
+		padding-bottom: 0.6em;
+		border-bottom: 1px solid #aaa;
+	}
+
+
+/* REMOVES FIELD FROM HOMEPAGE */
+
+	/*[name="post_ID"][value="2"] ~ #poststuff .acf-field-5c4f53793c4df {
+
+	}*/
+
+
+/* FIXES POSTBOX HEADER VISIBILITY */
+
+	#postbox-container-2 .postbox-header,
+	#post-body-content .postbox-header {
+
+		display: none;
+	}

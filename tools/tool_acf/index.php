@@ -1,5 +1,17 @@
 <?php
 
+	// ADDS BACKENDSTYLES {
+
+		if ( is_admin() ) {
+
+			add_action( 'admin_enqueue_scripts', function() {
+
+				wp_enqueue_style( 'admin-acf-styles', plugin_dir_url( __FILE__ ) . 'styles-admin.css' );
+			});
+		}
+
+	// }
+
 	// ACF FIELDS ( Version 5 ) {
 
 		// REGISTER CUSTOM FIELDTYPES {
