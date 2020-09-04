@@ -1,3 +1,5 @@
+[Theme Doc](../../Kickstart/WordPress/ThemeDoc/index.md)
+
 WordPress ToolSet Plugin
 ===============
 
@@ -170,9 +172,11 @@ $GLOBALS['toolset'] = array(
 
 ### Tools
 
+* [Admin Get Posttype](tools/tool_posttypes/readme.markdown)
 * [Array Positioning](tools/tool_array_pos/readme.markdown)
-* [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
 * [Ajax Call](tools/tool_ajax/readme.markdown)
+* [Cookie Notice](tools/tool_cookie_notice/readme.markdown)
+* [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
 * [Meta Title](tools/tool_meta_title/readme.markdown)
 * [Meta Description](tools/tool_meta_description/readme.markdown)
 * [Meta Robots](tools/tool_meta_robots/readme.markdown)
@@ -184,8 +188,7 @@ $GLOBALS['toolset'] = array(
 * [Translate](tools/tool_translate/readme.markdown)
 * [Multilanguage](tools/tool_multilanguage/readme.markdown)
 * [Hreflang](tools/tool_hreflang/readme.markdown)
-* [Admin Get Posttype](tools/tool_posttypes/readme.markdown)
-* [Add Posttype](tools/tool_posttypes/readme.markdown)
+* [Posttype](tools/tool_posttypes/readme.markdown)
 * [Hierarchical Order Posts](tools/tool_order_posts/readme.markdown)
 * [Sortable Admin List Columns](tools/tool_sortable_list_column/readme.markdown)
 * [Form](tools/tool_form/readme.md)
