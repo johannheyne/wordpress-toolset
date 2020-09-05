@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 		require_once( 'BFIGitHubPluginUploader.php' );
 
-		new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset" );
+		new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset", '9e1a56ee3144a6f6830ff2cb9375d98aa765e79a' );
 	}
 
 // }

@@ -64,13 +64,20 @@ class BFIGitHubPluginUpdater {
 			$url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
 
 			// We need the access token for private repos
-			if ( !empty( $this->accessToken ) ) {
+			/*if ( !empty( $this->accessToken ) ) {
 
 				$url = add_query_arg( array( "access_token" => $this->accessToken ), $url );
-			}
+			}*/
+
+			$args = array(
+				'headers' => array(
+					'Accept' => 'application/vnd.github.v3+json',
+					'Authorization' => 'token ' . $this->accessToken,
+				)
+			);
 
 			// Get the results
-			$response = wp_remote_get( $url );
+			$response = wp_remote_get( $url, $args );
 
 			// CHECK GITHUB API CALL LIMIT {
 
