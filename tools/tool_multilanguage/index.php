@@ -263,10 +263,15 @@
 
 		// }
 
+		if ( class_exists( 'Locale' ) ) {
 
-		return Locale::getDisplayName( $p['langcode'], $p['locale'] );
+			return Locale::getDisplayName( $p['langcode'], $p['locale'] );
+		}
+		else {
+
+			return $p['langcode'];
+		}
 	}
-
 
 	function tool_multilanguage_require_regions( $p = array() ) {
 
