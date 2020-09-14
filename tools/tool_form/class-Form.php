@@ -362,6 +362,7 @@
 					'attrs_label' => array(),
 					'attrs_field' => array(
 						'name' => '', // name of select field
+						'value' => '', // name of select field
 					),
 					'sanitize' => true,
 					'allow_null' => array(
