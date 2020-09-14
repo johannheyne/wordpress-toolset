@@ -312,6 +312,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 }, 10, 2 );
 
+```
 
 
 <a id="adding_item_wrapper"></a>
@@ -386,6 +387,6 @@ $form = new Form();
 
 if ( $form->is_form_request( $form_id ) ) {
 
-  // Do Validations
+	// Do Validations
 }
 ```
