@@ -12,6 +12,7 @@ __Table of Content__
 	- Paramameter sanitize
 - [Field Types](#form_field)
 	- [text](#field_text)
+	- [select](#field_select)
 	- [taxonomy_select](#field_taxonomy_select)
 	- [todo] textarea
 	- [todo] radio
@@ -200,6 +201,69 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 }, 10, 2 );
 ```
+
+
+
+<a id="field_select"></a>
+### Select
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'select',
+		'label' => '{label_text}',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+			'placeholder' => '',
+		),
+		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'sanitize' => true,
+		'validation' => function( $value ) {
+
+			$message_keys = array(
+				'field' => array(),
+				'form' => array(),
+			);
+
+			return $message_keys;
+		},
+		'event' => array( // requires: tools/tool_form/script-select-field-events.js
+			'on_change' => 'change_location', // change_location, submit_form
+		),
+		'allow_null' => array( // false or array
+			'label' => array(
+				'default' => 'Choose…', // list of locales
+			),
+			'value' => '',
+		),
+		'options' => array(
+
+		),
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+#### Parameters
+
+```php
+['event']['on_change'] => 'change_location',
+['value_type'] => 'permalink',
+```
+Redirects to the permalink of the selectfield selected options value.<br>
+__Requires__ `'value_type'` to be `'permalink'`.<br>
+__Requires__ tools/tool_form/script-select-field-events.js
+```php
+['event']['on_change'] => 'submit_form',
+```
+Submits the form.<br>
+__Requires__ tools/tool_form/script-select-field-events.js
 
 
 

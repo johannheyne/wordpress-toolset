@@ -240,6 +240,11 @@
 					$html .= $this->get_taxonomy_select_field( $item );
 				}
 
+				if ( $item['type'] === 'select'  ) {
+
+					$html .= $this->get_select_field( $item );
+				}
+
 				if ( $item['type'] === 'custom'  ) {
 
 					$html .= $this->get_custom_field( $item );
@@ -524,6 +529,185 @@
 					// }
 
 					array_push( $list, '<option' . attrs( $attrs ) . '>'. $item->name . '</option>' );
+				}
+
+			// }
+
+			// ADDS EVENTS {
+
+				// ADDS CHANGE LOCATION ON CHANGE {
+
+					if ( $p['event']['on_change'] === 'change_location' ) {
+
+						$p['attrs_field']['class'][] = 'js-select-field-event-change-location';
+					}
+
+				// }
+
+				// ADDS SUBMIT FORM ON CHANGE {
+
+					if ( $p['event']['on_change'] === 'submit_form' ) {
+
+						$p['attrs_field']['class'][] = 'js-select-field-event-submit-form';
+					}
+
+				// }
+
+			// }
+
+			// BUILDS SELECT FIELD {
+
+				$html = '';
+
+				if ( ! empty( $list ) ) {
+
+					$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+				}
+
+			// }
+
+			return $html;
+		}
+
+		public function get_select_field( $p = array() ) {
+
+			/* USAGE
+
+				get_select_field( array(
+					'current_value' => '', // optional, if unset/false, then requires 'form_id' for auto setting 'current_term_value',
+					'event' => array(
+						'on_change' => 'change_location', // change_location, submit_form
+					),
+					'attrs_field' => array(
+						'name' => '', // name of select field
+					),
+					'options' => array(
+
+					),
+				));
+
+			*/
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'current_value' => 'category',
+					'event' => array(
+						'on_change' => false, // change_location, submit_form
+					),
+					'attrs_label' => array(),
+					'attrs_field' => array(
+						'name' => '', // name of select field
+						'value' => '', // name of select field
+					),
+					'sanitize' => true,
+					'allow_null' => array(
+						'label' => array(
+							'default' => 'Choose…', // list of locales
+						),
+						'value' => '',
+					),
+					'options' => array(
+
+					),
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// REQUEST VALUE {
+
+				if ( isset( $p['request_value'] ) ) {
+
+					$p['attrs_field']['value'] = $p['request_value'];
+					$p['current_value'] = $p['request_value'];
+				}
+
+			// }
+
+			// ATTRS LABEL {
+
+				$attrs_label_defaults = array(
+					'for' => $p['attrs_field']['name'],
+				);
+
+				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+			// }
+
+			// ATTRS FIELD {
+
+				$attrs_field_defaults = array(
+					'id' => $p['attrs_field']['name'],
+					'name' => $p['attrs_field']['name'],
+					'class' => array(),
+				);
+
+				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+				if ( $p['required'] === true ) {
+
+					$p['attrs_field']['required'] = true;
+					$p['attrs_field']['class'][] = 'required';
+				}
+
+			// }
+
+			// GETS OPTIONS LIST {
+
+				$list = array();
+
+				// ALLOW NULL {
+
+					if ( ! empty( $p['allow_null'] ) ) {
+
+						$attrs = array(
+							'value' => $p['allow_null']['value'],
+						);
+
+						if ( $p['current_value'] == $p['allow_null']['value'] ) {
+
+							$attrs['selected'] = 'selected';
+						}
+
+						$label = tool( array(
+							'name' => 'tool_get_lang_value_from_array',
+							'param' => $p['allow_null']['label'],
+						) );
+
+						array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
+					}
+
+				// }
+
+				foreach ( $p['options'] as $value => $label ) {
+
+					// SELECT OPTION ATTRIBUTES {
+
+						$attrs = array(
+							'value' => false,
+						);
+
+					// }
+
+					// SELECTED {
+
+						if ( $p['current_value'] == $value ) {
+
+							$attrs['selected'] = 'selected';
+						}
+
+					// }
+
+					// SETS VALUE {
+
+						$attrs['value'] = $value;
+
+					// }
+
+					array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
 				}
 
 			// }
