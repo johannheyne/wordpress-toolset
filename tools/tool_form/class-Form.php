@@ -59,7 +59,7 @@
 
 			// FORM REQUEST ACTION {
 
-				if ( $this->is_form_request( $p['form_id'] ) ) {
+				if ( $this->is_form_request( $this->p['form_id'] ) ) {
 
 					$this->p['is_request'] = true;
 
