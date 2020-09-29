@@ -52,16 +52,19 @@
 				empty( $GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ] )
 			) {
 
-				$locales = resourcebundle_locales( '' );
+				if ( class_exists( 'ResourceBundle' ) ) {
 
-				foreach ( $locales as $key => $item ) {
+					$locales = resourcebundle_locales( '' );
 
-					if (
-						$GLOBALS['toolset']['multisite'] OR // all langs, also without countrycode
-						strpos( $item, '_' )
-					) {
+					foreach ( $locales as $key => $item ) {
 
-						$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $item ] = Locale::getDisplayName( $item, $GLOBALS['toolset']['user_locale'] );
+						if (
+							$GLOBALS['toolset']['multisite'] OR // all langs, also without countrycode
+							strpos( $item, '_' )
+						) {
+
+							$GLOBALS['toolset']['multilanguage_langs'][ $p['locale'] ][ $item ] = Locale::getDisplayName( $item, $GLOBALS['toolset']['user_locale'] );
+						}
 					}
 				}
 			}
