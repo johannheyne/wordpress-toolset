@@ -241,6 +241,11 @@
 
 		// }
 
+		if ( empty( $GLOBALS['toolset']['multilanguage_countries'][ $p['locale'] ][ strtoupper( $p['countrycode'] ) ] ) ) {
+
+			$p['locale'] = 'en';
+		}
+
 		tool_multilanguage_require_countries( array(
 			'locale' => $p['locale'],
 		) );
