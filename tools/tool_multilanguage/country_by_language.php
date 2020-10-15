@@ -1,0 +1,27 @@
+<?php
+
+	return array(
+		'af' => 'NA',
+		'ak' => 'GH',
+		'am' => 'ET',
+		'ar' => 'SA',
+		'as' => 'IN',
+		'az' => 'Latn',
+		'be' => 'BY',
+		'bg' => 'BG',
+		'bm' => 'Latn',
+		'bn' => 'BD',
+		'bo' => 'CN',
+		'br' => 'FR',
+		'bs' => 'BA',
+		'ca' => 'FR',
+		'ce' => 'RU',
+		'cs' => 'CZ',
+		'cy' => 'GB',
+		'da' => 'DK',
+		'de' => 'DE',
+		'dz' => 'BT',
+		'ee' => 'GH',
+		'el' => 'CY',
+		'en' => 'GB',
+	);
