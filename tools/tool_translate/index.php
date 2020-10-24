@@ -24,9 +24,21 @@
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
 				add_action( 'localize_theme_script', array( $this, 'javascript_translation' ) );
+				add_action( 'init', array( $this, 'filter_admin_list_bulk_actions' ) );
 			}
 
 			// Public
+
+			public function filter_admin_list_bulk_actions() {
+
+				add_filter( 'bulk_actions-edit-translate', function( $actions ) {
+
+					// prevents recovering of an deleted tranbslations which would add a copies of the autogenerates translation
+					unset( $actions['untrash'] );
+
+					return $actions;
+				}, 10, 1 );
+			}
 
 			public function add_text( $p ) {
 
@@ -209,13 +221,14 @@
 						//'capability_type' => 'translate',
 						'map_meta_cap' => true,
 						'capabilities' => array(
-							'create_posts' => 'do_not_allow', // Removes support for the "Add New" function
-							'delete_posts' => 'do_not_allow',
+							//'create_posts' => 'do_not_allow', // Removes support for the "Add New" function
+							//'delete_posts' => 'do_not_allow',
 						),
 						//'map_meta_cap' => false, // Set to false, if users are not allowed to edit/delete existing posts
 
 					)
 				);
+
 			}
 
 			public function updates_posttype_entries() {
@@ -443,7 +456,10 @@
 
 						foreach ( $posts as $post_item ) {
 
-							if ( ! isset( $this->add_text_list[ $post_item->translate_text_domain ][ $post_item->translate_context ][ $post_item->translate_text ] ) ) {
+							if (
+								$post_item->translate_context !== 'global' AND
+								! isset( $this->add_text_list[ $post_item->translate_text_domain ][ $post_item->translate_context ][ $post_item->translate_text ] )
+							) {
 
 								wp_trash_post( $post_item->ID );
 							}
@@ -504,13 +520,34 @@
 				if ( function_exists('acf_add_local_field_group') ) {
 
 					$field_type = 'text';
+					$text_default = '';
+					$description = '';
+					$field_type = 'text';
 
 					if ( ! empty( $_REQUEST['post'] ) ) {
 
 						$post_id = sanitize_text_field( (int) $_REQUEST['post'] );
-						$field_type = get_post_meta( $post_id, 'type', true );
-						$text_default = get_post_meta( $post_id, 'text_default', true );
-						$description = get_post_meta( $post_id, 'description', true );
+
+						$temp = get_post_meta( $post_id, 'type', true );
+
+						if ( ! empty( $temp ) ) {
+
+							$field_type = $temp;
+						}
+
+						$temp = get_post_meta( $post_id, 'text_default', true );
+
+						if ( ! empty( $temp ) ) {
+
+							$text_default = $temp;
+						}
+
+						$temp = get_post_meta( $post_id, 'description', true );
+
+						if ( ! empty( $temp ) ) {
+
+							$description = $temp;
+						}
 					}
 
 					$GLOBALS['toolset']['classes']['ToolsetL10N']->_x( array(
@@ -549,30 +586,41 @@
 
 						// META FIELDS {
 
-							if ( ! empty( $post_id ) ) {
+							// CONTEXT {
 
-								$fields[] = array(
+								$args = array(
 									'key' => 'context',
 									'label' => _x( 'Context', 'tool_translate', 'toolset' ),
 									'name' => 'context',
 									'type' => 'text',
-									'readonly' => 1,
 									'instructions' => $description,
+									'default_value' => 'global',
+									'readonly' => 'global',
 								);
-							}
 
-							if ( ! empty( $post_id ) ) {
+								$fields[] = $args;
 
-								$fields[] = array(
+							// }
+
+							// DEFAULT TEXT {
+
+								$args = array(
 									'key' => 'text_default',
 									'label' => _x( 'Text (Default)', 'tool_translate', 'toolset' ),
 									'name' => 'text_default',
 									'type' => $field_type,
 									'default_value' => $text_default,
 									'rows' => 2,
-									'readonly' => 1,
 								);
-							}
+
+								if ( ! empty( $post_id ) ) {
+
+									$args['readonly'] = 1;
+								}
+
+								$fields[] = $args;
+
+							// }
 
 						// }
 
@@ -905,6 +953,21 @@
 						// $metas['description'][0]
 						// $metas['default_transl'][0]
 						// $metas['text_default'][0]
+
+						if ( $metas['context'][0] === 'global' ) {
+
+							if ( ! isset( $metas['status']) ) {
+
+								$metas['status'][] = 'untranslated';
+							}
+
+							$metas['text_domain'][] = 'tool_translate';
+							$metas['type'][] = 'text';
+							$metas['description'][] = '';
+							$metas['default_transl'][] = serialize( $metas['text_default'][0] );
+							$metas['js'][] = false;
+							$metas['text'][0] = $metas['text_default'][0];
+						}
 
 						$param = array(
 							'status' => $metas['status'][0],
