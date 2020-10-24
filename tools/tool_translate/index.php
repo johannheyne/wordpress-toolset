@@ -12,7 +12,7 @@
 
 			function __construct() {
 
-				add_action( 'acf/init', array( $this, 'adds_acf_fieldgroup' ) );
+				add_action( 'current_screen', array( $this, 'adds_acf_fieldgroup' ) );
 				add_action( 'setup_theme', array( $this, 'get_option_text_list' ) );
 				add_action( 'setup_theme', array( $this, 'add_rewrite_rules' ) );
 				add_action( 'init', array( $this, 'check_for_update' ) );
@@ -25,6 +25,7 @@
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
 				add_action( 'localize_theme_script', array( $this, 'javascript_translation' ) );
 				add_action( 'init', array( $this, 'filter_admin_list_bulk_actions' ) );
+				add_action( 'init', array( $this, 'adds_gettext_filter_for_none_tool_translate_text_domains' ) );
 			}
 
 			// Public
@@ -457,7 +458,7 @@
 						foreach ( $posts as $post_item ) {
 
 							if (
-								$post_item->translate_context !== 'global' AND
+								$post_item->translate_text_domain === 'tool_translate' AND
 								! isset( $this->add_text_list[ $post_item->translate_text_domain ][ $post_item->translate_context ][ $post_item->translate_text ] )
 							) {
 
@@ -466,7 +467,6 @@
 						}
 
 					// }
-
 
 				// }
 
@@ -517,12 +517,27 @@
 
 			public function adds_acf_fieldgroup() {
 
+				$screen = get_current_screen();
+
 				if ( function_exists('acf_add_local_field_group') ) {
 
 					$field_type = 'text';
 					$text_default = '';
+					$text_domain = 'tool_translate';
 					$description = '';
 					$field_type = 'text';
+
+					// IS SCREEN ADD NEW TRANSLATION {
+
+						if (
+							$screen->post_type === 'translate' AND
+							$screen->action === 'add'
+						) {
+
+							$text_domain = '';
+						}
+
+					// }
 
 					if ( ! empty( $_REQUEST['post'] ) ) {
 
@@ -547,6 +562,13 @@
 						if ( ! empty( $temp ) ) {
 
 							$description = $temp;
+						}
+
+						$temp = get_post_meta( $post_id, 'text_domain', true );
+
+						if ( ! empty( $temp ) ) {
+
+							$text_domain = $temp;
 						}
 					}
 
@@ -586,6 +608,27 @@
 
 						// META FIELDS {
 
+							// TEXT DOMAIN {
+
+								$args = array(
+									'key' => 'text_domain',
+									'label' => _x( 'Text Domain', 'tool_translate', 'toolset' ),
+									'name' => 'text_domain',
+									'type' => 'text',
+									//'instructions' => $description,
+									'default_value' => $text_domain,
+								);
+
+								if ( $text_domain === 'tool_translate' ) {
+
+									$args['readonly'] = 1;
+								}
+
+
+								$fields[] = $args;
+
+							// }
+
 							// CONTEXT {
 
 								$args = array(
@@ -594,9 +637,13 @@
 									'name' => 'context',
 									'type' => 'text',
 									'instructions' => $description,
-									'default_value' => 'global',
-									'readonly' => 'global',
+									'default_value' => '',
 								);
+
+								if ( $text_domain === 'tool_translate' ) {
+
+									$args['readonly'] = 1;
+								}
 
 								$fields[] = $args;
 
@@ -613,7 +660,7 @@
 									'rows' => 2,
 								);
 
-								if ( ! empty( $post_id ) ) {
+								if ( $text_domain === 'tool_translate' ) {
 
 									$args['readonly'] = 1;
 								}
@@ -761,6 +808,29 @@
 
 				$cols = array();
 
+				// SETUP COL "TEXT DOMAIN" {
+
+					$func = function( $col_id, $post_id ) {
+
+						if ( $col_id != 'text_domain' ) {
+
+							return;
+						}
+
+						echo get_post_meta( $post_id, 'text_domain', true );
+					};
+
+					$cols[] = array(
+						'sorttype' => 'meta',
+						'sortmetakey' => 'text_domain',
+						'sortmetaorderby' => 'meta_value',
+						'colid' => 'text_domain',
+						'collabel' => 'Text Domain',
+						'rowlabelfunction' => $func,
+					);
+
+				// }
+
 				// SETUP COL "CONTEXT" {
 
 					$func = function( $col_id, $post_id ) {
@@ -783,6 +853,7 @@
 					$cols[] = array(
 						'sorttype' => 'meta',
 						'sortmetakey' => 'context',
+						'sortmetaorderby' => 'meta_value',
 						'colid' => 'context',
 						'collabel' => 'Context',
 						'rowlabelfunction' => $func,
@@ -805,6 +876,7 @@
 					$cols[] = array(
 						'sorttype' => 'meta',
 						'sortmetakey' => 'text',
+						'sortmetaorderby' => 'meta_value',
 						'colid' => 'text',
 						'collabel' => 'Default Text',
 						'rowlabelfunction' => $func,
@@ -829,6 +901,7 @@
 						$cols[] = array(
 							'sorttype' => 'meta',
 							'sortmetakey' => 'transl_' . $lang_code,
+							'sortmetaorderby' => 'meta_value',
 							'colid' => 'transl_' . $lang_code,
 							'collabel' => 'Translation: ' . $lang_code,
 							'rowlabelfunction' => $func,
@@ -842,8 +915,8 @@
 					foreach ( $cols as $item ) {
 
 						$default = array(
-							'posttype' => 'posts',
-							'postname' => 'translate',
+							'posttype' => 'translate',
+							'postname' => false,
 							'position' => ++$col_index,
 						);
 
@@ -954,7 +1027,37 @@
 						// $metas['default_transl'][0]
 						// $metas['text_default'][0]
 
-						if ( $metas['context'][0] === 'global' ) {
+						if ( ! isset( $metas['status']) ) {
+
+							$metas['status'][] = 'untranslated';
+						}
+
+						if ( ! isset( $metas['type']) ) {
+
+							$metas['type'][] = 'text';
+						}
+
+						if ( ! isset( $metas['description']) ) {
+
+							$metas['description'][] = '';
+						}
+
+						if ( ! isset( $metas['default_transl']) ) {
+
+							$metas['default_transl'][] = serialize( $metas['text_default'][0] );
+						}
+
+						if ( ! isset( $metas['js']) ) {
+
+							$metas['js'][] = false;
+						}
+
+						if ( ! isset( $metas['text']) ) {
+
+							$metas['text'][] = $metas['text_default'][0];
+						}
+
+						/*if ( $metas['context'][0] === 'global' ) {
 
 							if ( ! isset( $metas['status']) ) {
 
@@ -967,7 +1070,7 @@
 							$metas['default_transl'][] = serialize( $metas['text_default'][0] );
 							$metas['js'][] = false;
 							$metas['text'][0] = $metas['text_default'][0];
-						}
+						}*/
 
 						$param = array(
 							'status' => $metas['status'][0],
@@ -1081,6 +1184,68 @@
 				flush_rewrite_rules();
 			}
 
+
+			// ADDS GETTEXT FILTER
+
+			public function adds_gettext_filter_for_none_tool_translate_text_domains() {
+
+				foreach ( $this->option_text_list as $text_domain => $text_domain_group ) {
+
+					if ( $text_domain === 'tool_translate' ) {
+
+						continue;
+					}
+
+					foreach ( $text_domain_group as $context => $context_group ) {
+
+						foreach ( $context_group as $text => $args) {
+
+							$p = array(
+								'text' => $text,
+								'context' => $context,
+								'domain' => $text_domain,
+								'translations' => $args['transl'],
+								'locale' => 'frontend',
+							);
+
+							if ( $context !== '' ) {
+
+								add_filter( 'gettext_with_context', function( $translation, $text, $context, $domain ) use( $p )  {
+
+									if (
+										$domain == $p['domain'] AND
+										$context == $p['context'] AND
+										$text == $p['text']
+									) {
+
+										$translation = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $p['translations'], $p['locale'] );
+									}
+
+									return $translation;
+
+								}, 10, 4 );
+							}
+							else {
+
+								add_filter( 'gettext', function( $translation, $text, $domain ) use( $p )  {
+
+									if (
+										$domain == $p['domain'] AND
+										$text == $p['text']
+									) {
+
+										$translation = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $p['translations'], $p['locale'] );
+									}
+
+									return $translation;
+
+								}, 10, 3 );
+							}
+						}
+					}
+				}
+
+			}
 
 			// JavaScript translations
 
