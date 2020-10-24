@@ -10,6 +10,8 @@
 
 			public $text_domain = 'tool_translate';
 
+			public $admin_list_cols = array();
+
 			function __construct() {
 
 				add_action( 'current_screen', array( $this, 'adds_acf_fieldgroup' ) );
@@ -817,7 +819,9 @@
 							return;
 						}
 
-						echo get_post_meta( $post_id, 'text_domain', true );
+						$text_domain = get_post_meta( $post_id, 'text_domain', true );
+
+						echo '<a href="edit.php?s=' . $text_domain . '&post_status=all&post_type=translate">' . $text_domain . '</a>';
 					};
 
 					$cols[] = array(
@@ -923,6 +927,8 @@
 						$args = array_replace_recursive( $default, $item );
 
 						new wpSortableListColumn( $args );
+
+						$this->admin_list_cols[] = $item['colid']; // required for admin $this->extend_admin_search()
 					}
 
 				// }
@@ -973,9 +979,17 @@
 						$_GET['post_type'] == 'translate' &&
 						! empty( $_GET['s'] )
 					) {
+
+						$cols_where = array();
+
+						foreach ( $this->admin_list_cols as $col_id ) {
+
+							$cols_where[] = "(" . $wpdb->postmeta . ".meta_value LIKE $1 AND " . $wpdb->postmeta . ".meta_key = '" . $col_id . "' )";
+						}
+
 						$where = preg_replace(
 							"/\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-							"(" . $wpdb->posts . ".post_title LIKE $1) OR (" . $wpdb->postmeta . ".meta_value LIKE $1 AND " . $wpdb->postmeta . ".meta_key = 'context' ) OR (" . $wpdb->postmeta . ".meta_value LIKE $1 AND " . $wpdb->postmeta . ".meta_key = 'text' )",
+							"(" . $wpdb->posts . ".post_title LIKE $1) OR " . implode( 'OR', $cols_where ),
 						$where );
 					}
 
