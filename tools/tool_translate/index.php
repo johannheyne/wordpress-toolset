@@ -87,11 +87,11 @@
 					$defaults = array(
 						'domain' => $this->text_domain,
 						'context' => '',
-						'domain' => 'tool_translate',
 						'text' => '',
 						'param' => array(
 							'text_default' => '',
 							'type' => 'text',
+							'source' => 'defined',
 							'description' => '',
 							'default_transl' => array(
 								/*'de_DE' => 'produkt',
@@ -527,6 +527,7 @@
 
 					$field_type = 'text';
 					$text_default = '';
+					$source = '';
 					$text_domain = 'tool_translate';
 					$description = '';
 					$field_type = 'text';
@@ -546,6 +547,13 @@
 					if ( ! empty( $_REQUEST['post'] ) ) {
 
 						$post_id = sanitize_text_field( (int) $_REQUEST['post'] );
+
+						$temp = get_post_meta( $post_id, 'source', true );
+
+						if ( ! empty( $temp ) ) {
+
+							$source = $temp;
+						}
 
 						$temp = get_post_meta( $post_id, 'type', true );
 
@@ -623,7 +631,7 @@
 									'default_value' => $text_domain,
 								);
 
-								if ( $text_domain === 'tool_translate' ) {
+								if ( $source === 'defined' ) {
 
 									$args['readonly'] = 1;
 								}
@@ -644,7 +652,7 @@
 									'default_value' => '',
 								);
 
-								if ( $text_domain === 'tool_translate' ) {
+								if ( $source === 'defined' ) {
 
 									$args['readonly'] = 1;
 								}
@@ -664,7 +672,7 @@
 									'rows' => 2,
 								);
 
-								if ( $text_domain === 'tool_translate' ) {
+								if ( $source === 'defined' ) {
 
 									$args['readonly'] = 1;
 								}
