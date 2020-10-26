@@ -294,6 +294,7 @@
 
 						foreach ( $posts as $key => $item ) {
 
+							$posts[ $key ]->source = get_post_meta( $item->ID, 'source', true );
 							$posts[ $key ]->translate_text_domain = get_post_meta( $item->ID, 'text_domain', true );
 							$posts[ $key ]->translate_context = get_post_meta( $item->ID, 'context', true );
 							$posts[ $key ]->translate_text = get_post_meta( $item->ID, 'text', true );
@@ -462,7 +463,7 @@
 						foreach ( $posts as $post_item ) {
 
 							if (
-								$post_item->translate_text_domain === 'tool_translate' AND
+								$post_item->source === 'defined' AND
 								! isset( $this->add_text_list[ $post_item->translate_text_domain ][ $post_item->translate_context ][ $post_item->translate_text ] )
 							) {
 
