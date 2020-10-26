@@ -24,10 +24,11 @@
 				add_action( 'init', array( $this, 'extend_admin_search' ) );
 				add_action( 'current_screen', array( $this, 'updates_posttype_entries' ) ); // $this->add_text to post metas, runs on admin posttype lis only
 				add_filter( 'gettext_with_context', array( $this, 'gettext_with_context' ), 10, 4 );
+				add_filter( 'gettext', array( $this, 'gettext' ), 10, 4 );
 				add_action( 'save_post', array( $this, 'save_post' ), 100, 3 );
 				add_action( 'localize_theme_script', array( $this, 'javascript_translation' ) );
 				add_action( 'init', array( $this, 'filter_admin_list_bulk_actions' ) );
-				add_action( 'init', array( $this, 'adds_gettext_filter_for_none_tool_translate_text_domains' ) );
+				//add_action( 'init', array( $this, 'adds_gettext_filter_for_none_tool_translate_text_domains' ) );
 			}
 
 			// Public
@@ -86,6 +87,7 @@
 					$defaults = array(
 						'domain' => $this->text_domain,
 						'context' => '',
+						'domain' => 'tool_translate',
 						'text' => '',
 						'param' => array(
 							'text_default' => '',
@@ -1155,6 +1157,21 @@
 				return $translation;
 			}
 
+			public function gettext( $translation, $text, $domain ) {
+
+				if (
+					! empty( $this->option_text_list[ $domain ][ '' ][ $text ]['transl'] )
+				) {
+
+					$transl = $this->option_text_list[ $domain ][ '' ][ $text ]['transl'];
+					$transl['default'] = $this->option_text_list[ $domain ][ '' ][ $text ]['text_default'];
+
+					$translation = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $transl );
+				}
+
+				return $translation;
+			}
+
 
 			// Rewrite Rules
 
@@ -1201,6 +1218,7 @@
 
 			// ADDS GETTEXT FILTER
 
+			/*
 			public function adds_gettext_filter_for_none_tool_translate_text_domains() {
 
 				foreach ( $this->option_text_list as $text_domain => $text_domain_group ) {
@@ -1260,6 +1278,7 @@
 				}
 
 			}
+			*/
 
 			// JavaScript translations
 
@@ -1439,20 +1458,39 @@
 				return false;
 			}
 
-			add_filter( 'gettext_with_context', function( $translation, $text, $context, $domain ) use( $p )  {
+			if ( $p['context'] !== '' ) {
 
-				if (
-					$domain == $p['domain'] AND
-					$context == $p['context'] AND
-					$text == $p['text']
-				) {
+				add_filter( 'gettext_with_context', function( $translation, $text, $context, $domain ) use( $p )  {
 
-					$translation = $this->translate( $p['translations'], $p['locale'] );
-				}
+					if (
+						$domain == $p['domain'] AND
+						$context == $p['context'] AND
+						$text == $p['text']
+					) {
 
-				return $translation;
+						$translation = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $p['translations'], $p['locale'] );
+					}
 
-			}, 10, 4 );
+					return $translation;
+
+				}, 10, 4 );
+			}
+			else {
+
+				add_filter( 'gettext', function( $translation, $text, $domain ) use( $p )  {
+
+					if (
+						$domain == $p['domain'] AND
+						$text == $p['text']
+					) {
+
+						$translation = $GLOBALS['toolset']['classes']['ToolsetL10N']->translate( $p['translations'], $p['locale'] );
+					}
+
+					return $translation;
+
+				}, 10, 3 );
+			}
 
 			// JAVASCRIPT {
 
