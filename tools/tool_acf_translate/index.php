@@ -50,6 +50,13 @@
 
 			function __construct() {
 
+				$value = apply_filters( 'tool_acf_translate/disabling', false );
+
+				if ( $value === true ) {
+
+					return;
+				}
+
 				// SET LOCALE {
 
 					if ( empty( $GLOBALS['toolset']['user_locale'] ) ) {
