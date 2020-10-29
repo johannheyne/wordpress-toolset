@@ -1,5 +1,11 @@
 [Theme Doc](../../Kickstart/WordPress/ThemeDoc/index.md)
 
+Übersicht
+==============
+
+- [Documentation](#documentation)
+	- [Tools](#tools)
+
 WordPress ToolSet Plugin
 ===============
 
@@ -141,8 +147,8 @@ $GLOBALS['toolset'] = array(
 );
 ````
 
-Documentation
----------------
+## Documentation
+
 
 ### Initial Functionality
 
@@ -172,26 +178,25 @@ $GLOBALS['toolset'] = array(
 
 ### Tools
 
-* [Admin Get Posttype](tools/tool_posttypes/readme.markdown)
 * [Array Positioning](tools/tool_array_pos/readme.markdown)
 * [Ajax Call](tools/tool_ajax/readme.markdown)
 * [Cookie Notice](tools/tool_cookie_notice/readme.markdown)
+* [Form](tools/tool_form/readme.md)
+* [Hreflang](tools/tool_hreflang/readme.markdown)
+* [Hierarchical Order Posts](tools/tool_order_posts/readme.markdown)
+* [Instagram](tools/tool_instagram/readme.markdown)
 * [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
+* [Get Locale by URL](tools/tool_get_locale_by_url/readme.markdown)
 * [Meta Title](tools/tool_meta_title/readme.markdown)
 * [Meta Description](tools/tool_meta_description/readme.markdown)
 * [Meta Robots](tools/tool_meta_robots/readme.markdown)
-* [User Login/Logout](tools/tool_wp_user/readme.markdown)
-* [Instagram](tools/tool_instagram/readme.markdown)
-* [Transient](tools/tool_transient/readme.markdown)
-* [Get Locale by URL](tools/tool_get_locale_by_url/readme.markdown)
-* [Register Navigation Menu](tools/tool_nav_menu_register/readme.markdown)
-* [Translate](tools/tool_translate/readme.markdown)
 * [Multilanguage](tools/tool_multilanguage/readme.markdown)
-* [Hreflang](tools/tool_hreflang/readme.markdown)
+* [Register Navigation Menu](tools/tool_nav_menu_register/readme.markdown)
 * [Posttype](tools/tool_posttypes/readme.markdown)
-* [Hierarchical Order Posts](tools/tool_order_posts/readme.markdown)
 * [Sortable Admin List Columns](tools/tool_sortable_list_column/readme.markdown)
-* [Form](tools/tool_form/readme.md)
+* [Transient](tools/tool_transient/readme.markdown)
+* [Translate](tools/tool_translate/readme.markdown)
+* [User Login/Logout](tools/tool_wp_user/readme.markdown)
 
 ### Assets
 
