@@ -17,11 +17,11 @@ $array = array(
 	),
 	array(
 		'pos_key' => 'a',
-		'pos_top' = 10, // if multiple 'pos_top' items, the number reflects the order
+		'pos_top' => 10, // if multiple 'pos_top' items, the number reflects the order
 	),
 	array(
 		'pos_key' => 'e',
-		'pos_bottom' = 10, // if multiple 'pos_top' items, the number reflects the order
+		'pos_bottom' => 10, // if multiple 'pos_top' items, the number reflects the order
 	),
 	array(
 		'pos_key' => 'b',
