@@ -599,7 +599,7 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'current_value' => 'category',
+					'current_value' => '',
 					'event' => array(
 						'on_change' => false, // change_location, submit_form
 					),
