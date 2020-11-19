@@ -44,6 +44,20 @@
 
 			// }
 
+			// REGISTER FORM MESSAGE ITEM {
+
+				$settings = array(
+					'type' => 'form_messages',
+					'item_wrapper' => false,
+					'pos' => 0,
+				);
+				$settings = apply_filters( 'class/Form/messages/settings', $settings );
+				$settings = apply_filters( 'class/Form/messages/settings/form_group=' . $this->p['form_group'], $settings );
+				$settings = apply_filters( 'class/Form/messages/settings/form_id=' . $this->p['form_id'], $settings );
+				$this->items[] = $settings;
+
+			// }
+
 			// REGISTES FIELDSETS {
 
 				$this->items = apply_filters( 'class/Form/fieldsets', $this->items, $this->p );
@@ -188,6 +202,11 @@
 
 						$this->p['has_messages'] = true;
 					}
+
+					if ( ! empty( $item['validation_messages']['form'] ) ) {
+
+						$this->form_validations += $item['validation_messages']['form'];
+					}
 				}
 			}
 		}
@@ -236,12 +255,15 @@
 				'class' => array( 'form-field' ),
 			);
 
-			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
-			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
-			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
+			if ( ! isset( $item['item_wrapper'] ) ) {
 
-			$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p );
-			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+				$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
+				$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
+				$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
+
+				$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p );
+				$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+			}
 
 				if ( $item['type'] === 'text'  ) {
 
@@ -273,8 +295,16 @@
 					$html .= $this->get_submit_field( $item );
 				}
 
+				if ( $item['type'] === 'form_messages'  ) {
+
+					$html .= $this->get_form_messages( $item );
+				}
+
+			if ( ! isset( $item['item_wrapper'] ) ) {
+
 				$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p );
 				$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+			}
 
 			return $html;
 		}
@@ -301,6 +331,50 @@
 			$html .= '<p class="field-description">';
 				$html .= $p['description'];
 			$html .= '</p>';
+
+			return $html;
+		}
+
+		public function get_form_messages( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array();
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '<ul class="form-messages">';
+
+				// VALIDATIONS {
+
+					if ( ! empty( $this->form_validations ) ) {
+
+						foreach ( $this->form_validations as $key => $value ) {
+
+							$html .= '<li class="form-messages-item" data-type="validation">';
+
+								if ( ! empty( $this->form_messages[ $value ] ) ) {
+
+									$html .= tool( array(
+										'name' => 'tool_get_lang_value_from_array',
+										'param' => $this->form_messages[ $value ],
+									) );
+								}
+								else {
+
+									$html .= $value;
+								}
+
+							$html .= '</li>';
+
+						}
+					}
+
+				// }
+
+			$html .= '</ul>';
 
 			return $html;
 		}
@@ -962,28 +1036,6 @@
 			return $html;
 		}
 
-		public function get_form_messages( $p = array() ) {
-
-			// DEFAULTS {
-
-				$defaults = array();
-
-				$p = array_replace_recursive( $defaults, $p );
-
-			// }
-
-			$html = '';
-
-			if ( ! empty( $this->form_validations ) ) {
-
-				foreach ( $this->form_validations as $key => $value ) {
-
-					$html .= $value;
-				}
-			}
-
-			return $html;
-		}
 
 		// SANITIZING
 

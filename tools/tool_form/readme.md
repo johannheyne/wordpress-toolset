@@ -6,6 +6,7 @@ Tool form
 __Table of Content__
 - [Add a Form](#add_a_form)
 - [Defining Global Form Messages](#defining_global_form_messages)
+- [Filter Form Messages Settings](#filter-form-messages-settings)
 - [Order Form Items](#order_form_items)
 - [Adding Fieldsets](#adding_fieldsets)
 - [Adding Field Item Attributes](#field_wrapper_attrs)
@@ -90,6 +91,29 @@ add_filter( 'class/Form/messages', function( $messages, $param ) {
 	);
 
 	return $messages;
+
+}, 10, 2 );
+```
+
+
+
+
+<a id="filter-form-messages-settings"></a>
+## Filter Form Messages Settings
+
+```
+class/Form/messages/settings
+class/Form/messages/settings/form_id=
+class/Form/messages/settings/form_group=
+```
+
+```php
+add_filter( 'class/Form/messages/settings/form_id={form_id}', function( $settings ) {
+
+	$settings['pos'] = 0;
+	//$settings['item_wrapper'] = false; // default: false, wether to wrap messages like a field item
+
+	return $settings;
 
 }, 10, 2 );
 ```
