@@ -21,8 +21,8 @@
 					'form_group' => '',
 					'form_attrs' => array(
 						'role' => 'form',
-						'methode' => 'get',
 						'action' => '',
+						'method' => 'get',
 					),
 					'echo' => true,
 					'is_request' => false, // whether the form is requested
