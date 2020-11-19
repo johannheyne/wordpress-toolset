@@ -280,7 +280,52 @@
 				'class' => array( 'form-field' ),
 			);
 
+			$html_field = '';
+
+			if ( $item['type'] === 'text'  ) {
+
+				$html_field = $this->get_text_field( $item );
+			}
+
+			if ( $item['type'] === 'taxonomy_select'  ) {
+
+				$html_field = $this->get_taxonomy_select_field( $item );
+			}
+
+			if ( $item['type'] === 'select'  ) {
+
+				$html_field = $this->get_select_field( $item );
+			}
+
+			if ( $item['type'] === 'switch_toggle'  ) {
+
+				$html_field = $this->get_switch_toggle_field( $item );
+			}
+
+			if ( $item['type'] === 'custom'  ) {
+
+				$html_field = $this->get_custom_field( $item );
+			}
+
+			if ( $item['type'] === 'submit'  ) {
+
+				$html_field = $this->get_submit_field( $item );
+			}
+
+			if ( $item['type'] === 'form_messages'  ) {
+
+				$html_field = $this->get_form_messages( $item );
+			}
+
 			if ( ! isset( $item['item_wrapper'] ) ) {
+
+				if (
+					isset( $item['validation_messages'] ) AND
+					! empty ( $item['validation_messages']['field']
+				) ) {
+
+					$attrs['class'][] = 'has-field-message';
+				}
 
 				$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
 				$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
@@ -290,40 +335,7 @@
 				$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
 			}
 
-				if ( $item['type'] === 'text'  ) {
-
-					$html .= $this->get_text_field( $item );
-				}
-
-				if ( $item['type'] === 'taxonomy_select'  ) {
-
-					$html .= $this->get_taxonomy_select_field( $item );
-				}
-
-				if ( $item['type'] === 'select'  ) {
-
-					$html .= $this->get_select_field( $item );
-				}
-
-				if ( $item['type'] === 'switch_toggle'  ) {
-
-					$html .= $this->get_switch_toggle_field( $item );
-				}
-
-				if ( $item['type'] === 'custom'  ) {
-
-					$html .= $this->get_custom_field( $item );
-				}
-
-				if ( $item['type'] === 'submit'  ) {
-
-					$html .= $this->get_submit_field( $item );
-				}
-
-				if ( $item['type'] === 'form_messages'  ) {
-
-					$html .= $this->get_form_messages( $item );
-				}
+			$html .= $html_field;
 
 			if ( ! isset( $item['item_wrapper'] ) ) {
 
