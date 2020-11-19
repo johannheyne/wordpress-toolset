@@ -183,7 +183,11 @@
 					}
 
 					$item['validation_messages'] = $item['validation']( $value );
-					$this->p['has_messages'] = true;
+
+					if ( ! empty( $item['validation_messages'] ) ) {
+
+						$this->p['has_messages'] = true;
+					}
 				}
 			}
 		}
