@@ -105,6 +105,28 @@
 
 			$attrs = array_replace_recursive( $attrs, $this->p['form_attrs'] );
 
+			// ADDS MESSAGES CLASSES TO FORM ELEMENT {
+
+				if (
+					$this->p['has_form_messages'] === true OR
+					$this->p['has_field_messages'] === true
+				) {
+
+					$attrs['class'][] = 'has-messages';
+				}
+
+				if ( $this->p['has_field_messages'] === true ) {
+
+					$attrs['class'][] = 'has-field-messages';
+				}
+
+				if ( $this->p['has_form_messages'] === true ) {
+
+					$attrs['class'][] = 'has-form-messages';
+				}
+
+			// }
+
 			$html = '<form' . attrs( $attrs ) . '>';
 
 				$html .= '<input type="hidden" name="form_id" value="' . $this->p['form_id'] . '" />';
@@ -198,13 +220,16 @@
 
 					$item['validation_messages'] = $item['validation']( $value );
 
-					if ( ! empty( $item['validation_messages'] ) ) {
+					if ( ! empty( $item['validation_messages']['field'] ) ) {
 
 						$this->p['has_messages'] = true;
+						$this->p['has_field_messages'] = true;
 					}
 
 					if ( ! empty( $item['validation_messages']['form'] ) ) {
 
+						$this->p['has_messages'] = true;
+						$this->p['has_form_messages'] = true;
 						$this->form_validations += $item['validation_messages']['form'];
 					}
 				}
