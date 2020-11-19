@@ -482,11 +482,11 @@ class/Form/request/form_id=
 ```
 
 ```php
-add_filter( 'class/Form/request/form_id=my_form', function( $param ) {
+add_filter( 'class/Form/request/form_id=my_form', function( $form_param, $form_object ) {
 
 	// Do something with $_REQUEST
 
-	if ( ! empty( $param['has_massages'] ) {
+	if ( ! empty( $form_param['has_messages'] ) {
 
 		// Form not valide
 	}

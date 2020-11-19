@@ -6,11 +6,13 @@
 			Version: v1.0
 		*/
 
-		private $p = false;
+		public $p = false;
 
-		private $items = array();
+		public $items = array();
 
-		private $form_messages = array();
+		public $form_messages = array();
+
+		public $form_validations = array();
 
 		function __construct( $p = array() ) {
 
@@ -70,9 +72,9 @@
 					$this->updates_field_values();
 
 					// REQUEST ACTION
-					do_action( 'class/Form/request/form_id=' . $this->p['form_id'], $this->p );
-					do_action( 'class/Form/request/form_group=' . $this->p['form_group'], $this->p );
-					do_action( 'class/Form/request', $this->p );
+					do_action( 'class/Form/request/form_id=' . $this->p['form_id'], $this->p, $this );
+					do_action( 'class/Form/request/form_group=' . $this->p['form_group'], $this->p, $this );
+					do_action( 'class/Form/request', $this->p, $this );
 				}
 
 			// }
