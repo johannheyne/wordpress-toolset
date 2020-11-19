@@ -613,6 +613,11 @@
 					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 				}
 
+				if ( ! empty( $p['validation_messages'] ) ) {
+
+					$html .= $this->get_field_validation_html( $p['validation_messages'] );
+				}
+
 				$html .= $this->get_field_description_html( $p );
 
 			// }
@@ -795,6 +800,10 @@
 					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 				}
 
+				if ( ! empty( $p['validation_messages'] ) ) {
+
+					$html .= $this->get_field_validation_html( $p['validation_messages'] );
+				}
 
 				$html .= $this->get_field_description_html( $p );
 
