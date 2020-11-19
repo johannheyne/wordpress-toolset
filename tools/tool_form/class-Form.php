@@ -268,6 +268,32 @@
 			return $html;
 		}
 
+		private function get_field_description_html( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'description' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( $p['description'] === false ) {
+
+				return $html;
+			}
+
+			$html .= '<p class="field-description">';
+				$html .= $p['description'];
+			$html .= '</p>';
+
+			return $html;
+		}
+
 		// FIELD TYPES
 
 		public function get_text_field( $p = array() ) {
@@ -285,6 +311,7 @@
 					'validation' => false,
 					'value' => '',
 					'sanitize' => true,
+					'description' => false,
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -337,6 +364,8 @@
 				$html .= $this->get_field_validation_html( $p['validation_messages'] );
 			}
 
+			$html .= $this->get_field_description_html( $p );
+
 			return $html;
 		}
 
@@ -383,6 +412,7 @@
 						),
 						'value' => '',
 					),
+					'description' => false,
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -572,6 +602,8 @@
 					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 				}
 
+				$html .= $this->get_field_description_html( $p );
+
 			// }
 
 			return $html;
@@ -618,6 +650,7 @@
 					'options' => array(
 
 					),
+					'description' => false,
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -751,6 +784,9 @@
 					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 				}
 
+
+				$html .= $this->get_field_description_html( $p );
+
 			// }
 
 			return $html;
@@ -767,6 +803,7 @@
 						'name' => '',
 						'value' => '',
 					),
+					'description' => false,
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -785,6 +822,8 @@
 			// }
 
 			$html = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+			$html .= $this->get_field_description_html( $p );
 
 			return $html;
 		}
