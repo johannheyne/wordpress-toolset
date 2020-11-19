@@ -14,14 +14,13 @@ __Table of Content__
 	- Paramameter sanitize
 - [Field Types](#form_field)
 	- [text](#field_text)
-	- [select](#field_select)
-	- [taxonomy_select](#field_taxonomy_select)
 	- [todo] textarea
-	- [todo] radio
 	- [todo] checkbox
 	- [todo] checkbox_list
+	- [todo] radio
+	- [select](#field_select)
+	- [taxonomy_select](#field_taxonomy_select)
 	- [switch_toggle](#field_switch_toggle)
-	- [todo] select
 	- [custom](#custom_field)
 	- [submit](#submit)
 - [todo] (Fields HTML5/JS Validation)
@@ -177,8 +176,6 @@ add_filter( 'class/Form/item_attrs/form_id={form_id}', function( $attrs, $param 
 <a id="adding_items_to_form"></a>
 ## Adding Fields
 
-Fields HTML can be added before and after the search field…
-
 ```
 class/Form/items
 class/Form/items/form_id=
@@ -189,7 +186,15 @@ class/Form/items/form_group=
 add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
-		// Field Parameters
+		'type' => 'text', // for example
+		'fieldset_id' => '{fieldset_id}',
+
+		// Positioning
+		'pos_key' => '{pos_key}', // defines position key used by others for relative positioning
+		'pos_before' => '{pos_key}', // position against other items in the same context
+		'pos' => 10, // position against other items in the same context
+
+		// Other Field Type Depending Parameters
 	);
 
 	return $items;
