@@ -847,6 +847,10 @@
 							'param' => $this->form_messages[ $value ],
 						) );
 					}
+					else {
+
+						$html .= $value;
+					}
 				}
 
 			$html .= '</span>';
