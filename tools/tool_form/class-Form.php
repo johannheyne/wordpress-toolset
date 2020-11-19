@@ -169,11 +169,17 @@
 			foreach ( $this->items as &$item ) {
 
 				if (
-					! empty( $item['validation'] ) AND
-					isset( $_REQUEST[ $item['attrs_field']['name'] ] )
+					! empty( $item['validation'] )
 				) {
 
-					$item['validation_messages'] = $item['validation']( $_REQUEST[ $item['attrs_field']['name'] ] );
+					$value = '';
+
+					if ( isset( $_REQUEST[ $item['attrs_field']['name'] ] ) ) {
+
+						$value = $_REQUEST[ $item['attrs_field']['name'] ];
+					}
+
+					$item['validation_messages'] = $item['validation']( $value );
 					$this->p['has_messages'] = true;
 				}
 			}
