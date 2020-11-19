@@ -21,8 +21,9 @@
 					'form_group' => '',
 					'form_attrs' => array(
 						'role' => 'form',
-						'action' => '',
 						'method' => 'get',
+						'action' => './',
+						'enctype' => 'multipart/form-data',
 					),
 					'echo' => true,
 					'is_request' => false, // whether the form is requested

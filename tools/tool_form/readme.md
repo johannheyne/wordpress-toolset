@@ -37,11 +37,12 @@ new Form( array(
 	'form_id' => '{form_id}',
 	'form_group' => '{form_group}',
 	'form_attrs' => array(
-		'action' => '',
-		'methode' => 'get',
 		'class' => array( 'my-form' ),
-		'role' => 'form',
 		'aria_label' => 'My Form',
+		// 'method' => 'get',
+		// 'action' => './',
+		// 'role' => 'form',
+		// 'enctype' => 'multipart/form-data',
 		// add more
 	),
 	'echo' => true,
