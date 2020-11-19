@@ -18,6 +18,7 @@ __Table of Content__
 	- [todo] radio
 	- [todo] checkbox
 	- [todo] checkbox_list
+	- [switch_toggle](#field_switch_toggle)
 	- [todo] select
 	- [custom](#custom_field)
 	- [submit](#submit)
@@ -333,6 +334,41 @@ Submits the form.<br>
 __Requires__ tools/tool_form/script-select-field-events.js
 
 
+
+
+
+<a id="field_switch_toggle"></a>
+### Switch Toggle
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'switch_toggle',
+		'label_before' => '',
+		'label_after' => '',
+		'description' => false,
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+			'value' => 'on',
+		),
+		'validation' => function( $value ) {
+
+			$message_keys = array(
+				'field' => array(),
+				'form' => array(),
+			);
+
+			return $message_keys;
+		},
+		'pos' => 10,
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
 
 
 

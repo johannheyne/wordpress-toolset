@@ -252,6 +252,11 @@
 					$html .= $this->get_select_field( $item );
 				}
 
+				if ( $item['type'] === 'switch_toggle'  ) {
+
+					$html .= $this->get_switch_toggle_field( $item );
+				}
+
 				if ( $item['type'] === 'custom'  ) {
 
 					$html .= $this->get_custom_field( $item );
@@ -845,6 +850,121 @@
 			if ( $p['callback'] ) {
 
 				$html .= $p['callback']();
+			}
+
+			return $html;
+		}
+
+		public function get_switch_toggle_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'label_before' => '',
+					'label_after' => '',
+					'attrs_label' => array(),
+					'attrs_field' => array(
+						'name' => '',
+						'value' => 'on',
+					),
+					'validation' => false,
+					'sanitize' => true,
+					'description' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			// REQUEST VALUE {
+
+				if ( isset( $p['request_value'] ) ) {
+
+					$p['attrs_field']['checked'] = '';
+				}
+
+			// }
+
+			// REQUIRED {
+
+				if ( $p['required'] === true ) {
+
+					$p['attrs_field']['required'] = true;
+					$p['attrs_field']['class'][] = 'required';
+				}
+
+			// }
+
+			// ADDS REQUIRED LABEL AND INPUT ELEMENT ATTRS {
+
+				// <label for=""> {
+
+					if ( empty( $p['attrs_label']['for'] ) ) {
+
+						$p['attrs_label']['for'] = $p['attrs_field']['name'];
+					}
+
+				// }
+
+				// <input id=""> {
+
+					if ( empty( $p['attrs_field']['id'] ) ) {
+
+						$p['attrs_field']['id'] = $p['attrs_field']['name'];
+					}
+
+				// }
+
+				// <input class="switch-toggle-checkbox"> {
+
+					if ( empty( $p['attrs_field']['class'] ) ) {
+
+						$p['attrs_field']['class'] = array();
+					}
+
+					$p['attrs_field']['class'][] = 'switch-toggle-checkbox';
+
+				// }
+
+			// }
+
+			// BUILDS FIELD {
+
+				$html .= '<input type="checkbox"' . attrs( $p['attrs_field'] ) . '/>';
+				$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label_before'] . '<span class="switch-toggle"><span class="switch-toggle-on">On</span><span class="switch-toggle-off">Off</span></span>' . $p['label_after'] . '</label>';
+
+				if ( ! empty( $p['validation_messages'] ) ) {
+
+					$html .= $this->get_field_validation_html( $p['validation_messages'] );
+				}
+
+				$html .= $this->get_field_description_html( $p );
+
+			// }
+
+			return $html;
+		}
+
+		public function get_form_messages( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array();
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( ! empty( $this->form_validations ) ) {
+
+				foreach ( $this->form_validations as $key => $value ) {
+
+					$html .= $value;
+				}
 			}
 
 			return $html;
