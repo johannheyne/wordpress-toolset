@@ -5,7 +5,8 @@ Tool form
 
 __Table of Content__
 - [Add a Form](#add_a_form)
-- [Adding Form Messages](#adding_form_messages)
+- [Defining Global Form Messages](#defining_global_form_messages)
+- [Order Form Items](#order_form_items)
 - [Adding Fieldsets](#adding_fieldsets)
 - [Adding Field Item Attributes](#field_wrapper_attrs)
 - [Adding Fields](#adding_items_to_form)
@@ -53,7 +54,7 @@ new Form( array(
 This adds a basic form…
 
 ```html
-<form class="{class}" role="{role}" aria-label="{aria_label}" method="{method}" action="{action}">
+<form class="{class}" role="{role}" aria-label="{aria_label}" method="{method}" action="{action}" enctype="{enctype}">
 
 	<input type="hidden" name="form_id" value="{form_id}" />
 
@@ -64,8 +65,8 @@ This adds a basic form…
 
 
 
-<a id="adding_form_messages"></a>
-## Adding Form Messages
+<a id="defining_global_form_messages"></a>
+## Defining Global Form Messages
 
 ```
 class/Form/messages
@@ -92,6 +93,15 @@ add_filter( 'class/Form/messages', function( $messages, $param ) {
 
 }, 10, 2 );
 ```
+
+
+
+
+<a id="order_form_items"></a>
+## Order Form Items
+
+To determine the order of the fieldsets and fields, use the properties of the [ToolArrayPos](../tool_array_pos/readme.markdown) tool.
+
 
 <a id="adding_fieldsets"></a>
 ## Adding Fieldsets
