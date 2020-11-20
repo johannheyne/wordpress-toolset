@@ -8,6 +8,8 @@
 
 		public $p = false;
 
+		public $settings = false;
+
 		public $items = array();
 
 		public $form_messages = array();
@@ -29,10 +31,69 @@
 					),
 					'echo' => true,
 					'is_request' => false, // whether the form is requested
-					'has_messages' => false, // whether the form has massages
+					'has_messages' => false, // whether the form has general massages
+					'has_form_messages' => false, // whether the form has global massages
+					'has_field_messages' => false, // whether a form field has massages
+					'templates' => array(
+						'field_label' => array(
+							'ph' => array(
+								'attrs' => array(
+								),
+							),
+							'tpl' => '<label{attrs}>{content}</label>',
+						),
+						'before_field' => array(
+							'ph' => array(
+								'attrs' => array(
+									'class' => 'before-field',
+								),
+							),
+							'tpl' => '<span{attrs}>{content}</span>',
+						),
+						'after_field' => array(
+							'ph' => array(
+								'attrs' => array(
+									'class' => 'after-field',
+								),
+							),
+							'tpl' => '<span{attrs}>{content}</span>',
+						),
+						'field_description' => array(
+							'ph' => array(
+								'attrs' => array(
+									'class' => 'field-description',
+								),
+							),
+							'tpl' => '<p{attrs}>{content}</p>',
+						),
+						'field_validation_message' => array(
+							'ph' => array(
+								'attrs' => array(
+									'class' => 'field-validation',
+								),
+							),
+							'tpl' => '<span{attrs}>{content}</span>',
+						),
+						'switch_toggle' => array(
+							'ph' => array(
+								'attrs_label' => array(),
+								'toggle_on_text' => '',
+								'toggle_off_text' => '',
+							),
+							'tpl' => '<label{attrs_label}><span class="switch-toggle"><span class="switch-toggle-on">{toggle_on_text}</span><span class="switch-toggle-off">{toggle_off_text}</span></span></label>',
+						),
+					),
 				);
 
 				$this->p = array_replace_recursive( $defaults, $p );
+
+				// FILTERS TEMPLATES {
+
+					$this->p['templates'] = apply_filters( 'class/Form/templates', $this->p['templates'] );
+					$this->p['templates'] = apply_filters( 'class/Form/templates/form_group=' . $this->p['form_group'], $this->p['templates'] );
+					$this->p['templates'] = apply_filters( 'class/Form/templates/form_id=' . $this->p['form_id'], $this->p['templates'] );
+
+				// }
 
 			// }
 
@@ -46,19 +107,19 @@
 
 			// REGISTER FORM MESSAGE ITEM {
 
-				$settings = array(
+				$form_messages_item = array(
 					'type' => 'form_messages',
 					'item_wrapper' => false,
 					'pos' => 0,
 				);
-				$settings = apply_filters( 'class/Form/messages/settings', $settings );
-				$settings = apply_filters( 'class/Form/messages/settings/form_group=' . $this->p['form_group'], $settings );
-				$settings = apply_filters( 'class/Form/messages/settings/form_id=' . $this->p['form_id'], $settings );
-				$this->items[] = $settings;
+				$form_messages_item = apply_filters( 'class/Form/messages/settings', $form_messages_item );
+				$form_messages_item = apply_filters( 'class/Form/messages/settings/form_group=' . $this->p['form_group'], $form_messages_item );
+				$form_messages_item = apply_filters( 'class/Form/messages/settings/form_id=' . $this->p['form_id'], $form_messages_item );
+				$this->items[] = $form_messages_item;
 
 			// }
 
-			// REGISTES FIELDSETS {
+			// ADDS FIELDSETS {
 
 				$this->items = apply_filters( 'class/Form/fieldsets', $this->items, $this->p );
 				$this->items = apply_filters( 'class/Form/fieldsets/form_group=' . $this->p['form_group'], $this->items, $this->p );
@@ -66,7 +127,7 @@
 
 			// }
 
-			// GET FORM ITEMS {
+			// ADDS FORM ITEMS {
 
 				$this->items = apply_filters( 'class/Form/items', $this->items, $this->p );
 				$this->items = apply_filters( 'class/Form/items/form_id=' . $this->p['form_id'], $this->items, $this->p );
@@ -74,7 +135,7 @@
 
 			// }
 
-			// FORM REQUEST ACTION {
+			// ADDS FORM REQUEST ACTION {
 
 				if ( $this->is_form_request( $this->p['form_id'] ) ) {
 
@@ -346,6 +407,33 @@
 			return $html;
 		}
 
+		private function get_field_label_html( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'label' => false,
+					'attrs_label' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( $p['label'] !== false ) {
+
+				$ph = $this->p['templates']['field_label']['ph'];
+				$ph['attrs'] = array_replace_recursive( $ph['attrs'], $p['attrs_label'] );
+				$ph['content'] = $p['label'];
+
+				$html = $this->do_template(  $this->p['templates']['field_label']['tpl'], $ph );
+			}
+
+			return $html;
+		}
+
 		private function get_field_description_html( $p = array() ) {
 
 			// DEFAULTS {
@@ -360,14 +448,108 @@
 
 			$html = '';
 
-			if ( $p['description'] === false ) {
+			if ( $p['description'] !== false ) {
+
+				$ph = $this->p['templates']['field_description']['ph'];
+				$ph['content'] = $p['description'];
+
+				$html = $this->do_template(  $this->p['templates']['field_description']['tpl'], $ph );
+			}
+
+			return $html;
+		}
+
+		private function get_field_before_field_html( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'description' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( $p['before_field'] !== false ) {
+
+				$ph = $this->p['templates']['before_field']['ph'];
+				$ph['content'] = $p['before_field'];
+
+				$html = $this->do_template(  $this->p['templates']['before_field']['tpl'], $ph );
+			}
+
+			return $html;
+		}
+
+		private function get_field_after_field_html( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'description' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( $p['after_field'] !== false ) {
+
+				$ph = $this->p['templates']['after_field']['ph'];
+				$ph['content'] = $p['after_field'];
+
+				$html = $this->do_template(  $this->p['templates']['after_field']['tpl'], $ph );
+			}
+
+			return $html;
+		}
+
+		private function get_field_validation_message_html( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( ! $this->is_form_request( $this->p['form_id'] ) ) {
 
 				return $html;
 			}
 
-			$html .= '<p class="field-description">';
-				$html .= $p['description'];
-			$html .= '</p>';
+			if ( empty( $p['validation_messages']['field'] ) ) {
+
+				return $html;
+			}
+
+			$ph = $this->p['templates']['field_validation_message']['ph'];
+
+			foreach ( $p['validation_messages']['field'] as $value ) {
+
+				if ( ! empty( $this->form_messages[ $value ] ) ) {
+
+					$ph['content'] = tool( array(
+						'name' => 'tool_get_lang_value_from_array',
+						'param' => $this->form_messages[ $value ],
+					) );
+				}
+				else {
+
+					$ph['content'] = $value;
+				}
+			}
+
+			$html = $this->do_template(  $this->p['templates']['field_validation_message']['tpl'], $ph );
 
 			return $html;
 		}
@@ -423,7 +605,9 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'label' => '',
+					'label' => false,
+					'before_field' => false,
+					'after_field' => false,
 					'attrs_label' => array(),
 					'attrs_field' => array(
 						'name' => '',
@@ -434,6 +618,14 @@
 					'value' => '',
 					'sanitize' => true,
 					'description' => false,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -478,15 +670,19 @@
 
 			// }
 
-			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-			$html .= '<input' . attrs( $p['attrs_field'] ) . '>';
+			// TEMPLATING {
 
-			if ( ! empty( $p['validation_messages'] ) ) {
+				$template_parts = array();
+				$template_parts['label'] = $this->get_field_label_html( $p );
+				$template_parts['description'] = $this->get_field_description_html( $p );
+				$template_parts['before_field'] = $this->get_field_before_field_html( $p );
+				$template_parts['after_field'] = $this->get_field_after_field_html( $p );
+				$template_parts['validation'] = $this->get_field_validation_message_html( $p );
+				$template_parts['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
-				$html .= $this->get_field_validation_html( $p['validation_messages'] );
-			}
+				$html = $this->do_template( $p['template'], $template_parts );
 
-			$html .= $this->get_field_description_html( $p );
+			// }
 
 			return $html;
 		}
@@ -516,6 +712,9 @@
 			// DEFAULTS {
 
 				$defaults = array(
+					'label' => '{label_text}',
+					'before_field' => false,
+					'after_field' => false,
 					'taxonomy' => 'category',
 					'hide_empty' => false,
 					'value_type' => 'permalink', // permalink, term_id
@@ -535,6 +734,14 @@
 						'value' => '',
 					),
 					'description' => false,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -716,20 +923,20 @@
 
 			// BUILDS SELECT FIELD {
 
-				$html = '';
+				if ( empty( $list ) ) {
 
-				if ( ! empty( $list ) ) {
-
-					$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+					return '';
 				}
 
-				if ( ! empty( $p['validation_messages'] ) ) {
+				$template_parts = array();
+				$template_parts['label'] = $this->get_field_label_html( $p );
+				$template_parts['description'] = $this->get_field_description_html( $p );
+				$template_parts['before_field'] = $this->get_field_before_field_html( $p );
+				$template_parts['after_field'] = $this->get_field_after_field_html( $p );
+				$template_parts['validation'] = $this->get_field_validation_message_html( $p );
+				$template_parts['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 
-					$html .= $this->get_field_validation_html( $p['validation_messages'] );
-				}
-
-				$html .= $this->get_field_description_html( $p );
+				$html = $this->do_template( $p['template'], $template_parts );
 
 			// }
 
@@ -758,6 +965,9 @@
 			// DEFAULTS {
 
 				$defaults = array(
+					'label' => '',
+					'before_field' => false,
+					'after_field' => false,
 					'current_value' => '',
 					'event' => array(
 						'on_change' => false, // change_location, submit_form
@@ -778,6 +988,14 @@
 
 					),
 					'description' => false,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -903,80 +1121,22 @@
 
 			// BUILDS SELECT FIELD {
 
-				$html = '';
+				if ( empty( $list ) ) {
 
-				if ( ! empty( $list ) ) {
-
-					$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+					return '';
 				}
 
-				if ( ! empty( $p['validation_messages'] ) ) {
+				$template_parts = array();
+				$template_parts['label'] = $this->get_field_label_html( $p );
+				$template_parts['description'] = $this->get_field_description_html( $p );
+				$template_parts['before_field'] = $this->get_field_before_field_html( $p );
+				$template_parts['after_field'] = $this->get_field_after_field_html( $p );
+				$template_parts['validation'] = $this->get_field_validation_message_html( $p );
+				$template_parts['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 
-					$html .= $this->get_field_validation_html( $p['validation_messages'] );
-				}
-
-				$html .= $this->get_field_description_html( $p );
-
-			// }
-
-			return $html;
-		}
-
-		public function get_submit_field( $p = array() ) {
-
-			// DEFAULTS {
-
-				$defaults = array(
-					'type' => 'submit',
-					'attrs_field' => array(
-						'type' => 'submit',
-						'name' => '',
-						'value' => '',
-					),
-					'description' => false,
-				);
-
-				$p = array_replace_recursive( $defaults, $p );
+				$html = $this->do_template( $p['template'], $template_parts );
 
 			// }
-
-
-			// ATTRS FIELD {
-
-				$attrs_field_defaults = array(
-					'id' => $p['attrs_field']['name'],
-				);
-
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
-
-			// }
-
-			$html = '<input' . attrs( $p['attrs_field'] ) . '>';
-
-			$html .= $this->get_field_description_html( $p );
-
-			return $html;
-		}
-
-		public function get_custom_field( $p = array() ) {
-
-			// DEFAULTS {
-
-				$defaults = array(
-					'callback' => false,
-				);
-
-				$p = array_replace_recursive( $defaults, $p );
-
-			// }
-
-			$html = '';
-
-			if ( $p['callback'] ) {
-
-				$html .= $p['callback']();
-			}
 
 			return $html;
 		}
@@ -986,8 +1146,9 @@
 			// DEFAULTS {
 
 				$defaults = array(
-					'label_before' => '',
-					'label_after' => '',
+					'label' => '',
+					'before_field' => false,
+					'after_field' => false,
 					'attrs_label' => array(),
 					'attrs_field' => array(
 						'name' => '',
@@ -996,6 +1157,17 @@
 					'validation' => false,
 					'sanitize' => true,
 					'description' => false,
+					'toggle_on_text' => '',
+					'toggle_off_text' => '',
+					'template' => array(
+						'{field}',
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{toggle}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
@@ -1058,21 +1230,101 @@
 
 			// BUILDS FIELD {
 
-				$html .= '<input type="checkbox"' . attrs( $p['attrs_field'] ) . '/>';
-				$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label_before'] . '<span class="switch-toggle"><span class="switch-toggle-on">On</span><span class="switch-toggle-off">Off</span></span>' . $p['label_after'] . '</label>';
+				$template_parts = array();
+				$template_parts['field'] = '<input type="checkbox"' . attrs( $p['attrs_field'] ) . '/>';
+				$template_parts['label'] = $this->get_field_label_html( $p );
+				$template_parts['description'] = $this->get_field_description_html( $p );
+				$template_parts['before_field'] = $this->get_field_before_field_html( $p );
 
-				if ( ! empty( $p['validation_messages'] ) ) {
+				$template_parts['toggle'] = $this->do_template( $this->p['templates']['switch_toggle']['tpl'], array(
+					'attrs_label' => $p['attrs_label'],
+					'toggle_on_text' => $p['toggle_on_text'],
+					'toggle_off_text' => $p['toggle_off_text'],
+				) );
 
-					$html .= $this->get_field_validation_html( $p['validation_messages'] );
-				}
+				$template_parts['after_field'] = $this->get_field_after_field_html( $p );
+				$template_parts['validation'] = $this->get_field_validation_message_html( $p );
 
-				$html .= $this->get_field_description_html( $p );
+				$html = $this->do_template( $p['template'], $template_parts );
 
 			// }
 
 			return $html;
 		}
 
+		public function get_custom_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'callback' => false,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			$html = '';
+
+			if ( $p['callback'] ) {
+
+				$html .= $p['callback']();
+			}
+
+			return $html;
+		}
+
+		public function get_submit_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'type' => 'submit',
+					'before_field' => false,
+					'after_field' => false,
+					'attrs_field' => array(
+						'type' => 'submit',
+						'name' => '',
+						'value' => '',
+					),
+					'description' => false,
+					'template' => array(
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{description}',
+					),
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+
+			// ATTRS FIELD {
+
+				$attrs_field_defaults = array(
+					'id' => $p['attrs_field']['name'],
+				);
+
+				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+			// }
+
+			// TEMPLATING {
+
+				$template_parts = array();
+				$template_parts['description'] = $this->get_field_description_html( $p );
+				$template_parts['before_field'] = $this->get_field_before_field_html( $p );
+				$template_parts['after_field'] = $this->get_field_after_field_html( $p );
+				$template_parts['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+				$html = $this->do_template( $p['template'], $template_parts );
+
+			// }
+
+			return $html;
+		}
 
 		// SANITIZING
 
@@ -1083,43 +1335,6 @@
 			return $string;
 		}
 
-		// VALIDATION
-
-		private function get_field_validation_html( $messages ) {
-
-			$html = '';
-
-			if ( empty( $messages['field'] ) ) {
-
-				return $html;
-			}
-
-			if ( ! $this->is_form_request( $this->p['form_id'] ) ) {
-
-				return $html;
-			}
-
-			$html .= '<span class="field-validation">';
-
-				foreach ( $messages['field'] as $value ) {
-
-					if ( ! empty( $this->form_messages[ $value ] ) ) {
-
-						$html .= tool( array(
-							'name' => 'tool_get_lang_value_from_array',
-							'param' => $this->form_messages[ $value ],
-						) );
-					}
-					else {
-
-						$html .= $value;
-					}
-				}
-
-			$html .= '</span>';
-
-			return $html;
-		}
 
 		// HELPER
 
@@ -1134,6 +1349,75 @@
 
 				return $value;
 			}
+		}
+
+		private function do_template( $template, $placeholders ) {
+
+			/*
+				$template: array/string
+					array( '<div{one_attrs}>{one_content}</div>', '<div{two_attrs}>{two_content}</div>' )
+					string '<div{one_attrs}>{one_content}</div>'
+
+				$placeholders: array
+
+					Note:	string 'attrs' in placeholder name converts
+							placeholder array to key="value"
+
+					array(
+						'attrs_one' => array(
+							'class' => 'one',
+						),
+						'content_one' => array( '<h1>Hello</h1>', '<p>World</p>' ),
+						'attrs_two' => array(
+							'class' => 'two',
+						),
+						'content_two' => '<h1>Hello</h1><p>World</p>',
+					)
+			*/
+
+			// TEMPLATE ARRAY TO STRING {
+
+				if ( is_array( $template ) ) {
+
+					$template = implode( '', $template );
+				}
+
+			// }
+
+			// DO PLACEHOLDERS {
+
+				foreach ( $placeholders as $key => $value ) {
+
+					// DETECT ATTRS {
+
+						if ( strpos( $key, 'attrs' ) !== false ) {
+
+							$value = attrs( $value );
+						}
+
+					// }
+
+					// DETECT ARRAYS {
+
+						if ( is_array( $value ) ) {
+
+							$value = implode( '', $value );
+						}
+
+					// }
+
+					$template = str_replace( '{' . $key . '}', $value, $template );
+				}
+
+			// }
+
+			// REMOVES LEFTOVER PLACEHOLDERS {
+
+				$template = preg_replace( '/\{\w+\}/i', '', $template );
+
+			// }
+
+			return $template;
 		}
 
 		public function is_form_request( $form_id ) {
