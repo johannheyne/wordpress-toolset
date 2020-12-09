@@ -5,23 +5,20 @@ Tool form
 
 __Table of Content__
 - [Add a Form](#add_a_form)
-- [Defining Global Form Messages](#defining_global_form_messages)
-- [Filter Form Messages Settings](#filter-form-messages-settings)
-- [Filter Form Templates](#filter-form-templates)
-- [Order Form Items](#order_form_items)
+- [Adding Form Messages](#adding_form_messages)
 - [Adding Fieldsets](#adding_fieldsets)
 - [Adding Field Item Attributes](#field_wrapper_attrs)
 - [Adding Fields](#adding_items_to_form)
 	- Paramameter sanitize
 - [Field Types](#form_field)
 	- [text](#field_text)
-	- [todo] textarea
-	- [todo] checkbox
-	- [todo] checkbox_list
-	- [todo] radio
 	- [select](#field_select)
 	- [taxonomy_select](#field_taxonomy_select)
-	- [switch_toggle](#field_switch_toggle)
+	- [todo] textarea
+	- [todo] radio
+	- [todo] checkbox
+	- [todo] checkbox_list
+	- [todo] select
 	- [custom](#custom_field)
 	- [submit](#submit)
 - [todo] (Fields HTML5/JS Validation)
@@ -40,12 +37,11 @@ new Form( array(
 	'form_id' => '{form_id}',
 	'form_group' => '{form_group}',
 	'form_attrs' => array(
+		'action' => '',
+		'methode' => 'get',
 		'class' => array( 'my-form' ),
+		'role' => 'form',
 		'aria_label' => 'My Form',
-		// 'method' => 'get',
-		// 'action' => './',
-		// 'role' => 'form',
-		// 'enctype' => 'multipart/form-data',
 		// add more
 	),
 	'echo' => true,
@@ -55,7 +51,7 @@ new Form( array(
 This adds a basic form…
 
 ```html
-<form class="{class}" role="{role}" aria-label="{aria_label}" method="{method}" action="{action}" enctype="{enctype}">
+<form class="{class}" role="{role}" aria-label="{aria_label}" method="{method}" action="{action}">
 
 	<input type="hidden" name="form_id" value="{form_id}" />
 
@@ -66,8 +62,8 @@ This adds a basic form…
 
 
 
-<a id="defining_global_form_messages"></a>
-## Defining Global Form Messages
+<a id="adding_form_messages"></a>
+## Adding Form Messages
 
 ```
 class/Form/messages
@@ -94,112 +90,6 @@ add_filter( 'class/Form/messages', function( $messages, $param ) {
 
 }, 10, 2 );
 ```
-
-
-
-
-<a id="filter-form-messages-settings"></a>
-## Filter Form Messages Settings
-
-```
-class/Form/messages/settings
-class/Form/messages/settings/form_id=
-class/Form/messages/settings/form_group=
-```
-
-```php
-add_filter( 'class/Form/messages/settings/form_id={form_id}', function( $settings ) {
-
-	$settings['pos'] = 0;
-	//$settings['item_wrapper'] = false; // default: false, wether to wrap messages like a field item
-
-	return $settings;
-
-}, 10, 2 );
-```
-
-
-
-
-<a id="filter-form-templates"></a>
-## Filter Form Templates
-
-```
-class/Form/templates
-class/Form/templates/form_id=
-class/Form/templates/form_group=
-```
-
-```php
-add_filter( 'class/Form/templates/form_id={form_id}', function( $templates ) {
-
-	/*
-	$templates['field_label'] = array(
-		'ph' => array(
-			'attrs' => array(),
-		),
-		'tpl' => '<label{attrs}>{content}</label>',
-	);
-
-	$templates['before_field'] = array(
-		'ph' => array(
-			'attrs' => array(
-				'class' => 'before-field',
-			),
-		),
-		'tpl' => '<span{attrs}>{content}</span>',
-	);
-
-	$templates['after_field'] = array(
-		'ph' => array(
-			'attrs' => array(
-				'class' => 'after-field',
-			),
-		),
-		'tpl' => '<span{attrs}>{content}</span>',
-	);
-
-	$templates['field_description'] = array(
-		'ph' => array(
-			'attrs' => array(
-				'class' => 'field-description',
-			),
-		),
-		'tpl' => '<p{attrs}>{content}</p>',
-	);
-
-	$templates['field_validation_message'] = array(
-		'ph' => array(
-			'attrs' => array(
-				'class' => 'field-validation',
-			),
-		),
-		'tpl' => '<span{attrs}>{content}</span>',
-	);
-
-	$templates['switch_toggle'] = array(
-		'ph' => array(
-			'attrs_label' => array(),
-			'toggle_on_text' => '',
-			'toggle_off_text' => '',
-		),
-		'tpl' => '<label{attrs_label}><span class="switch-toggle"><span class="switch-toggle-on">{toggle_on_text}</span><span class="switch-toggle-off">{toggle_off_text}</span></span></label>',
-	);
-	*/
-
-	return $templates;
-
-}, 10, 2 );
-```
-
-
-
-
-<a id="order_form_items"></a>
-## Order Form Items
-
-To determine the order of the fieldsets and fields, use the properties of the [ToolArrayPos](../tool_array_pos/readme.markdown) tool.
-
 
 <a id="adding_fieldsets"></a>
 ## Adding Fieldsets
@@ -251,6 +141,8 @@ add_filter( 'class/Form/item_attrs/form_id={form_id}', function( $attrs, $param 
 <a id="adding_items_to_form"></a>
 ## Adding Fields
 
+Fields HTML can be added before and after the search field…
+
 ```
 class/Form/items
 class/Form/items/form_id=
@@ -261,15 +153,7 @@ class/Form/items/form_group=
 add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
-		'type' => 'text', // for example
-		'fieldset_id' => '{fieldset_id}',
-
-		// Positioning
-		'pos_key' => '{pos_key}', // defines position key used by others for relative positioning
-		'pos_before' => '{pos_key}', // position against other items in the same context
-		'pos' => 10, // position against other items in the same context
-
-		// Other Field Type Depending Parameters
+		// Field Parameters
 	);
 
 	return $items;
@@ -293,9 +177,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	$items[] = array(
 		'type' => 'text',
 		'label' => '{label_text}',
-		'before_field' => false,
-		'after_field' => false,
-		'description' => false,
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
@@ -314,18 +195,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 			return $message_keys;
 		},
-		/*'template' => array(
-			'{label}',
-			'{description}',
-			'{before_field}',
-			'{field}',
-			'{after_field}',
-			'{validation}',
-			call_user_func( function( $param ) {
-
-				return '<p>' . $param['form_id'] . '</p>';
-			}, $param ),
-		),*/
 	);
 
 	return $items;
@@ -344,9 +213,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	$items[] = array(
 		'type' => 'select',
 		'label' => '{label_text}',
-		'before_field' => false,
-		'after_field' => false,
-		'description' => false,
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
@@ -377,18 +243,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'options' => array(
 
 		),
-		/*'template' => array(
-			'{label}',
-			'{description}',
-			'{before_field}',
-			'{field}',
-			'{after_field}',
-			'{validation}',
-			call_user_func( function( $param ) {
-
-				return '<p>' . $param['form_id'] . '</p>';
-			}, $param ),
-		),*/
 	);
 
 	return $items;
@@ -422,9 +276,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	$items[] = array(
 		'type' => 'taxonomy_select',
 		'label' => '{label_text}',
-		'before_field' => false,
-		'after_field' => false,
-		'description' => false,
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
@@ -455,18 +306,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			),
 			'value' => '',
 		),
-		/*'template' => array(
-			'{label}',
-			'{description}',
-			'{before_field}',
-			'{field}',
-			'{after_field}',
-			'{validation}',
-			call_user_func( function( $param ) {
-
-				return '<p>' . $param['form_id'] . '</p>';
-			}, $param ),
-		),*/
 	);
 
 	return $items;
@@ -490,55 +329,6 @@ Submits the form.<br>
 __Requires__ tools/tool_form/script-select-field-events.js
 
 
-
-
-
-<a id="field_switch_toggle"></a>
-### Switch Toggle
-
-```php
-add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
-
-	$items[] = array(
-		'type' => 'switch_toggle',
-		'label' => '',
-		'before_field' => false,
-		'after_field' => false,
-		'description' => false,
-		'attrs_label' => array(),
-		'attrs_field' => array(
-			'name' => '{field_name}',
-			'value' => 'on',
-		),
-		'validation' => function( $value ) {
-
-			$message_keys = array(
-				'field' => array(),
-				'form' => array(),
-			);
-
-			return $message_keys;
-		},
-		'pos' => 10,
-		/*'template' => array(
-			'{field}', // must be ordered before {toggle}
-			'{label}',
-			'{description}',
-			'{before_field}',
-			'{toggle}',
-			'{after_field}',
-			'{validation}',
-			call_user_func( function( $param ) {
-
-				return '<p>' . $param['form_id'] . '</p>';
-			}, $param ),
-		),*/
-	);
-
-	return $items;
-
-}, 10, 2 );
-```
 
 
 
@@ -572,7 +362,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
 		'type' => 'submit',
-		'description' => false,
 		'pos' => 10,
 		'attrs_field' => array(
 			/* The 'name' and 'id' should different
@@ -581,12 +370,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'name' => '{field_name}',
 			'value' => 'Submit',
 		),
-		/*'template' => array(
-			'{before_field}',
-			'{field}',
-			'{after_field}',
-			'{description}',
-		),*/
 	);
 
 	return $items;
@@ -648,12 +431,13 @@ class/Form/request/form_id=
 ```
 
 ```php
-add_filter( 'class/Form/request/form_id=my_form', function( $form_param, $form_object ) {
+add_filter( 'class/Form/request/form_id=my_form', function( $param ) {
 
-	if ( empty( $form_param['has_messages'] ) {
+	// Do something with $_REQUEST
 
-		// Form is valide
-		// Do something with $_REQUEST
+	if ( ! empty( $param['has_massages'] ) {
+
+		// Form not valide
 	}
 
 }, 10, 2 );
