@@ -47,20 +47,9 @@
 			t.submit_form = function() {
 
 				var select_field = $( this ),
-					form = select_field.closest( 'form' ),
-					submit = form.find( '[type="submit"]' );
+					form = select_field.closest( 'form' );
 
-				// if form has a submit button, trigger that to perform browser native fields validation
-				if ( submit.length > 0 ) {
-
-					submit.trigger( 'click' );
-				}
-
-				// if form has no submit button, just submit form
-				else {
-
-					form.submit();
-				}
+				form.submit();
 			};
 
 		};
