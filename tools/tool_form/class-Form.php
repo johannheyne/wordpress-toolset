@@ -241,6 +241,11 @@
 					$html .= $this->get_text_field( $item );
 				}
 
+				if ( $item['type'] === 'textarea'  ) {
+
+					$html .= $this->get_textarea_field( $item );
+				}
+
 				if ( $item['type'] === 'checkbox'  ) {
 
 					$html .= $this->get_checkbox_field( $item );
@@ -340,6 +345,75 @@
 
 			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
 			$html .= '<input' . attrs( $p['attrs_field'] ) . '>';
+
+			if ( ! empty( $p['validation_messages'] ) ) {
+
+				$html .= $this->get_field_validation_html( $p['validation_messages'] );
+			}
+
+			return $html;
+		}
+
+		public function get_textarea_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'label' => '',
+					'attrs_label' => array(),
+					'attrs_field' => array(
+						'name' => '',
+						'value' => '',
+					),
+					'required' => false,
+					'validation' => false,
+					'value' => '',
+					'sanitize' => true,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// ATTRS LABEL {
+
+				$attrs_label_defaults = array(
+					'for' => $p['attrs_field']['name'],
+				);
+
+				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+			// }
+
+			// ATTRS FIELD {
+
+				$attrs_field_defaults = array(
+					'type' => 'text',
+					'id' => $p['attrs_field']['name'],
+					'name' => $p['attrs_field']['name'],
+					'class' => array(),
+				);
+
+				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+				if ( $p['required'] === true ) {
+
+					$p['attrs_field']['required'] = true;
+					$p['attrs_field']['class'][] = 'required';
+				}
+
+			// }
+
+			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+			$html .= '<textarea' . attrs( $p['attrs_field'] ) . '>';
+
+				if ( ! empty( $p['request_value'] ) ) {
+
+					$html .= $p['request_value'];
+				}
+
+			$html .= '</textarea>';
+
 
 			if ( ! empty( $p['validation_messages'] ) ) {
 

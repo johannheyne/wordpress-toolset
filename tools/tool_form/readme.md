@@ -12,13 +12,13 @@ __Table of Content__
 	- Paramameter sanitize
 - [Field Types](#form_field)
 	- [text](#field_text)
+	- [textarea](#field_textarea)
+	- [todo] radio
 	- [checkbox](#field_checkbox)
+	- [todo] checkbox_list
 	- [select](#field_select)
 	- [taxonomy_select](#field_taxonomy_select)
 	- [switch_toggle](#field_switch_toggle)
-	- [todo] textarea
-	- [todo] radio
-	- [todo] checkbox_list
 	- [custom](#custom_field)
 	- [submit](#submit)
 - [todo] (Fields HTML5/JS Validation)
@@ -176,6 +176,42 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
 		'type' => 'text',
+		'label' => '{label_text}',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+			'placeholder' => '',
+		),
+		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'sanitize' => true,
+		'validation' => function( $value ) {
+
+			$message_keys = array(
+				'field' => array(),
+				'form' => array(),
+			);
+
+			return $message_keys;
+		},
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+
+
+<a id="field_textarea"></a>
+### Textarea
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 't',
 		'label' => '{label_text}',
 		'attrs_label' => array(),
 		'attrs_field' => array(
