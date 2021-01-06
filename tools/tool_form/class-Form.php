@@ -77,6 +77,12 @@
 
 			// }
 
+			// ADDONS {
+
+				$this->addon_before_after_field();
+
+			// }
+
 			if ( $this->p['echo'] === true ) {
 
 				echo $this->get_form();
@@ -299,9 +305,24 @@
 					'validation' => false,
 					'value' => '',
 					'sanitize' => true,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
 			// }
 
@@ -343,13 +364,16 @@
 
 			// }
 
-			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-			$html .= '<input' . attrs( $p['attrs_field'] ) . '>';
+			// TEMPLATE {
 
-			if ( ! empty( $p['validation_messages'] ) ) {
+				$template_data = array();
 
-				$html .= $this->get_field_validation_html( $p['validation_messages'] );
-			}
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
+
+			// }
 
 			return $html;
 		}
@@ -369,9 +393,24 @@
 					'validation' => false,
 					'value' => '',
 					'sanitize' => true,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
 			// }
 
@@ -404,21 +443,23 @@
 
 			// }
 
-			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-			$html .= '<textarea' . attrs( $p['attrs_field'] ) . '>';
+			// TEMPLATE {
 
-				if ( ! empty( $p['request_value'] ) ) {
+				$template_data = array();
 
-					$html .= $p['request_value'];
-				}
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+				$template_data['field'] = '<textarea' . attrs( $p['attrs_field'] ) . '>';
 
-			$html .= '</textarea>';
+					if ( ! empty( $p['request_value'] ) ) {
 
+						$template_data['field'] .= $p['request_value'];
+					}
 
-			if ( ! empty( $p['validation_messages'] ) ) {
+				$template_data['field'] .= '</textarea>';
 
-				$html .= $this->get_field_validation_html( $p['validation_messages'] );
-			}
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
+
+			// }
 
 			return $html;
 		}
@@ -443,9 +484,24 @@
 					'validation' => false,
 					'value' => '',
 					'sanitize' => true,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
 			// }
 
@@ -482,31 +538,24 @@
 
 			// }
 
-			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+			// TEMPLATE {
 
-			if ( $p['before_field'] ) {
+				$template_data = array();
 
-				$html .= '<span class="before-field">' . $p['before_field'] . '</span>';
-			}
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
 
-			$html .= '<input' . attrs( $p['attrs_field'] ) . '>';
+				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
-			if ( $p['custom_checkbox'] ) {
+				if ( $p['custom_checkbox'] ) {
 
-				$p['custom_checkbox'] = str_replace( '{field_name}', $p['attrs_field']['name'], $p['custom_checkbox'] );
+					$p['custom_checkbox'] = str_replace( '{field_name}', $p['attrs_field']['name'], $p['custom_checkbox'] );
 
-				$html .= $p['custom_checkbox'];
-			}
+					$template_data['field'] .= $p['custom_checkbox'];
+				}
 
-			if ( $p['after_field'] ) {
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
 
-				$html .= '<span class="after-field">' . $p['after_field'] . '</span>';
-			}
-
-			if ( ! empty( $p['validation_messages'] ) ) {
-
-				$html .= $this->get_field_validation_html( $p['validation_messages'] );
-			}
+			// }
 
 			return $html;
 		}
@@ -554,9 +603,24 @@
 						),
 						'value' => '',
 					),
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
 			// }
 
@@ -733,15 +797,19 @@
 
 			// }
 
-			// BUILDS SELECT FIELD {
+			// TEMPLATE {
 
-				$html = '';
+				if ( empty( $list ) ) {
 
-				if ( ! empty( $list ) ) {
-
-					$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+					return '';
 				}
+
+				$template_data = array();
+
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+				$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
 
 			// }
 
@@ -789,9 +857,24 @@
 					'options' => array(
 
 					),
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
 			// }
 
@@ -912,15 +995,19 @@
 
 			// }
 
-			// BUILDS SELECT FIELD {
+			// TEMPLATE { {
 
-				$html = '';
+				if ( empty( $list ) ) {
 
-				if ( ! empty( $list ) ) {
-
-					$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-					$html .= '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+					return '';
 				}
+
+				$template_data = array();
+
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+				$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
 
 			// }
 
@@ -947,9 +1034,24 @@
 					'validation' => false,
 					'value' => '',
 					'sanitize' => true,
+					'template' => array(
+						'{description}',
+						'{field}',
+						'{before_field}',
+						'{label}',
+						'{after_field}',
+						'{validation}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
 			// }
 
@@ -993,13 +1095,16 @@
 
 			// }
 
-			$html = '<input' . attrs( $p['attrs_field'] ) . '>';
-			$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+			// TEMPLATE {
 
-			if ( ! empty( $p['validation_messages'] ) ) {
+				$template_data = array();
 
-				$html .= $this->get_field_validation_html( $p['validation_messages'] );
-			}
+				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
+
+			// }
 
 			return $html;
 		}
@@ -1015,12 +1120,24 @@
 						'name' => '',
 						'value' => '',
 					),
+					'template' => array(
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+					),
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
 			// }
 
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+			// }
 
 			// ATTRS FIELD {
 
@@ -1032,7 +1149,15 @@
 
 			// }
 
-			$html = '<input' . attrs( $p['attrs_field'] ) . '>';
+			// TEMPLATE {
+
+				$template_data = array();
+
+				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
+
+			// }
 
 			return $html;
 		}
@@ -1043,18 +1168,37 @@
 
 				$defaults = array(
 					'callback' => false,
+					'template' => array(
+						'{field}',
+					),
+
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
 			// }
 
-			$html = '';
+			// FILTER FIELD PARAM {
 
-			if ( $p['callback'] ) {
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-				$html .= $p['callback']();
-			}
+			// }
+
+			// TEMPLATE {
+
+				if ( ! $p['callback'] ) {
+
+					return '';
+				}
+
+				$template_data = array();
+
+				$template_data['field'] = $p['callback']();
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
+
+			// }
 
 			return $html;
 		}
@@ -1095,6 +1239,17 @@
 							'param' => $this->form_messages[ $value ],
 						) );
 					}
+					else if ( is_array( $value ) ) {
+
+						$html .= tool( array(
+							'name' => 'tool_get_lang_value_from_array',
+							'param' => $value,
+						) );
+					}
+					else {
+
+						$html .= $value;
+					}
 				}
 
 			$html .= '</span>';
@@ -1129,4 +1284,61 @@
 
 			return false;
 		}
+
+		public function do_field_template( $template = array(), $data = array(), $p ) {
+
+			$data = apply_filters( 'class/Form/do_field_template/data', $data, $p );
+
+			if ( ! empty( $p['validation_messages'] ) ) {
+
+				$data['validation'] = $this->get_field_validation_html( $p['validation_messages'] );
+			}
+
+			$html = '';
+			$data_temp = array();
+
+			foreach ( $data as $key => $value ) {
+
+				$data_temp[ '{' . $key . '}' ] = $value;
+			}
+
+			$data = $data_temp;
+
+			foreach ( $template as $key => $value ) {
+
+				if ( isset( $data[ $value ] ) ) {
+
+					$html .= str_replace(
+						$value,
+						$data[ $value ],
+						$template[ $key ]
+					);
+				}
+			}
+
+			return $html;
+		}
+
+		// ADDONS
+
+		public function addon_before_after_field() {
+
+			add_filter( 'class/Form/do_field_template/data', function( $data, $p ) {
+
+				if ( ! empty( $p['before_field'] ) ) {
+
+					$data['before_field'] = $p['before_field'];
+				}
+
+				if ( ! empty( $p['after_field'] ) ) {
+
+					$data['after_field'] = $p['after_field'];
+				}
+
+				return $data;
+			}, 1, 2 );
+
+		}
+
+
 	}
