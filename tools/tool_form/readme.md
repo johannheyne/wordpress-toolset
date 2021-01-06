@@ -380,11 +380,15 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'type' => 'switch_toggle',
 		'label_on' => 'On',
 		'label_off' => 'Off',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => 'switch_toggle',
+			'value' => 'on',
+			//'checked' => 'checked'
+		),
+		'fieldset_id' => '',
+		'required' => true,
 		'pos' => 10,
-		'callback' => function() {
-
-			return 'My Custom Content';
-		},
 	);
 
 	return $items;
