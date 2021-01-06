@@ -12,13 +12,13 @@ __Table of Content__
 	- Paramameter sanitize
 - [Field Types](#form_field)
 	- [text](#field_text)
+	- [checkbox](#field_checkbox)
 	- [select](#field_select)
 	- [taxonomy_select](#field_taxonomy_select)
+	- [switch_toggle](#field_switch_toggle)
 	- [todo] textarea
 	- [todo] radio
-	- [todo] checkbox
 	- [todo] checkbox_list
-	- [todo] select
 	- [custom](#custom_field)
 	- [submit](#submit)
 - [todo] (Fields HTML5/JS Validation)
@@ -204,6 +204,44 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 
 
+<a id="field_checkbox"></a>
+### Checkbox
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'checkbox',
+		'label' => '{label_text}',
+		'before_field' => 'Before',
+		'after_field' => 'After',
+		//'custom_checkbox' => '<label class="custom-checkbox" for="{field_name}"></label>',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+			'placeholder' => '',
+		),
+		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'validation' => function( $value ) {
+
+			$message_keys = array(
+				'field' => array(),
+				'form' => array(),
+			);
+
+			return $message_keys;
+		},
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+
+
 <a id="field_select"></a>
 ### Select
 
@@ -329,6 +367,30 @@ Submits the form.<br>
 __Requires__ tools/tool_form/script-select-field-events.js
 
 
+
+
+
+<a id="field_switch_toggle"></a>
+### Switch Toggle
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'switch_toggle',
+		'label_on' => 'On',
+		'label_off' => 'Off',
+		'pos' => 10,
+		'callback' => function() {
+
+			return 'My Custom Content';
+		},
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
 
 
 

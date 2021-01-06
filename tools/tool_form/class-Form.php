@@ -69,6 +69,7 @@
 					$this->updates_field_values();
 
 					// REQUEST ACTION
+
 					do_action( 'class/Form/request/form_id=' . $this->p['form_id'], $this->p );
 					do_action( 'class/Form/request/form_group=' . $this->p['form_group'], $this->p );
 					do_action( 'class/Form/request', $this->p );
@@ -223,6 +224,11 @@
 				'class' => array( 'form-field' ),
 			);
 
+			if ( ! empty( $item['type'] ) ) {
+
+				$attrs['data-type'] = $item['type'];
+			}
+
 			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
@@ -235,6 +241,11 @@
 					$html .= $this->get_text_field( $item );
 				}
 
+				if ( $item['type'] === 'checkbox'  ) {
+
+					$html .= $this->get_checkbox_field( $item );
+				}
+
 				if ( $item['type'] === 'taxonomy_select'  ) {
 
 					$html .= $this->get_taxonomy_select_field( $item );
@@ -243,6 +254,11 @@
 				if ( $item['type'] === 'select'  ) {
 
 					$html .= $this->get_select_field( $item );
+				}
+
+				if ( $item['type'] === 'switch_toggle'  ) {
+
+					$html .= $this->get_switch_toggle_field( $item );
 				}
 
 				if ( $item['type'] === 'custom'  ) {
@@ -324,6 +340,94 @@
 
 			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
 			$html .= '<input' . attrs( $p['attrs_field'] ) . '>';
+
+			if ( ! empty( $p['validation_messages'] ) ) {
+
+				$html .= $this->get_field_validation_html( $p['validation_messages'] );
+			}
+
+			return $html;
+		}
+
+		public function get_checkbox_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'label' => '',
+					'before_field' => false,
+					'after_field' => false,
+					'custom_checkbox' => '<label class="custom-checkbox" for="{field_name}"></label>',
+					'attrs_label' => array(
+
+					),
+					'attrs_field' => array(
+						'name' => '',
+						'value' => '',
+					),
+					'required' => false,
+					'validation' => false,
+					'value' => '',
+					'sanitize' => true,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// REQUEST VALUE {
+
+				if ( isset( $p['request_value'] ) ) {
+
+					$p['attrs_field']['checked'] = true;
+				}
+
+			// }
+
+			// ATTRS LABEL {
+
+				$attrs_label_defaults = array(
+					'for' => $p['attrs_field']['name'],
+				);
+
+				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+			// }
+
+			// ATTRS FIELD {
+
+				$attrs_field_defaults = array(
+					'type' => 'checkbox',
+					'id' => $p['attrs_field']['name'],
+					'name' => $p['attrs_field']['name'],
+					'class' => array(),
+				);
+
+				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+
+			// }
+
+			$html = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+
+			if ( $p['before_field'] ) {
+
+				$html .= '<span class="before-field">' . $p['before_field'] . '</span>';
+			}
+
+			$html .= '<input' . attrs( $p['attrs_field'] ) . '>';
+
+			if ( $p['custom_checkbox'] ) {
+
+				$p['custom_checkbox'] = str_replace( '{field_name}', $p['attrs_field']['name'], $p['custom_checkbox'] );
+
+				$html .= $p['custom_checkbox'];
+			}
+
+			if ( $p['after_field'] ) {
+
+				$html .= '<span class="after-field">' . $p['after_field'] . '</span>';
+			}
 
 			if ( ! empty( $p['validation_messages'] ) ) {
 
@@ -745,6 +849,83 @@
 				}
 
 			// }
+
+			return $html;
+		}
+
+		public function get_switch_toggle_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'label' => '<span class="switch-toggle-on">{on}</span><span class="switch-toggle-off">{off}</span>',
+					'label_on' => 'On',
+					'label_off' => 'Off',
+					'attrs_label' => array(
+						'class' => 'switch-toggle',
+					),
+					'attrs_field' => array(
+						'class' => 'switch-toggle-checkbox',
+						'name' => '',
+						'value' => '',
+					),
+					'required' => false,
+					'validation' => false,
+					'value' => '',
+					'sanitize' => true,
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// REQUEST VALUE {
+
+				if ( isset( $p['request_value'] ) ) {
+
+					$p['attrs_field']['checked'] = true;
+				}
+
+			// }
+
+			// ATTRS LABEL {
+
+				$attrs_label_defaults = array(
+					'for' => $p['attrs_field']['name'],
+				);
+
+				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+			// }
+
+			// ATTRS FIELD {
+
+				$attrs_field_defaults = array(
+					'type' => 'checkbox',
+					'id' => $p['attrs_field']['name'],
+					'name' => $p['attrs_field']['name'],
+					'class' => array(),
+				);
+
+				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+
+			// }
+
+			// FILTER LABEL {
+
+				$p['label'] = str_replace( '{on}', $p['label_on'], $p['label'] );
+				$p['label'] = str_replace( '{off}', $p['label_off'], $p['label'] );
+
+			// }
+
+			$html = '<input' . attrs( $p['attrs_field'] ) . '>';
+			$html .= '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+
+			if ( ! empty( $p['validation_messages'] ) ) {
+
+				$html .= $this->get_field_validation_html( $p['validation_messages'] );
+			}
 
 			return $html;
 		}
