@@ -21,7 +21,7 @@
 					'form_group' => '',
 					'form_attrs' => array(
 						'role' => 'form',
-						'methode' => 'get',
+						'method' => 'get',
 						'action' => '',
 					),
 					'echo' => true,
@@ -175,14 +175,36 @@
 
 			foreach ( $this->items as &$item ) {
 
-				if (
-					! empty( $item['validation'] ) AND
-					isset( $_REQUEST[ $item['attrs_field']['name'] ] )
-				) {
+				$item['validation_messages'] = array(
+					'field' => array(),
+					'form' => array(),
+				);
 
-					$item['validation_messages'] = $item['validation']( $_REQUEST[ $item['attrs_field']['name'] ] );
-					$this->p['has_messages'] = true;
-				}
+				// REQUIRED {
+
+					if (
+						! empty( $item['required'] ) AND
+						empty( $_REQUEST[ $item['attrs_field']['name'] ] )
+					) {
+
+						$item['validation_messages']['field'][] = 'required';
+						$this->p['has_messages'] = true;
+					}
+
+				// }
+
+				// CUSTOM VALIDATIONS {
+
+					if (
+						! empty( $item['validation'] ) AND
+						isset( $_REQUEST[ $item['attrs_field']['name'] ] )
+					) {
+
+						$item['validation_messages'] = tool_merge_defaults( $item['validation_messages'], $item['validation']( $_REQUEST[ $item['attrs_field']['name'] ] ) );
+						$this->p['has_messages'] = true;
+					}
+
+				// }
 			}
 		}
 
