@@ -23,6 +23,7 @@
 						'role' => 'form',
 						'method' => 'get',
 						'action' => '',
+						'data-form-id' => $p['form_id'],
 					),
 					'echo' => true,
 					'is_request' => false, // whether the form is requested

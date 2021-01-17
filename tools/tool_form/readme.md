@@ -51,7 +51,7 @@ new Form( array(
 This adds a basic form…
 
 ```html
-<form class="{class}" role="{role}" aria-label="{aria_label}" method="{method}" action="{action}">
+<form class="{class}" role="{role}" method="{method}" action="{action}" data-form-id="{form_id}" aria-label="{aria_label}">
 
 	<input type="hidden" name="form_id" value="{form_id}" />
 
