@@ -228,7 +228,18 @@
 
 		private function get_fieldset( $html, $fieldset ) {
 
-			$html .= '<fieldset>';
+			// DEFAULTS {
+
+				$defaults = array(
+					'attrs_field' => array(),
+				);
+
+				//$p = array_replace_recursive( $defaults, $p );
+				$fieldset = tool_merge_defaults( $fieldset, $defaults );
+
+			// }
+
+			$html .= '<fieldset' . attrs( $fieldset['attrs_field'] ) . '>';
 			$html .= '<legend>' . $fieldset['legend']  . '</legend>';
 
 				foreach ( $this->items as $key => $item ) {

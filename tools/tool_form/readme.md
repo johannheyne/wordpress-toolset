@@ -106,6 +106,9 @@ add_filter( 'class/Form/fieldsets/form_id={form_id}', function( $items, $param )
 	$items[] = array(
 		'legend' => 'My Fieldset',
 		'id' => '{fieldset_id}',
+		'attrs_field' => array(
+			'class' => 'my-class',
+		),
 		'pos_key' => '{fieldset_key}',
 		'pos' => 10,
 	);
