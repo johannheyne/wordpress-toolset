@@ -506,7 +506,7 @@
 					'label' => '',
 					'before_field' => false,
 					'after_field' => false,
-					'custom_checkbox' => '<label class="custom-checkbox" for="{field_name}"></label>',
+					'custom_checkbox' => '<label class="custom-checkbox" for="{for}"></label>',
 					'attrs_label' => array(
 
 					),
@@ -548,27 +548,31 @@
 
 			// }
 
-			// ATTRS LABEL {
-
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
-
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
-
-			// }
-
 			// ATTRS FIELD {
 
 				$attrs_field_defaults = array(
 					'type' => 'checkbox',
-					'id' => $p['attrs_field']['name'],
+					'id' => false,
 					'name' => $p['attrs_field']['name'],
 					'class' => array(),
 				);
 
 				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
+				if ( ! $p['attrs_field']['id'] ) {
+
+					$p['attrs_field']['id'] = $p['attrs_field']['name'];
+				}
+
+			// }
+
+			// ATTRS LABEL {
+
+				$attrs_label_defaults = array(
+					'for' => $p['attrs_field']['id'],
+				);
+
+				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
 			// }
 
@@ -582,7 +586,7 @@
 
 				if ( $p['custom_checkbox'] ) {
 
-					$p['custom_checkbox'] = str_replace( '{field_name}', $p['attrs_field']['name'], $p['custom_checkbox'] );
+					$p['custom_checkbox'] = str_replace( '{for}', $p['attrs_field']['id'], $p['custom_checkbox'] );
 
 					$template_data['field'] .= $p['custom_checkbox'];
 				}
