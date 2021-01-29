@@ -18,6 +18,7 @@
 					'array' => false, // array to sort
 					'param' => array(
 						'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
+						'parent_pos_key' => 'parent_pos_key', // item array key used for positioning by pos_before and pos_after
 					),
 				);
 
@@ -196,8 +197,37 @@
 
 				foreach ( $item as $item_2 ) {
 
-					$this->array_return[] = $item_2;
+					if ( empty( $item_2[ $this->param['parent_pos_key'] ] ) ) {
+
+						$item_2['children'] = $this->get_level( $item_2[ $this->param['pos_key'] ] );
+						$this->array_return[] = $item_2;
+						continue;
+					}
 				}
 			}
+		}
+
+		function get_level( $parent_pos_id ) {
+
+			$return = array();
+
+			foreach ( $this->array_pos as $item ) {
+
+				foreach ( $item as $item_2 ) {
+
+					if ( empty( $item_2[ $this->param['parent_pos_key'] ] ) ) {
+
+						continue;
+					}
+
+					if ( $item_2[ $this->param['parent_pos_key'] ] ==  $parent_pos_id ) {
+
+						$return[] = $item_2;
+						continue;
+					}
+				}
+			}
+
+			return $return;
 		}
 	}
