@@ -17,8 +17,8 @@
 				$defaults = array(
 					'array' => false, // array to sort
 					'param' => array(
-						'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
-						'parent_pos_key' => 'parent_pos_key', // item array key used for positioning by pos_before and pos_after
+						'pos_key' => 'pos', // item array key used for positioning by pos_before and pos_after
+						'parent_pos_key' => 'parent_pos', // item array key used for positioning by pos_before and pos_after
 					),
 				);
 
@@ -46,42 +46,44 @@
 
 			foreach ( $this->array as $key => $item ) {
 
-				if ( isset( $item['pos'] ) ) {
+				if ( ! isset( $item['pos'] ) ) {
 
-					// INITS NEW SUB ARRAY {
-
-						if ( ! isset( $this->array_pos[ $item['pos'] ] ) ) {
-
-							$this->array_pos[ $item['pos'] ] = array();
-						}
-
-					// }
-
-					// CHECK pos_before {
-
-						$this->adds_pos_before( $item, $item['pos'], $this->array_pos );
-
-					// }
-
-					// CHECK without pos_before and pos_after {
-
-						if (
-							! isset( $item['pos_before'] ) AND
-							! isset( $item['pos_after'] )
-						) {
-
-							$this->array_pos[ $item['pos'] ][] = $item;
-							unset( $this->array[ $key ] );
-						}
-
-					// }
-
-					// CHECK pos_after {
-
-						$this->adds_pos_after( $item, $item['pos'], $this->array_pos );
-
-					// }
+					$item['pos'] = '';
 				}
+
+				// INITS NEW SUB ARRAY {
+
+					if ( ! isset( $this->array_pos[ $item['pos'] ] ) ) {
+
+						$this->array_pos[ $item['pos'] ] = array();
+					}
+
+				// }
+
+				// CHECK pos_before {
+
+					$this->adds_pos_before( $item, $item['pos'], $this->array_pos );
+
+				// }
+
+				// CHECK without pos_before and pos_after {
+
+					if (
+						! isset( $item['pos_before'] ) AND
+						! isset( $item['pos_after'] )
+					) {
+
+						$this->array_pos[ $item['pos'] ][] = $item;
+						unset( $this->array[ $key ] );
+					}
+
+				// }
+
+				// CHECK pos_after {
+
+					$this->adds_pos_after( $item, $item['pos'], $this->array_pos );
+
+				// }
 			}
 
 			ksort( $this->array_pos );
@@ -220,8 +222,9 @@
 						continue;
 					}
 
-					if ( $item_2[ $this->param['parent_pos_key'] ] ==  $parent_pos_id ) {
+					if ( $item_2[ $this->param['parent_pos_key'] ] == $parent_pos_id ) {
 
+						$item_2['children'] = $this->get_level( $item_2[ $this->param['pos_key'] ] );
 						$return[] = $item_2;
 						continue;
 					}
