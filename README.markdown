@@ -179,6 +179,7 @@ $GLOBALS['toolset'] = array(
 ### Tools
 
 * [Array Positioning](tools/tool_array_pos/readme.markdown)
+* [Array Layout](tools/tool_array_layout/readme.markdown)
 * [Ajax Call](tools/tool_ajax/readme.markdown)
 * [Cookie Notice](tools/tool_cookie_notice/readme.markdown)
 * [Filesize](tools/tool_filesize/readme.markdown)

@@ -9,4 +9,5 @@
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['YerForm'] = 'assets/yerform/core/yerform.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolHreflang'] = 'tools/tool_hreflang/class-hreflang-v2.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolArrayPos'] = 'tools/tool_array_pos/class-tool_array_pos.php';
+	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolArrayLayout'] = 'tools/tool_array_layout/class-tool_array_layout.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['Form'] = 'tools/tool_form/class-Form.php';
