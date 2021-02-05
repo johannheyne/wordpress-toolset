@@ -17,8 +17,8 @@
 				$defaults = array(
 					'array' => false, // array to sort
 					'param' => array(
-						'pos_key' => 'pos', // item array key used for positioning by pos_before and pos_after
-						'parent_pos_key' => 'parent_pos', // item array key used for positioning by pos_before and pos_after
+						'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
+						'parent_pos_key' => 'parent_pos_key', // key of parent item for nesting array
 					),
 				);
 
@@ -199,9 +199,15 @@
 
 				foreach ( $item as $item_2 ) {
 
-					if ( empty( $item_2[ $this->param['parent_pos_key'] ] ) ) {
+					if (
+						empty( $item_2[ $this->param['parent_pos_key'] ] )
+					) {
 
-						$item_2['children'] = $this->get_level( $item_2[ $this->param['pos_key'] ] );
+						if ( ! empty( $item_2[ $this->param['pos_key'] ] ) ) {
+
+							$item_2['children'] = $this->get_level( $item_2[ $this->param['pos_key'] ] );
+						}
+
 						$this->array_return[] = $item_2;
 						continue;
 					}
