@@ -12,7 +12,7 @@
 
 		private $form_messages = array();
 
-		function __construct( $p = array() ) {
+		function __construct( $p = array( 'form_id' => '' ) ) {
 
 			// DEFAULTS {
 
