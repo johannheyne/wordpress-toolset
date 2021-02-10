@@ -5,11 +5,11 @@ Tool form
 
 __Table of Content__
 - [Add a Form](#add_a_form)
-- [Adding Form Messages](#adding_form_messages)
-- [Adding Fieldsets](#adding_fieldsets)
-- [Adding Field Item Attributes](#field_wrapper_attrs)
+- [Form Messages](#form_messages)
+- [Fieldsets](#adding_fieldsets)
+- [Field Item Attributes](#field_wrapper_attrs)
 - [Adding Fields](#adding_items_to_form)
-	- Paramameter sanitize
+	- [Filter: Field Template Data](#filter-field-template-data)
 - [Field Types](#form_field)
 	- [text](#field_text)
 	- [textarea](#field_textarea)
@@ -61,9 +61,8 @@ This adds a basic form…
 ```
 
 
-
-<a id="adding_form_messages"></a>
-## Adding Form Messages
+<a id="form_messages"></a>
+## Define Form Messages
 
 ```
 class/Form/messages
@@ -144,8 +143,6 @@ add_filter( 'class/Form/item_attrs/form_id={form_id}', function( $attrs, $param 
 <a id="adding_items_to_form"></a>
 ## Adding Fields
 
-Fields HTML can be added before and after the search field…
-
 ```
 class/Form/items
 class/Form/items/form_id=
@@ -157,6 +154,17 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
 		// Field Parameters
+
+		/* all fields have a template property
+		'template' => array(
+			'{label}',
+			'{description}',
+			'{before_field}',
+			'{field}',
+			'{after_field}',
+			'{validation}',
+		),
+		*/
 	);
 
 	return $items;
@@ -164,6 +172,17 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 }, 10, 2 );
 ```
 
+### Filter: Field Template Data
+
+
+```php
+add_filter( 'class/Form/do_field_template/data', function( $data, $field ) {
+
+
+	return $data;
+});
+
+```
 
 
 <a id="form_field"></a>
