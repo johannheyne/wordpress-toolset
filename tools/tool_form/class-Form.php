@@ -506,7 +506,9 @@
 					'label' => '',
 					'before_field' => false,
 					'after_field' => false,
-					'custom_checkbox' => '<label class="custom-checkbox" for="{for}"></label>',
+					'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
+					'before_checkbox' => false,
+					'after_checkbox' => false,
 					'attrs_label' => array(
 
 					),
@@ -587,6 +589,30 @@
 				if ( $p['custom_checkbox'] ) {
 
 					$p['custom_checkbox'] = str_replace( '{for}', $p['attrs_field']['id'], $p['custom_checkbox'] );
+
+					if ( ! empty( $p['before_checkbox'] ) ) {
+
+						$before_checkbox = apply_filters( 'class/Form/before_checkbox', '<span>' . $p['before_checkbox'] . '</span>&nbsp;', $p );
+						$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $before_checkbox, $p );
+						$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_group'], $before_checkbox, $p );
+
+						$p['custom_checkbox'] = str_replace( '{before_checkbox}', $before_checkbox, $p['custom_checkbox'] );
+					}
+					else {
+						$p['custom_checkbox'] = str_replace( '{before_checkbox}', '', $p['custom_checkbox'] );
+					}
+
+					if ( ! empty( $p['after_checkbox'] ) ) {
+
+						$after_checkbox = apply_filters( 'class/Form/before_checkbox', '&nbsp;<span>' . $p['after_checkbox'] . '</span>', $p );
+						$after_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
+						$after_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
+
+						$p['custom_checkbox'] = str_replace( '{after_checkbox}', $after_checkbox, $p['custom_checkbox'] );
+					}
+					else {
+						$p['custom_checkbox'] = str_replace( '{after_checkbox}', '', $p['custom_checkbox'] );
+					}
 
 					$template_data['field'] .= $p['custom_checkbox'];
 				}

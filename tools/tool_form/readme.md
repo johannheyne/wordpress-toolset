@@ -15,6 +15,7 @@ __Table of Content__
 	- [textarea](#field_textarea)
 	- [todo] radio
 	- [checkbox](#field_checkbox)
+		- [Filter: Before and After Checkbox HTML](#filter-before-and-after-checkbox-html)
 	- [todo] checkbox_list
 	- [select](#field_select)
 	- [taxonomy_select](#field_taxonomy_select)
@@ -273,7 +274,9 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'label' => '{label_text}',
 		'before_field' => 'Before',
 		'after_field' => 'After',
-		//'custom_checkbox' => '<label class="custom-checkbox" for="{field_name}"></label>',
+		'custom_checkbox' => '<label class="custom-checkbox" for="{field_name}"></label>',
+		'before_checkbox' => false,
+		'after_checkbox' => false,
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
@@ -294,6 +297,32 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	);
 
 	return $items;
+
+}, 10, 2 );
+```
+
+#### Filter: Before and After Checkbox HTML
+
+```
+class/Form/before_checkbox
+class/Form/before_checkbox/form_group=
+class/Form/before_checkbox/form_id=
+```
+
+```php
+add_filter( 'class/Form/before_checkbox/form_id={form_id}', function( $html, $param ) {
+
+	//$html = '<span>' . $p['before_checkbox'] . '</span>&nbsp;';
+
+	return $html;
+
+}, 10, 2 );
+
+add_filter( 'class/Form/after_checkbox/form_id={form_id}', function( $html, $param ) {
+
+	//$html = '&nbsp;<span>' . $p['after_checkbox'] . '</span>';
+
+	return $html;
 
 }, 10, 2 );
 ```
