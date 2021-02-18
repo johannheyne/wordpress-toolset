@@ -446,7 +446,13 @@
 
 				// MULTISITE LOOP REGIONS > SITES > LANGS {
 
-					if ( $GLOBALS['toolset']['multisite'] ) {
+					if (
+						( $GLOBALS['toolset']['multisite'] &&
+						! isset( $GLOBALS['toolset']['multisite_hreflang'] ) )
+						OR
+						( $GLOBALS['toolset']['multisite'] &&
+						! empty( $GLOBALS['toolset']['multisite_hreflang'] ) )
+					) {
 
 						// GET HREFLANG ENTRIES {
 
