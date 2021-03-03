@@ -387,6 +387,12 @@
 
 						// }
 
+						// FILTER{
+
+							$return = apply_filters( 'get_adaptive_image/before_img_tag', $return, $p );
+
+						// }
+
 						// IMAGE BY ID {
 
 							if ( $p['id'] ) {
@@ -422,6 +428,12 @@
 								}
 								$return .= '<img src="' . $img_attr['src'] . '" class="' . $img_attr['class'] . '"' . $img_alt . $img_style . '/>';
 							}
+
+						// }
+
+						// FILTER {
+
+							$return = apply_filters( 'get_adaptive_image/after_img_tag', $return, $p );
 
 						// }
 
