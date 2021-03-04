@@ -48,7 +48,7 @@
 
 				if ( ! isset( $item['pos'] ) ) {
 
-					$item['pos'] = '';
+					continue;
 				}
 
 				// INITS NEW SUB ARRAY {
