@@ -12,7 +12,7 @@ class BFIGitHubPluginUpdater {
 	private $accessToken; // GitHub private repo token
 	public $headers; // GitHub private repo token
 
-	function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $accessToken = '' ) {
+	function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $pluginData, $accessToken = '' ) {
 
 		add_filter( "pre_set_site_transient_update_plugins", array( $this, "setTransitent" ) );
 		add_filter( "plugins_api", array( $this, "setPluginInfo" ), 10, 3 );
@@ -23,6 +23,8 @@ class BFIGitHubPluginUpdater {
 		$this->repo = $gitHubProjectName;
 		$this->accessToken = $accessToken;
 		$this->headers = '';
+		$this->tested = $pluginData['tested'];
+		$this->requires = $pluginData['requires'];
 	}
 
 	// Get information regarding our plugin from WordPress
@@ -72,7 +74,7 @@ class BFIGitHubPluginUpdater {
 			$args = array(
 				'headers' => array(
 					'Accept' => 'application/vnd.github.v3+json',
-					'Authorization' => 'token ' . $this->accessToken,
+					//'Authorization' => 'token ' . $this->accessToken,
 				)
 			);
 
@@ -215,6 +217,8 @@ class BFIGitHubPluginUpdater {
 		$response->version = $this->githubAPIResult->tag_name;
 		$response->author = $this->pluginData["AuthorName"];
 		$response->homepage = $this->pluginData["PluginURI"];
+		$response->tested = $this->tested;
+		$response->requires = $this->requires;
 
 		// This is our release download zip file
 		$downloadLink = $this->githubAPIResult->zipball_url;

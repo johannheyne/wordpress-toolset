@@ -33,7 +33,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 		require_once( 'BFIGitHubPluginUploader.php' );
 
-		new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset" );
+		new BFIGitHubPluginUpdater( __FILE__, 'johannheyne', "wordpress-toolset", array(
+			'tested' => '5.6.2',
+			'requires' => '5.6.0',
+		) );
 	}
 
 // }
