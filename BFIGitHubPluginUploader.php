@@ -172,7 +172,7 @@ class BFIGitHubPluginUpdater {
 			$obj->url = $this->pluginData["PluginURI"];
 			$obj->package = $package;
 			$obj->tested = $this->tested;
-			$obj->require = $this->require;
+			$obj->require = $this->requires;
 			$transient->response[$this->slug] = $obj;
 		}
 
