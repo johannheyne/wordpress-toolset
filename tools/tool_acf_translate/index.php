@@ -132,7 +132,52 @@
 				add_filter( 'acf/validate_options_page', array( $this, 'translate' ) ); // Option Page
 			}
 
+			function get_context_item( $item, $context ) {
+
+				// CHECK IF HAS TRANSLATION {
+
+					$context_sufix = '';
+
+					foreach ( $context as $key => $value ) {
+
+						if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item . '@' . $value  ] ) ) {
+
+							$context_sufix = '@' . $value;
+						}
+					}
+
+				// }
+
+				return $item . $context_sufix;
+			}
+
 			function translate( $array ) {
+
+				// SETUP CONTEXT {
+
+					$context = array();
+
+					if ( ! empty( $array['menu_slug'] ) ) {
+
+						$context[] = 'menu_slug:' . $array['menu_slug'];
+					}
+
+					if ( ! empty( $array['post_id'] ) ) {
+
+						$context[] = 'post_id:' . $array['post_id'];
+					}
+
+					if ( ! empty( $array['parent'] ) ) {
+
+						$context[] = 'parent:' . $array['parent'];
+					}
+
+					if ( ! empty( $array['key'] ) ) {
+
+						$context[] = 'key:' . $array['key'];
+					}
+
+				// }
 
 				if ( ! is_array( $array ) ) {
 
@@ -184,7 +229,7 @@
 				}
 				else {
 
-					array_walk( $array, function( &$item, $key ) {
+					array_walk( $array, function( &$item, $key ) use ( $context ) {
 
 						// STRINGS {
 
@@ -195,6 +240,8 @@
 								in_array( $key, $keys ) AND
 								! empty( $key )
 							) {
+
+								$item = $this->get_context_item( $item, $context );
 
 								if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
 
@@ -208,13 +255,6 @@
 
 									$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'];
 								}
-							}
-
-							if (
-								is_string( $item ) AND
-								in_array( $key, $keys ) AND
-								! empty( $key )
-							) {
 
 								preg_match_all(
 									'|\{\{(.*)\}\}|U',
@@ -245,9 +285,6 @@
 										}
 									}
 								}
-								else {
-
-								}
 							}
 
 						// }
@@ -256,7 +293,7 @@
 
 							if ( is_array( $item ) ) {
 
-								array_walk_recursive( $item, function( &$item, $key ) {
+								array_walk_recursive( $item, function( &$item, $key ) use ( $context ){
 
 									// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
 
@@ -276,6 +313,8 @@
 										! empty( $key )
 									) {
 
+										$item = $this->get_context_item( $item, $context );
+
 										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ] ) ) {
 
 											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ][ $this->locale ];
@@ -288,13 +327,6 @@
 
 											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'];
 										}
-									}
-
-									if (
-										is_string( $item ) AND
-										in_array( $key, $keys ) AND
-										! empty( $key )
-									) {
 
 										preg_match_all(
 											'|\{\{(.*)\}\}|U',
@@ -342,6 +374,8 @@
 
 									if ( ! is_array( $value ) ) {
 
+										$value = $this->get_context_item( $value, $context );
+
 										if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ] ) ) {
 
 											$item[ $key ] = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $value ][ $this->locale ];
@@ -364,9 +398,11 @@
 
 							if ( $key === 'layouts' ) {
 
-								array_walk_recursive ( $item , function( &$item, $key ) {
+								array_walk_recursive ( $item , function( &$item, $key ) use ( $context ) {
 
 									$keys = array( 'title', 'label', 'description', 'instructions' );
+
+									$item = $this->get_context_item( $item, $context );
 
 									if ( in_array( $keys, $keys ) ) {
 
@@ -382,11 +418,6 @@
 
 											$item = $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item ]['default'];
 										}
-									}
-
-									if (
-										in_array( $key, $keys )
-									) {
 
 										preg_match_all(
 											'|\{\{(.*)\}\}|U',
@@ -454,7 +485,6 @@
 					} );*/
 				}
 
-				//error_log( print_r( $array, true) );
 				return $array;
 			}
 
