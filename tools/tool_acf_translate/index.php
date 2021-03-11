@@ -250,7 +250,6 @@
 								in_array( $key, $keys ) AND
 								! empty( $key )
 							) {
-
 								$item = $this->get_context_item( $item, $context );
 								$item = $this->get_item_translation( $item );
 								$item = $this->get_item_bracket_translation( $item );
@@ -261,6 +260,14 @@
 						// IS ARRAY {
 
 							if ( is_array( $item ) ) {
+
+								foreach ( $item as $item2 ) {
+
+									if ( ! empty( $item2['key'] ) ) {
+
+										$context[] = 'key:' . $item2['key'];
+									}
+								}
 
 								array_walk_recursive( $item, function( &$item, $key ) use ( $context ){
 
