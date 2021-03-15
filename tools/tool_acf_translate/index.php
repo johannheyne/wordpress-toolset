@@ -243,7 +243,7 @@
 
 						// IS STRING {
 
-							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'default_value', 'append', 'prepend', 'placeholder' );
+							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'default_value', 'append', 'prepend', 'placeholder', 'ui_on_text', 'ui_off_text' );
 
 							if (
 								is_string( $item ) AND
@@ -281,7 +281,7 @@
 
 									// }
 
-									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'default_value', 'append', 'prepend', 'placeholder' );
+									$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'default_value', 'append', 'prepend', 'placeholder', 'ui_on_text', 'ui_off_text' );
 
 									if (
 										is_string( $item ) AND
