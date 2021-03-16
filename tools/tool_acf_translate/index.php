@@ -310,6 +310,8 @@
 
 										$value = $this->get_context_item( $value, $context );
 										$value = $this->get_item_translation( $value );
+
+										$item[ $key ] = $value;
 									}
 								}
 							}
