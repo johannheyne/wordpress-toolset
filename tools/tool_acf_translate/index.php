@@ -171,6 +171,32 @@
 			function get_item_bracket_translation( $string ) {
 
 				preg_match_all(
+					'|\{\{(.*)\}\}|U',
+					$string,
+					$matches,
+					PREG_SET_ORDER
+				);
+
+				if ( ! empty( $matches ) ) {
+
+					foreach ( $matches as $match ) {
+
+						if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ] ) ) {
+
+							$string = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale ], $string );
+						}
+						elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ] ) ) {
+
+							$string = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ][ $this->locale_general ], $string );
+						}
+						elseif ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'] ) ) {
+
+							$string = str_replace( $match[0], $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $match[1] ]['default'], $string );
+						}
+					}
+				}
+
+				preg_match_all(
 					'|\<span class="acf-translate"\>(.*)<\/span\>|U',
 					$string,
 					$matches,
