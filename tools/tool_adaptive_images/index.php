@@ -471,7 +471,10 @@
 						// FILTERS {
 
 							// remove image dimensions attributes
-							$return = remove_image_dimensions_attributes( $return );
+							if ( function_exists( 'remove_image_dimensions_attributes' ) ) {
+
+								$return = remove_image_dimensions_attributes( $return );
+							}
 
 						// }
 
