@@ -10,7 +10,7 @@
 	Plugin Name:       WordPress ToolSet
 	Plugin URI:        https://github.com/johannheyne/wordpress-toolset
 	Description:       On place for reusable functionalities and assets.
-	Version:           0.0.187
+	Version:           0.0.188
 	Author:            Johann Heyne
 	Author URI:        www.johannheyne.de
 	Text Domain:       toolset
