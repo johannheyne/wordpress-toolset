@@ -6,6 +6,27 @@
 			Version: v1.0
 		*/
 
+		/* $p
+
+			@value: Array (
+						[form_id] => demo_default_form
+						[form_group] => demo
+						[form_attrs] => Array (
+							[role] => form
+							[method] => post
+							[action] =>
+							[data-form-id] => demo_default_form
+							[aria_label] => My Form
+							[class] => Array (
+								[0] => default-form form-style-basic
+							)
+						)
+						[echo] => 1
+						[is_request] => 1
+						[has_messages] =>
+					)
+		*/
+
 		private $p = false;
 
 		private $items = array();
@@ -210,7 +231,10 @@
 						if ( true === $required ) {
 
 							$item['validation_messages']['field'][] = 'required';
-							$this->p['has_messages'] = true;
+							$item['validation_messages']['form'][] = 'required';
+
+							$this->p['has_messages']['fields'] = true;
+							$this->p['has_messages']['form'] = true;
 						}
 					}
 
@@ -224,7 +248,16 @@
 					) {
 
 						$item['validation_messages'] = tool_merge_defaults( $item['validation_messages'], $item['validation']( $this->request[ $item['attrs_field']['name'] ], $item ) );
-						$this->p['has_messages'] = true;
+
+						if ( ! empty( $item['validation_messages']['field'] ) ) {
+
+							$this->p['has_messages']['fields'] = true;
+						}
+
+						if ( ! empty( $item['validation_messages']['form'] ) ) {
+
+							$this->p['has_messages']['form'] = true;
+						}
 					}
 
 				// }
