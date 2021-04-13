@@ -12,6 +12,8 @@
 
 		private $form_messages = array();
 
+		private $request = false;
+
 		function __construct( $p = array( 'form_id' => '' ) ) {
 
 			// DEFAULTS {
@@ -58,11 +60,21 @@
 
 			// }
 
+			// ADDS FILTERS {
+
+				if ( ! has_filter( 'class/Form/required?type=checkboxes' ) ) {
+
+					add_filter( 'class/Form/required?type=checkboxes', array( $this, 'filter_checkboxes_custom_field_key_required' ), 10, 2 );
+				}
+
+			// }
+
 			// FORM REQUEST ACTION {
 
 				if ( $this->is_form_request( $this->p['form_id'] ) ) {
 
 					$this->p['is_request'] = true;
+					$this->request = $_REQUEST;
 
 					// SANITIZE REQUEST
 					$this->sanitize_request();
@@ -161,12 +173,12 @@
 
 				if (
 					! empty( $item['sanitize'] ) AND
-					isset( $_REQUEST[ $item['attrs_field']['name'] ] )
+					isset( $this->request[ $item['attrs_field']['name'] ] )
 				) {
 
 					if ( $item['type'] === 'text' ) {
 
-						$_REQUEST[ $item['attrs_field']['name'] ] = $this->sanitize_text_field( $_REQUEST[ $item['attrs_field']['name'] ] );
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_text_field( $this->request[ $item['attrs_field']['name'] ] );
 					}
 				}
 			}
@@ -183,13 +195,23 @@
 
 				// REQUIRED {
 
-					if (
-						! empty( $item['required'] ) AND
-						empty( $_REQUEST[ $item['attrs_field']['name'] ] )
-					) {
+					if ( ! empty( $item['required'] ) ) {
 
-						$item['validation_messages']['field'][] = 'required';
-						$this->p['has_messages'] = true;
+						$required = false;
+
+						if ( empty( $this->request[ $item['attrs_field']['name'] ] ) ) {
+
+							$required = true;
+						}
+
+						$required = apply_filters( 'class/Form/required', $required, $item );
+						$required = apply_filters( 'class/Form/required?type=' . $item['type'], $required, $item );
+
+						if ( true === $required ) {
+
+							$item['validation_messages']['field'][] = 'required';
+							$this->p['has_messages'] = true;
+						}
 					}
 
 				// }
@@ -198,10 +220,10 @@
 
 					if (
 						! empty( $item['validation'] ) AND
-						isset( $_REQUEST[ $item['attrs_field']['name'] ] )
+						isset( $this->request[ $item['attrs_field']['name'] ] )
 					) {
 
-						$item['validation_messages'] = tool_merge_defaults( $item['validation_messages'], $item['validation']( $_REQUEST[ $item['attrs_field']['name'] ] ) );
+						$item['validation_messages'] = tool_merge_defaults( $item['validation_messages'], $item['validation']( $this->request[ $item['attrs_field']['name'] ], $item ) );
 						$this->p['has_messages'] = true;
 					}
 
@@ -215,13 +237,12 @@
 
 				if (
 					! empty( $item['attrs_field']['name'] ) AND
-					isset( $_REQUEST[ $item['attrs_field']['name'] ] )
+					isset( $this->request[ $item['attrs_field']['name'] ] )
 				) {
 
-					$item['request_value'] = $_REQUEST[ $item['attrs_field']['name'] ];
+					$item['request_value'] = $this->request[ $item['attrs_field']['name'] ];
 				}
 			}
-
 		}
 
 		// RENDER FUNCTIONALITY
@@ -675,15 +696,6 @@
 
 			// }
 
-			// REQUEST VALUE {
-
-				if ( isset( $p['request_value'] ) ) {
-
-					//$p['attrs_field']['checked'] = true;
-				}
-
-			// }
-
 			// ATTRS FIELD {
 
 				$attrs_field_defaults = array(
@@ -706,12 +718,6 @@
 
 				// }
 
-				// NAME {
-
-					$p['attrs_field']['name'] = $p['attrs_field']['name'] . '[]';
-
-				// }
-
 			// }
 
 			// TEMPLATE {
@@ -728,19 +734,60 @@
 
 						foreach ( $p['checkboxes'] as $item ) {
 
+							$field_key = '';
+
+							if ( isset( $item['attrs_field']['name'] ) ) {
+
+								$field_key = $item['attrs_field']['name'];
+								unset( $item['attrs_field']['name'] );
+							}
+
 							$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
 
-							$attrs_field['id'] = $attrs_field['name'];
+							$attrs_field['id'] = $p['attrs_field']['name'];
 
 							// INDIVIDUALIZE FIELD ID {
 
 								if (
-									$attrs_field['name'] === $p['attrs_field']['name'] AND
-									! empty( $item['attrs_field']['value'] ) AND
-									! empty( $attrs_field['id'] )
+									! empty( $field_key )
 								) {
 
-									$attrs_field['id'] = $attrs_field['id'] . ':' . $item['attrs_field']['value'];
+									$attrs_field['id'] = $attrs_field['id'] . ':' . $field_key ;
+								}
+
+							// }
+
+							// NAME {
+
+								$attrs_field['name'] = $p['attrs_field']['name'] . '[' . $field_key . ']';
+
+							// }
+
+							// CHECKED {
+
+								if (
+									false !== $this->request AND
+									isset( $p['request_value'] )
+								) {
+
+									$attrs_field['checked'] = false;
+
+									if (
+										'' === $field_key AND
+										in_array( $item['attrs_field']['value'], $p['request_value'] )
+									) {
+
+										$attrs_field['checked'] = true;
+									}
+
+									if ( '' !== $field_key ) {
+
+										if ( isset( $this->request[ $p['attrs_field']['name'] ][ $field_key ] ) ) {
+
+											$attrs_field['checked'] = true;
+										}
+									}
+
 								}
 
 							// }
@@ -829,6 +876,32 @@
 			// }
 
 			return $html;
+		}
+
+		public function filter_checkboxes_custom_field_key_required( $requires, $field ) {
+
+			foreach ( $field['checkboxes'] as $item ) {
+
+				if ( isset( $item['attrs_field']['name'] ) ) {
+
+					if ( ! isset( $this->request[ $field['attrs_field']['name'] ][ $item['attrs_field']['name'] ] ) ) {
+
+						$requires = true;
+					}
+				}
+				else {
+
+					if (
+						isset ( $this->request[ $field['attrs_field']['name'] ] ) AND
+						! in_array( $item['attrs_field']['value'], $this->request[ $field['attrs_field']['name'] ] )
+					) {
+
+						$requires = true;
+					}
+				}
+			}
+
+			return $requires;
 		}
 
 		public function get_taxonomy_select_field( $p = array() ) {
@@ -1534,9 +1607,9 @@
 
 			if ( $this->is_form_request( $this->p['form_id'] ) ) {
 
-				if ( isset( $_REQUEST[ $name ] ) ) {
+				if ( isset( $this->request[ $name ] ) ) {
 
-					return $_REQUEST[ $name ];
+					return $this->request[ $name ];
 				}
 
 				return $value;
