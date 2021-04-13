@@ -291,6 +291,11 @@
 					$html .= $this->get_checkbox_field( $item );
 				}
 
+				if ( $item['type'] === 'checkboxes'  ) {
+
+					$html .= $this->get_checkboxes_field( $item );
+				}
+
 				if ( $item['type'] === 'taxonomy_select'  ) {
 
 					$html .= $this->get_taxonomy_select_field( $item );
@@ -604,9 +609,9 @@
 
 					if ( ! empty( $p['after_checkbox'] ) ) {
 
-						$after_checkbox = apply_filters( 'class/Form/before_checkbox', '&nbsp;<span>' . $p['after_checkbox'] . '</span>', $p );
-						$after_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
-						$after_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
+						$after_checkbox = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $p['after_checkbox'] . '</span>', $p );
+						$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
+						$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
 
 						$p['custom_checkbox'] = str_replace( '{after_checkbox}', $after_checkbox, $p['custom_checkbox'] );
 					}
@@ -616,6 +621,208 @@
 
 					$template_data['field'] .= $p['custom_checkbox'];
 				}
+
+				$html = $this->do_field_template( $p['template'], $template_data, $p );
+
+			// }
+
+			return $html;
+		}
+
+		public function get_checkboxes_field( $p = array() ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'label' => '',
+					'before_field' => false,
+					'after_field' => false,
+					'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
+					'before_checkbox' => false,
+					'after_checkbox' => false,
+					'attrs_label' => array(
+
+					),
+					'attrs_field' => array(
+						'name' => '',
+						'value' => '',
+					),
+					'checkboxes' => array(
+
+					),
+					'required' => false,
+					'validation' => false,
+					'value' => '',
+					'sanitize' => true,
+					'template' => array(
+						'{label}',
+						'{description}',
+						'{before_field}',
+						'{field}',
+						'{after_field}',
+						'{validation}',
+					),
+				);
+
+				$p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// FILTER FIELD PARAM {
+
+				$p = apply_filters( 'class/Form/field_parameters', $p );
+				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+			// }
+
+			// REQUEST VALUE {
+
+				if ( isset( $p['request_value'] ) ) {
+
+					//$p['attrs_field']['checked'] = true;
+				}
+
+			// }
+
+			// ATTRS FIELD {
+
+				$attrs_field_defaults = array(
+					'type' => 'checkbox',
+					'id' => false,
+					'name' => $p['attrs_field']['name'],
+					'class' => array(),
+				);
+
+				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+				// ID {
+
+					$p['attrs_field']['id'] = $p['attrs_field']['name'];
+
+					if ( ! $p['attrs_field']['id'] ) {
+
+						$p['attrs_field']['id'] = $p['attrs_field']['name'];
+					}
+
+				// }
+
+				// NAME {
+
+					$p['attrs_field']['name'] = $p['attrs_field']['name'] . '[]';
+
+				// }
+
+			// }
+
+			// TEMPLATE {
+
+				$template_data = array();
+
+				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+
+				// CHECKBOXES {
+
+					$template_data['field'] = '<ul>';
+
+					if ( ! empty( $p['checkboxes'] ) ) {
+
+						foreach ( $p['checkboxes'] as $item ) {
+
+							$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
+
+							$attrs_field['id'] = $attrs_field['name'];
+
+							// INDIVIDUALIZE FIELD ID {
+
+								if (
+									$attrs_field['name'] === $p['attrs_field']['name'] AND
+									! empty( $item['attrs_field']['value'] ) AND
+									! empty( $attrs_field['id'] )
+								) {
+
+									$attrs_field['id'] = $attrs_field['id'] . ':' . $item['attrs_field']['value'];
+								}
+
+							// }
+
+							$template_data['field'] .= '<li>';
+
+								// PREPEND CHECKBOXES ITEM {
+
+									$template_data['field'] = apply_filters( 'class/Form/prepend_checkboxes_item', $template_data['field'], $p );
+
+								// }
+
+								// INPUT {
+
+									$template_data['field'] .= '<input' . attrs( $attrs_field ) . '>';
+
+								// }
+
+								// CUSTOM CHECKBOX {
+
+									if ( $p['custom_checkbox'] ) {
+
+										$custom_checkbox = str_replace( '{for}', $attrs_field['id'], $p['custom_checkbox'] );
+
+										$before_checkbox = $p['before_checkbox'];
+
+										if ( ! empty( $item['before_checkbox'] ) ) {
+
+											$before_checkbox = $item['before_checkbox'];
+										}
+
+										if ( ! empty( $before_checkbox ) ) {
+
+											$before_checkbox = apply_filters( 'class/Form/before_checkbox', '<span>' . $before_checkbox . '</span>&nbsp;', $p );
+											$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $before_checkbox, $p );
+											$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_group'], $before_checkbox, $p );
+
+											$custom_checkbox = str_replace( '{before_checkbox}', $before_checkbox, $custom_checkbox );
+										}
+										else {
+
+											$custom_checkbox = str_replace( '{before_checkbox}', '', $custom_checkbox );
+										}
+
+										$after_checkbox = $p['after_checkbox'];
+
+										if ( ! empty( $item['after_checkbox'] ) ) {
+
+											$after_checkbox = $item['after_checkbox'];
+										}
+
+										if ( ! empty( $after_checkbox ) ) {
+
+											$after_checkbox = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $after_checkbox . '</span>', $p );
+											$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
+											$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
+
+											$custom_checkbox = str_replace( '{after_checkbox}', $after_checkbox, $custom_checkbox );
+										}
+										else {
+
+											$custom_checkbox = str_replace( '{after_checkbox}', '', $custom_checkbox );
+										}
+
+										$template_data['field'] .= $custom_checkbox;
+									}
+
+								// }
+
+								// APPEND CHECKBOXES ITEM {
+
+									$template_data['field'] = apply_filters( 'class/Form/append_checkboxes_item', $template_data['field'], $p );
+
+								// }
+
+							$template_data['field'] .= '</li>';
+						}
+					}
+
+					$template_data['field'] .= '</ul>';
+
+				// }
 
 				$html = $this->do_field_template( $p['template'], $template_data, $p );
 
