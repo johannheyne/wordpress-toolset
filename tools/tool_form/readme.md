@@ -46,6 +46,7 @@ new Form( array(
 		'class' => array( 'my-form' ),
 		'role' => 'form',
 		'aria_label' => 'My Form',
+		'return' => array( 'fields' ), // what to return/show on successfull validated form request
 		// add more
 	),
 	'echo' => true,
@@ -693,8 +694,9 @@ add_filter( 'class/Form/request/form_id=my_form', function( $param ) {
 ```php
 $form = new Form();
 
-if ( $form->is_form_request( $form_id ) ) {
+if ( $form->is_form_request( $form_id, true ) ) {
 
-	// Do Validations
+	// false: detect allways
+	// true: only if the fields has successfully passed the validation
 }
 ```

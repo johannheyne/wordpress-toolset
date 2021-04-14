@@ -35,6 +35,12 @@
 
 		private $request = false;
 
+		private $is_request = false; // whether the form is requested
+
+		private $has_messages = false; // whether the form has massages
+
+		private $request_form_message_keys = array();
+
 		function __construct( $p = array( 'form_id' => '' ) ) {
 
 			// DEFAULTS {
@@ -49,8 +55,8 @@
 						'data-form-id' => $p['form_id'],
 					),
 					'echo' => true,
-					'is_request' => false, // whether the form is requested
-					'has_messages' => false, // whether the form has massages
+					'is_request' => false,
+					'return' => array( 'fields' ), // what to return on request
 				);
 
 				$this->p = array_replace_recursive( $defaults, $p );
@@ -88,19 +94,26 @@
 					add_filter( 'class/Form/required?type=checkboxes', array( $this, 'filter_checkboxes_custom_field_key_required' ), 10, 2 );
 				}
 
+
 			// }
 
 			// FORM REQUEST ACTION {
 
 				if ( $this->is_form_request( $this->p['form_id'] ) ) {
 
-					$this->p['is_request'] = true;
+					$this->is_request = true;
 					$this->request = $_REQUEST;
 
 					// SANITIZE REQUEST
+
 					$this->sanitize_request();
 					$this->validate_fields();
 					$this->updates_field_values();
+					$this->gets_fields_form_message_keys();
+
+					// FILTERS
+
+					add_filter( 'class/Form/form_prepend', array( $this, 'gets_form_messages_html' ), 10, 2 );
 
 					// REQUEST ACTION
 
@@ -140,39 +153,42 @@
 
 				// }
 
-				// ITERATE FORM ITEMS  {
+				if ( in_array( 'fields', $this->p['return'] ) ) {
 
-					$pos = new ToolArrayPos( array(
-						'array' => $this->items, // array to sort
-						'param' => array(
-							'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
-						),
-					));
-					$this->items = $pos->get();
+					// ITERATE FORM ITEMS  {
 
-					foreach ( $this->items as $key => $item ) {
+						$pos = new ToolArrayPos( array(
+							'array' => $this->items, // array to sort
+							'param' => array(
+								'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
+							),
+						));
+						$this->items = $pos->get();
 
-						// IS FIELDSET {
+						foreach ( $this->items as $key => $item ) {
 
-							if ( ! empty( $item['legend'] ) ) {
+							// IS FIELDSET {
 
-								$html = $this->get_fieldset( $html, $item );
-							}
+								if ( ! empty( $item['legend'] ) ) {
 
-						// }
+									$html = $this->get_fieldset( $html, $item );
+								}
 
-						// IS FIELD WITHOUT FIELDSET {
+							// }
 
-							elseif ( empty( $item['fieldset_id'] ) ) {
+							// IS FIELD WITHOUT FIELDSET {
 
-								$html = $this->get_field( $html, $item );
-							}
+								elseif ( empty( $item['fieldset_id'] ) ) {
 
-						// }
+									$html = $this->get_field( $html, $item );
+								}
 
-					}
+							// }
 
-				// }
+						}
+
+					// }
+				}
 
 				// FORM APPEND {
 
@@ -231,11 +247,11 @@
 						if ( true === $required ) {
 
 							$item['validation_messages']['field'][] = 'required';
-							$item['validation_messages']['form'][] = 'required';
+							$item['validation_messages']['form'][] = 'field_validation_error';
 
-							$this->p['has_messages']['fields'] = true;
-							$this->p['has_messages']['form'] = true;
+							$this->has_messages['fields'] = true;
 						}
+
 					}
 
 				// }
@@ -247,20 +263,31 @@
 						isset( $this->request[ $item['attrs_field']['name'] ] )
 					) {
 
-						$item['validation_messages'] = tool_merge_defaults( $item['validation_messages'], $item['validation']( $this->request[ $item['attrs_field']['name'] ], $item ) );
+						$validation_return = $item['validation']( $this->request[ $item['attrs_field']['name'] ] );
+
+						if ( ! empty( $validation_return['field'] )  ) {
+
+							$item['validation_messages']['field'] = array_replace_recursive( $item['validation_messages']['field'], $validation_return['field'] );
+						}
+
+						if ( ! empty( $validation_return['form'] )  ) {
+
+							$item['validation_messages']['form'] = array_replace_recursive( $item['validation_messages']['form'], $validation_return['form'] );
+						}
 
 						if ( ! empty( $item['validation_messages']['field'] ) ) {
 
-							$this->p['has_messages']['fields'] = true;
+							$this->has_messages['fields'] = true;
 						}
 
 						if ( ! empty( $item['validation_messages']['form'] ) ) {
 
-							$this->p['has_messages']['form'] = true;
+							$this->has_messages['form'] = true;
 						}
 					}
 
 				// }
+
 			}
 		}
 
@@ -278,7 +305,53 @@
 			}
 		}
 
+		private function gets_fields_form_message_keys() {
+
+			if ( $this->request['form_id'] === $this->p['form_id'] ) {
+
+				foreach ( $this->items as $item ) {
+
+					if ( ! empty( $item['validation_messages']['form'] ) ) {
+
+						$this->request_form_message_keys = array_replace_recursive( $this->request_form_message_keys, $item['validation_messages']['form'] );
+					}
+				}
+			}
+		}
+
 		// RENDER FUNCTIONALITY
+
+		public function gets_form_messages_html( $html ) {
+
+			if ( $this->request['form_id'] !== $this->p['form_id'] ) {
+
+				return $html;
+			}
+
+			if ( empty( $this->request_form_message_keys ) ) {
+
+				return $html;
+			}
+
+			$message_array = array();
+
+			foreach ( $this->request_form_message_keys as $value ) {
+
+				if ( isset( $this->form_messages[ $value ] ) ) {
+
+					$message_array[] = get_lang_value_from_array( $this->form_messages[ $value ] );
+				}
+			}
+
+			if ( ! empty( $message_array ) ) {
+
+				$html .= '<div data-form-message="prepend-form">';
+					$html .= '<ol><li>' . implode( '</li><li>', $message_array ) . '</li></ol>';
+				$html .= '</div>';
+			}
+
+			return $html;
+		}
 
 		private function get_fieldset( $html, $fieldset ) {
 
@@ -1649,14 +1722,25 @@
 			}
 		}
 
-		public function is_form_request( $form_id ) {
+		public function is_form_request( $form_id, $validate = false ) {
 
 			if (
 				! empty( $_REQUEST['form_id'] ) AND
 				$form_id == $_REQUEST['form_id']
 			) {
 
-				return true;
+				//error_log( print_r( $this->has_messages, true) );
+				if ( false === $validate ) {
+
+					return true;
+				}
+				else {
+
+					if ( false === $this->has_messages ) {
+
+						return true;
+					}
+				}
 			}
 
 			return false;
