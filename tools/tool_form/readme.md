@@ -25,6 +25,7 @@ __Table of Content__
 	- [switch_toggle](#field_switch_toggle)
 	- [custom](#custom_field)
 	- [submit](#submit)
+	- [email](#field_email)
 - [todo] (Fields HTML5/JS Validation)
 - [Adding Content Prepending and Appending Form](#adding_content_prepending_appending_form)
 - [todo] Ajax
@@ -624,6 +625,34 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 ```
 
 
+
+<a id="field_email"></a>
+### Email
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'email',
+		'label' => '{label_text}',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+			'placeholder' => '',
+		),
+		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'sanitize' => true,
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+
+
 <a id="adding_item_wrapper"></a>
 ## Adding Field Item Wrapper Element
 
@@ -698,5 +727,56 @@ if ( $form->is_form_request( $form_id, true ) ) {
 
 	// false: detect allways
 	// true: only if the fields has successfully passed the validation
+}
+```
+
+
+
+## Form class workflow for setting up fields
+
+
+```php
+
+class Form {
+
+	private $fieldtypes = array();
+
+	__construct() {
+
+		// inits all fieldtypes first
+		$this->register_text_field();
+		// add othe fields here
+
+		// then gets the fieldtypes
+		$this->fieldtypes = apply_filters( 'class/Form/add_fieldtype', $this->fieldtypes );
+	}
+
+	.register_text_field() {
+
+		// defines fieldtype
+		add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+			$fieldtypes['text'] = array(
+				'default_param' => array(),
+				'validation' => array(),
+			);
+
+			return $fieldtypes;
+		});
+
+		// defines field rendering
+		add_filter( 'class/Form/get_fields_html/field_type=text', function( $html, $item ) {
+
+			$p = array_replace_recursive( $this->fieldtypes['text']['default_param'], $item );
+
+			return $html;
+		}, 10, 2 );
+	}
+
+	.get_field( $html, $item ) {
+
+		// render fields
+		$html .= apply_filters( 'class/Form/get_fields_html/field_type=' $item['type'], $html, $item );
+	}
 }
 ```

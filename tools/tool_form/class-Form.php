@@ -41,6 +41,8 @@
 
 		private $request_form_message_keys = array();
 
+		private $fieldtypes = array();
+
 		function __construct( $p = array( 'form_id' => '' ) ) {
 
 			// DEFAULTS {
@@ -56,10 +58,32 @@
 					),
 					'echo' => true,
 					'is_request' => false,
+					'form_type' => false, // email
 					'return' => array( 'fields' ), // what to return on request
 				);
 
 				$this->p = array_replace_recursive( $defaults, $p );
+
+			// }
+
+			// INITS FIELDTYPES {
+
+				$this->init_text_field();
+				$this->init_textarea_field();
+				$this->init_checkbox_field();
+				$this->init_checkboxes_field();
+				$this->init_taxonomy_select_field();
+				$this->init_select_field();
+				$this->init_switch_toggle_field();
+				$this->init_submit_field();
+				$this->init_custom_field();
+				$this->init_email_field();
+
+			// }
+
+			// GETS FIELDTYPES {
+
+				$this->fieldtypes = apply_filters( 'class/Form/add_fieldtype', $this->fieldtypes );
 
 			// }
 
@@ -71,7 +95,7 @@
 
 			// }
 
-			// REGISTES FIELDSETS {
+			// REGISTERS FIELDSETS {
 
 				$this->items = apply_filters( 'class/Form/fieldsets', $this->items, $this->p );
 				$this->items = apply_filters( 'class/Form/fieldsets/form_group=' . $this->p['form_group'], $this->items, $this->p );
@@ -93,7 +117,6 @@
 
 					add_filter( 'class/Form/required?type=checkboxes', array( $this, 'filter_checkboxes_custom_field_key_required' ), 10, 2 );
 				}
-
 
 			// }
 
@@ -403,6 +426,9 @@
 			$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p );
 			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
 
+				$html = apply_filters( 'class/Form/get_fields_html/field_type=' . $item['type'], $html, $item );
+
+				/*
 				if ( $item['type'] === 'text'  ) {
 
 					$html .= $this->get_text_field( $item );
@@ -451,7 +477,7 @@
 				if ( $item['type'] === 'email'  ) {
 
 					$html .= $this->get_email_field( $item );
-				}
+				}*/
 
 				$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p );
 				$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
@@ -461,366 +487,271 @@
 
 		// FIELD TYPES
 
-		public function get_text_field( $p = array() ) {
+		public function init_text_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'label' => '',
-					'attrs_label' => array(),
-					'attrs_field' => array(
-						'name' => '',
+				$fieldtypes['text'] = array(
+					'default_param' => array(
+						'label' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
 						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'required' => false,
 					'validation' => false,
-					'value' => '',
-					'sanitize' => true,
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=text', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				// DEFAULTS {
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+					$p = array_replace_recursive( $this->fieldtypes['text']['default_param'], $item );
 
-			// }
+				// }
 
-			// REQUEST VALUE {
+				// FILTER FIELD PARAM {
 
-				if ( isset( $p['request_value'] ) ) {
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-					$p['attrs_field']['value'] = $p['request_value'];
-				}
+				// }
 
-			// }
+				// REQUEST VALUE {
 
-			// ATTRS LABEL {
+					if ( isset( $p['request_value'] ) ) {
 
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
+						$p['attrs_field']['value'] = $p['request_value'];
+					}
 
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+				// }
 
-			// }
+				// ATTRS LABEL {
 
-			// ATTRS FIELD {
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
 
-				$attrs_field_defaults = array(
-					'type' => 'text',
-					'id' => $p['attrs_field']['name'],
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+				// }
 
-				if ( $p['required'] === true ) {
+				// ATTRS FIELD {
 
-					$p['attrs_field']['required'] = true;
-					$p['attrs_field']['class'][] = 'required';
-				}
+					$attrs_field_defaults = array(
+						'type' => 'text',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
 
-			// }
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
-			// TEMPLATE {
+					if ( $p['required'] === true ) {
 
-				$template_data = array();
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
 
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+				// }
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+				// TEMPLATE {
 
-			// }
+					$template_data = array();
 
-			return $html;
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+			}, 10, 2 );
+
 		}
 
-		public function get_textarea_field( $p = array() ) {
+		public function init_textarea_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'label' => '',
-					'attrs_label' => array(),
-					'attrs_field' => array(
-						'name' => '',
+				$fieldtypes['textarea'] = array(
+					'default_param' => array(
+						'label' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
+						'validation' => false,
 						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'required' => false,
 					'validation' => false,
-					'value' => '',
-					'sanitize' => true,
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=textarea', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				// DEFAULTS {
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+					$p = array_replace_recursive( $this->fieldtypes['textarea']['default_param'], $item );
 
-			// }
+				// }
 
-			// ATTRS LABEL {
+				// FILTER FIELD PARAM {
 
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+				// }
 
-			// }
+				// ATTRS LABEL {
 
-			// ATTRS FIELD {
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
 
-				$attrs_field_defaults = array(
-					'type' => 'text',
-					'id' => $p['attrs_field']['name'],
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+				// }
 
-				if ( $p['required'] === true ) {
+				// ATTRS FIELD {
 
-					$p['attrs_field']['required'] = true;
-					$p['attrs_field']['class'][] = 'required';
-				}
+					$attrs_field_defaults = array(
+						'type' => 'text',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
 
-			// }
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
-			// TEMPLATE {
+					if ( $p['required'] === true ) {
 
-				$template_data = array();
-
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-				$template_data['field'] = '<textarea' . attrs( $p['attrs_field'] ) . '>';
-
-					if ( ! empty( $p['request_value'] ) ) {
-
-						$template_data['field'] .= $p['request_value'];
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
 					}
 
-				$template_data['field'] .= '</textarea>';
+				// }
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+				// TEMPLATE {
 
-			// }
+					$template_data = array();
 
-			return $html;
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<textarea' . attrs( $p['attrs_field'] ) . '>';
+
+						if ( ! empty( $p['request_value'] ) ) {
+
+							$template_data['field'] .= $p['request_value'];
+						}
+
+					$template_data['field'] .= '</textarea>';
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+			}, 10, 2 );
+
 		}
 
-		public function get_checkbox_field( $p = array() ) {
+		public function init_checkbox_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'label' => '',
-					'before_field' => false,
-					'after_field' => false,
-					'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
-					'before_checkbox' => false,
-					'after_checkbox' => false,
-					'attrs_label' => array(
+				$fieldtypes['checkbox'] = array(
+					'default_param' => array(
+						'label' => '',
+						'before_field' => false,
+						'after_field' => false,
+						'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
+						'before_checkbox' => false,
+						'after_checkbox' => false,
+						'attrs_label' => array(
 
-					),
-					'attrs_field' => array(
-						'name' => '',
+						),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
+						'validation' => false,
 						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'required' => false,
-					'validation' => false,
-					'value' => '',
-					'sanitize' => true,
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=checkbox', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['checkbox']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// REQUEST VALUE {
+				// }
 
-				if ( isset( $p['request_value'] ) ) {
+				// REQUEST VALUE {
 
-					$p['attrs_field']['checked'] = true;
-				}
+					if ( isset( $p['request_value'] ) ) {
 
-			// }
-
-			// ATTRS FIELD {
-
-				$attrs_field_defaults = array(
-					'type' => 'checkbox',
-					'id' => false,
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
-
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
-
-				if ( ! $p['attrs_field']['id'] ) {
-
-					$p['attrs_field']['id'] = $p['attrs_field']['name'];
-				}
-
-			// }
-
-			// ATTRS LABEL {
-
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['id'],
-				);
-
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
-
-			// }
-
-			// TEMPLATE {
-
-				$template_data = array();
-
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-
-				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
-
-				if ( $p['custom_checkbox'] ) {
-
-					$p['custom_checkbox'] = str_replace( '{for}', $p['attrs_field']['id'], $p['custom_checkbox'] );
-
-					if ( ! empty( $p['before_checkbox'] ) ) {
-
-						$before_checkbox = apply_filters( 'class/Form/before_checkbox', '<span>' . $p['before_checkbox'] . '</span>&nbsp;', $p );
-						$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $before_checkbox, $p );
-						$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_group'], $before_checkbox, $p );
-
-						$p['custom_checkbox'] = str_replace( '{before_checkbox}', $before_checkbox, $p['custom_checkbox'] );
-					}
-					else {
-						$p['custom_checkbox'] = str_replace( '{before_checkbox}', '', $p['custom_checkbox'] );
+						$p['attrs_field']['checked'] = true;
 					}
 
-					if ( ! empty( $p['after_checkbox'] ) ) {
+				// }
 
-						$after_checkbox = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $p['after_checkbox'] . '</span>', $p );
-						$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
-						$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
+				// ATTRS FIELD {
 
-						$p['custom_checkbox'] = str_replace( '{after_checkbox}', $after_checkbox, $p['custom_checkbox'] );
-					}
-					else {
-						$p['custom_checkbox'] = str_replace( '{after_checkbox}', '', $p['custom_checkbox'] );
-					}
+					$attrs_field_defaults = array(
+						'type' => 'checkbox',
+						'id' => false,
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
 
-					$template_data['field'] .= $p['custom_checkbox'];
-				}
-
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
-
-			// }
-
-			return $html;
-		}
-
-		public function get_checkboxes_field( $p = array() ) {
-
-			// DEFAULTS {
-
-				$defaults = array(
-					'label' => '',
-					'before_field' => false,
-					'after_field' => false,
-					'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
-					'before_checkbox' => false,
-					'after_checkbox' => false,
-					'attrs_label' => array(
-
-					),
-					'attrs_field' => array(
-						'name' => '',
-						'value' => '',
-					),
-					'checkboxes' => array(
-
-					),
-					'required' => false,
-					'validation' => false,
-					'value' => '',
-					'sanitize' => true,
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
-				);
-
-				$p = array_replace_recursive( $defaults, $p );
-
-			// }
-
-			// FILTER FIELD PARAM {
-
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
-
-			// }
-
-			// ATTRS FIELD {
-
-				$attrs_field_defaults = array(
-					'type' => 'checkbox',
-					'id' => false,
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
-
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
-
-				// ID {
-
-					$p['attrs_field']['id'] = $p['attrs_field']['name'];
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
 					if ( ! $p['attrs_field']['id'] ) {
 
@@ -829,164 +760,299 @@
 
 				// }
 
-			// }
+				// ATTRS LABEL {
 
-			// TEMPLATE {
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['id'],
+					);
 
-				$template_data = array();
-
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-
-				// CHECKBOXES {
-
-					$template_data['field'] = '<ul>';
-
-					if ( ! empty( $p['checkboxes'] ) ) {
-
-						foreach ( $p['checkboxes'] as $item ) {
-
-							$field_key = '';
-
-							if ( isset( $item['attrs_field']['name'] ) ) {
-
-								$field_key = $item['attrs_field']['name'];
-								unset( $item['attrs_field']['name'] );
-							}
-
-							$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
-
-							$attrs_field['id'] = $p['attrs_field']['name'];
-
-							// INDIVIDUALIZE FIELD ID {
-
-								if (
-									! empty( $field_key )
-								) {
-
-									$attrs_field['id'] = $attrs_field['id'] . ':' . $field_key ;
-								}
-
-							// }
-
-							// NAME {
-
-								$attrs_field['name'] = $p['attrs_field']['name'] . '[' . $field_key . ']';
-
-							// }
-
-							// CHECKED {
-
-								if (
-									false !== $this->request AND
-									isset( $p['request_value'] )
-								) {
-
-									$attrs_field['checked'] = false;
-
-									if (
-										'' === $field_key AND
-										in_array( $item['attrs_field']['value'], $p['request_value'] )
-									) {
-
-										$attrs_field['checked'] = true;
-									}
-
-									if ( '' !== $field_key ) {
-
-										if ( isset( $this->request[ $p['attrs_field']['name'] ][ $field_key ] ) ) {
-
-											$attrs_field['checked'] = true;
-										}
-									}
-
-								}
-
-							// }
-
-							$template_data['field'] .= '<li>';
-
-								// PREPEND CHECKBOXES ITEM {
-
-									$template_data['field'] = apply_filters( 'class/Form/prepend_checkboxes_item', $template_data['field'], $p );
-
-								// }
-
-								// INPUT {
-
-									$template_data['field'] .= '<input' . attrs( $attrs_field ) . '>';
-
-								// }
-
-								// CUSTOM CHECKBOX {
-
-									if ( $p['custom_checkbox'] ) {
-
-										$custom_checkbox = str_replace( '{for}', $attrs_field['id'], $p['custom_checkbox'] );
-
-										$before_checkbox = $p['before_checkbox'];
-
-										if ( ! empty( $item['before_checkbox'] ) ) {
-
-											$before_checkbox = $item['before_checkbox'];
-										}
-
-										if ( ! empty( $before_checkbox ) ) {
-
-											$before_checkbox = apply_filters( 'class/Form/before_checkbox', '<span>' . $before_checkbox . '</span>&nbsp;', $p );
-											$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $before_checkbox, $p );
-											$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_group'], $before_checkbox, $p );
-
-											$custom_checkbox = str_replace( '{before_checkbox}', $before_checkbox, $custom_checkbox );
-										}
-										else {
-
-											$custom_checkbox = str_replace( '{before_checkbox}', '', $custom_checkbox );
-										}
-
-										$after_checkbox = $p['after_checkbox'];
-
-										if ( ! empty( $item['after_checkbox'] ) ) {
-
-											$after_checkbox = $item['after_checkbox'];
-										}
-
-										if ( ! empty( $after_checkbox ) ) {
-
-											$after_checkbox = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $after_checkbox . '</span>', $p );
-											$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
-											$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
-
-											$custom_checkbox = str_replace( '{after_checkbox}', $after_checkbox, $custom_checkbox );
-										}
-										else {
-
-											$custom_checkbox = str_replace( '{after_checkbox}', '', $custom_checkbox );
-										}
-
-										$template_data['field'] .= $custom_checkbox;
-									}
-
-								// }
-
-								// APPEND CHECKBOXES ITEM {
-
-									$template_data['field'] = apply_filters( 'class/Form/append_checkboxes_item', $template_data['field'], $p );
-
-								// }
-
-							$template_data['field'] .= '</li>';
-						}
-					}
-
-					$template_data['field'] .= '</ul>';
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
 				// }
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+				// TEMPLATE {
 
-			// }
+					$template_data = array();
 
-			return $html;
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+					if ( $p['custom_checkbox'] ) {
+
+						$p['custom_checkbox'] = str_replace( '{for}', $p['attrs_field']['id'], $p['custom_checkbox'] );
+
+						if ( ! empty( $p['before_checkbox'] ) ) {
+
+							$before_checkbox = apply_filters( 'class/Form/before_checkbox', '<span>' . $p['before_checkbox'] . '</span>&nbsp;', $p );
+							$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $before_checkbox, $p );
+							$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_group'], $before_checkbox, $p );
+
+							$p['custom_checkbox'] = str_replace( '{before_checkbox}', $before_checkbox, $p['custom_checkbox'] );
+						}
+						else {
+							$p['custom_checkbox'] = str_replace( '{before_checkbox}', '', $p['custom_checkbox'] );
+						}
+
+						if ( ! empty( $p['after_checkbox'] ) ) {
+
+							$after_checkbox = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $p['after_checkbox'] . '</span>', $p );
+							$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
+							$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
+
+							$p['custom_checkbox'] = str_replace( '{after_checkbox}', $after_checkbox, $p['custom_checkbox'] );
+						}
+						else {
+							$p['custom_checkbox'] = str_replace( '{after_checkbox}', '', $p['custom_checkbox'] );
+						}
+
+						$template_data['field'] .= $p['custom_checkbox'];
+					}
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+
+			}, 10, 2 );
+
+		}
+
+		public function init_checkboxes_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['checkboxes'] = array(
+					'default_param' => array(
+						'label' => '',
+						'before_field' => false,
+						'after_field' => false,
+						'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
+						'before_checkbox' => false,
+						'after_checkbox' => false,
+						'attrs_label' => array(
+
+						),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'checkboxes' => array(
+
+						),
+						'required' => false,
+						'validation' => false,
+						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
+					),
+					'validation' => array(),
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=checkboxes', function( $html, $item ) {
+
+				$p = array_replace_recursive( $this->fieldtypes['checkboxes']['default_param'], $item );
+
+				// FILTER FIELD PARAM {
+
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+				// }
+
+				// ATTRS FIELD {
+
+					$attrs_field_defaults = array(
+						'type' => 'checkbox',
+						'id' => false,
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
+
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+					// ID {
+
+						$p['attrs_field']['id'] = $p['attrs_field']['name'];
+
+						if ( ! $p['attrs_field']['id'] ) {
+
+							$p['attrs_field']['id'] = $p['attrs_field']['name'];
+						}
+
+					// }
+
+				// }
+
+				// TEMPLATE {
+
+					$template_data = array();
+
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+
+					// CHECKBOXES {
+
+						$template_data['field'] = '<ul>';
+
+						if ( ! empty( $p['checkboxes'] ) ) {
+
+							foreach ( $p['checkboxes'] as $item ) {
+
+								$field_key = '';
+
+								if ( isset( $item['attrs_field']['name'] ) ) {
+
+									$field_key = $item['attrs_field']['name'];
+									unset( $item['attrs_field']['name'] );
+								}
+
+								$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
+
+								$attrs_field['id'] = $p['attrs_field']['name'];
+
+								// INDIVIDUALIZE FIELD ID {
+
+									if (
+										! empty( $field_key )
+									) {
+
+										$attrs_field['id'] = $attrs_field['id'] . ':' . $field_key ;
+									}
+
+								// }
+
+								// NAME {
+
+									$attrs_field['name'] = $p['attrs_field']['name'] . '[' . $field_key . ']';
+
+								// }
+
+								// CHECKED {
+
+									if (
+										false !== $this->request AND
+										isset( $p['request_value'] )
+									) {
+
+										$attrs_field['checked'] = false;
+
+										if (
+											'' === $field_key AND
+											in_array( $item['attrs_field']['value'], $p['request_value'] )
+										) {
+
+											$attrs_field['checked'] = true;
+										}
+
+										if ( '' !== $field_key ) {
+
+											if ( isset( $this->request[ $p['attrs_field']['name'] ][ $field_key ] ) ) {
+
+												$attrs_field['checked'] = true;
+											}
+										}
+
+									}
+
+								// }
+
+								$template_data['field'] .= '<li>';
+
+									// PREPEND CHECKBOXES ITEM {
+
+										$template_data['field'] = apply_filters( 'class/Form/prepend_checkboxes_item', $template_data['field'], $p );
+
+									// }
+
+									// INPUT {
+
+										$template_data['field'] .= '<input' . attrs( $attrs_field ) . '>';
+
+									// }
+
+									// CUSTOM CHECKBOX {
+
+										if ( $p['custom_checkbox'] ) {
+
+											$custom_checkbox = str_replace( '{for}', $attrs_field['id'], $p['custom_checkbox'] );
+
+											$before_checkbox = $p['before_checkbox'];
+
+											if ( ! empty( $item['before_checkbox'] ) ) {
+
+												$before_checkbox = $item['before_checkbox'];
+											}
+
+											if ( ! empty( $before_checkbox ) ) {
+
+												$before_checkbox = apply_filters( 'class/Form/before_checkbox', '<span>' . $before_checkbox . '</span>&nbsp;', $p );
+												$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_group=' . $this->p['form_group'], $before_checkbox, $p );
+												$before_checkbox = apply_filters( 'class/Form/before_checkbox/form_id=' . $this->p['form_group'], $before_checkbox, $p );
+
+												$custom_checkbox = str_replace( '{before_checkbox}', $before_checkbox, $custom_checkbox );
+											}
+											else {
+
+												$custom_checkbox = str_replace( '{before_checkbox}', '', $custom_checkbox );
+											}
+
+											$after_checkbox = $p['after_checkbox'];
+
+											if ( ! empty( $item['after_checkbox'] ) ) {
+
+												$after_checkbox = $item['after_checkbox'];
+											}
+
+											if ( ! empty( $after_checkbox ) ) {
+
+												$after_checkbox = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $after_checkbox . '</span>', $p );
+												$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_checkbox, $p );
+												$after_checkbox = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_checkbox, $p );
+
+												$custom_checkbox = str_replace( '{after_checkbox}', $after_checkbox, $custom_checkbox );
+											}
+											else {
+
+												$custom_checkbox = str_replace( '{after_checkbox}', '', $custom_checkbox );
+											}
+
+											$template_data['field'] .= $custom_checkbox;
+										}
+
+									// }
+
+									// APPEND CHECKBOXES ITEM {
+
+										$template_data['field'] = apply_filters( 'class/Form/append_checkboxes_item', $template_data['field'], $p );
+
+									// }
+
+								$template_data['field'] .= '</li>';
+							}
+						}
+
+						$template_data['field'] .= '</ul>';
+
+					// }
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+
+			}, 10, 2 );
 		}
 
 		public function filter_checkboxes_custom_field_key_required( $requires, $field ) {
@@ -1015,7 +1081,7 @@
 			return $requires;
 		}
 
-		public function get_taxonomy_select_field( $p = array() ) {
+		public function init_taxonomy_select_field( $p = array() ) {
 
 			/* USAGE
 
@@ -1037,241 +1103,249 @@
 
 			*/
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'taxonomy' => 'category',
-					'hide_empty' => false,
-					'value_type' => 'permalink', // permalink, term_id
-					'event' => array(
-						'on_change' => false, // change_location, submit_form
-					),
-					'attrs_label' => array(),
-					'attrs_field' => array(
-						'name' => '', // name of select field
-						'value' => '', // name of select field
-					),
-					'sanitize' => true,
-					'allow_null' => array(
-						'label' => array(
-							'default' => 'Choose…', // list of locales
+				$fieldtypes['taxonomy_select'] = array(
+					'default_param' => array(
+						'taxonomy' => 'category',
+						'hide_empty' => false,
+						'value_type' => 'permalink', // permalink, term_id
+						'event' => array(
+							'on_change' => false, // change_location, submit_form
 						),
-						'value' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '', // name of select field
+							'value' => '', // name of select field
+						),
+						'sanitize' => true,
+						'allow_null' => array(
+							'label' => array(
+								'default' => 'Choose…', // list of locales
+							),
+							'value' => '',
+						),
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=taxonomy_select', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['taxonomy_select']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// REQUEST VALUE {
+				// }
 
-				if ( isset( $p['request_value'] ) ) {
+				// REQUEST VALUE {
 
-					$p['attrs_field']['value'] = $p['request_value'];
-				}
+					if ( isset( $p['request_value'] ) ) {
 
-			// }
-
-			// GET CURRENT TERM VALUE {
-
-				$p['current_term_value'] = $p['attrs_field']['value'];
-
-			// }
-
-			// ATTRS LABEL {
-
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
-
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
-
-			// }
-
-			// ATTRS FIELD {
-
-				$attrs_field_defaults = array(
-					'id' => $p['attrs_field']['name'],
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
-
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
-
-				if ( $p['required'] === true ) {
-
-					$p['attrs_field']['required'] = true;
-					$p['attrs_field']['class'][] = 'required';
-				}
-
-			// }
-
-			// GET TERMS OF POST TAGS {
-
-				$terms = get_terms( array(
-					'taxonomy' => $p['taxonomy'],
-					'hide_empty' => $p['hide_empty'],
-				) );
-
-				if ( is_wp_error( $terms ) ) {
-
-					error_log( print_r( array( 'WordPress Error in: ' . __FILE__, $terms ), true) );
-
-					return '';
-				}
-
-			// }
-
-			// GETS OPTIONS LIST {
-
-				$list = array();
-
-				// ALLOW NULL {
-
-					if ( ! empty( $p['allow_null'] ) ) {
-
-						$attrs = array(
-							'value' => $p['allow_null']['value'],
-						);
-
-						if ( $p['current_term_value'] == $p['allow_null']['value'] ) {
-
-							$attrs['selected'] = 'selected';
-						}
-
-						$label = tool( array(
-							'name' => 'tool_get_lang_value_from_array',
-							'param' => $p['allow_null']['label'],
-						) );
-
-						array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
+						$p['attrs_field']['value'] = $p['request_value'];
 					}
 
 				// }
 
-				foreach ( $terms as $item ) {
+				// GET CURRENT TERM VALUE {
 
-					// SELECT OPTION ATTRIBUTES {
+					$p['current_term_value'] = $p['attrs_field']['value'];
 
-						$attrs = array(
-							'value' => false,
-						);
+				// }
 
-					// }
+				// ATTRS LABEL {
 
-					// TRANSLATES TERM NAME {
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
 
-						if ( $GLOBALS['toolset']['multilanguage'] ) {
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
-							$name = get_lang_field( 'lang_taxonomy/name', 'term_' . $item->term_id );
+				// }
 
-							if ( ! empty( $name ) ) {
+				// ATTRS FIELD {
 
-								$item->name = $name;
+					$attrs_field_defaults = array(
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
+
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+					if ( $p['required'] === true ) {
+
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
+
+				// }
+
+				// GET TERMS OF POST TAGS {
+
+					$terms = get_terms( array(
+						'taxonomy' => $p['taxonomy'],
+						'hide_empty' => $p['hide_empty'],
+					) );
+
+					if ( is_wp_error( $terms ) ) {
+
+						error_log( print_r( array( 'WordPress Error in: ' . __FILE__, $terms ), true) );
+
+						return '';
+					}
+
+				// }
+
+				// GETS OPTIONS LIST {
+
+					$list = array();
+
+					// ALLOW NULL {
+
+						if ( ! empty( $p['allow_null'] ) ) {
+
+							$attrs = array(
+								'value' => $p['allow_null']['value'],
+							);
+
+							if ( $p['current_term_value'] == $p['allow_null']['value'] ) {
+
+								$attrs['selected'] = 'selected';
 							}
+
+							$label = tool( array(
+								'name' => 'tool_get_lang_value_from_array',
+								'param' => $p['allow_null']['label'],
+							) );
+
+							array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
 						}
 
 					// }
 
-					// SELECTED {
+					foreach ( $terms as $item ) {
 
-						if (
-							$p['value_type'] === 'term_id' AND
-							$p['current_term_value'] == $item->term_id
-						) {
+						// SELECT OPTION ATTRIBUTES {
 
-							$attrs['selected'] = 'selected';
-						}
+							$attrs = array(
+								'value' => false,
+							);
 
-						if (
-							$p['value_type'] === 'permalink' AND
-							$p['current_term_value'] == get_term_link( $item->term_id )
-						) {
+						// }
 
-							$attrs['selected'] = 'selected';
-						}
+						// TRANSLATES TERM NAME {
 
-					// }
+							if ( $GLOBALS['toolset']['multilanguage'] ) {
 
-					// SETS VALUE {
+								$name = get_lang_field( 'lang_taxonomy/name', 'term_' . $item->term_id );
 
-						$value = '';
+								if ( ! empty( $name ) ) {
 
-						if ( $p['value_type'] === 'term_id' ) {
+									$item->name = $name;
+								}
+							}
 
-							$attrs['value'] = $item->term_id;
-						}
+						// }
 
-						if ( $p['value_type'] === 'permalink' ) {
+						// SELECTED {
 
-							$attrs['value'] = get_term_link( $item->term_id );
-						}
+							if (
+								$p['value_type'] === 'term_id' AND
+								$p['current_term_value'] == $item->term_id
+							) {
 
-					// }
+								$attrs['selected'] = 'selected';
+							}
 
-					array_push( $list, '<option' . attrs( $attrs ) . '>'. $item->name . '</option>' );
-				}
+							if (
+								$p['value_type'] === 'permalink' AND
+								$p['current_term_value'] == get_term_link( $item->term_id )
+							) {
 
-			// }
+								$attrs['selected'] = 'selected';
+							}
 
-			// ADDS EVENTS {
+						// }
 
-				// ADDS CHANGE LOCATION ON CHANGE {
+						// SETS VALUE {
 
-					if ( $p['event']['on_change'] === 'change_location' ) {
+							$value = '';
 
-						$p['attrs_field']['class'][] = 'js-select-field-event-change-location';
+							if ( $p['value_type'] === 'term_id' ) {
+
+								$attrs['value'] = $item->term_id;
+							}
+
+							if ( $p['value_type'] === 'permalink' ) {
+
+								$attrs['value'] = get_term_link( $item->term_id );
+							}
+
+						// }
+
+						array_push( $list, '<option' . attrs( $attrs ) . '>'. $item->name . '</option>' );
 					}
 
 				// }
 
-				// ADDS SUBMIT FORM ON CHANGE {
+				// ADDS EVENTS {
 
-					if ( $p['event']['on_change'] === 'submit_form' ) {
+					// ADDS CHANGE LOCATION ON CHANGE {
 
-						$p['attrs_field']['class'][] = 'js-select-field-event-submit-form';
-					}
+						if ( $p['event']['on_change'] === 'change_location' ) {
+
+							$p['attrs_field']['class'][] = 'js-select-field-event-change-location';
+						}
+
+					// }
+
+					// ADDS SUBMIT FORM ON CHANGE {
+
+						if ( $p['event']['on_change'] === 'submit_form' ) {
+
+							$p['attrs_field']['class'][] = 'js-select-field-event-submit-form';
+						}
+
+					// }
 
 				// }
 
-			// }
+				// TEMPLATE {
 
-			// TEMPLATE {
+					if ( empty( $list ) ) {
 
-				if ( empty( $list ) ) {
+						return '';
+					}
 
-					return '';
-				}
+					$template_data = array();
 
-				$template_data = array();
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-				$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+				// }
 
-			// }
+				return $html;
 
-			return $html;
+			}, 10, 2 );
 		}
 
-		public function get_select_field( $p = array() ) {
+		public function init_select_field( $p = array() ) {
 
 			/* USAGE
 
@@ -1290,468 +1364,507 @@
 
 			*/
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'current_value' => 'category',
-					'event' => array(
-						'on_change' => false, // change_location, submit_form
-					),
-					'attrs_label' => array(),
-					'attrs_field' => array(
-						'name' => '', // name of select field
-						'value' => '', // name of select field
-					),
-					'sanitize' => true,
-					'allow_null' => array(
-						'label' => array(
-							'default' => 'Choose…', // list of locales
+				$fieldtypes['select'] = array(
+					'default_param' => array(
+						'current_value' => 'category',
+						'event' => array(
+							'on_change' => false, // change_location, submit_form
 						),
-						'value' => '',
-					),
-					'options' => array(
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '', // name of select field
+							'value' => '', // name of select field
+						),
+						'sanitize' => true,
+						'allow_null' => array(
+							'label' => array(
+								'default' => 'Choose…', // list of locales
+							),
+							'value' => '',
+						),
+						'options' => array(
 
+						),
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=select', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['select']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// REQUEST VALUE {
+				// }
 
-				if ( isset( $p['request_value'] ) ) {
+				// REQUEST VALUE {
 
-					$p['attrs_field']['value'] = $p['request_value'];
-					$p['current_value'] = $p['request_value'];
-				}
+					if ( isset( $p['request_value'] ) ) {
 
-			// }
+						$p['attrs_field']['value'] = $p['request_value'];
+						$p['current_value'] = $p['request_value'];
+					}
 
-			// ATTRS LABEL {
+				// }
 
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
+				// ATTRS LABEL {
 
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
 
-			// }
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
-			// ATTRS FIELD {
+				// }
 
-				$attrs_field_defaults = array(
-					'id' => $p['attrs_field']['name'],
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
+				// ATTRS FIELD {
 
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$attrs_field_defaults = array(
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
 
-				if ( $p['required'] === true ) {
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
-					$p['attrs_field']['required'] = true;
-					$p['attrs_field']['class'][] = 'required';
-				}
+					if ( $p['required'] === true ) {
 
-			// }
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
 
-			// GETS OPTIONS LIST {
+				// }
 
-				$list = array();
+				// GETS OPTIONS LIST {
 
-				// ALLOW NULL {
+					$list = array();
 
-					if ( ! empty( $p['allow_null'] ) ) {
+					// ALLOW NULL {
 
-						$attrs = array(
-							'value' => $p['allow_null']['value'],
-						);
+						if ( ! empty( $p['allow_null'] ) ) {
 
-						if ( $p['current_value'] == $p['allow_null']['value'] ) {
+							$attrs = array(
+								'value' => $p['allow_null']['value'],
+							);
 
-							$attrs['selected'] = 'selected';
+							if ( $p['current_value'] == $p['allow_null']['value'] ) {
+
+								$attrs['selected'] = 'selected';
+							}
+
+							$label = tool( array(
+								'name' => 'tool_get_lang_value_from_array',
+								'param' => $p['allow_null']['label'],
+							) );
+
+							array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
 						}
 
-						$label = tool( array(
-							'name' => 'tool_get_lang_value_from_array',
-							'param' => $p['allow_null']['label'],
-						) );
+					// }
+
+					foreach ( $p['options'] as $value => $label ) {
+
+						// SELECT OPTION ATTRIBUTES {
+
+							$attrs = array(
+								'value' => false,
+							);
+
+						// }
+
+						// SELECTED {
+
+							if ( $p['current_value'] == $value ) {
+
+								$attrs['selected'] = 'selected';
+							}
+
+						// }
+
+						// SETS VALUE {
+
+							$attrs['value'] = $value;
+
+						// }
 
 						array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
 					}
 
 				// }
 
-				foreach ( $p['options'] as $value => $label ) {
+				// ADDS EVENTS {
 
-					// SELECT OPTION ATTRIBUTES {
+					// ADDS CHANGE LOCATION ON CHANGE {
 
-						$attrs = array(
-							'value' => false,
-						);
+						if ( $p['event']['on_change'] === 'change_location' ) {
 
-					// }
-
-					// SELECTED {
-
-						if ( $p['current_value'] == $value ) {
-
-							$attrs['selected'] = 'selected';
+							$p['attrs_field']['class'][] = 'js-select-field-event-change-location';
 						}
 
 					// }
 
-					// SETS VALUE {
+					// ADDS SUBMIT FORM ON CHANGE {
 
-						$attrs['value'] = $value;
+						if ( $p['event']['on_change'] === 'submit_form' ) {
+
+							$p['attrs_field']['class'][] = 'js-select-field-event-submit-form';
+						}
 
 					// }
 
-					array_push( $list, '<option' . attrs( $attrs ) . '>'. $label . '</option>' );
-				}
+				// }
 
-			// }
+				// TEMPLATE { {
 
-			// ADDS EVENTS {
+					if ( empty( $list ) ) {
 
-				// ADDS CHANGE LOCATION ON CHANGE {
-
-					if ( $p['event']['on_change'] === 'change_location' ) {
-
-						$p['attrs_field']['class'][] = 'js-select-field-event-change-location';
+						return '';
 					}
+
+					$template_data = array();
+
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
 				// }
 
-				// ADDS SUBMIT FORM ON CHANGE {
+				return $html;
 
-					if ( $p['event']['on_change'] === 'submit_form' ) {
-
-						$p['attrs_field']['class'][] = 'js-select-field-event-submit-form';
-					}
-
-				// }
-
-			// }
-
-			// TEMPLATE { {
-
-				if ( empty( $list ) ) {
-
-					return '';
-				}
-
-				$template_data = array();
-
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-				$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
-
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
-
-			// }
-
-			return $html;
+			}, 10, 2 );
 		}
 
-		public function get_switch_toggle_field( $p = array() ) {
+		public function init_switch_toggle_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'label' => '<span class="switch-toggle-on">{on}</span><span class="switch-toggle-off">{off}</span>',
-					'label_on' => 'On',
-					'label_off' => 'Off',
-					'attrs_label' => array(
-						'class' => 'switch-toggle',
-					),
-					'attrs_field' => array(
-						'class' => 'switch-toggle-checkbox',
-						'name' => '',
+				$fieldtypes['switch_toggle'] = array(
+					'default_param' => array(
+						'label' => '<span class="switch-toggle-on">{on}</span><span class="switch-toggle-off">{off}</span>',
+						'label_on' => 'On',
+						'label_off' => 'Off',
+						'attrs_label' => array(
+							'class' => 'switch-toggle',
+						),
+						'attrs_field' => array(
+							'class' => 'switch-toggle-checkbox',
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
+						'validation' => false,
 						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{description}',
+							'{field}',
+							'{before_field}',
+							'{label}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'required' => false,
-					'validation' => false,
-					'value' => '',
-					'sanitize' => true,
-					'template' => array(
-						'{description}',
-						'{field}',
-						'{before_field}',
-						'{label}',
-						'{after_field}',
-						'{validation}',
-					),
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=switch_toggle', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['switch_toggle']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// REQUEST VALUE {
+				// }
 
-				if ( isset( $p['request_value'] ) ) {
+				// REQUEST VALUE {
 
-					$p['attrs_field']['checked'] = true;
-				}
+					if ( isset( $p['request_value'] ) ) {
 
-			// }
+						$p['attrs_field']['checked'] = true;
+					}
 
-			// ATTRS LABEL {
+				// }
 
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
+				// ATTRS LABEL {
 
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
 
-			// }
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
-			// ATTRS FIELD {
+				// }
 
-				$attrs_field_defaults = array(
-					'type' => 'checkbox',
-					'id' => $p['attrs_field']['name'],
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
+				// ATTRS FIELD {
 
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$attrs_field_defaults = array(
+						'type' => 'checkbox',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
 
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
-			// }
+				// }
 
-			// FILTER LABEL {
+				// FILTER LABEL {
 
-				$p['label'] = str_replace( '{on}', $p['label_on'], $p['label'] );
-				$p['label'] = str_replace( '{off}', $p['label_off'], $p['label'] );
+					$p['label'] = str_replace( '{on}', $p['label_on'], $p['label'] );
+					$p['label'] = str_replace( '{off}', $p['label_off'], $p['label'] );
 
-			// }
+				// }
 
-			// TEMPLATE {
+				// TEMPLATE {
 
-				$template_data = array();
+					$template_data = array();
 
-				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
-			// }
+				// }
 
-			return $html;
+				return $html;
+
+			}, 10, 2 );
 		}
 
-		public function get_submit_field( $p = array() ) {
+		public function init_submit_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'type' => 'submit',
-					'attrs_field' => array(
+				$fieldtypes['submit'] = array(
+					'default_param' => array(
 						'type' => 'submit',
-						'name' => '',
-						'value' => '',
+						'attrs_field' => array(
+							'type' => 'submit',
+							'name' => '',
+							'value' => '',
+						),
+						'template' => array(
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+						),
 					),
-					'template' => array(
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-					),
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=submit', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['submit']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// ATTRS FIELD {
+				// }
 
-				$attrs_field_defaults = array(
-					'id' => $p['attrs_field']['name'],
-				);
+				// ATTRS FIELD {
 
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$attrs_field_defaults = array(
+						'id' => $p['attrs_field']['name'],
+					);
 
-			// }
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
-			// TEMPLATE {
+				// }
 
-				$template_data = array();
+				// TEMPLATE {
 
-				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					$template_data = array();
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
-			// }
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
-			return $html;
+				// }
+
+				return $html;
+
+			}, 10, 2 );
 		}
 
-		public function get_custom_field( $p = array() ) {
+		public function init_custom_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'callback' => false,
-					'template' => array(
-						'{field}',
+				$fieldtypes['custom'] = array(
+					'default_param' => array(
+						'callback' => false,
+						'template' => array(
+							'{field}',
+						),
+
 					),
-
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=custom', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['custom']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// TEMPLATE {
+				// }
 
-				if ( ! $p['callback'] ) {
+				// TEMPLATE {
 
-					return '';
-				}
+					if ( ! $p['callback'] ) {
 
-				$template_data = array();
+						return '';
+					}
 
-				$template_data['field'] = $p['callback']();
+					$template_data = array();
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+					$template_data['field'] = $p['callback']();
 
-			// }
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
-			return $html;
+				// }
+
+				return $html;
+
+			}, 10, 2 );
 		}
 
-		public function get_email_field( $p = array() ) {
+		public function init_email_field( $p = array() ) {
 
-			// DEFAULTS {
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
 
-				$defaults = array(
-					'label' => '',
-					'attrs_label' => array(),
-					'attrs_field' => array(
-						'name' => '',
+				$fieldtypes['email'] = array(
+					'default_param' => array(
+						'label' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
+						'validation' => function( $value, $field ) {
+
+							$message_keys = array(
+								//'field' => array(),
+								//'form' => array(),
+							);
+
+							return $message_keys;
+						},
 						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
 					),
-					'required' => false,
-					'validation' => function( $value, $field ) {
-
-						$message_keys = array(
-							//'field' => array(),
-							//'form' => array(),
-						);
-
-						return $message_keys;
-					},
-					'value' => '',
-					'sanitize' => true,
-					'template' => array(
-						'{label}',
-						'{description}',
-						'{before_field}',
-						'{field}',
-						'{after_field}',
-						'{validation}',
-					),
+					'validation' => array(),
 				);
 
-				$p = array_replace_recursive( $defaults, $p );
+				return $fieldtypes;
+			});
 
-			// }
+			add_filter( 'class/Form/get_fields_html/field_type=email', function( $html, $item ) {
 
-			// FILTER FIELD PARAM {
+				$p = array_replace_recursive( $this->fieldtypes['email']['default_param'], $item );
 
-				$p = apply_filters( 'class/Form/field_parameters', $p );
-				$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+				// FILTER FIELD PARAM {
 
-			// }
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
 
-			// REQUEST VALUE {
+				// }
 
-				if ( isset( $p['request_value'] ) ) {
+				// REQUEST VALUE {
 
-					$p['attrs_field']['value'] = $p['request_value'];
-				}
+					if ( isset( $p['request_value'] ) ) {
 
-			// }
+						$p['attrs_field']['value'] = $p['request_value'];
+					}
 
-			// ATTRS LABEL {
+				// }
 
-				$attrs_label_defaults = array(
-					'for' => $p['attrs_field']['name'],
-				);
+				// ATTRS LABEL {
 
-				$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
 
-			// }
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
 
-			// ATTRS FIELD {
+				// }
 
-				$attrs_field_defaults = array(
-					'type' => 'email',
-					'id' => $p['attrs_field']['name'],
-					'name' => $p['attrs_field']['name'],
-					'class' => array(),
-				);
+				// ATTRS FIELD {
 
-				$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$attrs_field_defaults = array(
+						'type' => 'email',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
 
-				if ( $p['required'] === true ) {
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
 
-					$p['attrs_field']['required'] = true;
-					$p['attrs_field']['class'][] = 'required';
-				}
+					if ( $p['required'] === true ) {
 
-			// }
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
 
-			// TEMPLATE {
+				// }
 
-				$template_data = array();
+				// TEMPLATE {
 
-				$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-				$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					$template_data = array();
 
-				$html = $this->do_field_template( $p['template'], $template_data, $p );
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
-			// }
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
-			return $html;
+				// }
+
+				return $html;
+
+			}, 10, 2 );
 		}
 
 
