@@ -279,34 +279,51 @@
 
 				// }
 
+				// FIELDTYPE VALIDATION {
+
+					if (
+						! empty( $this->fieldtypes[ $item['type'] ]['validation'] ) AND
+						isset( $this->request[ $item['attrs_field']['name'] ] )
+					) {
+
+						$validation_return = $this->fieldtypes[ $item['type'] ]['validation']( $this->request[ $item['attrs_field']['name'] ] );
+					}
+
+				// }
+
 				// CUSTOM VALIDATIONS {
 
 					if (
+						empty( $validation_return ) AND
 						! empty( $item['validation'] ) AND
 						isset( $this->request[ $item['attrs_field']['name'] ] )
 					) {
 
 						$validation_return = $item['validation']( $this->request[ $item['attrs_field']['name'] ] );
+					}
 
-						if ( ! empty( $validation_return['field'] )  ) {
+				// }
 
-							$item['validation_messages']['field'] = array_replace_recursive( $item['validation_messages']['field'], $validation_return['field'] );
-						}
+				// ADDS FIELD VALIDATION KEYS {
 
-						if ( ! empty( $validation_return['form'] )  ) {
+					if ( ! empty( $validation_return['field'] )  ) {
 
-							$item['validation_messages']['form'] = array_replace_recursive( $item['validation_messages']['form'], $validation_return['form'] );
-						}
+						$item['validation_messages']['field'] = array_replace_recursive( $item['validation_messages']['field'], $validation_return['field'] );
+					}
 
-						if ( ! empty( $item['validation_messages']['field'] ) ) {
+					if ( ! empty( $validation_return['form'] )  ) {
 
-							$this->has_messages['fields'] = true;
-						}
+						$item['validation_messages']['form'] = array_replace_recursive( $item['validation_messages']['form'], $validation_return['form'] );
+					}
 
-						if ( ! empty( $item['validation_messages']['form'] ) ) {
+					if ( ! empty( $item['validation_messages']['field'] ) ) {
 
-							$this->has_messages['form'] = true;
-						}
+						$this->has_messages['fields'] = true;
+					}
+
+					if ( ! empty( $item['validation_messages']['form'] ) ) {
+
+						$this->has_messages['form'] = true;
 					}
 
 				// }
@@ -1796,7 +1813,18 @@
 							'{validation}',
 						),
 					),
-					'validation' => array(),
+					'validation' => function( $value ) {
+
+						if ( ! filter_var( $value , FILTER_VALIDATE_EMAIL ) ) {
+
+							$message_keys = array(
+								'field' => array( 'email_not_valid' ),
+								'form' => array( 'field_validation_error' ),
+							);
+
+							return $message_keys;
+						}
+					},
 				);
 
 				return $fieldtypes;
@@ -2018,3 +2046,25 @@
 
 
 	}
+
+	// DEFINES GLOBAL FIELD AND FORM MESSAGES {
+
+		add_filter( 'class/Form/messages', function( $messages, $param ) {
+
+			$messages['required'] = array(
+				'default' => 'This field is required.',
+			);
+
+			$messages['field_validation_error'] = array(
+				'default' => 'At least one field has an validation error.',
+			);
+
+			$messages['email_not_valid'] = array(
+				'default' => 'The email is not valid.',
+			);
+
+			return $messages;
+
+			}, 10, 2 );
+
+	// }
