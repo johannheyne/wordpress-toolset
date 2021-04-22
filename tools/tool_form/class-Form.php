@@ -37,6 +37,8 @@
 
 		private $is_request = false; // whether the form is requested
 
+		private $is_valide = true; // whether the form is valide
+
 		private $has_messages = false; // whether the form has massages
 
 		private $request_form_message_keys = array();
@@ -57,7 +59,6 @@
 						'data-form-id' => $p['form_id'],
 					),
 					'echo' => true,
-					'is_request' => false,
 					'email' => array(
 						'status' => false,
 						'email_body' => '',
@@ -164,14 +165,20 @@
 					do_action( 'class/Form/request/form_group=' . $this->p['form_group'], $this->p );
 					do_action( 'class/Form/request', $this->p );
 
-					if ( ! empty( $this->p['email']['status'] ) ) {
+					if (
+						$this->is_valide AND
+						! empty( $this->p['email']['status'] )
+					) {
 
 						do_action( 'class/Form/request/is_email', $this->p );
 					}
 
-					if ( ! empty( $this->p['save']['status'] ) ) {
+					if (
+						$this->is_valide AND
+						! empty( $this->p['save']['status'] )
+					) {
 
-						do_action( 'class/Form/request/ii_save', $this->p );
+						do_action( 'class/Form/request/is_save', $this->p );
 					}
 				}
 
@@ -207,8 +214,11 @@
 				// }
 
 				if (
-					! $this->is_request OR
-					in_array( 'fields', $this->p['return'] )
+					! $this->is_request OR // on page load
+					(
+						! $this->is_valide OR // form not valide
+						in_array( 'fields', $this->p['return'] ) AND $this->is_valide // form is valide but do not show fields
+					)
 				) {
 
 					// ITERATE FORM ITEMS  {
@@ -353,11 +363,13 @@
 					if ( ! empty( $item['validation_messages']['field'] ) ) {
 
 						$this->has_messages['fields'] = true;
+						$this->is_valide = false;
 					}
 
 					if ( ! empty( $item['validation_messages']['form'] ) ) {
 
 						$this->has_messages['form'] = true;
+						$this->is_valide = false;
 					}
 
 				// }
