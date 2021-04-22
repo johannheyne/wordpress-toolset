@@ -58,8 +58,21 @@
 					),
 					'echo' => true,
 					'is_request' => false,
-					'form_type' => false, // email
-					'return' => array( 'fields' ), // what to return on request
+					'email' => array(
+						'status' => true,
+						'email_body' => '',
+						'email_header' => array(),
+						'email_subject' => '',
+						'email_from' => '',
+						'email_to' => '',
+					),
+					'save' => array(
+						'posttype' => false,
+						'fields' => array(
+							'form_field_name' => 'posttype_field_key',
+						),
+					),
+					'return' => array( 'fields' ), // what to return on request, array( '' ) returns nothing but form messages
 				);
 
 				$this->p = array_replace_recursive( $defaults, $p );

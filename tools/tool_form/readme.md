@@ -47,7 +47,7 @@ new Form( array(
 		'class' => array( 'my-form' ),
 		'role' => 'form',
 		'aria_label' => 'My Form',
-		'return' => array( 'fields' ), // what to return/show on successfull validated form request
+		'return' => array( 'fields' ), // what to return/show on successfull validated form request, array( '' ) returns nothing
 		// add more
 	),
 	'echo' => true,
