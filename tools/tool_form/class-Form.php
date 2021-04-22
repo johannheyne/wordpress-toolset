@@ -282,6 +282,7 @@
 				// FIELDTYPE VALIDATION {
 
 					if (
+						! empty( $item['type'] ) AND
 						! empty( $this->fieldtypes[ $item['type'] ]['validation'] ) AND
 						isset( $this->request[ $item['attrs_field']['name'] ] )
 					) {
@@ -2043,7 +2044,6 @@
 			}, 1, 2 );
 
 		}
-
 
 	}
 
