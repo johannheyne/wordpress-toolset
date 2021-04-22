@@ -59,7 +59,7 @@
 					'echo' => true,
 					'is_request' => false,
 					'email' => array(
-						'status' => true,
+						'status' => false,
 						'email_body' => '',
 						'email_header' => array(),
 						'email_subject' => '',
@@ -67,6 +67,7 @@
 						'email_to' => '',
 					),
 					'save' => array(
+						'status' => false,
 						'posttype' => false,
 						'fields' => array(
 							'form_field_name' => 'posttype_field_key',
@@ -133,6 +134,12 @@
 
 			// }
 
+			// ADDS ACTIONS {
+
+				add_action( 'class/Form/request/is_email', array( $this, 'do_email' ), 10, 1 );
+
+			// }
+
 			// FORM REQUEST ACTION {
 
 				if ( $this->is_form_request( $this->p['form_id'] ) ) {
@@ -156,6 +163,16 @@
 					do_action( 'class/Form/request/form_id=' . $this->p['form_id'], $this->p );
 					do_action( 'class/Form/request/form_group=' . $this->p['form_group'], $this->p );
 					do_action( 'class/Form/request', $this->p );
+
+					if ( ! empty( $this->p['email']['status'] ) ) {
+
+						do_action( 'class/Form/request/is_email', $this->p );
+					}
+
+					if ( ! empty( $this->p['save']['status'] ) ) {
+
+						do_action( 'class/Form/request/ii_save', $this->p );
+					}
 				}
 
 			// }
@@ -189,7 +206,10 @@
 
 				// }
 
-				if ( in_array( 'fields', $this->p['return'] ) ) {
+				if (
+					! $this->is_request OR
+					in_array( 'fields', $this->p['return'] )
+				) {
 
 					// ITERATE FORM ITEMS  {
 
@@ -1962,6 +1982,13 @@
 			$html .= '</span>';
 
 			return $html;
+		}
+
+		// EMAIL
+
+		public function do_email( $p = array() ) {
+
+			error_log( print_r( $p, true) );
 		}
 
 		// HELPER

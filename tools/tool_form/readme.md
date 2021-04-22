@@ -702,6 +702,8 @@ add_filter( 'class/Form/form_prepend', function( $html, $param ) {
 class/Form/request
 class/Form/request/form_group=
 class/Form/request/form_id=
+class/Form/request/is_email
+class/Form/request/is_save
 ```
 
 ```php
