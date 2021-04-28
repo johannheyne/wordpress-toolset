@@ -65,6 +65,7 @@
 						'email_header' => array(),
 						'email_subject' => '',
 						'email_from' => '',
+						'email_from_name' => '',
 						'email_to' => '',
 					),
 					'save' => array(
@@ -2000,7 +2001,121 @@
 
 		public function do_email( $p = array() ) {
 
-			error_log( print_r( $p, true) );
+			// CHECKS EMAIL PARAMETERS {
+
+
+
+			// }
+
+			// GETS TO {
+
+				$to = $p['email']['email_to'];
+
+			// }
+
+			// GETS SUBJET {
+
+				$subject = $this->apply_email_placeholders( $p['email']['email_subject'] );
+
+			// }
+
+			// GETS HEADERS {
+
+				$arr = array();
+				$arr[] = $this->apply_email_placeholders( $p['email']['email_from_name'] );
+				$arr[] = '<' . $this->apply_email_placeholders( $p['email']['email_from'] ) . '>';
+
+				$headers = array(
+					'From: ' .  implode( ' ', $arr ),
+				);
+
+			// }
+
+			// GETS MESSAGE {
+
+				$message = $this->apply_email_placeholders( $p['email']['email_body'] );
+
+			// }
+
+			// GETS ATTACHEMENTS {
+
+				$attachements = array();
+
+				// ITERATES FORM ITEMS {
+
+					foreach ( $this->items as $item ) {
+
+						// IS FIELDTYPE FILE
+						if (
+							isset( $item['type'] ) AND
+							$item['type'] === 'file'
+						) {
+
+							// GETS ATTACHEMENTS FROM REQUEST
+							if ( ! empty( $this->request[ $item['attrs_field']['name'] ] ) ) {
+
+								$attachements[] = $this->request[ $item['attrs_field']['name'] ];
+							}
+						}
+					}
+
+				// }
+
+			// }
+
+			// GET EMAIL TO {
+
+				$to = $p['email']['email_to']; //
+
+				if 	( empty( $to ) ) {
+
+					$to = get_option( 'admin_email' );
+				}
+
+			// }
+
+			// SEND EMAIL {
+
+				//error_log( print_r( $to, true) );
+				//error_log( print_r( $subject, true) );
+				//error_log( print_r( $message, true) );
+				//error_log( print_r( $headers, true) );
+				//error_log( print_r( $attachements, true) );
+
+				$mail = wp_mail( $to, $subject, $message, $headers, $attachements );
+
+				error_log( print_r( $mail, true) );
+
+			// }
+
+			// ADD FORM MESSAGE {
+
+				if ( $mail ) {
+
+
+				}
+				else {
+
+				}
+
+			// }
+
+		}
+
+		function apply_email_placeholders( $string = '' ) {
+
+			$string = preg_replace_callback('/\{(.+?)\}/i', function( $placeholder ) {
+
+				if ( isset( $this->request[ $placeholder[1] ] ) ) {
+
+					return $this->request[ $placeholder[1] ];
+				}
+
+				return '';
+
+			}, $string );
+
+			return $string;
 		}
 
 		// HELPER
