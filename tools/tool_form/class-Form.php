@@ -2151,11 +2151,28 @@
 							$item['type'] === 'file'
 						) {
 
-							// GETS ATTACHEMENTS FROM REQUEST
-							if ( ! empty( $this->request[ $item['attrs_field']['name'] ] ) ) {
+							// INITS FILES TEMP FOLDER {
 
-								$attachements[] = $this->request[ $item['attrs_field']['name'] ];
-							}
+								if ( empty( $attachmentdir ) ) {
+
+									$path = wp_get_upload_dir();
+									$basedir = $path['basedir'];
+									$attachmentdir = $path['basedir'] . '/toolset_form-' . newid();
+									mkdir( $attachmentdir );
+								}
+
+							// }
+
+							// GETS ATTACHEMENTS FROM $_FILES {
+
+								if ( ! empty( $_FILES[ $item['attrs_field']['name'] ]['name'] ) ) {
+
+									$file = $_FILES[ $item['attrs_field']['name'] ];
+									move_uploaded_file( $file['tmp_name'], $attachmentdir . '/' . $file['name'] );
+									$attachements[] = $attachmentdir . '/' . $file['name'];
+								}
+
+							// }
 						}
 					}
 
@@ -2183,6 +2200,20 @@
 				//error_log( print_r( $attachements, true) );
 
 				$mail = wp_mail( $to, $subject, $message, $headers, $attachements );
+
+				// MAY REMOVES ATTACHMENTS {
+
+					if ( ! empty( $attachmentdir ) ) {
+
+						foreach ( $attachements as $path) {
+
+							unlink( $path );
+						}
+
+						rmdir( $attachmentdir );
+					}
+
+				// }
 
 				error_log( print_r( $mail, true) );
 
