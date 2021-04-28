@@ -135,6 +135,11 @@
 					add_filter( 'class/Form/required?type=checkboxes', array( $this, 'filter_checkboxes_custom_field_key_required' ), 10, 2 );
 				}
 
+				if ( ! has_filter( 'class/Form/required?type=file' ) ) {
+
+					add_filter( 'class/Form/required?type=file', array( $this, 'filter_files_required' ), 10, 2 );
+				}
+
 			// }
 
 			// ADDS ACTIONS {
@@ -319,7 +324,6 @@
 
 							$this->has_messages['fields'] = true;
 						}
-
 					}
 
 				// }
@@ -2042,6 +2046,16 @@
 
 		}
 
+		public function filter_files_required( $requires, $field ) {
+
+			// FIXES MISSING FILE FIELD IN REQUEST
+			if ( ! empty( $_FILES[ $field['attrs_field']['name'] ]['name'] ) ) {
+
+				$requires = false;
+			}
+
+			return $requires;
+		}
 
 		// SANITIZING
 
