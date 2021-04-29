@@ -154,6 +154,8 @@
 					add_filter( 'class/Form/required?type=file', array( $this, 'filter_files_required' ), 10, 2 );
 				}
 
+				add_action( 'class/Form/before_html/form_id=' . $this->p['form_id'], array( $this, 'email_sent' ) );
+
 			// }
 
 			// ADDS ACTIONS {
@@ -223,6 +225,8 @@
 
 			$attrs = array_replace_recursive( $attrs, $this->p['form_attrs'] );
 
+			do_action( 'class/Form/before_html/form_id=' . $this->p['form_id'], $this->p );
+
 			$html = '<form' . attrs( $attrs ) . '>';
 
 				$html .= '<input type="hidden" name="form_id" value="' . $this->p['form_id'] . '" />';
@@ -234,48 +238,7 @@
 
 				// }
 
-				if (
-					! $this->is_request OR // on page load
-					(
-						! $this->is_valide OR // form not valide
-						in_array( 'fields', $this->p['return'] ) AND $this->is_valide // form is valide but do not show fields
-					)
-				) {
-
-					// ITERATE FORM ITEMS  {
-
-						$pos = new ToolArrayPos( array(
-							'array' => $this->items, // array to sort
-							'param' => array(
-								'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
-							),
-						));
-						$this->items = $pos->get();
-
-						foreach ( $this->items as $key => $item ) {
-
-							// IS FIELDSET {
-
-								if ( ! empty( $item['legend'] ) ) {
-
-									$html = $this->get_fieldset( $html, $item );
-								}
-
-							// }
-
-							// IS FIELD WITHOUT FIELDSET {
-
-								elseif ( empty( $item['fieldset_id'] ) ) {
-
-									$html = $this->get_field( $html, $item );
-								}
-
-							// }
-
-						}
-
-					// }
-				}
+				$html .= $this->get_form_fields();
 
 				// FORM APPEND {
 
@@ -285,6 +248,69 @@
 				// }
 
 			$html .= '</form>';
+
+			return $html;
+		}
+
+		public function get_form_fields() {
+
+
+			/*if (
+				! $this->is_request OR // on page load
+				(
+					! $this->is_valide OR // form not valide
+					in_array( 'fields', $this->p['return'] ) AND $this->is_valide // form is valide but do not show fields
+				)
+			) {
+
+			}*/
+
+			if (
+				$this->is_request AND
+				$this->is_valide AND
+				! in_array( 'fields', $this->p['return'] )
+			) {
+
+				return '';
+			}
+
+			$html = '';
+
+			// ITERATE FORM ITEMS  {
+
+				$pos = new ToolArrayPos( array(
+					'array' => $this->items, // array to sort
+					'param' => array(
+						'pos_key' => 'pos_key', // item array key used for positioning by pos_before and pos_after
+					),
+				));
+
+				$this->items = $pos->get();
+
+				foreach ( $this->items as $key => $item ) {
+
+					// IS FIELDSET {
+
+						if ( ! empty( $item['legend'] ) ) {
+
+							$html = $this->get_fieldset( $html, $item );
+						}
+
+					// }
+
+					// IS FIELD WITHOUT FIELDSET {
+
+						elseif ( empty( $item['fieldset_id'] ) ) {
+
+							$html = $this->get_field( $html, $item );
+						}
+
+					// }
+
+				}
+
+			// }
+
 
 			return $html;
 		}
@@ -2243,15 +2269,14 @@
 
 				// }
 
-				error_log( print_r( $mail, true) );
-
 			// }
 
 			// ADD FORM MESSAGE {
 
 				if ( $mail ) {
 
-
+					wp_redirect( './?emailsent=' . $this->p['form_id'] );
+					exit;
 				}
 				else {
 
@@ -2261,7 +2286,7 @@
 
 		}
 
-		function apply_email_placeholders( $string = '' ) {
+		private function apply_email_placeholders( $string = '' ) {
 
 			$string = preg_replace_callback('/\{(.+?)\}/i', function( $placeholder ) {
 
@@ -2275,6 +2300,18 @@
 			}, $string );
 
 			return $string;
+		}
+
+		public function email_sent() {
+
+			if (
+				! empty( $_REQUEST['emailsent'] ) AND
+				$_REQUEST['emailsent'] === $this->p['form_id']
+			) {
+
+				$this->p['return'] = array( '' );
+				$this->is_request = true;
+			}
 		}
 
 		// HELPER
