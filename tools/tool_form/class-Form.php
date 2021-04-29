@@ -187,15 +187,8 @@
 
 			// ADDS FILTERS {
 
-				if ( ! has_filter( 'class/Form/required?type=checkboxes' ) ) {
-
-					add_filter( 'class/Form/required?type=checkboxes', array( $this, 'filter_checkboxes_custom_field_key_required' ), 10, 2 );
-				}
-
-				if ( ! has_filter( 'class/Form/required?type=file' ) ) {
-
-					add_filter( 'class/Form/required?type=file', array( $this, 'filter_files_required' ), 10, 2 );
-				}
+				add_filter( 'class/Form/required/form_id=' . $this->p['form_id'] . '&type=checkboxes', array( $this, 'filter_checkboxes_custom_field_key_required' ), 10, 2 );
+				add_filter( 'class/Form/required/form_id=' . $this->p['form_id'] . '&type=file', array( $this, 'filter_files_required' ), 10, 2 );
 
 				add_action( 'class/Form/before_html/form_id=' . $this->p['form_id'], array( $this, 'email_sent' ) );
 
@@ -203,7 +196,7 @@
 
 			// ADDS ACTIONS {
 
-				add_action( 'class/Form/request/is_email', array( $this, 'do_email' ), 10, 1 );
+				add_action( 'class/Form/request/is_email/form_id=' . $this->p['form_id'], array( $this, 'do_email' ), 10, 1 );
 
 			// }
 
@@ -232,7 +225,7 @@
 						! empty( $this->p['email']['status'] )
 					) {
 
-						do_action( 'class/Form/request/is_email', $this->p );
+						do_action( 'class/Form/request/is_email/form_id=' . $this->p['form_id'], $this->p );
 					}
 
 					if (
@@ -240,7 +233,7 @@
 						! empty( $this->p['save']['status'] )
 					) {
 
-						do_action( 'class/Form/request/is_save', $this->p );
+						do_action( 'class/Form/request/is_save/form_id=' . $this->p['form_id'], $this->p );
 					}
 				}
 
@@ -400,7 +393,7 @@
 						}
 
 						$required = apply_filters( 'class/Form/required', $required, $item );
-						$required = apply_filters( 'class/Form/required?type=' . $item['type'], $required, $item );
+						$required = apply_filters( 'class/Form/required/form_id=' . $this->p['form_id'] . '&type=' . $item['type'], $required, $item );
 
 						if ( true === $required ) {
 
