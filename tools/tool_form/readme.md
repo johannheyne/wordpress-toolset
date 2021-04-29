@@ -44,6 +44,7 @@ new Form( array(
 	'form_attrs' => array(
 		'action' => '',
 		'methode' => 'get',
+		//'enctype' => false, // default is "multipart/form-data" when method is post
 		'class' => array( 'my-form' ),
 		'role' => 'form',
 		'aria_label' => 'My Form',

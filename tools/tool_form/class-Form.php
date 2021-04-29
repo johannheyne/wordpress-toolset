@@ -14,6 +14,7 @@
 						[form_attrs] => Array (
 							[role] => form
 							[method] => post
+							[enctype] => default is "multipart/form-data" when method is post
 							[action] =>
 							[data-form-id] => demo_default_form
 							[aria_label] => My Form
@@ -57,6 +58,7 @@
 						'method' => 'get',
 						'action' => '',
 						'data-form-id' => $p['form_id'],
+						'enctype' => false,
 					),
 					'echo' => true,
 					'email' => array(
@@ -79,6 +81,18 @@
 				);
 
 				$this->p = array_replace_recursive( $defaults, $p );
+
+				// DYNAMIC PARAM CHANGES {
+
+					if (
+						empty( $this->p['form_attrs']['enctype'] ) AND
+						'post' === $this->p['form_attrs']['method']
+					) {
+
+						$this->p['form_attrs']['enctype'] = 'multipart/form-data';
+					}
+
+				// }
 
 			// }
 
