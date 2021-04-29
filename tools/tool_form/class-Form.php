@@ -138,7 +138,7 @@
 
 				$this->items = apply_filters( 'class/Form/items', $this->items, $this->p );
 				$this->items = apply_filters( 'class/Form/items/form_id=' . $this->p['form_id'], $this->items, $this->p );
-				$this->items = apply_filters( 'class/Form/items/form_group=' . $this->p['form_group'], $this->items, $this->p );
+				$this->items = apply_filters( 'class/Form/items/form_group=' . $this->	p['form_group'], $this->items, $this->p );
 
 			// }
 
@@ -178,10 +178,6 @@
 					$this->updates_field_values();
 					$this->gets_fields_form_message_keys();
 
-					// FILTERS
-
-					add_filter( 'class/Form/form_prepend', array( $this, 'gets_form_messages_html' ), 10, 2 );
-
 					// REQUEST ACTION
 
 					do_action( 'class/Form/request/form_id=' . $this->p['form_id'], $this->p );
@@ -204,6 +200,10 @@
 						do_action( 'class/Form/request/is_save', $this->p );
 					}
 				}
+
+				// FILTERS
+
+				add_filter( 'class/Form/form_prepend', array( $this, 'gets_form_messages_html' ), 10, 2 );
 
 			// }
 
@@ -454,11 +454,6 @@
 		// RENDER FUNCTIONALITY
 
 		public function gets_form_messages_html( $html ) {
-
-			if ( $this->request['form_id'] !== $this->p['form_id'] ) {
-
-				return $html;
-			}
 
 			if ( empty( $this->request_form_message_keys ) ) {
 
@@ -2311,6 +2306,7 @@
 
 				$this->p['return'] = array( '' );
 				$this->is_request = true;
+				$this->request_form_message_keys[] = 'email_sent';
 			}
 		}
 
@@ -2424,6 +2420,10 @@
 
 			$messages['email_not_valid'] = array(
 				'default' => 'The email is not valid.',
+			);
+
+			$messages['email_sent'] = array(
+				'default' => 'The email was sent.',
 			);
 
 			return $messages;
