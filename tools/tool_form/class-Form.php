@@ -98,17 +98,60 @@
 
 			// INITS FIELDTYPES {
 
-				$this->init_text_field();
-				$this->init_textarea_field();
-				$this->init_checkbox_field();
-				$this->init_checkboxes_field();
-				$this->init_taxonomy_select_field();
-				$this->init_select_field();
-				$this->init_switch_toggle_field();
-				$this->init_submit_field();
-				$this->init_custom_field();
-				$this->init_email_field();
-				$this->init_file_field();
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=text' ) ) {
+
+					$this->init_text_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=textarea' ) ) {
+
+					$this->init_textarea_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=checkbox' ) ) {
+
+					$this->init_checkbox_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=checkboxes' ) ) {
+
+					$this->init_checkboxes_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=taxonomy_select' ) ) {
+
+					$this->init_taxonomy_select_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=select' ) ) {
+
+					$this->init_select_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=switch_toggle' ) ) {
+
+					$this->init_switch_toggle_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=submit' ) ) {
+
+					$this->init_submit_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=custom' ) ) {
+
+					$this->init_custom_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=email' ) ) {
+
+					$this->init_email_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=file' ) ) {
+
+					$this->init_file_field();
+				}
 
 			// }
 
@@ -203,7 +246,7 @@
 
 				// FILTERS
 
-				add_filter( 'class/Form/form_prepend', array( $this, 'gets_form_messages_html' ), 10, 2 );
+				add_filter( 'class/Form/form_prepend/form_id=' . $this->p['form_id'], array( $this, 'gets_form_messages_html' ), 10, 2 );
 
 			// }
 
@@ -235,6 +278,7 @@
 
 					$html = apply_filters( 'class/Form/form_prepend', $html, $this->p );
 					$html = apply_filters( 'class/Form/form_prepend/form_group=' . $this->p['form_group'], $html, $this->p );
+					$html = apply_filters( 'class/Form/form_prepend/form_id=' . $this->p['form_id'], $html, $this->p );
 
 				// }
 
@@ -242,6 +286,7 @@
 
 				// FORM APPEND {
 
+					$html = apply_filters( 'class/Form/form_append/form_id=' . $this->p['form_id'], $html, $this->p );
 					$html = apply_filters( 'class/Form/form_append/form_group=' . $this->p['form_group'], $html, $this->p );
 					$html = apply_filters( 'class/Form/form_append', $html, $this->p );
 
@@ -530,61 +575,10 @@
 			$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p );
 			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
 
-				$html = apply_filters( 'class/Form/get_fields_html/field_type=' . $item['type'], $html, $item );
+			$html = apply_filters( 'class/Form/get_fields_html/field_type=' . $item['type'], $html, $item );
 
-				/*
-				if ( $item['type'] === 'text'  ) {
-
-					$html .= $this->get_text_field( $item );
-				}
-
-				if ( $item['type'] === 'textarea'  ) {
-
-					$html .= $this->get_textarea_field( $item );
-				}
-
-				if ( $item['type'] === 'checkbox'  ) {
-
-					$html .= $this->get_checkbox_field( $item );
-				}
-
-				if ( $item['type'] === 'checkboxes'  ) {
-
-					$html .= $this->get_checkboxes_field( $item );
-				}
-
-				if ( $item['type'] === 'taxonomy_select'  ) {
-
-					$html .= $this->get_taxonomy_select_field( $item );
-				}
-
-				if ( $item['type'] === 'select'  ) {
-
-					$html .= $this->get_select_field( $item );
-				}
-
-				if ( $item['type'] === 'switch_toggle'  ) {
-
-					$html .= $this->get_switch_toggle_field( $item );
-				}
-
-				if ( $item['type'] === 'custom'  ) {
-
-					$html .= $this->get_custom_field( $item );
-				}
-
-				if ( $item['type'] === 'submit'  ) {
-
-					$html .= $this->get_submit_field( $item );
-				}
-
-				if ( $item['type'] === 'email'  ) {
-
-					$html .= $this->get_email_field( $item );
-				}*/
-
-				$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p );
-				$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+			$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p );
+			$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
 
 			return $html;
 		}
