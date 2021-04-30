@@ -998,7 +998,7 @@
 
 						if ( ! empty( $p['checkboxes'] ) ) {
 
-							foreach ( $p['checkboxes'] as $item ) {
+							foreach ( $p['checkboxes'] as $key => $item ) {
 
 								$field_key = '';
 
@@ -1010,7 +1010,7 @@
 
 								$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
 
-								$attrs_field['id'] = $p['attrs_field']['name'];
+								$attrs_field['id'] = $p['attrs_field']['name'] . ':' . $key;
 
 								// INDIVIDUALIZE FIELD ID {
 

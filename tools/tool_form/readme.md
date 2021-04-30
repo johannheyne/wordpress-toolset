@@ -355,7 +355,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'label' => '{label_text}',
 		'before_field' => 'Before',
 		'after_field' => 'After',
-		'custom_checkbox' => '<label class="custom-checkbox" for="{field_name}"></label>',
+		'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
 		'before_checkbox' => false,
 		'after_checkbox' => false,
 		'attrs_label' => array(),
