@@ -386,6 +386,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 			return $message_keys;
 		},
+		// 'value_divider' => ', ', // used by putting values into an email
 	);
 
 	return $items;

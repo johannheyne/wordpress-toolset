@@ -944,6 +944,7 @@
 							'{after_field}',
 							'{validation}',
 						),
+						'value_divider' => ', ', // used by putting values into an email
 					),
 					'validation' => array(),
 				);
@@ -2274,7 +2275,25 @@
 
 				if ( isset( $this->request[ $placeholder[1] ] ) ) {
 
-					return $this->request[ $placeholder[1] ];
+					if ( is_string( $this->request[ $placeholder[1] ] ) ) {
+
+						return $this->request[ $placeholder[1] ];
+					}
+
+					if ( is_array( $this->request[ $placeholder[1] ] ) ) {
+
+						$divider = ', ';
+
+						foreach ( $this->items as $item ) {
+
+							if ( $item['attrs_field']['name'] === $placeholder[1] ) {
+
+								$divider = $item['value_divider'];
+							}
+						}
+
+						return implode( $divider, $this->request[ $placeholder[1] ] );
+					}
 				}
 
 				return '';
