@@ -2166,6 +2166,11 @@
 					'From: ' .  implode( ' ', $arr ),
 				);
 
+				if ( ! empty( $p['email']['email_header'] ) ) {
+
+					$headers = array_merge( $headers, $p['email']['email_header'] );
+				}
+
 			// }
 
 			// GETS MESSAGE {

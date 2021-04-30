@@ -67,6 +67,34 @@ This adds a basic form…
 </form>
 ```
 
+### Add Email Form
+```php
+new Form( array(
+	'form_id' => '{form_id}',
+	'form_group' => '{form_group}',
+	'form_attrs' => array(
+		'action' => './',
+		'methode' => 'post',
+		//'enctype' => false, // default is "multipart/form-data" when method is post
+		'class' => array( 'my-form' ),
+		'role' => 'form',
+		'aria_label' => 'My Form',
+		'email' => array(
+			'status' => true,
+			//'email_header' => array( 'Content-type: text/html' ),
+			'email_to' => 'mail@johannheyne.de',
+			'email_from' => '{email}',
+			'email_from_name' => '{surename}',
+			'email_subject' => 'Test from {surename}',
+			'email_body' => '{surename} {email}',
+		),
+		'return' => array( '' ), // what to return/show on successfull validated form request, array( '' ) returns nothing
+		// add more
+	),
+	'echo' => true,
+	// add your own parameters, they will accessible in some hooks
+) );
+```
 
 <a id="form_messages"></a>
 ## Define Form Messages
