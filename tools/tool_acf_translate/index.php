@@ -139,6 +139,11 @@
 
 					foreach ( $context as $key => $value ) {
 
+						if ( false !== strpos( $value, 'key:layout_' ) ) {
+
+							$value = 'key:layout';
+						}
+
 						if ( ! empty( $GLOBALS['toolset']['inits']['tool_acf_translate']['strings'][ $item . '@' . $value  ] ) ) {
 
 							$context_sufix = '@' . $value;
