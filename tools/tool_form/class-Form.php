@@ -561,6 +561,11 @@
 				$attrs['data-type'] = $item['type'];
 			}
 
+			if ( ! empty( $item['attrs_field']['name'] ) ) {
+
+				$attrs['data-name'] = $item['attrs_field']['name'];
+			}
+
 			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
@@ -2291,7 +2296,10 @@
 
 						foreach ( $this->items as $item ) {
 
-							if ( $item['attrs_field']['name'] === $placeholder[1] ) {
+							if (
+								$item['attrs_field']['name'] === $placeholder[1] AND
+								isset( $item['value_divider'] )
+							) {
 
 								$divider = $item['value_divider'];
 							}

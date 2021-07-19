@@ -14,6 +14,7 @@ __Table of Content__
 	- [text](#field_text)
 	- [textarea](#field_textarea)
 	- [todo] radio
+	- [file](#field_file)
 	- [checkbox](#field_checkbox)
 		- [Filter: Before Checkbox HTML](#filter-before-checkbox-html)
 		- [Filter: After Checkbox HTML](#filter-after-checkbox-html)
@@ -43,7 +44,7 @@ new Form( array(
 	'form_group' => '{form_group}',
 	'form_attrs' => array(
 		'action' => '',
-		'methode' => 'get',
+		'method' => 'get',
 		//'enctype' => false, // default is "multipart/form-data" when method is post
 		'class' => array( 'my-form' ),
 		'role' => 'form',
@@ -74,22 +75,22 @@ new Form( array(
 	'form_group' => '{form_group}',
 	'form_attrs' => array(
 		'action' => './',
-		'methode' => 'post',
+		'method' => 'post',
 		//'enctype' => false, // default is "multipart/form-data" when method is post
 		'class' => array( 'my-form' ),
 		'role' => 'form',
 		'aria_label' => 'My Form',
-		'email' => array(
-			'status' => true,
-			//'email_header' => array( 'Content-type: text/html' ),
-			'email_to' => 'mail@johannheyne.de',
-			'email_from' => '{email}',
-			'email_from_name' => '{surename}',
-			'email_subject' => 'Test from {surename}',
-			'email_body' => '{surename} {email}',
-		),
 		'return' => array( '' ), // what to return/show on successfull validated form request, array( '' ) returns nothing
 		// add more
+	),
+	'email' => array(
+		'status' => true,
+		//'email_header' => array( 'Content-type: text/html' ),
+		'email_to' => 'mail@johannheyne.de',
+		'email_from' => '{email}',
+		'email_from_name' => '{surename}',
+		'email_subject' => 'Test from {surename}',
+		'email_body' => '{surename} {email}',
 	),
 	'echo' => true,
 	// add your own parameters, they will accessible in some hooks
@@ -268,7 +269,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
-		'type' => 't',
+		'type' => 'textarea',
 		'label' => '{label_text}',
 		'attrs_label' => array(),
 		'attrs_field' => array(
@@ -297,6 +298,43 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 
 
+<a id="field_file"></a>
+### File
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'file',
+		'label' => '{label_text}',
+		'before_field' => 'Before',
+		'after_field' => 'After',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+		),
+		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'validation' => function( $value ) {
+
+			$message_keys = array(
+				'field' => array(),
+				'form' => array(),
+			);
+
+			return $message_keys;
+		},
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+
+
+
 <a id="field_checkbox"></a>
 ### Checkbox
 
@@ -314,7 +352,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
-			'placeholder' => '',
+			'value' => '1',
 		),
 		'required' => false,
 		'fieldset_id' => '{fieldset_id}',
@@ -466,6 +504,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'name' => '{field_name}',
 			'placeholder' => '',
 		),
+		'current_value' => false,
 		'required' => false,
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
