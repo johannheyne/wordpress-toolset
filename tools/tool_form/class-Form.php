@@ -1999,6 +1999,9 @@
 						),
 						'required' => false,
 						'value' => '',
+						'max_filesize' => false,
+						'allowed_file_formats' => false,
+						'allow_multiple_files' => false,
 						'sanitize' => true,
 						'template' => array(
 							'{label}',
@@ -2009,11 +2012,127 @@
 							'{validation}',
 						),
 					),
-					'validation' => false,
+					'validation' => function( $value, $item ) {
+
+						$message_keys = array(
+							'field' => array(),
+							'form' => array(),
+						);
+
+						// SETUP FILES ARRAY {
+
+							$files = array();
+
+							if ( is_array( $value['name'] ) ) {
+
+								foreach ( $value['name'] as $key => $file ) {
+
+									$files[] = array(
+										'name' => $value['name'][ $key ],
+										'type' => $value['type'][ $key ],
+										'tmp_name' => $value['tmp_name'][ $key ],
+										'error' => $value['error'][ $key ],
+										'size' => $value['size'][ $key ],
+									);
+								}
+							}
+							else {
+
+								$files[] = $value;
+							}
+
+						// }
+
+						foreach ( $files as  $file ) {
+
+							// FILESIZE {
+
+								if (
+									! empty( $item['max_filesize'] ) AND
+									$file['error'] === 0 AND
+									isset( $file['size'] ) AND
+									$item['max_filesize'] < $file['size']
+								) {
+
+									$message_keys['field'][] = 'filesize_to_large';
+									$message_keys['form'][] = 'field_validation_error';
+								}
+
+							// }
+
+							// ALLOWED FILE FORMATS {
+
+								if (
+									! empty( $item['allowed_file_formats'] ) AND
+									$file['error'] === 0 AND
+									isset( $file['name'] )
+								) {
+
+									$allowed_file_formats = $this->formats_allowed_file_formats( $item['allowed_file_formats'] );
+
+									if ( ! empty( $allowed_file_formats ) ) {
+
+										$name_arr = explode( '.', $file['name'] );
+										$sufix = strtolower( end( $name_arr ) );
+
+										if ( ! in_array( $sufix, $allowed_file_formats ) ) {
+
+											$message_keys['field'][] = 'file_format_not_allowed';
+											$message_keys['form'][] = 'field_validation_error';
+										}
+									}
+
+									return $message_keys;
+								}
+
+							// }
+						}
+
+						return $message_keys;
+					},
 				);
 
 				return $fieldtypes;
 			});
+
+			add_filter( 'class/Form/item_param/type=file', function( $param, $p ) {
+
+				$hints = array();
+
+				// APPLY MAXFILESIZE HINT {
+
+					if ( ! empty( $param['max_filesize'] ) ) {
+
+						$text = _x( 'Maximal allowed filesize: {value}', 'Formular', 'tool_translate' );
+						$hints[] = str_replace( '{value}', $param['max_filesize'] / 1000000 . ' MB', $text );
+					}
+
+				// }
+
+				// APPLY ALLOWED FILE FORMATS HINT {
+
+					$file_formats = $this->formats_allowed_file_formats( $param['allowed_file_formats'], true );
+
+					if ( ! empty( $file_formats ) ) {
+
+						$text = _x( 'Allowed file types: {value}', 'Formular', 'tool_translate' );
+						$hints[] = str_replace( '{value}', implode( ', ', $file_formats ), $text );
+					}
+
+				// }
+
+				// ADD HINTS T0 FIELD DESCRIPTION {
+
+					if ( ! empty( $hints ) ) {
+
+						$param['description'] .= '<ul class="form-field-description-hint"><li>' . implode( '</li><li>', $hints ) . '</li></ul>';
+					}
+
+				// }
+
+				return $param;
+
+			}, 10, 2 );
 
 			add_filter( 'class/Form/get_fields_html/field_type=file', function( $html, $item ) {
 
@@ -2068,6 +2187,33 @@
 
 				// }
 
+				// ACCEPT {
+
+					if ( ! empty( $p['allowed_file_formats'] ) ) {
+
+						$accept_arr = explode( ',', $p['allowed_file_formats'] );
+
+						foreach ( $accept_arr as $key => $item ) {
+
+							$accept_arr[ $key ] = '.' . strtolower( trim( trim($item), '.' ) );
+						}
+
+						$p['attrs_field']['accept'] = implode( ',', $accept_arr );
+
+					}
+
+				// }
+
+				// MULTIPLE {
+
+					if ( ! empty( $p['allow_multiple_files'] ) ) {
+
+						$p['attrs_field']['multiple'] = '';
+						$p['attrs_field']['name'] .= '[]';
+					}
+
+				// }
+
 				// TEMPLATE {
 
 					$template_data = array();
@@ -2081,7 +2227,6 @@
 
 				return $html;
 			}, 10, 2 );
-
 		}
 
 		public function filter_files_required( $requires, $field ) {
@@ -2229,8 +2374,21 @@
 								if ( ! empty( $_FILES[ $item['attrs_field']['name'] ]['name'] ) ) {
 
 									$file = $_FILES[ $item['attrs_field']['name'] ];
-									move_uploaded_file( $file['tmp_name'], $attachmentdir . '/' . $file['name'] );
-									$attachements[] = $attachmentdir . '/' . $file['name'];
+
+									// has multiple filws <input type="file" multiple>
+									if ( is_array( $file['name'] ) ) {
+
+										foreach ( $file['name'] as $key => $name ) {
+
+											move_uploaded_file( $file['tmp_name'][ $key ], $attachmentdir . '/' . $name );
+											$attachements[] = $attachmentdir . '/' . $name;
+										}
+									}
+									else {
+
+										move_uploaded_file( $file['tmp_name'], $attachmentdir . '/' . $file['name'] );
+										$attachements[] = $attachmentdir . '/' . $file['name'];
+									}
 								}
 
 							// }
@@ -2425,6 +2583,43 @@
 			return $html;
 		}
 
+		public function formats_allowed_file_formats( $formats, $dot ) {
+
+			// takes an array or an comma separatet list of file sufixes wether with trailing dot or not
+			// returns an array of file sufixes without trailing dot
+
+			if ( is_string(  $formats ) ) {
+
+				$allowed_file_formats = explode( ',',  $formats );
+			}
+
+			if ( is_array(  $formats ) ) {
+
+				$allowed_file_formats =  $formats;
+			}
+
+			if ( ! empty( $allowed_file_formats ) ) {
+
+				foreach ( $allowed_file_formats as $key => $format ) {
+
+					$format = trim( strtolower( trim( $format ) ), '.' );
+
+					if ( $dot ) {
+
+						$allowed_file_formats[ $key ] = '.' . $format;
+					}
+					else {
+
+						$allowed_file_formats[ $key ] = $format;
+					}
+				}
+
+				return $allowed_file_formats;
+			}
+
+			return false;
+		}
+
 		// ADDONS
 
 		public function addon_before_after_field() {
@@ -2462,6 +2657,14 @@
 
 			$messages['email_not_valid'] = array(
 				'default' => 'The email is not valid.',
+			);
+
+			$messages['filesize_to_large'] = array(
+				'default' => 'The file size was to large.',
+			);
+
+			$messages['file_format_not_allowed'] = array(
+				'default' => 'The file format is not allowed.',
 			);
 
 			$messages['email_sent'] = array(

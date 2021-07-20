@@ -314,6 +314,9 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'name' => '{field_name}',
 		),
 		'required' => false,
+		'max_filesize' => false,
+		'allowed_file_formats' => false, // array or comma separated list with or without trailing fufix dots
+		'allow_multiple_files' => false, // boolean
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'validation' => function( $value ) {
