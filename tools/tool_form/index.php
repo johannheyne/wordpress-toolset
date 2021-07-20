@@ -45,6 +45,105 @@
 				),
 			));
 
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'This field is required.', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'This field is required.', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'Field validation message.',
+					'default_transl' => array(
+						'de' => 'Dieses Feld ist erforderlich.',
+						'en' => 'This field is required.',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
+
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'At least one field has an validation error.', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'At least one field has an validation error.', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'Field validation message.',
+					'default_transl' => array(
+						'de' => 'Mindestens ein Feld muss geprüft werden.',
+						'en' => 'At least one field has an validation error.',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
+
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'The file size was to large.', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'The file size was to large.', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'Field validation message.',
+					'default_transl' => array(
+						'de' => 'Die maximale Dateigröße ist überschritten.',
+						'en' => 'The file size was to large.',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
+
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'The email is not valid.', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'The email is not valid.', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'Field validation message.',
+					'default_transl' => array(
+						'de' => 'Die E-Mail scheint nicht korrekt.',
+						'en' => 'The email is not valid.',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
+
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'The file format is not allowed.', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'The file format is not allowed.', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'Field validation message.',
+					'default_transl' => array(
+						'de' => 'Das Datei Format ist nicht erlaubt.',
+						'en' => 'The file format is not allowed.',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
+
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'The email was sent.', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'The email was sent.', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'Field validation message.',
+					'default_transl' => array(
+						'de' => 'Die E-Mail wurde versendet.',
+						'en' => 'The email was sent.',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
+
+
+
+
 		}, 10, 2 );
 
 	// }

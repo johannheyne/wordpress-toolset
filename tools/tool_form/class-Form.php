@@ -1,5 +1,29 @@
 <?php
 
+	// DEFINES GLOBAL FIELD AND FORM MESSAGES {
+
+		add_filter( 'class/Form/messages', function( $messages, $param ) {
+
+			$messages['required'] = 'This field is required.d';
+
+			$messages['field_validation_error'] = 'At least one field has an validation error.';
+
+			$messages['email_not_valid'] = 'The email is not valid.';
+
+			$messages['filesize_to_large'] = 'The file size was to large.';
+
+			$messages['file_format_not_allowed'] = 'The file format is not allowed.';
+
+			$messages['email_sent'] = 'The email was sent.';
+
+			// Add coresponding admin translation in plugins/wordpress-toolset/tools/forms/index.php
+
+			return $messages;
+
+		}, 10, 2 );
+
+	// }
+
 	class Form {
 
 		/*
@@ -512,7 +536,26 @@
 
 				if ( isset( $this->form_messages[ $value ] ) ) {
 
-					$message_array[] = get_lang_value_from_array( $this->form_messages[ $value ] );
+					if ( is_array( $this->form_messages[ $value ] ) ) {
+
+						$message_array[] = get_lang_value_from_array( $this->form_messages[ $value ] );
+					}
+
+					if ( is_string( $this->form_messages[ $value ] ) ) {
+
+						$message_array[] = _x( $this->form_messages[ $value ], 'Formular', 'tool_translate' );
+					}
+				}
+				else if ( is_array( $value ) ) {
+
+					$temp[] = tool( array(
+						'name' => 'tool_get_lang_value_from_array',
+						'param' => $value,
+					) );
+				}
+				else {
+
+					$message_array[] = $value;
 				}
 			}
 
@@ -2273,10 +2316,18 @@
 
 					if ( ! empty( $this->form_messages[ $value ] ) ) {
 
-						$temp[] = tool( array(
-							'name' => 'tool_get_lang_value_from_array',
-							'param' => $this->form_messages[ $value ],
-						) );
+						if ( is_array( $this->form_messages[ $value ] ) ) {
+
+							$temp[] = tool( array(
+								'name' => 'tool_get_lang_value_from_array',
+								'param' => $this->form_messages[ $value ],
+							) );
+						}
+						else {
+
+							$temp[]  = _x( $this->form_messages[ $value ], 'Formular', 'tool_translate' );
+						}
+
 					}
 					else if ( is_array( $value ) ) {
 
@@ -2583,7 +2634,7 @@
 			return $html;
 		}
 
-		public function formats_allowed_file_formats( $formats, $dot ) {
+		public function formats_allowed_file_formats( $formats, $dot = false ) {
 
 			// takes an array or an comma separatet list of file sufixes wether with trailing dot or not
 			// returns an array of file sufixes without trailing dot
@@ -2642,37 +2693,3 @@
 		}
 
 	}
-
-	// DEFINES GLOBAL FIELD AND FORM MESSAGES {
-
-		add_filter( 'class/Form/messages', function( $messages, $param ) {
-
-			$messages['required'] = array(
-				'default' => 'This field is required.',
-			);
-
-			$messages['field_validation_error'] = array(
-				'default' => 'At least one field has an validation error.',
-			);
-
-			$messages['email_not_valid'] = array(
-				'default' => 'The email is not valid.',
-			);
-
-			$messages['filesize_to_large'] = array(
-				'default' => 'The file size was to large.',
-			);
-
-			$messages['file_format_not_allowed'] = array(
-				'default' => 'The file format is not allowed.',
-			);
-
-			$messages['email_sent'] = array(
-				'default' => 'The email was sent.',
-			);
-
-			return $messages;
-
-			}, 10, 2 );
-
-	// }
