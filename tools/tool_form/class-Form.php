@@ -207,6 +207,11 @@
 					$this->is_request = true;
 					$this->request = $_REQUEST;
 
+					if ( ! empty( $_FILES ) ) {
+
+						$this->request = array_replace_recursive( $this->request, $_FILES );
+					}
+
 					// SANITIZE REQUEST
 
 					$this->sanitize_request();
@@ -414,7 +419,7 @@
 						isset( $this->request[ $item['attrs_field']['name'] ] )
 					) {
 
-						$validation_return = $this->fieldtypes[ $item['type'] ]['validation']( $this->request[ $item['attrs_field']['name'] ] );
+						$validation_return = $this->fieldtypes[ $item['type'] ]['validation']( $this->request[ $item['attrs_field']['name'] ], $item );
 					}
 
 				// }
@@ -500,6 +505,9 @@
 
 			$message_array = array();
 
+			// Removes several times the same entries
+			$this->request_form_message_keys = array_unique( $this->request_form_message_keys );
+
 			foreach ( $this->request_form_message_keys as $value ) {
 
 				if ( isset( $this->form_messages[ $value ] ) ) {
@@ -569,6 +577,8 @@
 			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
+
+			$item = apply_filters( 'class/Form/item_param/type=' . $item['type'], $item, $this->p );
 
 			$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p );
 			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
@@ -2112,27 +2122,31 @@
 
 			$html .= '<span class="field-validation">';
 
+				$temp = array();
+
 				foreach ( $messages['field'] as $value ) {
 
 					if ( ! empty( $this->form_messages[ $value ] ) ) {
 
-						$html .= tool( array(
+						$temp[] = tool( array(
 							'name' => 'tool_get_lang_value_from_array',
 							'param' => $this->form_messages[ $value ],
 						) );
 					}
 					else if ( is_array( $value ) ) {
 
-						$html .= tool( array(
+						$temp[] = tool( array(
 							'name' => 'tool_get_lang_value_from_array',
 							'param' => $value,
 						) );
 					}
 					else {
 
-						$html .= $value;
+						$temp[] = $value;
 					}
 				}
+
+				$html .= implode( ' ', $temp );
 
 			$html .= '</span>';
 
@@ -2384,6 +2398,15 @@
 
 				$data_temp[ '{' . $key . '}' ] = $value;
 			}
+
+			// MAY ADDS DESCRITION TO TEMPLATE {
+
+				if ( ! empty( $p['description'] ) ) {
+
+					$data_temp[ '{description}' ] = '<div class="form-field-description">' . $p['description'] . '</div>';
+				}
+
+			// }
 
 			$data = $data_temp;
 
