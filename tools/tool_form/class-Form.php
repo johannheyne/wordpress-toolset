@@ -2065,6 +2065,7 @@
 							'{description}',
 							'{before_field}',
 							'{field}',
+							'{field_info}',
 							'{after_field}',
 							'{validation}',
 						),
@@ -2180,9 +2181,11 @@
 
 				// ADD HINTS T0 FIELD DESCRIPTION {
 
+					$param['_field_info'] = '';
+
 					if ( ! empty( $hints ) ) {
 
-						$param['description'] .= '<ul class="form-field-description-hint"><li>' . implode( '</li><li>', $hints ) . '</li></ul>';
+						$param['_field_info'] .= '<ul class="form-field-info"><li>' . implode( '</li><li>', $hints ) . '</li></ul>';
 					}
 
 				// }
@@ -2261,6 +2264,15 @@
 
 				// }
 
+				// FILE LABEL {
+
+					$p['attrs_field_label'] = array(
+						'for' => $p['attrs_field']['name'],
+						'class' => array( 'form-field-file-input', 'btn', 'btn-file' ),
+					);
+
+				// }
+
 				// MULTIPLE {
 
 					if ( ! empty( $p['allow_multiple_files'] ) ) {
@@ -2275,8 +2287,9 @@
 
 					$template_data = array();
 
+					$template_data['field_info'] = $p['_field_info'];
 					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '><label' . attrs( $p['attrs_field_label'] ) . '>' . _x( 'Choose a file', 'Formular', 'tool_translate' ) . '</label>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 

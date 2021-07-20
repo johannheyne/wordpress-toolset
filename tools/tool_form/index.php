@@ -141,7 +141,21 @@
 				),
 			));
 
-
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => 'Choose a file', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => 'Choose a file', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'File field text',
+					'default_transl' => array(
+						'de' => 'Dateien wählen',
+						'en' => 'Choose a file',
+					),
+					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
 
 
 		}, 10, 2 );
