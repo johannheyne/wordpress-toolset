@@ -630,9 +630,12 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
 		'type' => 'switch_toggle',
+		'label' => false,
+		//'toggle' => '<span class="switch-toggle-on">{on}</span><span class="switch-toggle-off">{off}</span>',
 		'label_on' => 'On',
 		'label_off' => 'Off',
 		'attrs_label' => array(),
+		'attrs_toggle' => array(),
 		'attrs_field' => array(
 			'name' => 'switch_toggle',
 			'value' => 'on',

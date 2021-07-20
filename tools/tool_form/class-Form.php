@@ -1707,10 +1707,13 @@
 
 				$fieldtypes['switch_toggle'] = array(
 					'default_param' => array(
-						'label' => '<span class="switch-toggle-on">{on}</span><span class="switch-toggle-off">{off}</span>',
+						'label' => '',
+						'toggle' => '<span class="switch-toggle-on">{on}</span><span class="switch-toggle-off">{off}</span>',
 						'label_on' => 'On',
 						'label_off' => 'Off',
 						'attrs_label' => array(
+						),
+						'attrs_toggle' => array(
 							'class' => 'switch-toggle',
 						),
 						'attrs_field' => array(
@@ -1723,10 +1726,11 @@
 						'value' => '',
 						'sanitize' => true,
 						'template' => array(
+							'{label}',
 							'{description}',
 							'{field}',
 							'{before_field}',
-							'{label}',
+							'{toggle}',
 							'{after_field}',
 							'{validation}',
 						),
@@ -1767,6 +1771,16 @@
 
 				// }
 
+				// ATTRS TOGGLE {
+
+					$attrs_toogle_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
+
+					$p['attrs_toggle'] = array_replace_recursive( $attrs_toogle_defaults, $p['attrs_toggle'] );
+
+				// }
+
 				// ATTRS FIELD {
 
 					$attrs_field_defaults = array(
@@ -1781,9 +1795,8 @@
 				// }
 
 				// FILTER LABEL {
-
-					$p['label'] = str_replace( '{on}', $p['label_on'], $p['label'] );
-					$p['label'] = str_replace( '{off}', $p['label_off'], $p['label'] );
+					$p['toggle'] = str_replace( '{on}', $p['label_on'], $p['toggle'] );
+					$p['toggle'] = str_replace( '{off}', $p['label_off'], $p['toggle'] );
 
 				// }
 
@@ -1791,8 +1804,9 @@
 
 					$template_data = array();
 
+					$template_data['label'] = '<label ' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['toggle'] = '<label ' . attrs( $p['attrs_toggle'] ) . '>' . $p['toggle'] . '</label>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
