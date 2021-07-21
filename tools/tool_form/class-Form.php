@@ -2296,7 +2296,8 @@
 
 						$tpl_field .= '</ul>';
 
-						$input_text = count( $temp_files ) . ' files selected';
+						$input_text = _x( '{value} files selected', 'Formular', 'tool_translate' );
+						$input_text = str_replace( '{value}', count( $temp_files ) , $input_text );
 					}
 
 				// }

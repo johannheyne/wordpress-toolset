@@ -175,7 +175,7 @@
 					'type' => 'text', // editing field type: 'text', 'textarea'
 					'description' => 'File field text',
 					'default_transl' => array(
-						'de' => 'Dateien wählen',
+						'de' => 'Dateien auswählen',
 						'en' => 'Choose a file',
 					),
 					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
