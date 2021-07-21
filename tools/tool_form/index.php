@@ -9,9 +9,34 @@
 
 	*/
 
+	// SCRIPT {
+
+		add_action( 'wp_enqueue_scripts', function() {
+
+			wp_enqueue_script( 'slug', $GLOBALS['toolset']['plugins_url'] . '/wordpress-toolset/tools/tool_form/script.js', array( 'jquery' ), config_get_theme_version(), false );
+		} );
+
+	// }
+
 	// TRANSLATIONS {
 
 		add_action( 'init', function(  ) {
+
+			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
+				'text' => '{value} files selected', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
+				'context' => 'Formular', // optional
+				'domain' => 'tool_translate', // optional, default: 'tool_translate'
+				'param' => array(
+					'text_default' => '{value} files selected', // The default text if there is no translation
+					'type' => 'text', // editing field type: 'text', 'textarea'
+					'description' => 'File upload field label text if more than 1 file was selectet.',
+					'default_transl' => array(
+						'de' => '{value} ausgewählte Dateien',
+						'en' => '{value} files selected',
+					),
+					'js' => 'all', // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
+				),
+			));
 
 			$GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
 				'text' => 'Maximal allowed filesize: {value}', // use it like _x( 'my_text', 'my_context', 'tool_translate' ),
@@ -156,7 +181,6 @@
 					'js' => false, // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
 				),
 			));
-
 
 		}, 10, 2 );
 

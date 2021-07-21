@@ -22,20 +22,28 @@ $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
         'type' => 'text', // editing field type: 'text', 'textarea'
         'description' => 'URL Slug of Posttype "products"',
         'default_transl' => array(
-            'de_DE' => 'produkt',
-            'fr_CA' => 'produit',
+            'de' => 'produkte',
+            'en' => 'products',
         ),
+		'js' => 'current', // false, 'all' (all languages), 'current' (current language) // translation accessable with App.ln.get( string, context, domain );
     ),
     // The text domain is 'tool_translate'.
 ));
 ````
 
-Get translation with…
+#### Get translation with…
 ````php
+// PHP
 $string = _x( 'products', 'URL SLug', 'tool_translate' );
 ````
 
-The context 'URL Slug' especially adds the translations to the rewrite rule of 'products'. The context 'URL Slug' must be used in combination with rewriting custom posttype slugs…
+````php
+// JS
+App.ln.get( 'products', 'URL SLug', 'tool_translate' );
+App.ln.get( { 'products', 'en' }, 'URL SLug', 'tool_translate' );
+````
+#### URL Rewrite translation
+The context __'URL Slug'__ especially adds the translations to the rewrite rule of 'products'. The context 'URL Slug' must be used in combination with rewriting custom posttype slugs…
 ````php
 'rewrite' => array(
     'slug' => _x( 'products', 'URL SLug', 'tool_translate' ),

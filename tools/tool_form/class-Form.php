@@ -2162,7 +2162,7 @@
 					if ( ! empty( $param['max_filesize'] ) ) {
 
 						$text = _x( 'Maximal allowed filesize: {value}', 'Formular', 'tool_translate' );
-						$hints[] = str_replace( '{value}', $param['max_filesize'] / 1000000 . ' MB', $text );
+						$hints[] = str_replace( '{value}', $this->format_file_size( $param['max_filesize'] ), $text );
 					}
 
 				// }
@@ -2273,6 +2273,34 @@
 
 				// }
 
+				// INPUT TEXT {
+
+					$input_text = _x( 'Choose a file', 'Formular', 'tool_translate' );
+
+				// }
+
+				// ADDS FILE LIST {
+
+					$tpl_field = '';
+
+					if ( ! empty( $this->request[ $p['attrs_field']['name'] ]['name'] ) ) {
+
+						$temp_files = $this->request[ $p['attrs_field']['name'] ];
+
+						$tpl_field .= '<ul class="_files">';
+
+						foreach ( $temp_files['name'] as $key => $file_name ) {
+
+							$tpl_field .= '<li>' . $file_name . ' <span>(' . $this->format_file_size( $temp_files['size'][ $key ] ) . ')<span></li>';
+						}
+
+						$tpl_field .= '</ul>';
+
+						$input_text = count( $temp_files ) . ' files selected';
+					}
+
+				// }
+
 				// MULTIPLE {
 
 					if ( ! empty( $p['allow_multiple_files'] ) ) {
@@ -2288,14 +2316,19 @@
 					$template_data = array();
 
 					$template_data['field_info'] = $p['_field_info'];
+
 					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
-					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '><label' . attrs( $p['attrs_field_label'] ) . '>' . _x( 'Choose a file', 'Formular', 'tool_translate' ) . '</label>';
+
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					$template_data['field'] .= '<label' . attrs( $p['attrs_field_label'] ) . ' data-label-text="' . _x( 'Choose a file', 'Formular', 'tool_translate' ) . '">' . $input_text . '</label>';
+					$template_data['field'] .= $tpl_field;
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 
 				// }
 
 				return $html;
+
 			}, 10, 2 );
 		}
 
@@ -2696,6 +2729,15 @@
 			}
 
 			return false;
+		}
+
+		public function format_file_size( $number ) {
+
+			return tool_format_filesize( $number, array(
+				0 => 0,
+				1 => 0,
+				2 => 2,
+			) );
 		}
 
 		// ADDONS
