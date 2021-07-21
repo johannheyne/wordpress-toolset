@@ -23,7 +23,7 @@
 
 	// FORMAT FILESIZE ( Version 1 ) {
 
-		function tool_format_filesize( $size ) {
+		function tool_format_filesize( $size, $decimals = array() ) {
 
 			$arr_units = array(
 				'<acronym lang="en" xml:lang="en" title="Byte">B</acronym>',
@@ -33,14 +33,62 @@
 				'<acronym lang="en" xml:lang="en" title="Terabyte">TB</acronym>'
 			);
 
-			for ( $i = 0; $size > 1024; $i++ ) {
+			// GETS SIZE AND UNIT INDEX {
 
-				$size /= 1024;
-			}
+				for ( $i = 0; $size >= 1000; $i++ ) {
 
-			$decimals = apply_filters( 'tool_format_filesize/decimals', 2 );
+					$size /= 1000;
+				}
+
+			// }
+
+			// DECIMALS BY METHODE PARAM {
+
+				if (
+					is_array( $decimals ) AND
+					isset( $decimals[$i] )
+				) {
+
+					$decimal = $decimals[$i];
+				}
+
+			// }
+
+			// GET DECIMALS WHETER IS BY PARAM OR FILTERED DEFAULT {
+
+				if ( ! isset( $decimal ) ) {
+
+					$decimals = apply_filters( 'tool_format_filesize/decimals', 2, $i );
+				}
+				else {
+
+					$decimals = $decimal;
+				}
+
+			// }
+
 			$dec_point = apply_filters( 'tool_format_filesize/dec_point', ',' );
 			$thousands_sep = apply_filters( 'tool_format_filesize/thousands_sep', '.' );
+
+			// ROUNDS SIZE UP ACCORDING TO DECIMALS {
+
+				$multiplier = 1;
+
+				for ( $l = 0; $l < $decimals; $l++ ) {
+
+					if ( $multiplier == 1 ) {
+
+						$multiplier = 10;
+					}
+					else {
+
+						$multiplier = $multiplier * 10;
+					}
+				}
+
+				$size = ceil( $size * $multiplier ) / $multiplier;
+
+			// }
 
 			return number_format( $size, $decimals, $dec_point, $thousands_sep ) . ' ' . $arr_units[ $i ];
 		}
