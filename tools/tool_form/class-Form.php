@@ -72,6 +72,9 @@
 
 		function __construct( $p = array( 'form_id' => '' ) ) {
 
+			$p = apply_filters( 'class/Form/param', $p );
+			$p = apply_filters( 'class/Form/param/form_id=' .  $p['form_id'], $p );
+
 			// DEFAULTS {
 
 				$defaults = array(
@@ -290,11 +293,21 @@
 
 			$attrs = array_replace_recursive( $attrs, $this->p['form_attrs'] );
 
+			if ( ! empty( $this->p['form_post_id']  ) ) {
+
+				$attrs['data-form-post-id'] = $this->p['form_post_id'];
+			}
+
 			do_action( 'class/Form/before_html/form_id=' . $this->p['form_id'], $this->p );
 
 			$html = '<form' . attrs( $attrs ) . '>';
 
 				$html .= '<input type="hidden" name="form_id" value="' . $this->p['form_id'] . '" />';
+
+				if ( ! empty( $this->p['form_post_id']  ) ) {
+
+					$html .= '<input type="hidden" name="form_post_id" value="' . $this->p['form_post_id'] . '" />';
+				}
 
 				// FORM PREPEND {
 
@@ -2550,13 +2563,21 @@
 
 			// ADD FORM MESSAGE {
 
-				if ( $mail ) {
+				if (
+					$mail
+				) {
 
-					wp_redirect( './?emailsent=' . $this->p['form_id'] );
-					exit;
-				}
-				else {
+					if ( empty( $this->p['form_post_id'] ) ) {
 
+						wp_redirect( './?emailsent=' . $this->p['form_id'] );
+						exit;
+					}
+					else {
+
+						$this->p['return'] = array( '' );
+						$this->is_request = true;
+						$this->request_form_message_keys[] = 'email_sent';
+					}
 				}
 
 			// }

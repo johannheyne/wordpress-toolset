@@ -254,6 +254,116 @@
 		App.ToolFormFileField = new ToolFormFileField();
 		App.Modules.add( 'ToolFormFileField' ); // or simply App.Kickstart.init();
 
+
+		function ToolFormSend() {
+
+			var t = this;
+
+			t.ids = {
+				form: '[data-form-id][method="post"]',
+			};
+
+			t.sel = {
+				form: t.ids.form,
+			};
+
+			t.obj = {
+				//form: $( t.sel.form ),
+			};
+
+			t.param = {
+				//name: false,
+			};
+
+			t.priv = {
+				//name: false,
+			};
+
+			t.vars = {
+				//name: false,
+			};
+
+			t.init =  function() {
+
+				// INITS {
+
+					t = $.extend( true, new App.ext.Json(), t );
+
+				// }
+
+				// ADDS ACTIONS {
+
+
+
+				// }
+
+				// ADDS FILTERS {
+
+
+
+				// }
+
+				// ADDS EVENTS {
+
+
+
+				// }
+
+			};
+
+			t.run = function() {
+
+				t.adds_submit_event();
+			};
+
+
+			t.adds_submit_event = function() {
+
+				App.obj.body.on( 'submit', t.sel.form, function(event) {
+
+					event.preventDefault();
+
+					$that = $( this ),
+					form_id = $that.data( 'form-id' ),
+					form_post_id = $that.data( 'form-post-id' );
+
+					var form_data = new FormData( this );
+
+					form_data.append( 'form_id', form_id );
+					form_data.append( 'form_post_id', form_post_id );
+					form_data.append( 'action', 'tool_form' );
+					form_data.append( 'nonce', WPData.nonce );
+
+					$.ajax({
+						type: 'post',
+						url: WPData.ajaxurl,
+						cache: false,
+						contentType: false,
+						processData: false,
+						data: form_data,
+						success:function( data ) {
+
+							//data = $.parseJSON( data );
+
+							$( '[data-form-post-id="' + form_post_id + '"]' )
+								.after( data )
+								.remove();
+
+						},
+						error: function( errorThrown ) {
+
+							//console.log( 'Sorry, but could not add the Like!' );
+						}
+					});
+				});
+
+			};
+
+		};
+
+		App.ToolFormSend = new ToolFormSend();
+		App.Modules.add( 'ToolFormSend' ); // or simply App.Kickstart.init();
+
 	});
 
 }());
