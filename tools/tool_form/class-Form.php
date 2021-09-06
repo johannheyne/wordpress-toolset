@@ -2505,6 +2505,11 @@
 
 										foreach ( $file['name'] as $key => $name ) {
 
+											if ( $name === '' ) { // Fixes empty multiple file input
+
+												continue;
+											}
+
 											move_uploaded_file( $file['tmp_name'][ $key ], $attachmentdir . '/' . $name );
 											$attachements[] = $attachmentdir . '/' . $name;
 										}
