@@ -33,6 +33,7 @@ __Table of Content__
 - [todo] E-Mail Form
 - [Form Request Action](#form_request_action)
 - [Detect Form Requests](#detect_form_requests)
+- [JS Hooks](#js_hooks)
 
 
 <a id="add_a_form"></a>
@@ -856,4 +857,14 @@ class Form {
 		$html .= apply_filters( 'class/Form/get_fields_html/field_type=' $item['type'], $html, $item );
 	}
 }
+```
+
+<a id="js_hooks"></a>
+## Javascript Hooks
+
+```js
+App.Actions.add( 'ToolForm', 'sent', function( form_id, form_post_id ) {
+
+	// cals after form was sent
+} );
 ```

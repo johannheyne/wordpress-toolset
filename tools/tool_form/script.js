@@ -349,6 +349,11 @@
 								.after( data )
 								.remove();
 
+							App.Actions.do( 'ToolForm', 'sent', {
+								form_id: form_id,
+								form_post_id: form_post_id,
+							} );
+
 						},
 						error: function( errorThrown ) {
 
