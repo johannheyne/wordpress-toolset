@@ -319,7 +319,7 @@
 
 			t.adds_submit_event = function() {
 
-				App.obj.body.on( 'submit', t.sel.form, function(event) {
+				App.obj.body.on( 'submit', t.sel.form, function( event ) {
 
 					event.preventDefault();
 
