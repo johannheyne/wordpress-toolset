@@ -85,6 +85,7 @@
 						'method' => 'get',
 						'action' => '',
 						'data-form-id' => $p['form_id'],
+						'data-form-unique-id' => newid(),
 						'enctype' => false,
 					),
 					'echo' => true,
@@ -239,6 +240,8 @@
 						$this->request = array_replace_recursive( $this->request, $_FILES );
 					}
 
+					$this->p['form_attrs']['data-form-unique-id'] = $this->request['form_unique_id'];
+
 					// SANITIZE REQUEST
 
 					$this->sanitize_request();
@@ -303,6 +306,7 @@
 			$html = '<form' . attrs( $attrs ) . '>';
 
 				$html .= '<input type="hidden" name="form_id" value="' . $this->p['form_id'] . '" />';
+				$html .= '<input type="hidden" name="form_unique_id" value="' . $this->p['form_attrs']['data-form-unique-id'] . '" />';
 
 				if ( ! empty( $this->p['form_post_id']  ) ) {
 

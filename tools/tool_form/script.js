@@ -323,9 +323,10 @@
 
 					event.preventDefault();
 
-					$that = $( this ),
-					form_id = $that.data( 'form-id' ),
-					form_post_id = $that.data( 'form-post-id' );
+					var $that = $( this ),
+						form_unique_id = $that.data( 'form-unique-id' ),
+						form_id = $that.data( 'form-id' ),
+						form_post_id = $that.data( 'form-post-id' );
 
 					var form_data = new FormData( this );
 
@@ -350,6 +351,7 @@
 								.remove();
 
 							App.Actions.do( 'ToolForm', 'sent', {
+								form_unique_id: form_unique_id,
 								form_id: form_id,
 								form_post_id: form_post_id,
 							} );

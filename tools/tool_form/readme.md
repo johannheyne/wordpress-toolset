@@ -60,7 +60,7 @@ new Form( array(
 This adds a basic form…
 
 ```html
-<form class="{class}" role="{role}" method="{method}" action="{action}" data-form-id="{form_id}" aria-label="{aria_label}">
+<form class="{class}" role="{role}" method="{method}" action="{action}" data-form-id="{form_id}" data-form-unique-id="{form_unique_id}" aria-label="{aria_label}">
 
 	<input type="hidden" name="form_id" value="{form_id}" />
 
@@ -863,7 +863,7 @@ class Form {
 ## Javascript Hooks
 
 ```js
-App.Actions.add( 'ToolForm', 'sent', function( form_id, form_post_id ) {
+App.Actions.add( 'ToolForm', 'sent', function( { form_unique_id, form_id, form_post_id } ) {
 
 	// cals after form was sent
 } );
