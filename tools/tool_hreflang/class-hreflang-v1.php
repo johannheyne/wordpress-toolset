@@ -77,7 +77,7 @@
 
 				acf_add_local_field_group( array(
 					'key' => 'group_clone_hreflang_group',
-					'title' => 'Verknüpfungen<br><small>Verknüpfungen zu alternativen Länderversionen dieses Inhaltes.</small>',
+					'title' => '<div>Verknüpfungen<br><small>Verknüpfungen zu alternativen Länder&shy;versionen dieses Inhaltes.</small></div>',
 					'fields' => get_sites_field_group_fields( array(
 						'key' => 'hreflang', // key for get_field( 'hreflang' );
 						'label' => 'Country', // not displayed
