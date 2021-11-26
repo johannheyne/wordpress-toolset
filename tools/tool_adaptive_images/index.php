@@ -66,7 +66,8 @@
 						'style' => false,
 						'figcaption_cont' => false,
 						'figure_class' => 'figure',
-						'figcaption_class' => 'figcaption'
+						'figcaption_class' => 'figcaption',
+						'svg_trim' => true
 					);
 
 					$p = array_replace_recursive( $defaults, $p );
@@ -126,6 +127,15 @@
 
 							$img_param = wp_get_attachment_image_src( $p['id'], $p['name'] );
 							$img_src = $img_param[0];
+						}
+
+					// }
+
+					// SVG TRIM {
+
+						if ( false === $p['svg_trim'] ) {
+
+							$img_src = str_replace( '-trimmed.svg', '.svg', $img_src );
 						}
 
 					// }
