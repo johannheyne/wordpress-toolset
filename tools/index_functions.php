@@ -470,6 +470,15 @@
 
 				// }
 
+				// tool_svg {
+
+					'tool_svg' => array(
+						'dir' => 'tool_svg',
+						'load_on_init' => true,
+					),
+
+				// }
+
 			)
 		);
 
