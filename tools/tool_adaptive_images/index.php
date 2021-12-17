@@ -95,7 +95,7 @@
 
 				// SET VAR IMAGE SUFIX {
 
-					$sufix = '?size=' . $p['name'];
+					$sufix = '?size=' . $p['name'] . '&v=' . config_get_theme_version();
 
 					// ADDS RATIO {
 
@@ -509,7 +509,7 @@
 				'id' => false,
 			) ) {
 
-				$sufix = '?size=' . $p['name'];
+				$sufix = '?size=' . $p['name'] . '&v=' . config_get_theme_version();
 
 				/* image src */
 				$img_param = wp_get_attachment_image_src( $p['id'], 'adaptive-image-base' );
@@ -527,7 +527,7 @@
 				'id' => false,
 			) ) {
 
-				$sufix = '?size=' . $p['name'];
+				$sufix = '?size=' . $p['name'] . '&v=' . config_get_theme_version();
 
 				/* image src */
 				$img_param = wp_get_attachment_image_src( $p['id'], 'adaptive-image-base' );
