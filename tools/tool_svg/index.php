@@ -6,12 +6,11 @@
 
 			$cont = file_get_contents( $file['tmp_name'] );
 
+			if ( false === strpos( $cont, '<?xml' ) ) {
 
-			$cont = str_replace( '<?xml version="1.0" encoding="utf-8"?>', '', $cont );
-
-			$cont = '<?xml version="1.0" encoding="utf-8"?>' . $cont;
-
-			file_put_contents( $file['tmp_name'], $cont );
+				$cont = '<?xml version="1.0" encoding="utf-8"?>' . $cont;
+				file_put_contents( $file['tmp_name'], $cont );
+			};
 		}
 
 		return $file;
