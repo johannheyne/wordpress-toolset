@@ -1,6 +1,6 @@
 <?php
 
-	// DATE ( Version 5 ) {
+	// DATE ( Version 6 ) {
 
 		function tool_date( $p = array() ) {
 
@@ -8,28 +8,122 @@
 
 				$defaults = array(
 					'date' => false,
-					'format' => 'd.m.Y',
-					'local' => 'de_DE'
+					'format' => false,
+					'timezone' => false,
+					'local' => false,
+					'locale' => false,
+					'date_formatter' => 'medium',
+					'time_formatter' => 'none',
 				);
 
 				$p = array_replace_recursive( $defaults, $p );
 
 			// }
 
-			// default date
-			if ( ! $p['date'] ) {
+			// DATE {
 
-				$p['date'] = time();
-			}
+				if ( ! $p['date'] ) {
 
-			if ( strpos( $p['date'], ':' ) !== false || strpos( $p['date'], '-' ) !== false ) {
+					$p['date'] = time();
+				}
 
-				$p['date'] = mysql2date( 'U', $p['date'] );
-			}
+				if ( strpos( $p['date'], ':' ) !== false || strpos( $p['date'], '-' ) !== false ) {
 
-			setlocale( LC_ALL, $p['local'] );
+					$p['date'] = mysql2date( 'U', $p['date'] );
+				}
 
-			return date( $p['format'], $p['date'] );
+			// }
+
+			// LOCALE {
+
+				if ( empty( $p['locale'] ) ) {
+
+					$p['locale'] = get_locale();
+
+					if ( ! empty( $GLOBALS['toolset']['frontend_locale'] ) ) {
+
+						$p['locale'] = $GLOBALS['toolset']['frontend_locale'];
+					}
+				}
+
+				if ( ! empty( $p['local'] ) ) {
+
+					$p['locale'] = $p['local'];
+				}
+
+			// }
+
+			// TIMEZONE {
+
+				if ( empty( $p['timezone'] ) ) {
+
+					 $p['timezone'] = wp_timezone_string();
+				}
+
+			// }
+
+			// DATE FORMATTER {
+
+				if ( $p['date_formatter'] === 'short' ) {
+
+					$date_formatter = IntlDateFormatter::SHORT;
+				}
+				elseif ( $p['date_formatter'] === 'medium' ) {
+
+					$date_formatter = IntlDateFormatter::MEDIUM;
+				}
+				elseif ( $p['date_formatter'] === 'long' ) {
+
+					$date_formatter = IntlDateFormatter::LONG;
+				}
+				elseif ( $p['date_formatter'] === 'full' ) {
+
+					$date_formatter = IntlDateFormatter::FULL;
+				}
+				else {
+
+					$date_formatter = IntlDateFormatter::NONE;
+				}
+
+			// }
+
+			// TIME FORMATTER {
+
+				if ( $p['time_formatter'] === 'short' ) {
+
+					$time_formatter = IntlDateFormatter::SHORT;
+				}
+				elseif ( $p['time_formatter'] === 'medium' ) {
+
+					$time_formatter = IntlDateFormatter::MEDIUM;
+				}
+				elseif ( $p['time_formatter'] === 'long' ) {
+
+					$time_formatter = IntlDateFormatter::LONG;
+				}
+				elseif ( $p['time_formatter'] === 'full' ) {
+
+					$time_formatter = IntlDateFormatter::FULL;
+				}
+				else {
+
+					$time_formatter = IntlDateFormatter::NONE;
+				}
+
+			// }
+
+			$fmt = datefmt_create(
+				$p['locale'],
+				$date_formatter,
+				$time_formatter,
+				$p['timezone'],
+				IntlDateFormatter::GREGORIAN,
+				$p['format'],
+			);
+
+			$date = $fmt->format( $p['date'] );
+
+			return $date;
 		}
 
 		function tool_html_time( $p = array() ) {
@@ -37,14 +131,20 @@
 			/* Info
 
 				Takes a databasefield datevalue like 20130227 or
-				a date/time value like 2013022701230 and
-				returns a formated time tag.
+				a date/time value like 2013022701230 or
+				a timestamp
+				and returns a formated time tag.
 			*/
 
 			$p += array(
 				'field' => false, // 20130227 or 2013022701230
-				'format' => 'd.m.Y',
-				'timezone' => false
+				'date' => false,
+				'format' => false,
+				'timezone' => false,
+				'local' => false,
+				'locale' => false,
+				'date_formatter' => 'medium',
+				'time_formatter' => 'none',
 				/* timezone sources:
 					http://www.php.net/manual/de/function.date-default-timezone-set.php
 					http://www.php.net/manual/de/timezones.php
@@ -53,42 +153,108 @@
 
 			if ( $p['field'] ) {
 
-				$date_time = str_split( $p['field'], 8 );
+				// GETS TIME FROM DATE STRING {
 
-				$date_arr = str_split( $date_time[0], 2 );
+					$date_time = str_split( $p['field'], 8 );
 
-				if ( !isset( $date_time[1] ) ) {
+					$date_arr = str_split( $date_time[0], 2 );
 
-					$date_time[1] = '';
-				}
+					if ( !isset( $date_time[1] ) ) {
 
-				$time_arr = str_split( str_pad ( $date_time[1], 6, '0', STR_PAD_RIGHT ), 2 );
+						$date_time[1] = '';
+					}
 
-				$mysql2date_input_format = $date_arr[0] . $date_arr[1] . '-' . $date_arr[2] . '-' . $date_arr[3] . ' ' . $time_arr[0] . ':' . $time_arr[0] . ':' . $time_arr[0];
+					$time_arr = str_split( str_pad ( $date_time[1], 6, '0', STR_PAD_RIGHT ), 2 );
 
-				$timestamp = mysql2date( 'U', $mysql2date_input_format );
+					$mysql2date_input_format = $date_arr[0] . $date_arr[1] . '-' . $date_arr[2] . '-' . $date_arr[3] . ' ' . $time_arr[0] . ':' . $time_arr[0] . ':' . $time_arr[0];
 
-				// use custom timezone
-				if ( $p['timezone'] ) {
+					$p['time'] = mysql2date( 'U', $mysql2date_input_format );
 
-					$timezone_default = date_default_timezone_get();
-					date_default_timezone_set( $p['timezone'] );
-				}
-
-				$time = date( 'c', $timestamp );
-				$text = date( $p['format'], $timestamp );
-
-				// define default timezone
-				if ( $p['timezone'] ) {
-					date_default_timezone_set( $timezone_default );
-				}
-
-				return '<time datetime="' . $time . '">' . $text . '</time>';
+				// }
 			}
-			else {
 
-				return false;
-			}
+			// DATE {
+
+				if ( ! $p['date'] ) {
+
+					$p['date'] = time();
+				}
+
+				if ( strpos( $p['date'], ':' ) !== false || strpos( $p['date'], '-' ) !== false ) {
+
+					$p['date'] = mysql2date( 'U', $p['date'] );
+				}
+
+			// }
+
+			// LOCALE {
+
+				if ( empty( $p['locale'] ) ) {
+
+					$p['locale'] = get_locale();
+
+					if ( ! empty( $GLOBALS['toolset']['frontend_locale'] ) ) {
+
+						$p['locale'] = $GLOBALS['toolset']['frontend_locale'];
+					}
+				}
+
+				if ( ! empty( $p['local'] ) ) {
+
+					$p['locale'] = $p['local'];
+				}
+
+			// }
+
+			// TIMEZONE {
+
+				if ( empty( $p['timezone'] ) ) {
+
+					 $p['timezone'] = wp_timezone_string();
+				}
+
+			// }
+
+			// DATE FORMATTER {
+
+				if ( $p['date_formatter'] === 'short' ) {
+
+					$date_formatter = IntlDateFormatter::SHORT;
+				}
+				elseif ( $p['date_formatter'] === 'medium' ) {
+
+					$date_formatter = IntlDateFormatter::MEDIUM;
+				}
+				elseif ( $p['date_formatter'] === 'long' ) {
+
+					$date_formatter = IntlDateFormatter::LONG;
+				}
+				elseif ( $p['date_formatter'] === 'full' ) {
+
+					$date_formatter = IntlDateFormatter::FULL;
+				}
+				else {
+
+					$date_formatter = IntlDateFormatter::NONE;
+				}
+
+			// }
+
+			$time_c = date( 'c', $p['date'] );
+
+			$date = tool( array(
+				'name' => 'tool_date',
+				'param' => array(
+					'date' => $p['date'], // optional, '20211206'
+					'format' => $p['format'], // optional, 'd.m.Y'
+					'local' => $p['local'], // optional, 'de_DE'
+					'timezone' => $p['timezone'], // optional, 'Europe/Berlin'
+					'date_formatter' => $p['date_formatter'], // optional: none, short, medium, long, full
+					'time_formatter' => $p['time_formatter'], // optional: none, short, medium, long, full
+				)
+			));
+
+			return '<time class="_date" datetime="' . $time_c . '">' . $date . '</time>';
 		}
 
 	// }
