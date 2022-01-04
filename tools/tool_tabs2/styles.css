@@ -1,0 +1,68 @@
+
+	[data-tabs] {
+		margin: 0;
+		padding-left: 0;
+		list-style-type: none;
+		display: flex;
+	}
+
+	[data-tabs] > [data-tab-id] {
+	}
+
+	[data-tabs] > [data-tab-id] label {
+		display: inline-block;
+		cursor: pointer;
+	}
+
+	[name^="tabs"][value="0"]:checked ~ [data-tabs] > [data-tab-id="0"] label,
+	[name^="tabs"][value="1"]:checked ~ [data-tabs] > [data-tab-id="1"] label,
+	[name^="tabs"][value="2"]:checked ~ [data-tabs] > [data-tab-id="2"] label,
+	[name^="tabs"][value="3"]:checked ~ [data-tabs] > [data-tab-id="3"] label,
+	[name^="tabs"][value="4"]:checked ~ [data-tabs] > [data-tab-id="4"] label,
+	[name^="tabs"][value="5"]:checked ~ [data-tabs] > [data-tab-id="5"] label,
+	[name^="tabs"][value="6"]:checked ~ [data-tabs] > [data-tab-id="6"] label,
+	[name^="tabs"][value="7"]:checked ~ [data-tabs] > [data-tab-id="7"] label,
+	[name^="tabs"][value="8"]:checked ~ [data-tabs] > [data-tab-id="8"] label,
+	[name^="tabs"][value="9"]:checked ~ [data-tabs] > [data-tab-id="9"] label,
+	[name^="tabs"][value="10"]:checked ~ [data-tabs] > [data-tab-id="10"] label {
+
+
+	}
+
+	[data-tab-cont-wrap] {
+		position: relative;
+	}
+
+	[data-tab-cont] {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		opacity: 0;
+		transition: .3s;
+	}
+
+	[name^="tabs"][value="0"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="0"],
+	[name^="tabs"][value="1"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="1"],
+	[name^="tabs"][value="2"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="2"],
+	[name^="tabs"][value="3"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="3"],
+	[name^="tabs"][value="4"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="4"],
+	[name^="tabs"][value="5"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="5"],
+	[name^="tabs"][value="6"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="6"],
+	[name^="tabs"][value="7"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="7"],
+	[name^="tabs"][value="8"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="8"],
+	[name^="tabs"][value="9"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="9"],
+	[name^="tabs"][value="10"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="10"],
+	[name^="tabs"][value="11"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="11"],
+	[name^="tabs"][value="12"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="12"],
+	[name^="tabs"][value="13"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="13"],
+	[name^="tabs"][value="14"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="14"],
+	[name^="tabs"][value="15"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="15"],
+	[name^="tabs"][value="16"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="16"],
+	[name^="tabs"][value="17"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="17"],
+	[name^="tabs"][value="18"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="18"],
+	[name^="tabs"][value="19"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="19"],
+	[name^="tabs"][value="20"]:checked ~ [data-tab-cont-wrap] [data-tab-cont="20"] {
+
+		position: relative;
+		opacity: 1;
+	}

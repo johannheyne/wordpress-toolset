@@ -12,3 +12,4 @@
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolArrayLayout'] = 'tools/tool_array_layout/class-tool_array_layout.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['Form'] = 'tools/tool_form/class-Form.php';
 	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolCountdown'] = 'tools/tool_countdown/classToolCountdown.php';
+	$GLOBALS['toolset']['autoload_php_classes_plugin']['ToolsetTabs2'] = 'tools/tool_tabs2/classToolTabs2.php';
