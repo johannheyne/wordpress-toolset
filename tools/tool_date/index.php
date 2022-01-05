@@ -57,7 +57,12 @@
 
 				if ( empty( $p['timezone'] ) ) {
 
-					 $p['timezone'] = wp_timezone_string();
+					$p['timezone'] = wp_timezone_string();
+				}
+
+				if ( strpos( $p['timezone'], ':' ) ) {
+
+					$p['timezone'] = 'GMT' . $p['timezone'];
 				}
 
 			// }
