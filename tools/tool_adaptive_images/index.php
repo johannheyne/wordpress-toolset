@@ -1,5 +1,17 @@
 <?php
 
+	// DEFINES BIG IMAGE SIZE THRESHOLD (default is 2560) {
+
+		if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['big_image_size_threshold'] ) ) {
+
+			add_filter( 'big_image_size_threshold', function( $threshold ) {
+
+				return $GLOBALS['toolset']['inits']['tool_adaptive_images']['big_image_size_threshold']; // new threshold
+			}, 999, 1);
+		}
+
+	// }
+
 	// DISABLE WP SRCSET ( Version 1 ) {
 
 		add_filter( 'wp_calculate_image_srcset', function() {
@@ -26,14 +38,27 @@
 		});
 
 		/* sizes for icons and previews in wordpress */
-		add_image_size( 'thumbnail', '160', '160', /* crop */ false ); // required for postthumb preview in post/pages
-		add_image_size( 'medium', '118', '118', /* crop */ false ); // used for media listing
+		add_image_size( 'thumbnail', 160, 160, /* crop */ false ); // required for postthumb preview in post/pages
+		add_image_size( 'medium', 118, 118, /* crop */ false ); // used for media listing
 
 	// }
 
-	// ADAPTIVE IMAGES ( Version 24 (AIFWP 1.1) ) {
+	// ADAPTIVE IMAGES ( Version 25 (AIFWP 1.1) ) {
 
-		add_image_size( 'adaptive-image-base', '2560', '2560', /* crop */ false );
+		$width = 2560;
+		$height = 2650;
+
+		if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['adaptive_image_base_max_width'] ) ) {
+
+			$width = $GLOBALS['toolset']['inits']['tool_adaptive_images']['adaptive_image_base_max_width'];
+		}
+
+		if ( isset( $GLOBALS['toolset']['inits']['tool_adaptive_images']['adaptive_image_base_max_height'] ) ) {
+
+			$height = $GLOBALS['toolset']['inits']['tool_adaptive_images']['adaptive_image_base_max_height'];
+		}
+
+		add_image_size( 'adaptive-image-base', $width, $height, /* crop */ false );
 
 		// GET ADAPTIVE IMAGE {
 

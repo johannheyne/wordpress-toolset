@@ -3,28 +3,66 @@
 Tool tool_adaptive_images
 ===============================
 
-This tool enables to insert Adaptive Images in the WordPress wysiwyg editor.
-
+## Config of WordPress Image Size Threshold and Adaptive Images max Sizes
 ````php
-	$GLOBALS['toolset'] = array(
-		'inits' => array(
-			'tool_adaptive_images' => array(
+add_action( 'toolset_config', function() {
 
-				'editor_imagesizes' => array(
-					'adaptive-images-key' => array(
-						'width' => '400',
-						'height' => '0',
-						'crop' => false,
-						'label' => 'Custom Size',
-						'posttypes' => array( 'post', 'page' )
-					),
-				),
-			)
-		)
-	);
+	config_add_init( array(
+		'name' => 'tool_adaptive_images',
+		'data' => array(
+			'big_image_size_threshold' => false, // default, false or number
+			'adaptive_image_base_max_width' => 2560, // default, number
+			'adaptive_image_base_max_height' => 0, // default, number, zero stands for infinity
+		),
+	) );
+
+}, 10 );
 ````
 
-This tool provides a function to insert Adaptive Images in a template.
+## Enables to insert Adaptive Images in the WordPress wysiwyg editor.
+
+````php
+add_action( 'toolset_config', function() {
+
+	config_add_init( array(
+		'name' => 'tool_image_sizes',
+		'data' => array(
+
+			'editor_imagesizes' => array(
+				'adaptive-images-key' => array(
+					'width' => '400',
+					'height' => '0',
+					'crop' => false,
+					'label' => 'Custom Size',
+					'posttypes' => array( 'post', 'page' )
+				),
+			),
+		),
+	));
+
+});
+
+/*
+$GLOBALS['toolset'] = array(
+	'inits' => array(
+		'tool_adaptive_images' => array(
+
+			'editor_imagesizes' => array(
+				'adaptive-images-key' => array(
+					'width' => '400',
+					'height' => '0',
+					'crop' => false,
+					'label' => 'Custom Size',
+					'posttypes' => array( 'post', 'page' )
+				),
+			),
+		)
+	)
+);
+*/
+````
+
+## Provides a Function to Insert Adaptive Images in a Template.
 
 ````php
 	$html .= tool( array(
