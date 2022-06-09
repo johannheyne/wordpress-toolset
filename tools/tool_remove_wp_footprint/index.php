@@ -11,6 +11,7 @@
 				'remove_loginpage_logo' => false,
 				'show_title_on_loginpage' => false, // bolean, string
 				'remove_footer_text' => false,
+				'remove_gutenberg_frontend_styles' => true,
 			);
 
 			// ALL TRUE {
@@ -61,6 +62,21 @@
 				add_action( 'admin_init', 'tool_remove_wp_footprint_footertexte' );
 			}
 		// }
+
+		// GUTENBERG STYLES IN FRONTEND {
+
+			if ( $p['remove_gutenberg_frontend_styles'] ) {
+
+				add_action( 'wp_enqueue_scripts', function() {
+					wp_dequeue_style( 'wp-block-library' );
+					wp_dequeue_style( 'wp-block-library-theme' );
+					wp_dequeue_style( 'wc-block-style' ); // REMOVE WOOCOMMERCE BLOCK CSS
+					wp_dequeue_style( 'global-styles' ); // REMOVE THEME.JSON
+				} );
+			}
+
+		// }
+
 	}
 
 	tool_remove_wp_footprint();
