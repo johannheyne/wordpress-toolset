@@ -272,6 +272,47 @@
 
 					array_walk( $array, function( &$item, $key ) use ( $context ) {
 
+						// CHOICES {
+
+							if ( $key === 'choices' ) {
+
+								foreach ( $item as $key2 => $value ) {
+
+									if ( ! is_array( $value ) ) {
+
+										$value = $this->get_context_item( $value, $context );
+										$value = $this->get_item_translation( $value );
+
+										$item[ $key2 ] = $value;
+									}
+								}
+
+								return;
+							}
+
+						// }
+
+						// LAYOUTS {
+
+							if ( $key === 'layouts' ) {
+
+								array_walk_recursive ( $item , function( &$item, $key2 ) use ( $context ) {
+
+									$keys = array( 'title', 'label', 'description', 'instructions' );
+
+									if ( in_array( $key2, $keys ) ) {
+
+										$item = $this->get_context_item( $item, $context );
+										$item = $this->get_item_translation( $item );
+										$item = $this->get_item_bracket_translation( $item );
+									}
+								} );
+
+								return;
+							}
+
+						// }
+
 						// IS STRING {
 
 							$keys = array( 'title', 'page_title', 'menu_title', 'label', 'button_label', 'description', 'instructions', 'message', 'default_value', 'append', 'prepend', 'placeholder', 'ui_on_text', 'ui_off_text' );
@@ -281,9 +322,12 @@
 								in_array( $key, $keys ) AND
 								! empty( $key )
 							) {
+
 								$item = $this->get_context_item( $item, $context );
 								$item = $this->get_item_translation( $item );
 								$item = $this->get_item_bracket_translation( $item );
+
+								return;
 							}
 
 						// }
@@ -300,11 +344,11 @@
 									}
 								}
 
-								array_walk_recursive( $item, function( &$item, $key ) use ( $context ){
+								array_walk_recursive( $item, function( &$item, $key2 ) use ( $context ){
 
 									// REMOVES FIELDGROUP LEADING HINTS LIKE "(Clone) Image" {
 
-										if ( $key === 'title' ) {
+										if ( $key2 === 'title' ) {
 
 											$item = preg_replace( "/\((.*)\)(.*)/", '$2', $item );
 											$item = trim( $item );
@@ -316,8 +360,8 @@
 
 									if (
 										is_string( $item ) AND
-										in_array( $key, $keys ) AND
-										! empty( $key )
+										in_array( $key2, $keys ) AND
+										! empty( $key2 )
 									) {
 
 										$item = $this->get_context_item( $item, $context );
@@ -325,44 +369,6 @@
 										$item = $this->get_item_bracket_translation( $item );
 									}
 
-								} );
-
-							}
-
-						// }
-
-						// CHOICES {
-
-							if ( $key === 'choices' ) {
-
-								foreach ( $item as $key => $value ) {
-
-									if ( ! is_array( $value ) ) {
-
-										$value = $this->get_context_item( $value, $context );
-										$value = $this->get_item_translation( $value );
-
-										$item[ $key ] = $value;
-									}
-								}
-							}
-
-						// }
-
-						// LAYOUTS {
-
-							if ( $key === 'layouts' ) {
-
-								array_walk_recursive ( $item , function( &$item, $key ) use ( $context ) {
-
-									$keys = array( 'title', 'label', 'description', 'instructions' );
-
-									if ( in_array( $keys, $keys ) ) {
-
-										$item = $this->get_context_item( $item, $context );
-										$item = $this->get_item_translation( $item );
-										$item = $this->get_item_bracket_translation( $item );
-									}
 								} );
 							}
 
