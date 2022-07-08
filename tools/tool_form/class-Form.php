@@ -181,6 +181,16 @@
 					$this->init_file_field();
 				}
 
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=search' ) ) {
+
+					$this->init_search_field();
+				}
+
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=date' ) ) {
+
+					$this->init_date_field();
+				}
+
 			// }
 
 			// GETS FIELDTYPES {
@@ -721,6 +731,205 @@
 
 					$attrs_field_defaults = array(
 						'type' => 'text',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
+
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+					if ( $p['required'] === true ) {
+
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
+
+				// }
+
+				// TEMPLATE {
+
+					$template_data = array();
+
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+			}, 10, 2 );
+
+		}
+
+		public function init_search_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['search'] = array(
+					'default_param' => array(
+						'label' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
+						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
+					),
+					'validation' => false,
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=search', function( $html, $item ) {
+
+				// DEFAULTS {
+
+					$p = array_replace_recursive( $this->fieldtypes['search']['default_param'], $item );
+
+				// }
+
+				// FILTER FIELD PARAM {
+
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+				// }
+
+				// REQUEST VALUE {
+
+					if ( isset( $p['request_value'] ) ) {
+
+						$p['attrs_field']['value'] = $p['request_value'];
+					}
+
+				// }
+
+				// ATTRS LABEL {
+
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
+
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+				// }
+
+				// ATTRS FIELD {
+
+					$attrs_field_defaults = array(
+						'type' => 'search',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
+
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+					if ( $p['required'] === true ) {
+
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
+
+				// }
+
+				// TEMPLATE {
+
+					$template_data = array();
+
+					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+			}, 10, 2 );
+
+		}
+
+		public function init_date_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['date'] = array(
+					'default_param' => array(
+						'label' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+							'pattern' => '\d{4}-\d{2}-\d{2}',
+						),
+						'required' => false,
+						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
+					),
+					'validation' => false,
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=date', function( $html, $item ) {
+
+				// DEFAULTS {
+
+					$p = array_replace_recursive( $this->fieldtypes['date']['default_param'], $item );
+
+				// }
+
+				// FILTER FIELD PARAM {
+
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+				// }
+
+				// REQUEST VALUE {
+
+					if ( isset( $p['request_value'] ) ) {
+
+						$p['attrs_field']['value'] = $p['request_value'];
+					}
+
+				// }
+
+				// ATTRS LABEL {
+
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
+
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+				// }
+
+				// ATTRS FIELD {
+
+					$attrs_field_defaults = array(
+						'type' => 'date',
 						'id' => $p['attrs_field']['name'],
 						'name' => $p['attrs_field']['name'],
 						'class' => array(),
