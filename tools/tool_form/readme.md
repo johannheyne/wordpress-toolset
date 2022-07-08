@@ -12,6 +12,8 @@ __Table of Content__
 	- [Filter: Field Template Data](#filter-field-template-data)
 - [Field Types](#form_field)
 	- [text](#field_text)
+	- [search](#field_search)
+	- [date](#field_date)
 	- [textarea](#field_textarea)
 	- [todo] radio
 	- [file](#field_file)
@@ -21,6 +23,8 @@ __Table of Content__
 	- [checkboxes](#checkboxes)
 		- [Filter: Prepend Checkboxes Item](#filter-prepend-checkboxes-item)
 		- [Filter: Append Checkboxes Item](#filter-append-checkboxes-item)
+		- [Filter: Before and After Checkbox HTML](#filter-before-and-after-checkbox-html)
+	- [todo] checkbox_list
 	- [select](#field_select)
 	- [taxonomy_select](#field_taxonomy_select)
 	- [switch_toggle](#field_switch_toggle)
@@ -263,14 +267,14 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 
 
-<a id="field_textarea"></a>
-### Textarea
+<a id="field_search"></a>
+### Search
 
 ```php
 add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
-		'type' => 'textarea',
+		'type' => 'search',
 		'label' => '{label_text}',
 		'attrs_label' => array(),
 		'attrs_field' => array(
@@ -299,27 +303,24 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 
 
-<a id="field_file"></a>
-### File
+<a id="field_date"></a>
+### Date
 
 ```php
 add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
-		'type' => 'file',
+		'type' => 'date',
 		'label' => '{label_text}',
-		'before_field' => 'Before',
-		'after_field' => 'After',
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
+			'placeholder' => '',
 		),
 		'required' => false,
-		'max_filesize' => false,
-		'allowed_file_formats' => false, // array or comma separated list with or without trailing fufix dots
-		'allow_multiple_files' => false, // boolean
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
+		'sanitize' => true,
 		'validation' => function( $value ) {
 
 			$message_keys = array(
@@ -336,6 +337,41 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 }, 10, 2 );
 ```
 
+
+
+<a id="field_textarea"></a>
+### Textarea
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 't',
+		'label' => '{label_text}',
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+			'placeholder' => '',
+		),
+		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'sanitize' => true,
+		'validation' => function( $value ) {
+
+			$message_keys = array(
+				'field' => array(),
+				'form' => array(),
+			);
+
+			return $message_keys;
+		},
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
 
 
 
@@ -356,7 +392,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'attrs_label' => array(),
 		'attrs_field' => array(
 			'name' => '{field_name}',
-			'value' => '1',
+			'placeholder' => '',
 		),
 		'required' => false,
 		'fieldset_id' => '{fieldset_id}',
@@ -377,13 +413,14 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 }, 10, 2 );
 ```
 
-#### Filter: Before Checkbox HTML
+#### Filter: Before and After Checkbox HTML
 
 ```
 class/Form/before_checkbox
 class/Form/before_checkbox/form_group=
 class/Form/before_checkbox/form_id=
 ```
+
 ```php
 add_filter( 'class/Form/before_checkbox/form_id={form_id}', function( $html, $param ) {
 
@@ -392,17 +429,7 @@ add_filter( 'class/Form/before_checkbox/form_id={form_id}', function( $html, $pa
 	return $html;
 
 }, 10, 2 );
-```
 
-#### Filter: After Checkbox HTML
-
-```
-class/Form/after_checkbox
-class/Form/after_checkbox/form_group=
-class/Form/after_checkbox/form_id=
-```
-
-```php
 add_filter( 'class/Form/after_checkbox/form_id={form_id}', function( $html, $param ) {
 
 	//$html = '&nbsp;<span>' . $p['after_checkbox'] . '</span>';
@@ -413,86 +440,6 @@ add_filter( 'class/Form/after_checkbox/form_id={form_id}', function( $html, $par
 ```
 
 
-
-<a id="field_checkboxes"></a>
-### Checkboxes
-
-```php
-add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
-
-	$items[] = array(
-		'type' => 'checkboxes',
-		'label' => '{label_text}',
-		'before_field' => 'Before',
-		'after_field' => 'After',
-		'custom_checkbox' => '<label class="custom-checkbox-wrap" for="{for}">{before_checkbox}<span class="custom-checkbox"></span>{after_checkbox}</label>',
-		'before_checkbox' => false,
-		'after_checkbox' => false,
-		'attrs_label' => array(),
-		'attrs_field' => array(
-			'name' => '{field_name}',
-		),
-		'required' => false,
-		'checkboxes' => array(
-			array(
-				'attrs_field' => array(
-					'value' => '1',
-					//'name' => false, // inherit pattern name[]
-					//'checked' => 'checked',
-				),
-				'before_checkbox' => 'Before Checkbox 1',
-				'after_checkbox' => 'After Checkbox 1',
-			),
-			// another checkbox
-		),
-		'fieldset_id' => '{fieldset_id}',
-		'pos' => 10,
-		'validation' => function( $value ) {
-
-			$message_keys = array(
-				'field' => array(),
-				'form' => array(),
-			);
-
-			return $message_keys;
-		},
-		// 'value_divider' => ', ', // used by putting values into an email
-	);
-
-	return $items;
-
-}, 10, 2 );
-```
-
-#### Filter: Before Checkbox HTML
-
-[see here](#filter-before-checkbox-html)
-
-#### Filter: After Checkbox HTML
-
-[see here](#filter-after-checkbox-html)
-
-#### Filter: Prepend Checkboxes Item
-
-```php
-add_filter( 'class/Form/prepend_checkboxes_item', function( $html, $param ) {
-
-
-	return $html;
-});
-
-```
-
-#### Filter: Append Checkboxes Item
-
-```php
-add_filter( 'class/Form/append_checkboxes_item', function( $html, $param ) {
-
-
-	return $html;
-});
-
-```
 
 <a id="field_select"></a>
 ### Select
@@ -508,7 +455,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'name' => '{field_name}',
 			'placeholder' => '',
 		),
-		'current_value' => false,
 		'required' => false,
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
