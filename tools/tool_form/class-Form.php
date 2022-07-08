@@ -750,7 +750,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
@@ -849,7 +853,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
@@ -949,7 +957,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
@@ -1040,7 +1052,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<textarea' . attrs( $p['attrs_field'] ) . '>';
 
 						if ( ! empty( $p['request_value'] ) ) {
@@ -1149,7 +1165,10 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
 
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
@@ -1275,7 +1294,10 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
 
 					// CHECKBOXES {
 
@@ -1709,7 +1731,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
@@ -1915,7 +1941,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<select' . attrs( $p['attrs_field'] ) . '>' . implode( '', $list ) . '</select>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
@@ -2030,7 +2060,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label ' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 					$template_data['toggle'] = '<label ' . attrs( $p['attrs_toggle'] ) . '>' . $p['toggle'] . '</label>';
 
@@ -2256,7 +2290,11 @@
 
 					$template_data = array();
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
@@ -2544,7 +2582,10 @@
 
 					$template_data['field_info'] = $p['_field_info'];
 
-					$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
 
 					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
 					$template_data['field'] .= '<label' . attrs( $p['attrs_field_label'] ) . ' data-label-text="' . _x( 'Choose a file', 'Formular', 'tool_translate' ) . '">' . $input_text . '</label>';
