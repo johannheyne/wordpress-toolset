@@ -196,6 +196,11 @@
 					$this->init_date_field();
 				}
 
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=info' ) ) {
+
+					$this->init_info_field();
+				}
+
 			// }
 
 			// GETS FIELDTYPES {
@@ -668,6 +673,53 @@
 
 		// FIELD TYPES
 
+		public function init_info_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['info'] = array(
+					'default_param' => array(
+						'content' => '',
+						'template' => array(
+							'{before_field}',
+							'{content}',
+							'{after_field}',
+						),
+					),
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=info', function( $html, $item ) {
+
+				$p = array_replace_recursive( $this->fieldtypes['info']['default_param'], $item );
+
+				// FILTER FIELD PARAM {
+
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+				// }
+
+				// TEMPLATE {
+
+					$template_data = array();
+
+					if ( ! empty( $p['content'] ) ) {
+
+						$template_data['content'] = $p['content'];
+					}
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+
+			}, 10, 2 );
+		}
+
 		public function init_text_field( $p = array() ) {
 
 			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
@@ -1012,7 +1064,7 @@
 
 				// DEFAULTS {
 
-					$p = array_replace_recursive( $this->fieldtypes['text']['default_param'], $item );
+					$p = array_replace_recursive( $this->fieldtypes['password']['default_param'], $item );
 
 				// }
 
