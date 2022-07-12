@@ -1395,6 +1395,7 @@
 						'checkboxes' => array(
 
 						),
+						'checkbox_layout' => 'align-vertical', // align-horizontal
 						'required' => false,
 						'validation' => false,
 						'value' => '',
@@ -1461,7 +1462,7 @@
 
 					// CHECKBOXES {
 
-						$template_data['field'] = '<ul>';
+						$template_data['field'] = '<ul class="' . $p['checkbox_layout'] . '">';
 
 						if ( ! empty( $p['checkboxes'] ) ) {
 

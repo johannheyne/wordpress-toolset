@@ -20,7 +20,7 @@ __Table of Content__
 	- [checkbox](#field_checkbox)
 		- [Filter: Before Checkbox HTML](#filter-before-checkbox-html)
 		- [Filter: After Checkbox HTML](#filter-after-checkbox-html)
-	- [checkboxes](#checkboxes)
+	- [checkboxes](#field_checkboxes)
 		- [Filter: Prepend Checkboxes Item](#filter-prepend-checkboxes-item)
 		- [Filter: Append Checkboxes Item](#filter-append-checkboxes-item)
 		- [Filter: Before and After Checkbox HTML](#filter-before-and-after-checkbox-html)
@@ -435,6 +435,70 @@ add_filter( 'class/Form/after_checkbox/form_id={form_id}', function( $html, $par
 	//$html = '&nbsp;<span>' . $p['after_checkbox'] . '</span>';
 
 	return $html;
+
+}, 10, 2 );
+```
+
+
+<a id="field_checkboxes"></a>
+
+### Checkboxes
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+$items[] = array(
+	'type' => 'checkboxes',
+	'label' => 'Label',
+	'before_field' => 'Before Field',
+	'after_field' => 'After Field',
+	'before_checkbox' => 'Before Checkbox Main', // inherit
+	'after_checkbox' => 'After Checkbox Main', // inherit
+	'description' => 'Description',
+	'attrs_label' => array(),
+	'attrs_field' => array(
+		'name' => 'checkboxes',
+		//'checked' => 'checked', // inherit
+	),
+	'checkboxes' => array(
+		array(
+			'attrs_field' => array(
+				'value' => '1',
+				//'name' => false, // inherit pattern name[]
+				//'checked' => 'checked',
+			),
+			//'before_checkbox' => 'Before Checkbox 1',
+			//'after_checkbox' => 'After Checkbox 1',
+		),
+		array(
+			'attrs_field' => array(
+				'value' => '2',
+				'name' => 'custom_name',
+				'checked' => 'checked',
+			),
+			'before_checkbox' => 'Before Checkbox 2',
+			'after_checkbox' => 'After Checkbox 2',
+		)
+	),
+	'checkbox_layout' => 'align-vertical', // align-horizontal
+	//'fieldset_id' => '',
+	//'required' => true,
+	/*'validation' => function( $value ) {
+
+		if ( $value !== 'on' ) {
+
+			$message_keys = array(
+				'field' => array( 'This field is required.' ),
+			);
+
+			return $message_keys;
+		}
+
+	},*/
+	'pos' => 10,
+);
+
+return $items;
 
 }, 10, 2 );
 ```
