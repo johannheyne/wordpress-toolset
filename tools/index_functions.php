@@ -479,6 +479,16 @@
 
 				// }
 
+				// tool_model_viewer {
+
+					'tool_model_viewer' => array(
+						'dir' => 'tool_model_viewer',
+						'load_on_init' => false,
+						'funame' => 'tool_model_viewer',
+					),
+
+				// }
+
 			)
 		);
 
