@@ -23,6 +23,8 @@
 
 			$mimes = array_replace_recursive( $GLOBALS['toolset']['inits']['tool_mimetypes_upload']['add_mimetypes'], $mimes );
 
+			$mimes = apply_filters( 'tool_mimetypes_upload', $mimes );
+
 			return $mimes;
 		}
 
