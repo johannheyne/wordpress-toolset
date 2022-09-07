@@ -12,34 +12,55 @@
 
 	// }
 
-	// DISABLE WP SRCSET ( Version 1 ) {
+	// DISABLE WP SRCSET ( Version 3 ) {
 
-		add_filter( 'wp_calculate_image_srcset', function() {
+		if ( empty( $GLOBALS['toolset']['inits']['tool_adaptive_images']['srcset'] ) ) {
 
-			$sources = array();
+			add_filter( 'wp_calculate_image_srcset', function( $sources ) {
 
-			return $sources;
-		}, 1000, 2 );
+				$sources = array();
+
+				return $sources;
+			}, 1000, 2 );
+		}
 
 	// }
 
-	// IMAGE SIZE ( Version 7 ) {
+	// IMAGE SIZE ( Version 9 ) {
 
-		add_filter('intermediate_image_sizes_advanced', function( $sizes ) {
+		if ( empty( $GLOBALS['toolset']['inits']['tool_adaptive_images']['srcset'] ) ) {
 
-			// unset( $sizes['thumbnail']);
-			// unset( $sizes['medium']);
-			unset( $sizes['medium_large']);
-			unset( $sizes['1536x1536']); // since WordPress 5.3
-			unset( $sizes['2048x2048']); // since WordPress 5.3
-			// unset( $sizes['large']); // required for WordPress image detail view
+			add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
 
-			return $sizes;
-		});
+				// Filters the image sizes automatically generated when uploading an image.
 
-		/* sizes for icons and previews in wordpress */
-		add_image_size( 'thumbnail', 160, 160, /* crop */ false ); // required for postthumb preview in post/pages
-		add_image_size( 'medium', 118, 118, /* crop */ false ); // used for media listing
+				// unset( $sizes['thumbnail']);
+				// unset( $sizes['medium']);
+				unset( $sizes['medium_large']);
+				unset( $sizes['1536x1536']); // since WordPress 5.3
+				unset( $sizes['2048x2048']); // since WordPress 5.3
+				// unset( $sizes['large']); // 'large' is required for WordPress image detail view
+
+				return $sizes;
+			});
+		}
+
+		if ( empty( $GLOBALS['toolset']['inits']['tool_adaptive_images']['srcset'] ) ) {
+
+			add_action( 'setup_theme', function(  ) {
+
+				remove_image_size( 'thumbnail' );
+				remove_image_size( '1536x1536' );
+				remove_image_size( '2048x2048' );
+
+				/* sizes for icons and previews in wordpress */
+				add_image_size( 'thumbnail', 160, 160, /* crop */ false ); // required for postthumb preview in post/pages
+				add_image_size( 'library_icon', 118, 118, /* crop */ false ); // used for media listing
+
+
+			}, 10, 2 );
+
+		}
 
 	// }
 
@@ -857,5 +878,30 @@
 
 			return $r;
 		};
+
+	// }
+
+	// GETS ALL IMAGE SIZES {
+
+		function tool_get_all_image_sizes() {
+
+			global $_wp_additional_image_sizes;
+
+			$default_image_sizes = get_intermediate_image_sizes();
+
+			foreach ( $default_image_sizes as $size ) {
+
+				$image_sizes[ $size ][ 'width' ] = intval( get_option( "{$size}_size_w" ) );
+				$image_sizes[ $size ][ 'height' ] = intval( get_option( "{$size}_size_h" ) );
+				$image_sizes[ $size ][ 'crop' ] = get_option( "{$size}_crop" ) ? get_option( "{$size}_crop" ) : false;
+			}
+
+			if ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) ) {
+
+				$image_sizes = array_merge( $image_sizes, $_wp_additional_image_sizes );
+			}
+
+			return $image_sizes;
+		}
 
 	// }
