@@ -11,7 +11,7 @@
 				add_filter( 'img_caption_shortcode', array( &$this, 'fixme' ), 10, 3 );
 			}
 
-			public function fixme( $x=null, $attr, $content ){
+			public function fixme( $x, $attr, $content ) {
 
 				extract( shortcode_atts( array(
 						'id'	=> '',
