@@ -80,6 +80,8 @@
 
 				if ( count( $p ) > 0 ) {
 
+					$return = array();
+
 					foreach ( $p as $key ) {
 
 						$return[ $key ] = get_sub_field( $key );
