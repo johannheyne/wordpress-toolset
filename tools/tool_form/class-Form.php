@@ -3093,7 +3093,7 @@
 			return false;
 		}
 
-		public function do_field_template( $template = array(), $data = array(), $p ) {
+		public function do_field_template( $template = array(), $data = array(), $p = array() ) {
 
 			$data = apply_filters( 'class/Form/do_field_template/data', $data, $p );
 
