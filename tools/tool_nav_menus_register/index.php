@@ -1,12 +1,12 @@
 <?php
 
-	// MENUS SITE ( Version 3 ) {
+	// MENUS SITE ( Version 4 ) {
 
 		function tool_nav_menus_register() {
 
 			if ( isset( $GLOBALS['toolset']['inits']['tool_nav_menus_register'] ) ) {
 
-				$array = false;
+				$array = array();
 
 				foreach ( $GLOBALS['toolset']['inits']['tool_nav_menus_register'] as $item ) {
 
@@ -18,7 +18,7 @@
 					$array[ $item['location'] ] = $item['name'];
 				}
 
-				if ( $array ) {
+				if ( ! empty( $array ) ) {
 
 					register_nav_menus( $array );
 				}

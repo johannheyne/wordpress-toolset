@@ -282,14 +282,17 @@
 
 			// LOAD ON INIT {
 
-				foreach ( $GLOBALS['tool']['functions'] as $key => $item ) {
+				if ( ! empty( $GLOBALS['tool']['functions'] ) ) {
 
-					if (
-						! empty( $item['load_on_init'] ) AND
-						true === $item['load_on_init']
-					) {
+					foreach ( $GLOBALS['tool']['functions'] as $key => $item ) {
 
-						include( 'tools/' . $item['dir'] . '/index.php' );
+						if (
+							! empty( $item['load_on_init'] ) AND
+							true === $item['load_on_init']
+						) {
+
+							include( 'tools/' . $item['dir'] . '/index.php' );
+						}
 					}
 				}
 
