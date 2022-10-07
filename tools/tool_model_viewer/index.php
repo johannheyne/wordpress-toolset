@@ -11,7 +11,7 @@
 
 			$defaults = array(
 				'src' => false, // *.glb
-				'environment-image' => false, // *.hdr
+				'environment_image' => false, // *.hdr, usdz
 				'poster' => false,
 				'alt' => false,
 				'ar' => true,
@@ -47,9 +47,9 @@
 			$attrs['ar-modes'] = $p['ar-modes'];
 		}
 
-		if ( $p['environment-image'] ) {
+		if ( $p['environment_image'] ) {
 
-			$attrs['environment-image'] = $p['environment-image'];
+			$attrs['environment_image'] = $p['environment_image'];
 		}
 
 		if ( $p['poster'] ) {
