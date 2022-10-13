@@ -78,7 +78,10 @@
 
 				$return = false;
 
-				if ( count( $p ) > 0 ) {
+				if (
+					is_countable( $p ) AND
+					count( $p ) > 0
+				) {
 
 					$return = array();
 
