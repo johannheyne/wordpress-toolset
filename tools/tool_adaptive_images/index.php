@@ -159,7 +159,11 @@
 					if ( $p['id'] ) {
 
 						$img_param = wp_get_attachment_image_src( $p['id'], $p['name'] );
-						$img_src = $img_param[0];
+
+						if ( ! empty( $img_param[0] ) ) {
+
+							$img_src = $img_param[0];
+						}
 					}
 
 					// IF IMG FILE WAS DELETED TRY DEFAULT IMAGE {
