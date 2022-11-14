@@ -16,15 +16,17 @@ tool( array(
 	'name' => 'model_viewer',
 	// Param: https://modelviewer.dev/docs/index.html
 	'param' => array(
-		'src' => false, // '*.glb'
-		'environment-image' => false, // '*.hdr'
-		'poster' => false, // '*.jpg'
-		'alt' => false,
-		'ar' => true,
-		'ar-modes' => array( 'webxr', 'scene-viewer', 'quick-look' ),
-		'shadow-intensity' => 1,
-		'camera-controls' => true,
-		'touch-action' => 'pan-y',
+		'attrs' => array(
+			'poster' => false, // '*.jpg'
+			'src' => false, // '*.glb'
+			'environment-image' => false, // '*.hdr'
+			'ios-src' => false, // '*.usdz'
+			'alt' => false,
+			'ar-modes' => array( 'webxr', 'scene-viewer', 'quick-look' ),
+			'shadow-intensity' => 1,
+			'camera-controls' => true,
+			'touch-action' => 'pan-y',
+		),
 	),
 );
 ````

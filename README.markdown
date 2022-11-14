@@ -194,6 +194,7 @@ $GLOBALS['toolset'] = array(
 * [Meta Title](tools/tool_meta_title/readme.markdown)
 * [Meta Description](tools/tool_meta_description/readme.markdown)
 * [Meta Robots](tools/tool_meta_robots/readme.markdown)
+* [Model Viewer](tools/tool_model_viewer/readme.markdown)
 * [Multilanguage](tools/tool_multilanguage/readme.markdown)
 * [Register Navigation Menu](tools/tool_nav_menu_register/readme.markdown)
 * [Posttype](tools/tool_posttypes/readme.markdown)
