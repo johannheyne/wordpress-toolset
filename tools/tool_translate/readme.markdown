@@ -15,7 +15,7 @@ Registers a posttype 'translations' and provides an Admin Interface for translat
 
 ````php
 $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
-    'text' => 'products', // use it like _x( 'products', 'URL SLug', 'tool_translate' ),
+    'text' => 'products', // use it like _x( 'products', 'URL Slug', 'tool_translate' ),
     'context' => 'URL Slug',
     'param' => array(
         'text_default' => 'products', // The default text if there is no translation
@@ -34,19 +34,19 @@ $GLOBALS['toolset']['classes']['ToolsetTranslation']->add_text( array(
 #### Get translation with…
 ````php
 // PHP
-$string = _x( 'products', 'URL SLug', 'tool_translate' );
+$string = _x( 'products', 'URL Slug', 'tool_translate' );
 ````
 
 ````php
 // JS
-App.ln.get( 'products', 'URL SLug', 'tool_translate' );
-App.ln.get( { 'products', 'en' }, 'URL SLug', 'tool_translate' );
+App.ln.get( 'products', 'URL Slug', 'tool_translate' );
+App.ln.get( { 'products', 'en' }, 'URL Slug', 'tool_translate' );
 ````
 #### URL Rewrite translation
 The context __'URL Slug'__ especially adds the translations to the rewrite rule of 'products'. The context 'URL Slug' must be used in combination with rewriting custom posttype slugs…
 ````php
 'rewrite' => array(
-    'slug' => _x( 'products', 'URL SLug', 'tool_translate' ),
+    'slug' => _x( 'products', 'URL Slug', 'tool_translate' ),
     'with_front' => false // prevents "/blog/" on mainsite of multisites
 ),
 ````
