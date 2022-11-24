@@ -6,9 +6,8 @@
 
 			if ( $id ) {
 
-				$url = wp_get_attachment_url( $id );
-				$url = str_replace( get_bloginfo( 'url' ), '', $url );
-				$size = filesize( trim( $url, '/' ) );
+				$path = get_attached_file( $id );
+				$size = filesize( $path );
 
 				if ( $p['format'] ) {
 
