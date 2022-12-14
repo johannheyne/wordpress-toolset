@@ -5,6 +5,7 @@ Tool form
 
 __Table of Content__
 - [Add a Form](#add_a_form)
+	- [Add Email Form](#add-email-form)
 - [Form Messages](#form_messages)
 - [Fieldsets](#adding_fieldsets)
 - [Field Item Attributes](#field_wrapper_attrs)

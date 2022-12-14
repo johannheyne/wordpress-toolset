@@ -13,24 +13,24 @@ The following example orders the array items so, that the id`s are in the order 
 $array = array(
 	array(
 		'pos_key' => 'c',
-		'pos' => 10,
+		'pos' => 3,
 	),
 	array(
 		'pos_key' => 'a',
-		'pos_top' => 10, // if multiple 'pos_top' items, the number reflects the order
+		'pos_top' => 1, // if multiple 'pos_top' items, the number reflects the order
 	),
 	array(
 		'pos_key' => 'e',
-		'pos_bottom' => 10, // if multiple 'pos_top' items, the number reflects the order
+		'pos_bottom' => 5, // if multiple 'pos_top' items, the number reflects the order
 	),
 	array(
 		'pos_key' => 'b',
-		'pos' => 10,
+		'pos' => 2,
 		'pos_before' => 'c', // if multiple 'pos_before' items, the order in the source array reflects the order
 	),
 	array(
 		'pos_key' => 'd',
-		'pos' => 10,
+		'pos' => 4,
 		'pos_after' => 'c', // if multiple 'pos_after' items, the order in the source array reflects the order
 	),
 	array(
