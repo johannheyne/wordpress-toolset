@@ -31,6 +31,33 @@
 				}
 			}
 		}
+		function tool_remove_image_sizes() {
+
+			add_action( 'init', function(  ) {
+
+				foreach ( $GLOBALS['toolset']['inits']['tool_image_sizes']['remove_image_sizes'] as $size ) {
+
+					remove_image_size( $size );
+				}
+
+			}, 10, 2 );
+
+			add_filter( 'intermediate_image_sizes', function( $sizes ) {
+
+				foreach ( $GLOBALS['toolset']['inits']['tool_image_sizes']['remove_image_sizes'] as $size ) {
+
+					foreach ( $sizes as $key => $value ) {
+
+						if ( $value == $size ) {
+
+							unset( $sizes[ $key ] );
+						}
+					}
+				}
+
+				return $sizes;
+			});
+		}
 
 		function tool_editor_images_remove( $sizes ) {
 
@@ -83,6 +110,11 @@
 			//}
 
 			return $sizes;
+		}
+
+		if ( isset( $GLOBALS['toolset']['inits']['tool_image_sizes']['remove_image_sizes'] ) && is_array( $GLOBALS['toolset']['inits']['tool_image_sizes']['remove_image_sizes'] ) ) {
+
+			tool_remove_image_sizes();
 		}
 
 		if ( isset( $GLOBALS['toolset']['inits']['tool_image_sizes']['add_image_sizes'] ) && is_array( $GLOBALS['toolset']['inits']['tool_image_sizes']['add_image_sizes'] ) ) {

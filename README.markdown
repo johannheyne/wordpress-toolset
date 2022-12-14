@@ -188,6 +188,7 @@ $GLOBALS['toolset'] = array(
 * [Form](tools/tool_form/readme.md)
 * [Hreflang](tools/tool_hreflang/readme.markdown)
 * [Hierarchical Order Posts](tools/tool_order_posts/readme.markdown)
+* [Image Sizes](tools/tool_image_sizes/readme.markdown)
 * [Instagram](tools/tool_instagram/readme.markdown)
 * [Javascript Recomended Message](tools/tool_javascript_recomended/readme.markdown)
 * [Get Locale by URL](tools/tool_get_locale_by_url/readme.markdown)
