@@ -26,20 +26,32 @@
 
 	// }
 
-	// IMAGE SIZE ( Version 9 ) {
+	// IMAGE SIZE ( Version 10 ) {
 
 		if ( empty( $GLOBALS['toolset']['inits']['tool_adaptive_images']['srcset'] ) ) {
 
-			add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
+			add_filter( 'intermediate_image_sizes', function( $sizes ) {
 
 				// Filters the image sizes automatically generated when uploading an image.
+				$remove_sizes = array(
+					'medium',
+					'medium_large',
+					'large',
+					'1536x1536',
+					'2048x2048',
+					'2560×2560',
+				);
 
-				// unset( $sizes['thumbnail']);
-				// unset( $sizes['medium']);
-				unset( $sizes['medium_large']);
-				unset( $sizes['1536x1536']); // since WordPress 5.3
-				unset( $sizes['2048x2048']); // since WordPress 5.3
-				// unset( $sizes['large']); // 'large' is required for WordPress image detail view
+				foreach ( $remove_sizes as $size ) {
+
+					foreach ( $sizes as $key => $value ) {
+
+						if ( $value == $size ) {
+
+							unset( $sizes[ $key ] );
+						}
+					}
+				}
 
 				return $sizes;
 			});
@@ -50,13 +62,15 @@
 			add_action( 'setup_theme', function(  ) {
 
 				remove_image_size( 'thumbnail' );
+				remove_image_size( 'medium' );
+				remove_image_size( 'medium_large' );
+				remove_image_size( 'large' );
 				remove_image_size( '1536x1536' );
 				remove_image_size( '2048x2048' );
+				remove_image_size( '2560×2560' );
 
 				/* sizes for icons and previews in wordpress */
-				add_image_size( 'thumbnail', 160, 160, /* crop */ false ); // required for postthumb preview in post/pages
-				add_image_size( 'library_icon', 118, 118, /* crop */ false ); // used for media listing
-
+				add_image_size( 'thumbnail', 150, 150, /* crop */ false ); // required for postthumb preview in post/pages
 
 			}, 10, 2 );
 
