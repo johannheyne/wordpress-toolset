@@ -13,7 +13,7 @@
 
 		add_action( 'wp_enqueue_scripts', function() {
 
-			wp_enqueue_script( 'slug', $GLOBALS['toolset']['plugins_url'] . '/wordpress-toolset/tools/tool_form/script.js', array( 'jquery' ), config_get_theme_version(), false );
+			wp_enqueue_script( 'slug', $GLOBALS['toolset']['plugins_url'] . '/wordpress-toolset/tools/tool_form/script.js', array( 'jquery', 'theme_script' ), config_get_theme_version(), false );
 		} );
 
 	// }
