@@ -4,7 +4,7 @@
 
 		add_filter( 'class/Form/messages', function( $messages, $param ) {
 
-			$messages['required'] = 'This field is required.d';
+			$messages['required'] = 'This field is required.';
 
 			$messages['field_validation_error'] = 'At least one field has an validation error.';
 
