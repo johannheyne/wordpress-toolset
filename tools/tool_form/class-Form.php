@@ -1192,7 +1192,7 @@
 				// ATTRS FIELD {
 
 					$attrs_field_defaults = array(
-						'type' => 'text',
+						'type' => 'textarea',
 						'id' => $p['attrs_field']['name'],
 						'name' => $p['attrs_field']['name'],
 						'class' => array(),
