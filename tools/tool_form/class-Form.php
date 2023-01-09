@@ -2245,6 +2245,7 @@
 				$fieldtypes['submit'] = array(
 					'default_param' => array(
 						'type' => 'submit',
+						'element' => 'input', // input, button
 						'attrs_field' => array(
 							'type' => 'submit',
 							'name' => '',
@@ -2288,7 +2289,18 @@
 
 					$template_data = array();
 
-					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					if ( 'input' === $p['element'] ) {
+
+						$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+					}
+
+					if ( 'button' === $p['element'] ) {
+
+						$value = $p['attrs_field']['value'];
+						unset( $p['attrs_field']['value'] );
+
+						$template_data['field'] = '<button type="submit"' . attrs( $p['attrs_field'] ) . '>' . $value . '</button';
+					}
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
 

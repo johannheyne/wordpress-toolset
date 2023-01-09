@@ -695,6 +695,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
 		'type' => 'submit',
+		'element' => 'input', // input, button
 		'pos' => 10,
 		'attrs_field' => array(
 			/* The 'name' and 'id' should different
