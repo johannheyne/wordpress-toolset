@@ -1517,7 +1517,7 @@ function YerSlider() {
 
 		/** Not dodo. This commented code calculating the slidewidth including slide padding (border should added).
 			But i think it is saver to left the styles of the slide element untouched because the calculation 
-			is allways save and correct. Use a inner div and margin to simmulate slide-padding.
+			is always save and correct. Use a inner div and margin to simmulate slide-padding.
 
 			var slidepadding = {};
 			slidepadding.left = parseInt( t.obj.slide.css('padding-left'), 10 );

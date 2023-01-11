@@ -815,7 +815,7 @@ $form = new Form();
 
 if ( $form->is_form_request( $form_id, true ) ) {
 
-	// false: detect allways
+	// false: detect always
 	// true: only if the fields has successfully passed the validation
 }
 ```
