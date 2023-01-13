@@ -139,8 +139,14 @@
 
 					foreach ( $context as $key => $value ) {
 
-						if ( false !== strpos( $value, 'key:layout_' ) ) {
+						if (
+							0 === strpos( $value, 'parent:group_flex_layouts_' )
+						) {
 
+							$value = 'layout_name';
+						}
+
+						if ( false !== strpos( $value, 'key:layout_' ) ) {
 							$value = 'key:layout';
 						}
 
