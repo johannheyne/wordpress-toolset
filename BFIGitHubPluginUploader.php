@@ -11,6 +11,8 @@ class BFIGitHubPluginUpdater {
 	private $githubAPIResults; // holds data from GitHub
 	private $accessToken; // GitHub private repo token
 	public $headers; // GitHub private repo token
+	private $tested; // plugin info
+	private $requires; // plugin info
 
 	function __construct( $pluginFile, $gitHubUsername, $gitHubProjectName, $pluginData, $accessToken = '' ) {
 

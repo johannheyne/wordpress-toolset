@@ -4,6 +4,8 @@
 
 		class wpSortableListColumn {
 
+			private $param = array();
+
 			function __construct( $param )  {
 
 				// DEFAULTS {
