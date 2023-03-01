@@ -286,8 +286,13 @@
 
 									if ( ! is_array( $value ) ) {
 
-										$value = $this->get_context_item( $value, $context );
-										$value = $this->get_item_translation( $value );
+										$temp1 = $this->get_context_item( $value, $context );
+										$temp2 = $this->get_item_translation( $temp1 );
+
+										if ( $temp1 !== $temp2 ) {
+
+											$value = $temp2;
+										}
 
 										$item[ $key2 ] = $value;
 									}
@@ -308,8 +313,14 @@
 
 									if ( in_array( $key2, $keys ) ) {
 
-										$item = $this->get_context_item( $item, $context );
-										$item = $this->get_item_translation( $item );
+										$temp1 = $this->get_context_item( $item, $context );
+										$temp2 = $this->get_item_translation( $temp1 );
+
+										if ( $temp1 !== $temp2 ) {
+
+											$item = $temp2;
+										}
+
 										$item = $this->get_item_bracket_translation( $item );
 									}
 								} );
@@ -329,8 +340,14 @@
 								! empty( $key )
 							) {
 
-								$item = $this->get_context_item( $item, $context );
-								$item = $this->get_item_translation( $item );
+								$temp1 = $this->get_context_item( $item, $context );
+								$temp2 = $this->get_item_translation( $temp1 );
+
+								if ( $temp1 !== $temp2 ) {
+
+									$item = $temp2;
+								}
+
 								$item = $this->get_item_bracket_translation( $item );
 
 								return;
@@ -370,8 +387,14 @@
 										! empty( $key2 )
 									) {
 
-										$item = $this->get_context_item( $item, $context );
-										$item = $this->get_item_translation( $item );
+										$temp1 = $this->get_context_item( $item, $context );
+										$temp2 = $this->get_item_translation( $temp1 );
+
+										if ( $temp1 !== $temp2 ) {
+
+											$item = $temp2;
+										}
+
 										$item = $this->get_item_bracket_translation( $item );
 									}
 
