@@ -1455,6 +1455,9 @@
 
 				$p = array_replace_recursive( $defaults, $p );
 
+				$p['translations'] = apply_filters( 'ToolsetL10N/_x/translations', $p['translations'], $p );
+				$p['translations'] = apply_filters( 'ToolsetL10N/_x/translations/text=' . $p['text'], $p['translations'] );
+
 			// }
 
 			if ( empty( $p['text'] ) ) {

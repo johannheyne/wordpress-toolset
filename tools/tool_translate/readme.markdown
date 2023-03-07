@@ -74,4 +74,27 @@ Gets a translation…
 $string = _x( 'Translation', 'my_context', 'my_text_domain' );
 ````
 
+#### Filters
+````php
+add_filter( 'ToolsetL10N/_x/translations/text=kickstart', function( $translations ) {
+
+	$translations['de'] = 'Schnellstart';
+	$translations['en'] = 'Kickstart';
+
+	return $translations;
+
+}, 10, 2 );
+
+add_filter( 'ToolsetL10N/_x/translations', function( $translations, $param ) {
+
+	if ( 'kickstart' !== $param['text'] ) {
+
+		return $translations;
+	}
+
+	return $translations;
+
+}, 10, 2 );
+````
+
 [back to overview](../../README.markdown#tools)
