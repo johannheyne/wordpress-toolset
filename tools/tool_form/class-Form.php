@@ -108,7 +108,7 @@
 					'return' => array( 'fields' ), // what to return on request, array( '' ) returns nothing but form messages
 				);
 
-				$this->p = array_replace_recursive( $defaults, $p );
+				$this->p = tool_merge_defaults( $p, $defaults );
 
 				// DYNAMIC PARAM CHANGES {
 
