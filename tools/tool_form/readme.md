@@ -880,3 +880,22 @@ App.Actions.add( 'ToolForm', 'sent', function( { form_unique_id, form_id, form_p
 	// cals after form was sent
 } );
 ```
+```js
+// Change the container to be removed on succsess and the succsess message placed after
+
+App.Filters.add( 'ToolForm', 'success_selector', function( selector, param ) {
+
+	// param.form_unique_id
+	// param.form_id: form_id
+	// param.form_post_id
+
+	if ( 'kickstart' !== param.form_id ) {
+
+		return selector;
+	}
+
+	selector = selector + ' ._kickstart';
+
+	return selector;
+});
+```

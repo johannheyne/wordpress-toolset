@@ -346,7 +346,15 @@
 
 							//data = $.parseJSON( data );
 
-							$( '[data-form-post-id="' + form_post_id + '"]' )
+							let selector = '[data-form-post-id="' + form_post_id + '"]';
+
+							selector = App.Filters.do( 'ToolForm', 'success_selector', selector, {
+								form_unique_id: form_unique_id,
+								form_id: form_id,
+								form_post_id: form_post_id,
+							} );
+
+							$( selector )
 								.after( data )
 								.remove();
 
