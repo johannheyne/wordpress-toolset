@@ -3016,34 +3016,68 @@
 
 		}
 
+		private function implode_recur( $array = array(), $depth = '', $list_spacer = '    ' ) {
+
+			$output = '';
+			$next_depth = $depth . $list_spacer;
+
+			foreach ( $array as $av ) {
+
+				if ( is_array( $av ) && ! empty( $av ) ) {
+
+					$output .= $this->implode_recur( $av, $next_depth );
+				}
+				else {
+
+					$output .= "\n" . $depth .  ' ' . $av;
+				}
+			}
+
+			return $output;
+		}
+
 		private function apply_email_placeholders( $string = '' ) {
 
 			$string = preg_replace_callback('/\{(.+?)\}/i', function( $placeholder ) {
 
 				if ( isset( $this->request[ $placeholder[1] ] ) ) {
 
-					if ( is_string( $this->request[ $placeholder[1] ] ) ) {
+					// IS STRING
 
-						return $this->request[ $placeholder[1] ];
-					}
+						if ( is_string( $this->request[ $placeholder[1] ] ) ) {
 
-					if ( is_array( $this->request[ $placeholder[1] ] ) ) {
-
-						$divider = ', ';
-
-						foreach ( $this->items as $item ) {
-
-							if (
-								$item['attrs_field']['name'] === $placeholder[1] AND
-								isset( $item['value_divider'] )
-							) {
-
-								$divider = $item['value_divider'];
-							}
+							return $this->request[ $placeholder[1] ];
 						}
 
-						return implode( $divider, $this->request[ $placeholder[1] ] );
-					}
+					// IS MULTIDIMENSIONAL ARRAY
+
+						elseif (
+							isset( $this->request[ $placeholder[1] ] ) &&
+							is_array( $this->request[ $placeholder[1] ]
+						) ) {
+
+							return $this->implode_recur( $this->request[ $placeholder[1] ] );
+						}
+
+					// IS SIMPLE ARRAY
+
+						elseif ( is_array( $this->request[ $placeholder[1] ] ) ) {
+
+							$divider = ', ';
+
+							foreach ( $this->items as $item ) {
+
+								if (
+									$item['attrs_field']['name'] === $placeholder[1] AND
+									isset( $item['value_divider'] )
+								) {
+
+									$divider = $item['value_divider'];
+								}
+							}
+
+							return implode( $divider, $this->request[ $placeholder[1] ] );
+						}
 				}
 
 				return '';
