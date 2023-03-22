@@ -275,6 +275,10 @@
 					do_action( 'class/Form/request/form_group=' . $this->p['form_group'], $this->p );
 					do_action( 'class/Form/request', $this->p );
 
+					$this->request = apply_filters( 'class/Form/request_value/form_id=' . $this->p['form_id'], $this->request, $this->p );
+					$this->request = apply_filters( 'class/Form/request_value/form_group=' . $this->p['form_group'], $this->request, $this->p );
+					$this->request = apply_filters( 'class/Form/request_value', $this->request, $this->p );
+
 					if (
 						$this->is_valide AND
 						! empty( $this->p['email']['status'] )
@@ -3021,11 +3025,19 @@
 			$output = '';
 			$next_depth = $depth . $list_spacer;
 
-			foreach ( $array as $av ) {
+			foreach ( $array as $key => $av ) {
+
+				if ( is_string( $key ) ) {
+
+					$output .= "\n" . $depth .  ' ' . $key;
+				}
 
 				if ( is_array( $av ) && ! empty( $av ) ) {
 
 					$output .= $this->implode_recur( $av, $next_depth );
+				}
+				elseif ( is_array( $av ) ) {
+
 				}
 				else {
 

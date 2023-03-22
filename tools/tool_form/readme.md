@@ -36,7 +36,7 @@ __Table of Content__
 - [Adding Content Prepending and Appending Form](#adding_content_prepending_appending_form)
 - [todo] Ajax
 - [todo] E-Mail Form
-- [Form Request Action](#form_request_action)
+- [Form Request Hooks](#form_request_hooks)
 - [Detect Form Requests](#detect_form_requests)
 - [JS Hooks](#js_hooks)
 
@@ -783,8 +783,8 @@ add_filter( 'class/Form/form_prepend', function( $html, $param ) {
 ```
 
 
-<a id="form_request_action"></a>
-## Form Request Action
+<a id="form_request_hooks"></a>
+## Form Request Hooks
 
 ```
 class/Form/request
@@ -795,14 +795,21 @@ class/Form/request/is_save
 ```
 
 ```php
-add_filter( 'class/Form/request/form_id=my_form', function( $param ) {
-
-	// Do something with $_REQUEST
+add_action( 'class/Form/request/form_id=my_form', function( $param ) {
 
 	if ( ! empty( $param['has_massages'] ) {
 
 		// Form not valide
 	}
+
+}, 10, 2 );
+```
+
+```php
+add_filter( 'class/Form/request_value/form_id=my_form', function( $request, $param ) {
+
+
+	return $request;
 
 }, 10, 2 );
 ```
