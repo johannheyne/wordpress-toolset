@@ -136,6 +136,11 @@
 					$this->init_textarea_field();
 				}
 
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=radio' ) ) {
+
+					$this->init_radio_field();
+				}
+
 				if ( ! has_filter( 'class/Form/get_fields_html/field_type=checkbox' ) ) {
 
 					$this->init_checkbox_field();
@@ -1237,6 +1242,228 @@
 				return $html;
 			}, 10, 2 );
 
+		}
+
+		public function init_radio_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['radio'] = array(
+					'default_param' => array(
+						'label' => '',
+						'before_field' => false,
+						'after_field' => false,
+						'before_radio' => false,
+						'after_radio' => false,
+						'attrs_label' => array(
+
+						),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'radio' => array(
+
+						),
+						'radio_layout' => 'align-vertical', // align-horizontal
+						'required' => false,
+						'validation' => false,
+						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
+						'value_divider' => ', ', // used by putting values into an email
+					),
+					'validation' => array(),
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=radio', function( $html, $item ) {
+
+				$p = array_replace_recursive( $this->fieldtypes['radio']['default_param'], $item );
+
+				// FILTER FIELD PARAM {
+
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+				// }
+
+				// ATTRS FIELD {
+
+					$attrs_field_defaults = array(
+						'type' => 'radio',
+						'id' => false,
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
+
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+					// ID {
+
+						$p['attrs_field']['id'] = $p['attrs_field']['name'];
+
+						if ( ! $p['attrs_field']['id'] ) {
+
+							$p['attrs_field']['id'] = $p['attrs_field']['name'];
+						}
+
+					// }
+
+				// }
+
+				// TEMPLATE {
+
+					$template_data = array();
+
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
+					// RADIO LIST {
+
+						$template_data['field'] = '<ul class="' . $p['radio_layout'] . '">';
+
+						if ( ! empty( $p['radio'] ) ) {
+
+							foreach ( $p['radio'] as $key => $item ) {
+
+								$field_key = '';
+
+								if ( isset( $item['attrs_field']['name'] ) ) {
+
+									$field_key = $item['attrs_field']['name'];
+									unset( $item['attrs_field']['name'] );
+								}
+
+								$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
+
+								$attrs_field['id'] = $p['attrs_field']['name'] . ':' . $key;
+
+								// NAME {
+
+									$attrs_field['name'] = $p['attrs_field']['name'] . '[' . $field_key . ']';
+
+								// }
+
+								// CHECKED {
+
+									if (
+										false !== $this->request AND
+										isset( $p['request_value'] )
+									) {
+
+										$attrs_field['checked'] = false;
+
+										if (
+											'' === $field_key AND
+											in_array( $item['attrs_field']['value'], $p['request_value'] )
+										) {
+
+											$attrs_field['checked'] = true;
+										}
+
+										if ( '' !== $field_key ) {
+
+											if ( isset( $this->request[ $p['attrs_field']['name'] ][ $field_key ] ) ) {
+
+												$attrs_field['checked'] = true;
+											}
+										}
+
+									}
+
+								// }
+
+								$template_data['field'] .= '<li>';
+
+									// PREPEND CHECKBOXES ITEM {
+
+										$template_data['field'] = apply_filters( 'class/Form/prepend_radio_item', $template_data['field'], $p );
+
+									// }
+
+									$template_data['field'] .= '<label>';
+
+									// BEFORE {
+
+										$before_radio = $p['before_radio'];
+
+										if ( ! empty( $item['before_radio'] ) ) {
+
+											$before_radio = $item['before_radio'];
+										}
+
+										if ( ! empty( $before_radio ) ) {
+
+											$before_radio = apply_filters( 'class/Form/before_radio', '<span>' . $before_radio . '</span>&nbsp;', $p );
+											$before_radio = apply_filters( 'class/Form/before_radio/form_group=' . $this->p['form_group'], $before_radio, $p );
+											$before_radio = apply_filters( 'class/Form/before_radio/form_id=' . $this->p['form_group'], $before_radio, $p );
+
+											$template_data['field'] .= $before_radio;
+										}
+
+									// }
+
+									// INPUT {
+
+										$template_data['field'] .= '<input' . attrs( $attrs_field ) . '>';
+
+									// }
+
+									// AFTER {
+
+										$after_radio = $p['after_radio'];
+
+										if ( ! empty( $item['after_radio'] ) ) {
+
+											$after_radio = $item['after_radio'];
+										}
+
+										if ( ! empty( $after_radio ) ) {
+
+											$after_radio = apply_filters( 'class/Form/after_checkbox', '&nbsp;<span>' . $after_radio . '</span>', $p );
+											$after_radio = apply_filters( 'class/Form/after_checkbox/form_group=' . $this->p['form_group'], $after_radio, $p );
+											$after_radio = apply_filters( 'class/Form/after_checkbox/form_id=' . $this->p['form_id'], $after_radio, $p );
+
+											$template_data['field'] .= $after_radio;
+										}
+
+									// }
+
+									$template_data['field'] .= '</label>';
+
+									// APPEND CHECKBOXES ITEM {
+
+										$template_data['field'] = apply_filters( 'class/Form/append_radio_item', $template_data['field'], $p );
+
+									// }
+
+								$template_data['field'] .= '</li>';
+							}
+						}
+
+						$template_data['field'] .= '</ul>';
+
+					// }
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+
+			}, 10, 2 );
 		}
 
 		public function init_checkbox_field( $p = array() ) {

@@ -16,8 +16,8 @@ __Table of Content__
 	- [search](#field_search)
 	- [date](#field_date)
 	- [textarea](#field_textarea)
-	- [todo] radio
 	- [file](#field_file)
+	- [radio](#field_radio)
 	- [checkbox](#field_checkbox)
 		- [Filter: Before Checkbox HTML](#filter-before-checkbox-html)
 		- [Filter: After Checkbox HTML](#filter-after-checkbox-html)
@@ -370,6 +370,68 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	);
 
 	return $items;
+
+}, 10, 2 );
+```
+
+
+
+<a id="field_radio"></a>
+### Radio
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+$items[] = array(
+	'type' => 'radio',
+	'label' => 'Label',
+	'before_field' => 'Before Field',
+	'after_field' => 'After Field',
+	'before_checkbox' => 'Before Radio Main', // inherit
+	'after_checkbox' => 'After Radio Main', // inherit
+	'description' => 'Description',
+	'attrs_label' => array(),
+	'attrs_field' => array(
+		'name' => 'radio',
+		//'checked' => 'checked', // inherit
+	),
+	'radio' => array(
+		array(
+			'attrs_field' => array(
+				'value' => '1',
+				//'checked' => 'checked',
+			),
+			//'before_checkbox' => 'Before Checkbox 1',
+			//'after_checkbox' => 'After Checkbox 1',
+		),
+		array(
+			'attrs_field' => array(
+				'value' => '2',
+				'checked' => 'checked',
+			),
+			'before_radio' => 'Before Radio 2',
+			'after_radio' => 'After Radio 2',
+		)
+	),
+	'radio_layout' => 'align-vertical', // align-horizontal
+	//'fieldset_id' => '',
+	//'required' => true,
+	/*'validation' => function( $value ) {
+
+		if ( $value !== 'on' ) {
+
+			$message_keys = array(
+				'field' => array( 'This field is required.' ),
+			);
+
+			return $message_keys;
+		}
+
+	},*/
+	'pos' => 10,
+);
+
+return $items;
 
 }, 10, 2 );
 ```
