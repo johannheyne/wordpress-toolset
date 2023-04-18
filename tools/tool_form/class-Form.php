@@ -3279,10 +3279,14 @@
 				}
 				elseif ( is_array( $av ) ) {
 
+					// empty array()
+				}
+				elseif ( ! is_bool( $av ) ) {
+
+					$output .= "\n" . $depth .  ' ' . $av;
 				}
 				else {
 
-					$output .= "\n" . $depth .  ' ' . $av;
 				}
 			}
 
