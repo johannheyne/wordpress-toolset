@@ -1152,7 +1152,6 @@
 						'attrs_label' => array(),
 						'attrs_field' => array(
 							'name' => '',
-							'value' => '',
 						),
 						'required' => false,
 						'validation' => false,
@@ -1201,7 +1200,6 @@
 				// ATTRS FIELD {
 
 					$attrs_field_defaults = array(
-						'type' => 'textarea',
 						'id' => $p['attrs_field']['name'],
 						'name' => $p['attrs_field']['name'],
 						'class' => array(),
@@ -2169,7 +2167,7 @@
 						'attrs_label' => array(),
 						'attrs_field' => array(
 							'name' => '', // name of select field
-							'value' => '', // name of select field
+							//'value' => '', // name of select field
 						),
 						'sanitize' => true,
 						'allow_null' => array(
@@ -2530,7 +2528,7 @@
 						$value = $p['attrs_field']['value'];
 						unset( $p['attrs_field']['value'] );
 
-						$template_data['field'] = '<button type="submit"' . attrs( $p['attrs_field'] ) . '>' . $value . '</button';
+						$template_data['field'] = '<button' . attrs( $p['attrs_field'] ) . '>' . $value . '</button>';
 					}
 
 					$html .= $this->do_field_template( $p['template'], $template_data, $p );
