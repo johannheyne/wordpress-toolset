@@ -3206,13 +3206,25 @@
 				//error_log( print_r( $headers, true) );
 				//error_log( print_r( $attachements, true) );
 
-				$mail = wp_mail( $to, $subject, $message, $headers, $attachements );
+				$mail_param = array(
+					'to' => $to,
+					'subject' => $subject,
+					'message' => $message,
+					'headers' => $headers,
+					'attachements' => $attachements,
+				);
+
+				$mail_param = apply_filters('class/Form/wp_mail/param/form_id=' . $this->p['form_id'], $mail_param, array(
+					'request' => $this->request
+				));
+
+				$mail = wp_mail( $mail_param['to'], $mail_param['subject'], $mail_param['message'], $mail_param['headers'], $mail_param['attachements'] );
 
 				// MAY REMOVES ATTACHMENTS {
 
 					if ( ! empty( $attachmentdir ) ) {
 
-						foreach ( $attachements as $path) {
+						foreach ( $attachements as $path ) {
 
 							unlink( $path );
 						}
@@ -3229,6 +3241,8 @@
 				if (
 					$mail
 				) {
+
+					do_action( 'class/Form/wp_mail/sent/form_id=' . $this->p['form_id'] );
 
 					if ( empty( $this->p['form_post_id'] ) ) {
 

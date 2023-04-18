@@ -33,12 +33,23 @@ __Table of Content__
 	- [submit](#submit)
 	- [email](#field_email)
 - [todo] (Fields HTML5/JS Validation)
-- [Adding Content Prepending and Appending Form](#adding_content_prepending_appending_form)
 - [todo] Ajax
 - [todo] E-Mail Form
-- [Form Request Hooks](#form_request_hooks)
 - [Detect Form Requests](#detect_form_requests)
-- [JS Hooks](#js_hooks)
+
+__PHP Hooks__
+- [request](#php_hook_request)
+- [prepending, appending form content](#adding_content_prepending_appending_form)
+- [before_item, after_item](#adding_item_wrapper)
+- [wp_mail/param](#php_hook_wp_mail_param)
+- [wp_mail/sent](#php_hook_wp_mail_sent)
+
+
+
+__JS Hooks__
+
+- [sent](#js_hook_sent)
+- [success_selector](#js_hook_success_selector)
 
 
 <a id="add_a_form"></a>
@@ -803,79 +814,6 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 
 
-<a id="adding_item_wrapper"></a>
-## Adding Field Item Wrapper Element
-
-```
-class/Form/before_item
-class/Form/before_item/form_group={form_group}
-class/Form/after_item
-class/Form/after_item/form_group={form_group}
-```
-
-```php
-add_filter( 'class/Form/before_item/form_group={form_group}', function() {
-
-	return '<li class="item">';
-
-}, 10 );
-
-```
-
-
-
-<a id="adding_content_prepending_appending_form"></a>
-## Adding Content Prepending and Appending Form
-
-```
-class/Form/form_prepend
-class/Form/form_prepend/form_group=
-class/Form/form_append
-class/Form/form_append/form_group=
-```
-
-```php
-add_filter( 'class/Form/form_prepend', function( $html, $param ) {
-
-	$html .= '<ul>';
-
-	return $html;
-
-}, 10, 2 );
-```
-
-
-<a id="form_request_hooks"></a>
-## Form Request Hooks
-
-```
-class/Form/request
-class/Form/request/form_group=
-class/Form/request/form_id=
-class/Form/request/is_email
-class/Form/request/is_save
-```
-
-```php
-add_action( 'class/Form/request/form_id=my_form', function( $param ) {
-
-	if ( ! empty( $param['has_massages'] ) {
-
-		// Form not valide
-	}
-
-}, 10, 2 );
-```
-
-```php
-add_filter( 'class/Form/request_value/form_id=my_form', function( $request, $param ) {
-
-
-	return $request;
-
-}, 10, 2 );
-```
-
 <a id="detect_form_requests"></a>
 ## Detect Form Requests
 
@@ -940,15 +878,134 @@ class Form {
 }
 ```
 
+
+
+## PHP Hooks
+
+<a id="php_hook_request"></a>
+### request
+
+```
+class/Form/request
+class/Form/request/form_group=
+class/Form/request/form_id=
+class/Form/request/is_email
+class/Form/request/is_save
+```
+
+```php
+add_action( 'class/Form/request/form_id=my_form', function( $param ) {
+
+	if ( ! empty( $param['has_massages'] ) {
+
+		// Form not valide
+	}
+
+}, 10, 2 );
+```
+
+```php
+add_filter( 'class/Form/request_value/form_id=my_form', function( $request, $param ) {
+
+
+	return $request;
+
+}, 10, 2 );
+```
+
+
+
+<a id="adding_content_prepending_appending_form"></a>
+### form_prepend, form_append
+
+```
+class/Form/form_prepend
+class/Form/form_prepend/form_group=
+class/Form/form_append
+class/Form/form_append/form_group=
+```
+
+```php
+add_filter( 'class/Form/form_prepend', function( $html, $param ) {
+
+	$html .= '<ul>';
+
+	return $html;
+
+}, 10, 2 );
+```
+
+
+
+<a id="adding_item_wrapper"></a>
+### before_item, after_item
+
+```
+class/Form/before_item
+class/Form/before_item/form_group={form_group}
+class/Form/after_item
+class/Form/after_item/form_group={form_group}
+```
+
+```php
+add_filter( 'class/Form/before_item/form_group={form_group}', function() {
+
+	return '<li class="item">';
+
+}, 10 );
+
+```
+
+
+
+<a id="php_hook_wp_mail_param"></a>
+### wp_mail/param
+
+```php
+add_filter( 'class/Form/wp_mail/param/form_id={form_id}', function( $param ) {
+
+	// $param['to']
+	// $param['subject']
+	// $param['message']
+	// $param['headers']
+	// $param['attachements']
+
+	return $param;
+
+}, 10 );
+```
+
+
+<a id="php_hook_wp_mail_sent"></a>
+### wp_mail/sent
+
+```php
+add_action( 'class/Form/wp_mail/sent/form_id={form_id}', function() {
+
+
+}, 10 );
+```
+
+
+
+
 <a id="js_hooks"></a>
 ## Javascript Hooks
 
+
+### sent
+<a id="js_hook_sent"></a>
 ```js
 App.Actions.add( 'ToolForm', 'sent', function( { form_unique_id, form_id, form_post_id } ) {
 
 	// cals after form was sent
 } );
 ```
+
+
+
+### success_selector
+<a id="js_hook_success_selector"></a>
 ```js
 // Change the container to be removed on succsess and the succsess message placed after
 
