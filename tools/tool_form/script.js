@@ -334,6 +334,7 @@
 					form_data.append( 'form_post_id', form_post_id );
 					form_data.append( 'action', 'tool_form' );
 					form_data.append( 'nonce', WPData.nonce );
+					form_data.append( 'locale', App.obj.html.attr( 'lang' ) );
 
 					$.ajax({
 						type: 'post',
