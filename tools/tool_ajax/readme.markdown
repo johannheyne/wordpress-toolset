@@ -18,8 +18,8 @@ function register_my_script() {
 	wp_register_script( 'my_script', get_stylesheet_directory_uri() . '/js/my_script.js', '1.0.0', true );
 
 	// this registers the object wpAjax in my_script.js
-	wp_localize_script( 'my_script', 'wpAjax', array( 
-		'ajaxurl' => admin_url( 'admin-ajax.php' ) 
+	wp_localize_script( 'my_script', 'wpAjax', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' )
 		'ajax_nonce' => wp_create_nonce( 'my-unique-nonce-name' ),
 	) );
 
@@ -41,7 +41,7 @@ function myajaxfunction() {
 	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'my-unique-nonce-name') ) {
 
 		exit ( 'No naughty business please' );
-	}   
+	}
 
 	$return = 'Hello World!';
 
@@ -67,6 +67,7 @@ jQuery(document).ready( function( $ ) {
 		data: {
 			nonce: wpAjax.ajax_nonce,
 			action: 'myajaxfunction',
+			locale: App.obj.html.attr( 'lang' ),
 		},
 		success:function( data ) {
 

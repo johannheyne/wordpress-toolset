@@ -67,6 +67,7 @@
 				data: {
 					nonce: wpAjax_myajaxtest.ajax_nonce,
 					action: 'myajaxtest',
+					locale: App.obj.html.attr( 'lang' ),
 				},
 				success:function( data ) {
 
