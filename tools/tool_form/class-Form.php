@@ -2860,7 +2860,10 @@
 
 				// APPLY ALLOWED FILE FORMATS HINT {
 
-					$file_formats = $this->formats_allowed_file_formats( $param['allowed_file_formats'], true );
+					if ( ! empty( $param['allowed_file_formats'] ) ) {
+
+						$file_formats = $this->formats_allowed_file_formats( $param['allowed_file_formats'], true );
+					}
 
 					if ( ! empty( $file_formats ) ) {
 
