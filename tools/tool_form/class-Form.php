@@ -436,6 +436,7 @@
 
 				if (
 					! empty( $item['sanitize'] ) AND
+					isset( $item['attrs_field']['name'] ) AND
 					isset( $this->request[ $item['attrs_field']['name'] ] )
 				) {
 
