@@ -3091,7 +3091,7 @@
 
 			// GETS TO {
 
-				$to = $p['email']['email_to'];
+				$to = sanitize_email( $p['email']['email_to'] );
 
 			// }
 
@@ -3105,7 +3105,7 @@
 
 				$arr = array();
 				$arr[] = $this->apply_email_placeholders( $p['email']['email_from_name'] );
-				$arr[] = '<' . $this->apply_email_placeholders( $p['email']['email_from'] ) . '>';
+				$arr[] = '<' . sanitize_email( $this->apply_email_placeholders( $p['email']['email_from'] ) ) . '>';
 
 				$headers = array(
 					'From: ' .  implode( ' ', $arr ),
@@ -3187,7 +3187,7 @@
 
 			// GET EMAIL TO {
 
-				$to = $p['email']['email_to']; //
+				$to = sanitize_email( $p['email']['email_to'] ); //
 
 				if 	( empty( $to ) ) {
 
