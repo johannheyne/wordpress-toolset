@@ -444,6 +444,30 @@
 
 						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_text_field( $this->request[ $item['attrs_field']['name'] ] );
 					}
+					elseif ( $item['type'] === 'email' ) {
+
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_email_field( $this->request[ $item['attrs_field']['name'] ] );
+					}
+					elseif ( $item['type'] === 'textarea' ) {
+
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_textarea_field( $this->request[ $item['attrs_field']['name'] ] );
+					}
+					elseif ( $item['type'] === 'checkboxes' ) {
+
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_checkboxes_field( $this->request[ $item['attrs_field']['name'] ] );
+					}
+					elseif ( $item['type'] === 'checkbox' ) {
+
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_checkboxes_field( $this->request[ $item['attrs_field']['name'] ] );
+					}
+					elseif ( $item['type'] === 'file' ) {
+
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_file_field( $this->request[ $item['attrs_field']['name'] ] );
+					}
+					elseif ( $item['type'] === 'select' ) {
+
+						$this->request[ $item['attrs_field']['name'] ] = $this->sanitize_select_field( $this->request[ $item['attrs_field']['name'] ] );
+					}
 				}
 			}
 		}
@@ -3021,6 +3045,74 @@
 			$string = sanitize_text_field( $string );
 
 			return $string;
+		}
+
+		public function sanitize_textarea_field( $string ) {
+
+			$string = sanitize_textarea_field( $string );
+
+			return $string;
+		}
+
+		public function sanitize_email_field( $string ) {
+
+			$string = sanitize_email( $string );
+
+			return $string;
+		}
+
+		public function sanitize_checkboxes_field( $value ) {
+
+			if ( is_array( $value ) ) {
+
+				array_walk_recursive( $value, function( &$item, $key ) {
+
+					$item = $this->sanitize_text_field( $item );
+				} );
+			}
+			elseif ( is_string( $value ) ) {
+
+				$value = $this->sanitize_text_field( $value );
+			}
+
+			return $value;
+		}
+
+		public function sanitize_select_field( $value ) {
+
+			if ( is_array( $value ) ) {
+
+				array_walk_recursive( $value, function( &$item, $key ) {
+
+					$item = $this->sanitize_text_field( $item );
+				} );
+			}
+			elseif ( is_string( $value ) ) {
+
+				$value = $this->sanitize_text_field( $value );
+			}
+
+			return $value;
+		}
+
+		public function sanitize_file_field( $item ) {
+
+			if ( isset( $item['name'] ) ) {
+
+				if ( is_string( $item['name'] ) ) {
+
+					$item['name'] = sanitize_file_name( $item['name'] );
+				}
+				elseif ( is_array( $item['name'] ) ) {
+
+					foreach ( $item['name'] as $key => $value ) {
+
+						$item['name'][ $key ] = sanitize_file_name( $value );
+					}
+				}
+			}
+
+			return $item;
 		}
 
 		// VALIDATION
