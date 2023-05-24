@@ -3369,7 +3369,7 @@
 
 		}
 
-		private function implode_recur( $array = array(), $depth = '', $list_spacer = '    ' ) {
+		private function implode_recur( $array = array(), $depth = '', $list_spacer = '	' ) {
 
 			$output = '';
 			$next_depth = $depth . $list_spacer;
