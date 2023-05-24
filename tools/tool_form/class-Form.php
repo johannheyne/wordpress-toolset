@@ -3314,9 +3314,18 @@
 
 				$mail = wp_mail( $mail_param['to'], $mail_param['subject'], $mail_param['message'], $mail_param['headers'], $mail_param['attachements'] );
 
+				do_action( 'class/Form/wp_mail/after', array(
+					'request' => $this->request,
+					'mail_param' => $mail_param,
+					'p' => $this->p,
+					'this' => $this,
+				) );
+
 				do_action( 'class/Form/wp_mail/after/form_id=' . $this->p['form_id'], array(
 					'request' => $this->request,
 					'mail_param' => $mail_param,
+					'p' => $this->p,
+					'this' => $this,
 				) );
 
 				// MAY REMOVES ATTACHMENTS {
@@ -3392,7 +3401,7 @@
 			return $output;
 		}
 
-		private function apply_email_placeholders( $string = '' ) {
+		public function apply_email_placeholders( $string = '' ) {
 
 			$string = preg_replace_callback('/\{(.+?)\}/i', function( $placeholder ) {
 
