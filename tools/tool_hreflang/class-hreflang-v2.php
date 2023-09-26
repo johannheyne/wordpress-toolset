@@ -172,6 +172,28 @@
 					if ( $has_hreflang ) {
 
 						$field['choices'][ $post_item->ID ] .= ' (linked)';
+
+						/*$linkeds = array();
+
+						foreach ( $GLOBALS['toolset']['sites'] as $item_site_id => $site ) {
+
+							$x = get_post_meta( $post_item->ID, 'hreflang_' . $item_site_id . '_post_id', true );
+
+							if (
+								! empty( $x )
+							) {
+
+								switch_to_blog( $item_site_id );
+									$linked_post = get_post( $x );
+									$linkeds[] =   trim( $GLOBALS['toolset']['sites'][$item_site_id]['slug'], '/' ) . '/ ' . get_the_title( $linked_post->ID );
+								restore_current_blog();
+							}
+						}
+
+						if ( ! empty( $linkeds ) ) {
+
+							$field['choices'][ $post_item->ID ] .= ' [' . implode( ', ', $linkeds ) . ']';
+						}*/
 					}
 				}
 
@@ -416,9 +438,28 @@
 
 			restore_current_blog();
 
-			if ( ! $this->can_links_be_merged( $this->post_links, $target_links ) ) {
+			$key = $this->can_links_be_merged( $this->post_links, $target_links );
 
-				$valid = 'Der ausgewählte Inhalt besitzt bereits Verknüpfungen, welche in Konflikt mit denen des aktuellen Inhaltes stehen.';
+			if ( true !== $key ) {
+
+				foreach ( $target_links as $key => $value) {
+
+					if (
+						$key != $site_id AND
+						! empty( $this->post_links[ $key  ] ) AND
+						! empty( $value )
+					) {
+
+						switch_to_blog( $key );
+
+							$title = $GLOBALS['toolset']['sites'][ $key ]['name'] . ': ' . get_the_title( $value );
+							$permalink = $GLOBALS['toolset']['sites'][ $key ]['slug'] . 'backend/wp-admin/post.php?post=' . $value . '&action=edit';
+
+						restore_current_blog();
+					}
+				}
+
+				$valid = 'Der ausgewählte Inhalt ist bereits Verknüpfungen mit <a target="_blank" href="' . $permalink . '">' . $title . '</a>.';
 			}
 
 			// return
@@ -527,7 +568,7 @@
 
 				if ( ! empty( $links_2[ $key ] ) AND ! empty( $value ) ) {
 
-					return false;
+					return $key;
 				}
 			}
 
