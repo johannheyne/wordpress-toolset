@@ -412,8 +412,8 @@ $items[] = array(
 				'value' => '1',
 				//'checked' => 'checked',
 			),
-			//'before_checkbox' => 'Before Checkbox 1',
-			//'after_checkbox' => 'After Checkbox 1',
+			//'before_radio' => 'Before Checkbox 1',
+			//'after_radio' => 'After Checkbox 1',
 		),
 		array(
 			'attrs_field' => array(
