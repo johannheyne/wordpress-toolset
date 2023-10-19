@@ -266,9 +266,9 @@ class BFIGitHubPluginUpdater {
 			$description_content[ 9999999998 ] = '......................................................................................................................' . "\n\n";
 			$description_content[ 9999999999 ] = '<a href="' . $response->homepage . '/releases" target="_blank">You can also go to the releases and their changes on GitHub.</a> ';
 
-			if ( $description_content ) {
+			if ( ! empty( $description_content ) ) {
 
-				$description_content = implode( $description_content, "\n\n" );
+				$description_content = implode( "\n\n", $description_content );
 			}
 
 		// }
