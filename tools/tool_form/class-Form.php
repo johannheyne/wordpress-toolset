@@ -206,6 +206,11 @@
 					$this->init_info_field();
 				}
 
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=hidden' ) ) {
+
+					$this->init_hidden_field();
+				}
+
 			// }
 
 			// GETS FIELDTYPES {
@@ -3030,6 +3035,115 @@
 			}, 10, 2 );
 		}
 
+		public function init_hidden_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['hidden'] = array(
+					'default_param' => array(
+						'label' => '',
+						'attrs_label' => array(),
+						'attrs_field' => array(
+							'name' => '',
+							'value' => '',
+						),
+						'required' => false,
+						'value' => '',
+						'sanitize' => true,
+						'template' => array(
+							'{label}',
+							'{description}',
+							'{before_field}',
+							'{field}',
+							'{after_field}',
+							'{validation}',
+						),
+					),
+					'validation' => false,
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=hidden', function( $html, $item ) {
+
+				// DEFAULTS {
+
+					$p = array_replace_recursive( $this->fieldtypes['hidden']['default_param'], $item );
+
+				// }
+
+				// FILTER FIELD PARAM {
+
+					$p = apply_filters( 'class/Form/field_parameters', $p );
+					$p = apply_filters( 'class/Form/field_parameters/form_group=' . $this->p['form_group'], $p );
+
+				// }
+
+				// REQUEST VALUE {
+
+					if ( isset( $p['request_value'] ) ) {
+
+						$p['attrs_field']['value'] = $p['request_value'];
+					}
+
+				// }
+
+				// ATTRS LABEL {
+
+					$attrs_label_defaults = array(
+						'for' => $p['attrs_field']['name'],
+					);
+
+					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+
+				// }
+
+				// ATTRS FIELD {
+
+					$attrs_field_defaults = array(
+						'type' => 'hidden',
+						'id' => $p['attrs_field']['name'],
+						'name' => $p['attrs_field']['name'],
+						'class' => array(),
+					);
+
+					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+
+					if ( $p['required'] === true ) {
+
+						$p['attrs_field']['required'] = true;
+						$p['attrs_field']['class'][] = 'required';
+					}
+
+				// }
+
+				// VALUE {
+
+					$p['attrs_field']['value'] = apply_filters( 'class/Form/field/hidden/value/key=' . $p['attrs_field']['name'], $p['attrs_field']['value'], $p );
+
+				// }
+
+				// TEMPLATE {
+
+					$template_data = array();
+
+					if ( ! empty( $p['label'] ) ) {
+
+						$template_data['label'] = '<label' . attrs( $p['attrs_label'] ) . '>' . $p['label'] . '</label>';
+					}
+
+					$template_data['field'] = '<input' . attrs( $p['attrs_field'] ) . '>';
+
+					$html .= $this->do_field_template( $p['template'], $template_data, $p );
+
+				// }
+
+				return $html;
+			}, 10, 2 );
+
+		}
+
 		public function filter_files_required( $requires, $field ) {
 
 			// FIXES MISSING FILE FIELD IN REQUEST
@@ -3116,6 +3230,23 @@
 			}
 
 			return $item;
+		}
+
+		public function sanitize_hidden_field( $value ) {
+
+			if ( is_array( $value ) ) {
+
+				array_walk_recursive( $value, function( &$item, $key ) {
+
+					$item = $this->sanitize_text_field( $item );
+				} );
+			}
+			elseif ( is_string( $value ) ) {
+
+				$value = $this->sanitize_text_field( $value );
+			}
+
+			return $value;
 		}
 
 		// VALIDATION

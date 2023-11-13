@@ -32,6 +32,7 @@ __Table of Content__
 	- [custom](#custom_field)
 	- [submit](#submit)
 	- [email](#field_email)
+	- [hidden](#field_hidden)
 - [todo] (Fields HTML5/JS Validation)
 - [todo] Ajax
 - [todo] E-Mail Form
@@ -802,6 +803,32 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'fieldset_id' => '{fieldset_id}',
+		'pos' => 10,
+		'sanitize' => true,
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+
+
+<a id="field_hidden"></a>
+### Hidden
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'hidden',
+		//'label' => '{label_text}', // optional
+		//'description' => '{label_text}', // optional
+		'attrs_label' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+		),
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
