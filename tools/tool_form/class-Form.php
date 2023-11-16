@@ -3122,7 +3122,10 @@
 
 				// VALUE {
 
-					$p['attrs_field']['value'] = apply_filters( 'class/Form/field/hidden/value/key=' . $p['attrs_field']['name'], $p['attrs_field']['value'], $p );
+					if ( ! empty( $p['options'] ) ) {
+
+						$p['attrs_field']['value'] = apply_filters( 'class/Form/field/hidden/value/key=' . $p['options'], $p['attrs_field']['value'], $p );
+					}
 
 				// }
 
