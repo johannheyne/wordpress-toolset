@@ -58,9 +58,9 @@ tool( array(
 	'param' => array(
 		'field' => false, // optional, ACF date field value lieke '20211206'
 		'date' => false, // optional, can be a Unixtimestamp or an date string from database
-		'format' => false, // optional, 'd.m.Y'
+		'format' => false, // optional, 'd.m.Y H:mm:ss' // https://unicode-org.github.io/icu/userguide/format_parse/datetime/
 		'local' => false, // optional, 'de_DE'
-		'timezone' => false, // optional, 'Europe/Berlin'
+		'timezone' => false, // optional, default: wp_timezone_string(), date_default_timezone_get(), 'Europe/Berlin'
 		'date_formatter' => 'medium', // optional: none, short, medium, long, full
 		'time_formatter' => 'none', // optional: none, short, medium, long, full
 	)
