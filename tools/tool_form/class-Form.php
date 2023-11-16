@@ -1415,6 +1415,15 @@
 
 								// }
 
+								// REQUIRED {
+
+									if ( $p['required'] === true ) {
+
+										$p['attrs_field']['required'] = true;
+									}
+
+								// }
+
 								$template_data['field'] .= '<li>';
 
 									// PREPEND CHECKBOXES ITEM {
