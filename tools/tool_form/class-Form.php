@@ -486,6 +486,8 @@
 					'form' => array(),
 				);
 
+				$validation_return = false;
+
 				// REQUIRED {
 
 					if ( ! empty( $item['required'] ) ) {
@@ -3173,7 +3175,7 @@
 
 		public function sanitize_email_field( $string ) {
 
-			$string = sanitize_email( $string );
+			$string = sanitize_text_field( $string );
 
 			return $string;
 		}
