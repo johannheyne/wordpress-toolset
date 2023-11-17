@@ -37,6 +37,7 @@ __Table of Content__
 - [todo] Ajax
 - [todo] E-Mail Form
 - [Detect Form Requests](#detect_form_requests)
+- [Filter: Do Email Check](#do_email_check)
 
 __PHP Hooks__
 - [request](#php_hook_request)
@@ -865,6 +866,24 @@ if ( $form->is_form_request( $form_id, true ) ) {
 	// false: detect always
 	// true: only if the fields has successfully passed the validation
 }
+```
+
+
+
+<a id="do_email_check"></a>
+## Filter: 'class/Form/wp_mail/do_email/check'
+
+```php
+add_filter( 'class/Form/wp_mail/do_email/check', function( $status, $param ) {
+
+	// $param['request']
+	// $param['p']
+	// $status = false; // prevents email from sending
+
+	return $status:
+
+}, 10, 2);
+
 ```
 
 
