@@ -695,6 +695,11 @@
 				$attrs['data-name'] = $item['attrs_field']['name'];
 			}
 
+			if ( ! empty( $item['attrs_elem'] ) ) {
+
+				$attrs = tool_merge_defaults( $item['attrs_elem'], $attrs );
+			}
+
 			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
 			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
