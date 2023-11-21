@@ -342,10 +342,29 @@
 				$html .= '<input type="hidden" name="form_id" value="' . $this->p['form_id'] . '" />';
 				$html .= '<input type="hidden" name="form_unique_id" value="' . $this->p['form_attrs']['data-form-unique-id'] . '" />';
 
-				if ( ! empty( $this->p['form_post_id']  ) ) {
+				// FORM POST ID {
 
-					$html .= '<input type="hidden" name="form_post_id" value="' . $this->p['form_post_id'] . '" />';
-				}
+					if ( ! empty( $this->p['form_post_id']  ) ) {
+
+						$html .= '<input type="hidden" name="form_post_id" value="' . $this->p['form_post_id'] . '" />';
+					}
+
+				// }
+
+				// POST ID {
+
+					if ( ! empty( $_REQUEST['post_id'] ) ) {
+
+						$post_id = $_REQUEST['post_id'];
+					}
+					else {
+
+						$post_id = get_the_ID();
+					}
+
+					$html .= '<input type="hidden" name="post_id" value="' . $post_id. '" />';
+
+				// }
 
 				// FORM PREPEND {
 
