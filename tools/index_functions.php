@@ -434,6 +434,11 @@
 						'funame' => 'tool_get_lang_value_from_array',
 					),
 
+					'tool_multilanguage_require_countries' => array(
+						'dir' => 'tool_multilanguage',
+						'funame' => 'tool_multilanguage_require_countries',
+					),
+
 				// }
 
 				// tool_hreflang {
