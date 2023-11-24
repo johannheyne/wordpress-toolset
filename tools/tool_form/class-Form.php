@@ -64,7 +64,10 @@
 
 		private $is_valide = true; // whether the form is valide
 
-		private $has_messages = false; // whether the form has massages
+		private $has_messages = array(
+			'fields' => false,
+			'form' => false,
+		); // whether the form has massages
 
 		private $request_form_message_keys = array();
 
@@ -3705,7 +3708,10 @@
 				}
 				else {
 
-					if ( false === $this->has_messages ) {
+					if (
+						false === $this->has_messages['fields'] AND
+						false === $this->has_messages['fields']
+					) {
 
 						return true;
 					}
