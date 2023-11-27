@@ -262,6 +262,11 @@
 						$context[] = 'key:' . $array['key'];
 					}
 
+					if ( ! empty( $array['name'] ) ) {
+
+						$context[] = 'name:' . $array['name'];
+					}
+
 				// }
 
 				// IS SRING
