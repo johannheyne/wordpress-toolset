@@ -214,6 +214,11 @@
 					$this->init_hidden_field();
 				}
 
+				if ( ! has_filter( 'class/Form/get_fields_html/field_type=fieldset' ) ) {
+
+					$this->init_fieldset_field();
+				}
+
 			// }
 
 			// GETS FIELDTYPES {
@@ -447,9 +452,12 @@
 
 					// }
 
-					// IS FIELDSET {
+					// IS FIELDSET (DEPRICATED) {
 
-						if ( ! empty( $item['legend'] ) ) {
+						if (
+							! empty( $item['legend'] ) AND
+							empty( $item['type'] )
+						) {
 
 							$html = $this->get_fieldset( $html, $item );
 							continue;
@@ -469,7 +477,6 @@
 						}
 
 					// }
-
 				}
 
 			// }
@@ -712,7 +719,8 @@
 
 					if (
 						! empty( $item['container_id'] ) AND
-						$item['container_id'] === $container['id']
+						$item['container_id'] === $container['id'] AND
+						empty( $item['fieldset_id'] )
 					) {
 
 						$html = $this->get_field( $html, $item );
@@ -762,10 +770,12 @@
 				'class' => array( 'form-field' ),
 			);
 
-			if ( ! empty( $item['type'] ) ) {
+			if ( empty( $item['type'] ) ) {
 
-				$attrs['data-type'] = $item['type'];
+				$item['type'] = '';
 			}
+
+			$attrs['data-type'] = $item['type'];
 
 			if ( ! empty( $item['attrs_field']['name'] ) ) {
 
@@ -777,19 +787,25 @@
 				$attrs = tool_merge_defaults( $item['attrs_elem'], $attrs );
 			}
 
-			$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
-			$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
-			$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
+			if ( $item['type'] !== 'fieldset' ) {
 
-			$item = apply_filters( 'class/Form/item_param/type=' . $item['type'], $item, $this->p );
+				$attrs = apply_filters( 'class/Form/item_attrs', $attrs, $this->p );
+				$attrs = apply_filters( 'class/Form/item_attrs/form_group=' . $this->p['form_group'], $attrs, $this->p );
+				$attrs = apply_filters( 'class/Form/item_attrs/form_id=' . $this->p['form_id'], $attrs, $this->p );
 
-			$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p, $item, $attrs );
-			$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+				$item = apply_filters( 'class/Form/item_param/type=' . $item['type'], $item, $this->p );
+
+				$html_item = apply_filters( 'class/Form/before_item', '<div' . attrs( $attrs ) . '>', $this->p, $item, $attrs );
+				$html .= apply_filters( 'class/Form/before_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+			}
 
 			$html = apply_filters( 'class/Form/get_fields_html/field_type=' . $item['type'], $html, $item );
 
-			$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p, $item, $attrs );
-			$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+			if ( $item['type'] !== 'fieldset' ) {
+
+				$html_item = apply_filters( 'class/Form/after_item', '</div>', $this->p, $item, $attrs );
+				$html .= apply_filters( 'class/Form/after_item/form_group=' . $this->p['form_group'], $html_item, $this->p );
+			}
 
 			return $html;
 		}
@@ -3266,6 +3282,34 @@
 				return $html;
 			}, 10, 2 );
 
+		}
+
+		public function init_fieldset_field( $p = array() ) {
+
+			add_filter( 'class/Form/add_fieldtype', function( $fieldtypes ) {
+
+				$fieldtypes['fieldset'] = array(
+					'default_param' => array(
+
+					),
+				);
+
+				return $fieldtypes;
+			});
+
+			add_filter( 'class/Form/get_fields_html/field_type=fieldset', function( $html, $item ) {
+
+				// DEFAULTS {
+
+					//$p = array_replace_recursive( $this->fieldtypes['hidden']['default_param'], $item );
+
+				// }
+
+				$html = $this->get_fieldset( $html, $item );
+
+				return $html;
+
+			}, 10, 2 );
 		}
 
 		public function filter_files_required( $requires, $field ) {

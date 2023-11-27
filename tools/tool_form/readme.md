@@ -158,7 +158,7 @@ class/Form/containers/form_group=
 ```
 
 ```php
-add_filter( 'class/Form/fieldsets/form_id={form_id}', function( $items, $param ) {
+add_filter( 'class/Form/containers/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
 		'id' => '{container_id}',
@@ -187,9 +187,10 @@ class/Form/fieldsets/form_group=
 ```
 
 ```php
-add_filter( 'class/Form/fieldsets/form_id={form_id}', function( $items, $param ) {
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 
 	$items[] = array(
+		'type' => 'fieldset',
 		'legend' => 'My Fieldset',
 		'id' => '{fieldset_id}',
 		'attrs_field' => array(
