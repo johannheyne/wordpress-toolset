@@ -230,6 +230,14 @@
 
 			// }
 
+			// REGISTERS CONTAINERS {
+
+				$this->items = apply_filters( 'class/Form/containers', $this->items, $this->p );
+				$this->items = apply_filters( 'class/Form/containers/form_group=' . $this->p['form_group'], $this->items, $this->p );
+				$this->items = apply_filters( 'class/Form/containers/form_id=' . $this->p['form_id'], $this->items, $this->p );
+
+			// }
+
 			// REGISTERS FIELDSETS {
 
 				$this->items = apply_filters( 'class/Form/fieldsets', $this->items, $this->p );
@@ -429,20 +437,35 @@
 
 				foreach ( $this->items as $key => $item ) {
 
+					// IS CONTAINER {
+
+						if ( ! empty( $item['container'] ) ) {
+
+							$html = $this->get_container( $html, $item );
+							continue;
+						}
+
+					// }
+
 					// IS FIELDSET {
 
 						if ( ! empty( $item['legend'] ) ) {
 
 							$html = $this->get_fieldset( $html, $item );
+							continue;
 						}
 
 					// }
 
 					// IS FIELD WITHOUT FIELDSET {
 
-						elseif ( empty( $item['fieldset_id'] ) ) {
+						if (
+							empty( $item['fieldset_id'] ) AND
+							empty( $item['container_id'] )
+						) {
 
 							$html = $this->get_field( $html, $item );
+							//continue;
 						}
 
 					// }
@@ -665,6 +688,38 @@
 					$html .= '<ol><li>' . implode( '</li><li>', $message_array ) . '</li></ol>';
 				$html .= '</div>';
 			}
+
+			return $html;
+		}
+
+		private function get_container( $html, $container ) {
+
+			// DEFAULTS {
+
+				$defaults = array(
+					'id' => false,
+					'attrs' => array(),
+				);
+
+				//$p = array_replace_recursive( $defaults, $p );
+				$container = tool_merge_defaults( $container, $defaults );
+
+			// }
+
+			$html .= '<div' . attrs( $container['attrs'] ) . '>';
+
+				foreach ( $this->items as $key => $item ) {
+
+					if (
+						! empty( $item['container_id'] ) AND
+						$item['container_id'] === $container['id']
+					) {
+
+						$html = $this->get_field( $html, $item );
+					}
+				}
+
+			$html .= '</div>';
 
 			return $html;
 		}

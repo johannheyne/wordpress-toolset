@@ -7,6 +7,7 @@ __Table of Content__
 - [Add a Form](#add_a_form)
 	- [Add Email Form](#add-email-form)
 - [Form Messages](#form_messages)
+- [Containers](#adding_containers)
 - [Fieldsets](#adding_fieldsets)
 - [Field Item Attributes](#field_wrapper_attrs)
 - [Adding Fields](#adding_items_to_form)
@@ -145,6 +146,37 @@ add_filter( 'class/Form/messages', function( $messages, $param ) {
 }, 10, 2 );
 ```
 
+<a id="adding_containers"></a>
+## Adding Container
+
+Adds a div width given attributes
+
+```
+class/Form/containers
+class/Form/containers/form_id=
+class/Form/containers/form_group=
+```
+
+```php
+add_filter( 'class/Form/fieldsets/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'id' => '{container_id}',
+		'container' => true,
+		'attrs' => array(
+			'class' => 'my-class',
+		),
+		'pos_key' => '{container_id}',
+		'pos' => 10,
+	);
+
+	return $items;
+
+}, 10, 2 );
+```
+
+
+
 <a id="adding_fieldsets"></a>
 ## Adding Fieldsets
 
@@ -261,6 +293,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -298,6 +331,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -335,6 +369,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -372,6 +407,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -432,7 +468,8 @@ $items[] = array(
 		)
 	),
 	'radio_layout' => 'align-vertical', // align-horizontal
-	//'fieldset_id' => '',
+	//'container_id' => '{container_id}',
+	//'fieldset_id' => '{fieldset_id}',
 	//'required' => true,
 	/*'validation' => function( $value ) {
 
@@ -477,6 +514,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'validation' => function( $value ) {
@@ -564,7 +602,8 @@ $items[] = array(
 		)
 	),
 	'checkbox_layout' => 'align-vertical', // align-horizontal
-	//'fieldset_id' => '',
+	//'container_id' => '{container_id}',
+	//'fieldset_id' => '{fieldset_id}',
 	//'required' => true,
 	/*'validation' => function( $value ) {
 
@@ -604,6 +643,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -668,6 +708,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -738,7 +779,8 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'value' => 'on',
 			//'checked' => 'checked'
 		),
-		'fieldset_id' => '',
+		'container_id' => '{container_id}',
+		'fieldset_id' => '{fieldset_id}',
 		'required' => true,
 		'pos' => 10,
 	);
@@ -759,6 +801,8 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	$items[] = array(
 		'type' => 'custom',
 		'pos' => 10,
+		'container_id' => '{container_id}',
+		'fieldset_id' => '{fieldset_id}',
 		'attrs_elem' => array(),
 		'callback' => function() {
 
@@ -783,6 +827,8 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'type' => 'submit',
 		'element' => 'input', // input, button
 		'pos' => 10,
+		'container_id' => '{container_id}',
+		'fieldset_id' => '{fieldset_id}',
 		'attrs_elem' => array(),
 		'attrs_field' => array(
 			/* The 'name' and 'id' should different
@@ -817,6 +863,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 			'placeholder' => '',
 		),
 		'required' => false,
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
@@ -843,6 +890,7 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 		'attrs_field' => array(
 			'name' => '{field_name}',
 		),
+		'container_id' => '{container_id}',
 		'fieldset_id' => '{fieldset_id}',
 		'pos' => 10,
 		'sanitize' => true,
