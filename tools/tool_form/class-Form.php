@@ -920,6 +920,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -933,6 +934,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -1023,6 +1025,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -1036,6 +1039,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -1127,6 +1131,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -1140,6 +1145,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -1230,6 +1236,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -1243,6 +1250,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -1324,6 +1332,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -1336,6 +1345,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -1445,6 +1455,8 @@
 							$p['attrs_field']['id'] = $p['attrs_field']['name'];
 						}
 
+						$p['attrs_field']['id'] = $p['attrs_field']['id'] . ':' . newid();
+
 					// }
 
 				// }
@@ -1476,7 +1488,7 @@
 
 								$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
 
-								$attrs_field['id'] = $p['attrs_field']['name'] . ':' . $key;
+								$attrs_field['id'] = $p['attrs_field']['name'] . ':' . $key . ':' . newid();
 
 								// NAME {
 
@@ -1677,6 +1689,8 @@
 						$p['attrs_field']['id'] = $p['attrs_field']['name'];
 					}
 
+					$p['attrs_field']['id'] = $p['attrs_field']['id'] . ':' . newid();
+
 				// }
 
 				// ATTRS LABEL {
@@ -1686,6 +1700,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -1815,6 +1830,8 @@
 							$p['attrs_field']['id'] = $p['attrs_field']['name'];
 						}
 
+						$p['attrs_field']['id'] = $p['attrs_field']['id'] . ':' . newid();
+
 					// }
 
 				// }
@@ -1846,7 +1863,7 @@
 
 								$attrs_field = array_replace_recursive( $p['attrs_field'], $item['attrs_field'], );
 
-								$attrs_field['id'] = $p['attrs_field']['name'] . ':' . $key;
+								$attrs_field['id'] = $p['attrs_field']['name'] . ':' . $key . ':' . newid();
 
 								// INDIVIDUALIZE FIELD ID {
 
@@ -2100,6 +2117,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -2112,6 +2130,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -2361,6 +2380,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -2373,6 +2393,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -2553,6 +2574,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -2576,6 +2598,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 				// }
 
@@ -2650,6 +2673,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_field']['id'] . ':' . newid();
 
 				// }
 
@@ -2805,6 +2829,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -2818,6 +2843,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -3033,6 +3059,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -3046,6 +3073,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
@@ -3233,6 +3261,7 @@
 					);
 
 					$p['attrs_label'] = array_replace_recursive( $attrs_label_defaults, $p['attrs_label'] );
+					$p['attrs_label']['for'] = $p['attrs_label']['for'] . ':' . newid();
 
 				// }
 
@@ -3246,6 +3275,7 @@
 					);
 
 					$p['attrs_field'] = array_replace_recursive( $attrs_field_defaults, $p['attrs_field'] );
+					$p['attrs_field']['id'] = $p['attrs_label']['for'];
 
 					if ( $p['required'] === true ) {
 
