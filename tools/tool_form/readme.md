@@ -31,6 +31,7 @@ __Table of Content__
 	- [taxonomy_select](#field_taxonomy_select)
 	- [switch_toggle](#field_switch_toggle)
 	- [custom](#custom_field)
+	- [info](#info)
 	- [submit](#submit)
 	- [email](#field_email)
 	- [hidden](#field_hidden)
@@ -814,6 +815,32 @@ add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
 	return $items;
 
 }, 10, 2 );
+```
+
+
+
+<a id="info"></a>
+### Info
+
+```php
+add_filter( 'class/Form/items/form_id={form_id}', function( $items, $param ) {
+
+	$items[] = array(
+		'type' => 'info',
+		'pos' => 10,
+		'content' => 'Hello World',
+		'container_id' => '{container_id}',
+		'fieldset_id' => '{fieldset_id}',
+		'attrs_elem' => array(),
+		'attrs_field' => array(
+			'name' => '{field_name}',
+		),
+	);
+
+	return $items;
+
+}, 10, 2 );
+
 ```
 
 
