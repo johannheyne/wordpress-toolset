@@ -582,11 +582,21 @@
 
 					if (
 						empty( $validation_return ) AND
-						! empty( $item['validation'] ) AND
-						isset( $this->request[ $item['attrs_field']['name'] ] )
+						! empty( $item['validation'] )
 					) {
 
-						$validation_return = $item['validation']( $this->request[ $item['attrs_field']['name'] ] );
+						// SET DEFAULT VALUE WHEN FOR EXAMPLE AN UNCHECKED CHECKBOX NOT SEND BY FORM {
+
+							$value = '';
+
+							if ( ! empty( $this->request[ $item['attrs_field']['name'] ] ) ) {
+
+								$value = $this->request[ $item['attrs_field']['name'] ];
+							}
+
+						// }
+						
+						$validation_return = $item['validation']( $value );
 					}
 
 				// }
