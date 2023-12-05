@@ -699,6 +699,29 @@
 				}
 			}
 
+			// REPLACES FIELD NAME PLACEHOLDERS IN FORM MESSAGES {
+
+				if ( 
+					! empty( $this->request ) AND
+					! empty( $message_array )
+				) {
+	
+					foreach ( $this->request as $key => $value ) {
+						
+						if ( ! is_string( $value ) ) {
+
+							continue;
+						}
+
+						foreach ( $message_array as $key2 => $value2 ) {
+							
+							$message_array[ $key2 ] = str_replace( '{' . $key . '}', $value, $message_array[ $key2 ] );
+						}
+					}
+				}
+
+			// }
+
 			if ( ! empty( $message_array ) ) {
 
 				$html .= '<div data-form-message="prepend-form">';
