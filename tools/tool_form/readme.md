@@ -1145,7 +1145,12 @@ add_action( 'class/Form/wp_mail/sent/form_id={form_id}', function() {
 ### sent
 <a id="js_hook_sent"></a>
 ```js
-App.Actions.add( 'ToolForm', 'sent', function( { form_unique_id, form_id, form_post_id } ) {
+App.Actions.add( 'ToolForm', 'sent', function( param ) {
+
+	// param.form_id
+	// param.form_post_id
+	// param.form_unique_id
+	// param.form_offset
 
 	// cals after form was sent
 } );
