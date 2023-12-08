@@ -1553,7 +1553,6 @@
 												$attrs_field['checked'] = true;
 											}
 										}
-
 									}
 
 								// }
@@ -1562,7 +1561,7 @@
 
 									if ( $p['required'] === true ) {
 
-										$p['attrs_field']['required'] = true;
+										$attrs_field['required'] = true;
 									}
 
 								// }
@@ -1706,6 +1705,15 @@
 
 				// }
 
+				// REQUIRED {
+
+					if ( $p['required'] === true ) {
+
+						$p['attrs_field']['required'] = true;
+					}
+
+				// }
+				
 				// ATTRS FIELD {
 
 					$attrs_field_defaults = array(
