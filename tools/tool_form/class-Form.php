@@ -595,7 +595,7 @@
 							}
 
 						// }
-						
+
 						$validation_return = $item['validation']( $value );
 					}
 
@@ -701,20 +701,20 @@
 
 			// REPLACES FIELD NAME PLACEHOLDERS IN FORM MESSAGES {
 
-				if ( 
+				if (
 					! empty( $this->request ) AND
 					! empty( $message_array )
 				) {
-	
+
 					foreach ( $this->request as $key => $value ) {
-						
+
 						if ( ! is_string( $value ) ) {
 
 							continue;
 						}
 
 						foreach ( $message_array as $key2 => $value2 ) {
-							
+
 							$message_array[ $key2 ] = str_replace( '{' . $key . '}', $value, $message_array[ $key2 ] );
 						}
 					}
@@ -724,7 +724,14 @@
 
 			if ( ! empty( $message_array ) ) {
 
-				$html .= '<div data-form-message="prepend-form">';
+				$id_type = 'form_message';
+
+				if ( in_array( 'email_sent', $this->request_form_message_keys ) ) {
+
+					$id_type = 'email_sent';
+				}
+
+				$html .= '<div id="' . $id_type . '-' . $this->request['form_id'] . '-' . $this->request['form_post_id'] . '" data-form-message="prepend-form">';
 					$html .= '<ol><li>' . implode( '</li><li>', $message_array ) . '</li></ol>';
 				$html .= '</div>';
 			}
@@ -1713,7 +1720,7 @@
 					}
 
 				// }
-				
+
 				// ATTRS FIELD {
 
 					$attrs_field_defaults = array(
