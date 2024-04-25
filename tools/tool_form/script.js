@@ -347,7 +347,9 @@
 
 							//data = $.parseJSON( data );
 
-							let selector = '[data-form-post-id="' + form_post_id + '"]';
+							let selector = '[data-form-post-id="' + form_post_id + '"]',
+								$form = $( selector ),
+								form_offset = $form.offset();
 
 							selector = App.Filters.do( 'ToolForm', 'success_selector', selector, {
 								form_unique_id: form_unique_id,
