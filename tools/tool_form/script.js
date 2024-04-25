@@ -358,8 +358,8 @@
 							} );
 
 							$( selector )
-								.after( data )
-								.remove();
+								.empty()
+								.append( data );
 
 							App.Actions.do( 'ToolForm', 'sent', {
 								form_unique_id: form_unique_id,

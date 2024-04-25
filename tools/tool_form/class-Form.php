@@ -62,6 +62,8 @@
 
 		private $is_request = false; // whether the form is requested
 
+		private $is_ajax_request = false;
+
 		private $is_valide = true; // whether the form is valide
 
 		private $has_messages = array(
@@ -279,6 +281,7 @@
 				if ( $this->is_form_request( $this->p['form_id'] ) ) {
 
 					$this->is_request = true;
+					$this->is_ajax_request = wp_doing_ajax();
 					$this->request = $_REQUEST;
 
 					if ( ! empty( $_FILES ) ) {
@@ -353,7 +356,12 @@
 
 			do_action( 'class/Form/before_html/form_id=' . $this->p['form_id'], $this->p );
 
-			$html = '<form' . attrs( $attrs ) . '>';
+				$html = '';
+
+				if ( false === $this->is_ajax_request ) {
+
+					$html .= '<form' . attrs( $attrs ) . '>';
+				}
 
 				$html .= '<input type="hidden" name="form_id" value="' . $this->p['form_id'] . '" />';
 				$html .= '<input type="hidden" name="form_unique_id" value="' . $this->p['form_attrs']['data-form-unique-id'] . '" />';
@@ -400,7 +408,10 @@
 
 				// }
 
-			$html .= '</form>';
+			if ( false === $this->is_ajax_request ) {
+
+				$html .= '</form>';
+			}
 
 			return $html;
 		}
