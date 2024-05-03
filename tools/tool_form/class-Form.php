@@ -3201,7 +3201,7 @@
 
 					if ( ! empty( $p['allow_multiple_files'] ) ) {
 
-						$p['attrs_field']['multiple'] = '';
+						$p['attrs_field']['multiple'] = true;
 						$p['attrs_field']['name'] .= '[]';
 					}
 
