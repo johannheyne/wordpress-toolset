@@ -3162,7 +3162,7 @@
 				// FILE LABEL {
 
 					$p['attrs_field_label'] = array(
-						'for' => $p['attrs_field']['name'],
+						'for' => $p['attrs_label']['for'],
 						'class' => array( 'form-field-file-input', 'btn', 'btn-file' ),
 					);
 
