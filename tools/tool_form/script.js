@@ -370,7 +370,6 @@
 						},
 						error: function( errorThrown ) {
 
-							//console.log( 'Sorry, but could not add the Like!' );
 						}
 					});
 				});
