@@ -3809,21 +3809,23 @@
 
 				if ( isset( $this->request[ $placeholder[1] ] ) ) {
 
+					$value = apply_filters( 'class/Form/wp_mail/placeholder/value/name=' . $placeholder[1], $this->request[ $placeholder[1] ] );
+
 					// IS STRING
 
-						if ( is_string( $this->request[ $placeholder[1] ] ) ) {
+						if ( is_string( $value ) ) {
 
-							return $this->request[ $placeholder[1] ];
+							return $value;
 						}
 
 					// IS MULTIDIMENSIONAL ARRAY
 
 						elseif (
 							isset( $this->request[ $placeholder[1] ] ) &&
-							is_array( $this->request[ $placeholder[1] ]
-						) ) {
+							is_array( $value )
+						) {
 
-							return $this->implode_recur( $this->request[ $placeholder[1] ] );
+							return $this->implode_recur( $value );
 						}
 
 					// IS SIMPLE ARRAY

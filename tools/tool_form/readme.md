@@ -46,7 +46,10 @@ __PHP Hooks__
 - [prepending, appending form content](#adding_content_prepending_appending_form)
 - [before_item, after_item](#adding_item_wrapper)
 - [wp_mail/param](#php_hook_wp_mail_param)
+- [wp_mail/placeholder/value](#php_hook_wp_mail_placeholder_value)
 - [wp_mail/sent](#php_hook_wp_mail_sent)
+
+
 
 
 
@@ -1119,6 +1122,18 @@ add_action( 'class/Form/wp_mail/after/form_id={form_id}', function( $param ) {
 
 	// $param['request']
 	// $param['mail_param']
+
+}, 10 );
+```
+
+
+<a id="php_hook_wp_mail_placeholder_value"></a>
+### wp_mail/placeholder/value
+
+```php
+add_action( 'class/Form/wp_mail/placeholder/value/name={placeholer_name}', function( $value ) {
+
+	return $value;
 
 }, 10 );
 ```
