@@ -1157,6 +1157,15 @@
 					! empty( $this->option_text_list[ $domain ][ $context ][ $text ]['transl'] )
 				) {
 
+					// PREVENTS TRANSLATING POSTTYPE SLUGS ON BACKEND, BECAUDE REQUIRES ORIGINAL POSTTYPE SLUG IN REWRITE RULES FILTER {
+
+						if ( $context === 'URL Slug' AND defined( 'IS_BACKEND') ) {
+
+							return $translation;
+						}
+
+					// }
+
 					$transl = $this->option_text_list[ $domain ][ $context ][ $text ]['transl'];
 					$transl['default'] = $this->option_text_list[ $domain ][ $context ][ $text ]['text_default'];
 
@@ -1223,7 +1232,6 @@
 
 				flush_rewrite_rules();
 			}
-
 
 			// ADDS GETTEXT FILTER
 
