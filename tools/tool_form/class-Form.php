@@ -3606,7 +3606,7 @@
 				$arr[] = '<' . sanitize_email( $this->apply_email_placeholders( $p['email']['email_from'] ) ) . '>';
 
 				$headers = array(
-					'From: ' .  implode( ' ', $arr ),
+					'From: ' . implode( ' ', $arr ),
 				);
 
 				if ( ! empty( $p['email']['email_header'] ) ) {
