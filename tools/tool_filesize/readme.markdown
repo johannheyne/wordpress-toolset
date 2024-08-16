@@ -8,11 +8,21 @@ Returns a human readable filesize like "100,72 KB"
 ## tool_get_filesize
 
 ````php
-$filesize_string = tool( array(
+$filesize = tool( array(
 	'name' => 'tool_get_filesize',
 	'param' => $attachment_id,
 );
 ````
+
+## tool_get_directory_size
+
+````php
+$directory_size = tool( array(
+	'name' => 'tool_get_directory_size',
+	'param' => $path,
+);
+````
+
 
 ## tool_format_filesize()
 

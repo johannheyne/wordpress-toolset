@@ -93,3 +93,33 @@
 		}
 
 	// }
+
+	// GET DIRECTORY SIZE {
+
+		function tool_get_directory_size( $path, $p = array( 'format' => true ) ) {
+
+			$bytestotal = 0;
+
+			$path = realpath( $path );
+
+			if(
+				$path !== false &&
+				$path != '' &&
+				file_exists( $path )
+			) {
+
+				foreach( new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS )) as $object ) {
+
+					$bytestotal += $object->getSize();
+				}
+			}
+
+			if ( $p['format'] ) {
+
+				$bytestotal = tool_format_filesize( $bytestotal );
+			}
+
+			return $bytestotal;
+		}
+
+	// }
