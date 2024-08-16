@@ -3664,14 +3664,35 @@
 												continue;
 											}
 
-											move_uploaded_file( $file['tmp_name'][ $key ], $attachmentdir . '/' . $name );
-											$attachements[] = $attachmentdir . '/' . $name;
+											$status = apply_filters( 'class/Form/wp_mail/file_field', true, array(
+												'file' => array(
+													'name' => $file['name'][ $key ],
+													'full_path' => $file['full_path'][ $key ],
+													'type' => $file['type'][ $key ],
+													'tmp_name' => $file['tmp_name'][ $key ],
+													'error' => $file['error'][ $key ],
+													'size' => $file['size'][ $key ],
+												),
+											));
+
+											if ( true === $status ) {
+
+												move_uploaded_file( $file['tmp_name'][ $key ], $attachmentdir . '/' . $name );
+												$attachements[] = $attachmentdir . '/' . $name;
+											}
 										}
 									}
 									else {
 
-										move_uploaded_file( $file['tmp_name'], $attachmentdir . '/' . $file['name'] );
-										$attachements[] = $attachmentdir . '/' . $file['name'];
+										$status = apply_filters( 'class/Form/wp_mail/file_field', true, array(
+											'file' => $file,
+										));
+
+										if ( true === $status ) {
+
+											move_uploaded_file( $file['tmp_name'], $attachmentdir . '/' . $file['name'] );
+											$attachements[] = $attachmentdir . '/' . $file['name'];
+										}
 									}
 								}
 
@@ -3711,6 +3732,10 @@
 				);
 
 				$mail_param = apply_filters('class/Form/wp_mail/param/form_id=' . $this->p['form_id'], $mail_param, array(
+					'request' => $this->request,
+				));
+
+				$mail_param = apply_filters('class/Form/wp_mail/param', $mail_param, array(
 					'request' => $this->request,
 				));
 
@@ -3849,7 +3874,7 @@
 						}
 				}
 
-				return '';
+				return apply_filters( 'class/Form/wp_mail/placeholder/value/name=' . $placeholder[1], '', false );
 
 			}, $string );
 

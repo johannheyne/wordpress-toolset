@@ -48,7 +48,7 @@ __PHP Hooks__
 - [wp_mail/param](#php_hook_wp_mail_param)
 - [wp_mail/placeholder/value](#php_hook_wp_mail_placeholder_value)
 - [wp_mail/sent](#php_hook_wp_mail_sent)
-
+- [wp_mail/file_field](#php_hook_wp_mail_file_field)
 
 
 
@@ -1112,6 +1112,19 @@ add_filter( 'class/Form/wp_mail/param/form_id={form_id}', function( $param ) {
 
 }, 10 );
 ```
+```php
+add_filter( 'class/Form/wp_mail/param', function( $param ) {
+
+	// $param['to']
+	// $param['subject']
+	// $param['message']
+	// $param['headers']
+	// $param['attachements']
+
+	return $param;
+
+}, 10 );
+```
 
 
 <a id="php_hook_wp_mail_after"></a>
@@ -1150,6 +1163,35 @@ add_action( 'class/Form/wp_mail/sent/form_id={form_id}', function() {
 }, 10 );
 ```
 
+
+<a id="php_hook_wp_mail_file_field"></a>
+### wp_mail/file_field
+
+```php
+add_afilter( 'class/Form/wp_mail/file_field', function( $value, $param ) {
+
+	/*
+		$value = true;
+
+		$param = array(
+			'file' => array(
+				'name' => $file['name'][ $key ],
+				'full_path' => $file['full_path'][ $key ],
+				'type' => $file['type'][ $key ],
+				'tmp_name' => $file['tmp_name'][ $key ],
+				'error' => $file['error'][ $key ],
+				'size' => $file['size'][ $key ],
+			),
+		)
+	*/
+
+	$value = false; // prevents file from attaching to email
+
+	// do semething other with the file
+
+	return $value;
+}, 10 );
+```
 
 
 
